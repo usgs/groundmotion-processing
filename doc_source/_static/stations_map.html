@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_68db325a131348299666901bc3b786a2 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div style="position:absolute; font-family:Noto Sans UI Regular;
+                top: 50px; left: 50px; width: 165px; height: 100px; 
+                background-color:white; border:2px solid grey;z-index: 900;">
+
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                    </svg>
+                    <text style="padding:5px">Passed Station</text>
+                </div>
+                
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#00ac00" class="bi bi-triangle-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                    </svg>
+                    <text style="padding:5px">Failed Station</text>
+                </div>
+
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#FFFF00" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                    <text style="padding:5px">Earthquake Epicenter</text>
+                </div>
+
+            </div>
+            
+    
+            <div class="folium-map" id="map_68db325a131348299666901bc3b786a2" ></div>
+        
+</body>
+<script>    
+    
+            var map_68db325a131348299666901bc3b786a2 = L.map(
+                "map_68db325a131348299666901bc3b786a2",
+                {
+                    center: [38.2151667, -122.3123333],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 7,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_68db325a131348299666901bc3b786a2);
+
+            
+
+        
+    
+            var tile_layer_67b71b7b899642fab544b6a684217343 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_68db325a131348299666901bc3b786a2);
+        
+    
+            var marker_7dc0860ac0e64ee3b532d6335c23a0c0 = L.marker(
+                [38.298752, -122.284843],
+                {}
+            ).addTo(map_68db325a131348299666901bc3b786a2);
+        
+    
+            var div_icon_6799cb367ea24c79a7f96454f597448d = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#ff2222\" class=\"bi bi-triangle-fill\" transform=\u0027rotate(180)\u0027 viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_7dc0860ac0e64ee3b532d6335c23a0c0.setIcon(div_icon_6799cb367ea24c79a7f96454f597448d);
+        
+    
+        var popup_eaa436ead0e241af80c7614315fbc3ba = L.popup({"maxWidth": 250, "minWidth": 250});
+
+        
+            var html_a97acb3ec92b48729eec58d5fd236a7c = $(`<div id="html_a97acb3ec92b48729eec58d5fd236a7c" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NC<br> <b>LAT:</b> 38.2988&deg; <b>LON:</b> -122.2848&deg;<br> <b>FAILURE MSG:</b><br> <i>'Failed SNR check; SNR less than threshold.'</i></div>`)[0];
+            popup_eaa436ead0e241af80c7614315fbc3ba.setContent(html_a97acb3ec92b48729eec58d5fd236a7c);
+        
+
+        marker_7dc0860ac0e64ee3b532d6335c23a0c0.bindPopup(popup_eaa436ead0e241af80c7614315fbc3ba)
+        ;
+
+        
+    
+    
+            marker_7dc0860ac0e64ee3b532d6335c23a0c0.bindTooltip(
+                `<div>
+                     <b>Station:</b> N016
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ff52fceec8d347c5a9921de35f8c64ff = L.marker(
+                [38.2704, -122.2774],
+                {}
+            ).addTo(map_68db325a131348299666901bc3b786a2);
+        
+    
+            var div_icon_948e55b3272b46c3a7546de61c170034 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_ff52fceec8d347c5a9921de35f8c64ff.setIcon(div_icon_948e55b3272b46c3a7546de61c170034);
+        
+    
+        var popup_744e69e3163b42f8aacedfe4512fd6b1 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_8cf8f94429e64133966760dbadcb6252 = $(`<div id="html_8cf8f94429e64133966760dbadcb6252" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> CE<br> <b>LAT:</b> 38.2704&deg; <b>LON:</b> -122.2774&deg;</div>`)[0];
+            popup_744e69e3163b42f8aacedfe4512fd6b1.setContent(html_8cf8f94429e64133966760dbadcb6252);
+        
+
+        marker_ff52fceec8d347c5a9921de35f8c64ff.bindPopup(popup_744e69e3163b42f8aacedfe4512fd6b1)
+        ;
+
+        
+    
+    
+            marker_ff52fceec8d347c5a9921de35f8c64ff.bindTooltip(
+                `<div>
+                     <b>Station:</b> 68150
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9bd1c7130751443fb504a8f543874bc3 = L.marker(
+                [38.21748, -122.357674],
+                {}
+            ).addTo(map_68db325a131348299666901bc3b786a2);
+        
+    
+            var div_icon_cfa05804478e4dc5b343370cf01f5ca4 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_9bd1c7130751443fb504a8f543874bc3.setIcon(div_icon_cfa05804478e4dc5b343370cf01f5ca4);
+        
+    
+        var popup_420e96c4db7042aa9c23bea8036efe97 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_1b71b9a8a36443b5a226bb68ac19f9e5 = $(`<div id="html_1b71b9a8a36443b5a226bb68ac19f9e5" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NC<br> <b>LAT:</b> 38.2175&deg; <b>LON:</b> -122.3577&deg;</div>`)[0];
+            popup_420e96c4db7042aa9c23bea8036efe97.setContent(html_1b71b9a8a36443b5a226bb68ac19f9e5);
+        
+
+        marker_9bd1c7130751443fb504a8f543874bc3.bindPopup(popup_420e96c4db7042aa9c23bea8036efe97)
+        ;
+
+        
+    
+    
+            marker_9bd1c7130751443fb504a8f543874bc3.bindTooltip(
+                `<div>
+                     <b>Station:</b> NHC
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_325062b70e774609873a36c56c358e67 = L.marker(
+                [38.2151667, -122.3123333],
+                {"fillColor": "#FFFF00"}
+            ).addTo(map_68db325a131348299666901bc3b786a2);
+        
+    
+            var div_icon_3f231f963b25484181cd80b3c32fa99b = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#FFFF00\" class=\"bi bi-star-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath d=\"M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_325062b70e774609873a36c56c358e67.setIcon(div_icon_3f231f963b25484181cd80b3c32fa99b);
+        
+    
+        var popup_55715cf6349f47fd81bed22e1a7382d7 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_a3d585a937eb414aa0011197588d9f34 = $(`<div id="html_a3d585a937eb414aa0011197588d9f34" style="width: 100.0%; height: 100.0%;"><b>EVENT ID:</b> nc72282711<br> <b>MAG:</b> 6.02<br> <b>LAT:</b> 38.2152&deg; <b>LON:</b> -122.3123&deg;<br> <b>DEPTH:</b> 11.12 km</div>`)[0];
+            popup_55715cf6349f47fd81bed22e1a7382d7.setContent(html_a3d585a937eb414aa0011197588d9f34);
+        
+
+        marker_325062b70e774609873a36c56c358e67.bindPopup(popup_55715cf6349f47fd81bed22e1a7382d7)
+        ;
+
+        
+    
+    
+            marker_325062b70e774609873a36c56c358e67.bindTooltip(
+                `<div>
+                     <b>EVENT ID:</b> nc72282711
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>

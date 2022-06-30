@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>max_amp - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>max_amp - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,17 +487,19 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#max_amp.Max_Amp" title="max_amp.Max_Amp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Max_Amp</span></code></a></p></td>
 <td><p>Class for the maximum amplitude clipping detection algorithm.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="max_amp.Max_Amp">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">max_amp.</span></span><span class="sig-name descname"><span class="pre">Max_Amp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_amp_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6000000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_all</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#max_amp.Max_Amp" title="Permalink to this definition">#</a></dt>
@@ -512,6 +515,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="max_amp.Max_Amp.test_all">
 <span class="sig-name descname"><span class="pre">test_all</span></span><a class="headerlink" href="#max_amp.Max_Amp.test_all" title="Permalink to this definition">#</a></dt>
@@ -522,6 +526,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="max_amp.Max_Amp.is_clipped">
 <span class="sig-name descname"><span class="pre">is_clipped</span></span><a class="headerlink" href="#max_amp.Max_Amp.is_clipped" title="Permalink to this definition">#</a></dt>
@@ -532,6 +537,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="max_amp.Max_Amp.max_amp_thresh">
 <span class="sig-name descname"><span class="pre">max_amp_thresh</span></span><a class="headerlink" href="#max_amp.Max_Amp.max_amp_thresh" title="Permalink to this definition">#</a></dt>
@@ -542,6 +548,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="max_amp.Max_Amp.max_amp">
 <span class="sig-name descname"><span class="pre">max_amp</span></span><a class="headerlink" href="#max_amp.Max_Amp.max_amp" title="Permalink to this definition">#</a></dt>
@@ -553,10 +560,12 @@ max amps for each trace (if test_all=True).</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py">
 <span class="sig-name descname"><span class="pre">See</span> <span class="pre">parent</span> <span class="pre">class.</span></span></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="max_amp.Max_Amp._clean_trace">
 <span class="sig-name descname"><span class="pre">_clean_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#max_amp.Max_Amp._clean_trace" title="Permalink to this definition">#</a></dt>
@@ -574,6 +583,7 @@ algorithm).</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="max_amp.Max_Amp._detect">
 <span class="sig-name descname"><span class="pre">_detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#max_amp.Max_Amp._detect" title="Permalink to this definition">#</a></dt>
@@ -592,6 +602,7 @@ the trace.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="max_amp.Max_Amp._get_results">
 <span class="sig-name descname"><span class="pre">_get_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#max_amp.Max_Amp._get_results" title="Permalink to this definition">#</a></dt>
@@ -599,7 +610,9 @@ the trace.</p>
 determine if the record is clipped or not.</p>
 <p>See parent class.</p>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 </section>
 </section>

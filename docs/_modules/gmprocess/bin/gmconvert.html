@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.bin.gmconvert - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.bin.gmconvert - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -491,13 +492,13 @@
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
 <span class="c1"># local imports</span>
-<span class="n">log</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"log"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.logging"</span><span class="p">)</span>
-<span class="n">argmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"argmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.utils.args"</span><span class="p">)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.logging&quot;</span><span class="p">)</span>
+<span class="n">argmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;argmod&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.args&quot;</span><span class="p">)</span>
 <span class="n">streamcollection</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span>
-    <span class="s2">"streamcollection"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.core.streamcollection"</span>
+    <span class="s2">&quot;streamcollection&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.core.streamcollection&quot;</span>
 <span class="p">)</span>
-<span class="n">readmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"readmod"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.read"</span><span class="p">)</span>
-<span class="n">read_directory</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">"read_directory"</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">"gmprocess.io.read_directory"</span><span class="p">)</span>
+<span class="n">readmod</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;readmod&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.io.read&quot;</span><span class="p">)</span>
+<span class="n">read_directory</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;read_directory&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.io.read_directory&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="CustomFormatter"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmconvert/index.html#gmprocess.bin.gmconvert.CustomFormatter">[docs]</a><span class="k">class</span> <span class="nc">CustomFormatter</span><span class="p">(</span>
@@ -507,24 +508,24 @@
 
 
 <span class="n">FORMATS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"AH"</span><span class="p">,</span>
-    <span class="s2">"GSE2"</span><span class="p">,</span>
-    <span class="s2">"MSEED"</span><span class="p">,</span>
-    <span class="s2">"PICKLE"</span><span class="p">,</span>
-    <span class="s2">"Q"</span><span class="p">,</span>
-    <span class="s2">"SAC"</span><span class="p">,</span>
-    <span class="s2">"SACXY"</span><span class="p">,</span>
-    <span class="s2">"SEGY"</span><span class="p">,</span>
-    <span class="s2">"SH_ASC"</span><span class="p">,</span>
-    <span class="s2">"SLIST"</span><span class="p">,</span>
-    <span class="s2">"SU"</span><span class="p">,</span>
-    <span class="s2">"TSPAIR"</span><span class="p">,</span>
-    <span class="s2">"WAV"</span><span class="p">,</span>
+    <span class="s2">&quot;AH&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GSE2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MSEED&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PICKLE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Q&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SAC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SACXY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SEGY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SH_ASC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SLIST&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SU&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TSPAIR&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WAV&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmconvert/index.html#gmprocess.bin.gmconvert.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">desc</span> <span class="o">=</span> <span class="s2">"""Convert a directory of strong motion data files into any ObsPy</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Convert a directory of strong motion data files into any ObsPy</span>
 <span class="s2">    supported format.</span>
 
 <span class="s2">https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supported-formats</span>
@@ -549,29 +550,29 @@
 <span class="s2">        - BO.AOM001.HN.mseed</span>
 <span class="s2">        - BO.AOM001.HN.xml</span>
 
-<span class="s2">    To convert a directory "indatadir" full of files to SAC format, and write</span>
-<span class="s2">    to a directory called "outdatadir":</span>
+<span class="s2">    To convert a directory &quot;indatadir&quot; full of files to SAC format, and write</span>
+<span class="s2">    to a directory called &quot;outdatadir&quot;:</span>
 
 <span class="s2">    gmconvert -i datadir -o outdatadir -f SAC</span>
 
-<span class="s2">    Note: The data files in "indatadir" can be distributed through</span>
+<span class="s2">    Note: The data files in &quot;indatadir&quot; can be distributed through</span>
 <span class="s2">    subdirectories and gmconvert will find them.</span>
 
-<span class="s2">    """</span>
+<span class="s2">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span> <span class="n">formatter_class</span><span class="o">=</span><span class="n">CustomFormatter</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"files"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"List of files to convert."</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">"*"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+        <span class="s2">&quot;files&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;List of files to convert.&quot;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"-i"</span><span class="p">,</span> <span class="s2">"--indir"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"Directory containing input files to convert."</span>
+        <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="s2">&quot;--indir&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Directory containing input files to convert.&quot;</span>
     <span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-o"</span><span class="p">,</span> <span class="s2">"--outdir"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"Output directory."</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="s2">&quot;--outdir&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output directory.&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s2">"-f"</span><span class="p">,</span>
-        <span class="s2">"--format"</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s2">"Output strong motion data format."</span><span class="p">,</span>
+        <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--format&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Output strong motion data format.&quot;</span><span class="p">,</span>
         <span class="n">choices</span><span class="o">=</span><span class="n">FORMATS</span><span class="p">,</span>
-        <span class="n">default</span><span class="o">=</span><span class="s2">"MSEED"</span><span class="p">,</span>
+        <span class="n">default</span><span class="o">=</span><span class="s2">&quot;MSEED&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Shared arguments</span>
@@ -582,7 +583,7 @@
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="n">log</span><span class="o">.</span><span class="n">setup_logger</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Running gmconvert."</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Running gmconvert.&quot;</span><span class="p">)</span>
 
     <span class="c1"># gather arguments</span>
     <span class="n">indir</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">indir</span>
@@ -592,11 +593,11 @@
     <span class="n">has_files</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">files</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">has_files</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">indir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"Specify input files or an input directory, not both."</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Specify input files or an input directory, not both.&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">files</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">indir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"You must specify input files or an input directory."</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You must specify input files or an input directory.&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">outdir</span><span class="p">):</span>
@@ -607,7 +608,7 @@
         <span class="n">allstreams</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">error_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">dfile</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parsing </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parsing </span><span class="si">{</span><span class="n">dfile</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">streams</span> <span class="o">=</span> <span class="n">readmod</span><span class="o">.</span><span class="n">read_data</span><span class="p">(</span><span class="n">dfile</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -625,23 +626,23 @@
         <span class="n">streamid</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">streamid</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
-        <span class="n">outfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">streamid</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">oformat</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-        <span class="n">invfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">streamid</span><span class="si">}</span><span class="s2">.xml"</span><span class="p">)</span>
-        <span class="n">inv_format</span> <span class="o">=</span> <span class="s2">"STATIONXML"</span>
+        <span class="n">outfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">streamid</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">oformat</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">invfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">streamid</span><span class="si">}</span><span class="s2">.xml&quot;</span><span class="p">)</span>
+        <span class="n">inv_format</span> <span class="o">=</span> <span class="s2">&quot;STATIONXML&quot;</span>
         <span class="n">inv</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">getInventory</span><span class="p">()</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Writing data file </span><span class="si">{</span><span class="n">outfile</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing data file </span><span class="si">{</span><span class="n">outfile</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
         <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">oformat</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Writing inventory file </span><span class="si">{</span><span class="n">invfile</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing inventory file </span><span class="si">{</span><span class="n">invfile</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
         <span class="n">inv</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">invfile</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">inv_format</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Wrote </span><span class="si">%i</span><span class="s2"> streams to </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sc</span><span class="p">),</span> <span class="n">outdir</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wrote </span><span class="si">%i</span><span class="s2"> streams to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sc</span><span class="p">),</span> <span class="n">outdir</span><span class="p">))</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">error_dict</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">The following files could not be read:"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">The following files could not be read:&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">error_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="se">\t</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s1"> - "</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">"'</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s1"> - &quot;</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
         </article>

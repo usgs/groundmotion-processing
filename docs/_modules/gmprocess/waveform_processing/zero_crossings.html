@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.zero_crossings - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.zero_crossings - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -487,7 +488,7 @@
 
 
 <div class="viewcode-block" id="check_zero_crossings"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html#gmprocess.waveform_processing.zero_crossings.check_zero_crossings">[docs]</a><span class="k">def</span> <span class="nf">check_zero_crossings</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">min_crossings</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check for a large enough density.</span>
 
 <span class="sd">    This is intended to screen out instrumental failures or resetting.</span>
@@ -504,7 +505,7 @@
 <span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">zero_count_tr</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">delta_t</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
@@ -515,9 +516,9 @@
         <span class="c1"># not want to modify the trace but we only want to count the crossings</span>
         <span class="c1"># within the trimmed window</span>
 
-        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"failure"</span><span class="p">)):</span>
-            <span class="n">etime</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">)[</span><span class="s2">"end_time"</span><span class="p">]</span>
-            <span class="n">split_time</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">)[</span><span class="s2">"split_time"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">)):</span>
+            <span class="n">etime</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">)[</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span>
+            <span class="n">split_time</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
 
             <span class="n">sig_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">split_time</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">)</span> <span class="o">/</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)</span>
             <span class="n">sig_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">etime</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">)</span> <span class="o">/</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">)</span>
@@ -530,11 +531,11 @@
             <span class="n">z_rate</span> <span class="o">=</span> <span class="n">zero_count_tr</span> <span class="o">/</span> <span class="n">dur</span>
 
             <span class="c1"># Put results back into the original trace, not the copy</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"ZeroCrossingRate"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"crossing_rate"</span><span class="p">:</span> <span class="n">z_rate</span><span class="p">})</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;ZeroCrossingRate&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;crossing_rate&quot;</span><span class="p">:</span> <span class="n">z_rate</span><span class="p">})</span>
 
             <span class="c1"># Fail if zero crossing rate is too low</span>
             <span class="k">if</span> <span class="n">z_rate</span> <span class="o">&lt;=</span> <span class="n">min_crossings</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Zero crossing rate too low."</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Zero crossing rate too low.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 </pre></div>

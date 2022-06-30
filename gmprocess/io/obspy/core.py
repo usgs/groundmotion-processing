@@ -108,9 +108,9 @@ def is_obspy(filename, config=None):
         bool: True if obspy supported, otherwise False.
     """
     logging.debug("Checking if format is supported by obspy.")
-    metadir = config["read"]["metadata_directory"]
     if config is None:
         config = get_config()
+    metadir = config["read"]["metadata_directory"]
     if not os.path.isfile(filename):
         return False
     try:

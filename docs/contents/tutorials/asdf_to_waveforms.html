@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Plotting Seismograms on the Station Map" href="station_map.html" /><link rel="prev" title="Linear Mixed Effects Regressions" href="lme.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Processed Waveforms from ASDF File - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>Processed Waveforms from ASDF File - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -503,8 +504,8 @@ should be a useful reference.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to example data</span>
 <span class="n">rel_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-  <span class="s1">'data'</span><span class="p">,</span> <span class="s1">'testdata'</span><span class="p">,</span> <span class="s1">'asdf'</span><span class="p">,</span> <span class="s1">'nc72282711'</span><span class="p">,</span> <span class="s1">'workspace.h5'</span><span class="p">)</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">'gmprocess'</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
+  <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;testdata&#39;</span><span class="p">,</span> <span class="s1">&#39;asdf&#39;</span><span class="p">,</span> <span class="s1">&#39;nc72282711&#39;</span><span class="p">,</span> <span class="s1">&#39;workspace.h5&#39;</span><span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;gmprocess&#39;</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
 <span class="n">workspace</span> <span class="o">=</span> <span class="n">StreamWorkspace</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -522,7 +523,7 @@ processed waveforms.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>['unprocessed', 'default']
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;default&#39;, &#39;unprocessed&#39;]
 </pre></div>
 </div>
 </div>
@@ -537,7 +538,7 @@ follows a convention of having one event per ASDF file.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>['nc72282711']
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;nc72282711&#39;]
 </pre></div>
 </div>
 </div>
@@ -553,7 +554,7 @@ the <code class="docutils literal notranslate"><span class="pre">dataset</span><
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>['NP.1737', 'NP.1743', 'NP.1759', 'NP.1760', 'NP.1764', 'NP.1765', 'NP.1768']
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;NP.1737&#39;, &#39;NP.1743&#39;, &#39;NP.1759&#39;, &#39;NP.1760&#39;, &#39;NP.1764&#39;, &#39;NP.1765&#39;, &#39;NP.1768&#39;]
 </pre></div>
 </div>
 </div>
@@ -563,7 +564,7 @@ knowledge of the stations, event ID, and labels. Note that ASDF uses a tag
 that combines the event ID and label.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">st</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">waveforms</span><span class="p">[</span><span class="s1">'NP.1737'</span><span class="p">][</span><span class="s1">'nc72282711_default'</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">st</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">waveforms</span><span class="p">[</span><span class="s1">&#39;NP.1737&#39;</span><span class="p">][</span><span class="s1">&#39;nc72282711_default&#39;</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
 <span class="n">st</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
@@ -576,7 +577,7 @@ NP.1737..HNN | 2014-08-24T10:20:47.795000Z - 2014-08-24T10:21:51.990000Z | 200.0
 NP.1737..HNZ | 2014-08-24T10:20:47.795000Z - 2014-08-24T10:21:51.990000Z | 200.0 Hz, 12840 samples
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/asdf_to_waveforms_11_1.png"><img alt="../../_images/asdf_to_waveforms_11_1.png" src="../../_images/asdf_to_waveforms_11_1.png" style="height: 350px;"/></a>
+<a class="reference internal image-reference" href="../../_images/asdf_to_waveforms_11_1.png"><img alt="../../_images/asdf_to_waveforms_11_1.png" src="../../_images/asdf_to_waveforms_11_1.png" style="height: 350px;" /></a>
 </div>
 </div>
 <p>If you want a StreamCollection object (see <a class="reference internal" href="../manual/data_structures.html"><span class="doc std std-doc">here</span></a>
@@ -585,7 +586,7 @@ file</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">getStreams</span><span class="p">(</span>
-  <span class="s1">'nc72282711'</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[</span><span class="s1">'NP.1737'</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">'default'</span><span class="p">])</span>
+  <span class="s1">&#39;nc72282711&#39;</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;NP.1737&#39;</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">])</span>
 <span class="n">sc</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -641,7 +642,7 @@ data.</p>
 <p>You can also get the entire provenance document for all stations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prov</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s1">'nc72282711'</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">'default'</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prov</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s1">&#39;nc72282711&#39;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">])</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">prov</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -674,9 +675,6 @@ data.</p>
 439  baseline_sixth_order  
 
 [440 rows x 4 columns]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>

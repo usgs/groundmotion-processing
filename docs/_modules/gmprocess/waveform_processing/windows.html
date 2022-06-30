@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.windows - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.windows - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -483,9 +484,9 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Helper functions for windowing singal and noise in a trace.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -512,7 +513,7 @@
 
 
 <div class="viewcode-block" id="cut"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/windows/index.html#gmprocess.waveform_processing.windows.cut">[docs]</a><span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">sec_before_split</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cut/trim the record.</span>
 
 <span class="sd">    This method minimally requires that the windows.signal_end method has been</span>
@@ -537,36 +538,36 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        stream: cut streams.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Before cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2"> "</span><span class="p">)</span>
-        <span class="n">etime</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">)[</span><span class="s2">"end_time"</span><span class="p">]</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+        <span class="n">etime</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">)[</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">endtime</span><span class="o">=</span><span class="n">etime</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2"> "</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">sec_before_split</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">split_time</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">)[</span><span class="s2">"split_time"</span><span class="p">]</span>
+            <span class="n">split_time</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
             <span class="n">stime</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">-</span> <span class="n">sec_before_split</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Before cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2"> "</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">stime</span> <span class="o">&lt;</span> <span class="n">etime</span><span class="p">:</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">starttime</span><span class="o">=</span><span class="n">stime</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                    <span class="s2">"The 'cut' processing step resulting in "</span>
-                    <span class="s2">"incompatible start and end times."</span>
+                    <span class="s2">&quot;The &#39;cut&#39; processing step resulting in &quot;</span>
+                    <span class="s2">&quot;incompatible start and end times.&quot;</span>
                 <span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2"> "</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
-            <span class="s2">"cut"</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">"new_start_time"</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span> <span class="s2">"new_end_time"</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="p">},</span>
+            <span class="s2">&quot;cut&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;new_start_time&quot;</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span> <span class="s2">&quot;new_end_time&quot;</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="p">},</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="window_checks"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/windows/index.html#gmprocess.waveform_processing.windows.window_checks">[docs]</a><span class="k">def</span> <span class="nf">window_checks</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">min_noise_duration</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">min_signal_duration</span><span class="o">=</span><span class="mf">5.0</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if the split/end windowing have long enough durations.</span>
 
 <span class="sd">    Args:</span>
@@ -579,37 +580,37 @@
 <span class="sd">            Minimum duration of signal window (sec).</span>
 
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Cannot check window because no split time available."</span><span class="p">)</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Cannot check window because no split time available.&quot;</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="c1"># Split the noise and signal into two separate traces</span>
-        <span class="n">split_prov</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">)</span>
+        <span class="n">split_prov</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_prov</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">split_prov</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">"split_time"</span><span class="p">]</span>
+        <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
         <span class="n">noise_duration</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
         <span class="n">signal_duration</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">split_time</span>
         <span class="k">if</span> <span class="n">noise_duration</span> <span class="o">&lt;</span> <span class="n">min_noise_duration</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Failed noise window duration check."</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed noise window duration check.&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">signal_duration</span> <span class="o">&lt;</span> <span class="n">min_signal_duration</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"Failed signal window duration check."</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed signal window duration check.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
 
 <div class="viewcode-block" id="signal_split"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/windows/index.html#gmprocess.waveform_processing.windows.signal_split">[docs]</a><span class="k">def</span> <span class="nf">signal_split</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This method tries to identifies the boundary between the noise and signal</span>
 <span class="sd">    for the waveform. The split time is placed inside the</span>
-<span class="sd">    'processing_parameters' key of the trace stats.</span>
+<span class="sd">    &#39;processing_parameters&#39; key of the trace stats.</span>
 
 <span class="sd">    The P-wave arrival is used as the split between the noise and signal</span>
 <span class="sd">    windows. Multiple picker methods are suppored and can be configured in the</span>
 <span class="sd">    config file</span>
-<span class="sd">    '~/.gmprocess/picker.yml</span>
+<span class="sd">    &#39;~/.gmprocess/picker.yml</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        st (StationStream):</span>
@@ -625,57 +626,57 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        trace with stats dict updated to include a</span>
-<span class="sd">        stats['processing_parameters']['signal_split'] dictionary.</span>
-<span class="sd">    """</span>
+<span class="sd">        stats[&#39;processing_parameters&#39;][&#39;signal_split&#39;] dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">picker_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">"pickers"</span><span class="p">)</span>
+        <span class="n">picker_config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">section</span><span class="o">=</span><span class="s2">&quot;pickers&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
     <span class="n">loc</span><span class="p">,</span> <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">pick_travel</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">loc</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">tsplit</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">+</span> <span class="n">loc</span>
-        <span class="n">preferred_picker</span> <span class="o">=</span> <span class="s2">"travel_time"</span>
+        <span class="n">preferred_picker</span> <span class="o">=</span> <span class="s2">&quot;travel_time&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">pick_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"ar"</span><span class="p">,</span> <span class="s2">"baer"</span><span class="p">,</span> <span class="s2">"power"</span><span class="p">,</span> <span class="s2">"kalkan"</span><span class="p">]</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Stream"</span><span class="p">,</span> <span class="s2">"Method"</span><span class="p">,</span> <span class="s2">"Pick_Time"</span><span class="p">,</span> <span class="s2">"Mean_SNR"</span><span class="p">]</span>
+        <span class="n">pick_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ar&quot;</span><span class="p">,</span> <span class="s2">&quot;baer&quot;</span><span class="p">,</span> <span class="s2">&quot;power&quot;</span><span class="p">,</span> <span class="s2">&quot;kalkan&quot;</span><span class="p">]</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Stream&quot;</span><span class="p">,</span> <span class="s2">&quot;Method&quot;</span><span class="p">,</span> <span class="s2">&quot;Pick_Time&quot;</span><span class="p">,</span> <span class="s2">&quot;Mean_SNR&quot;</span><span class="p">]</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">pick_method</span> <span class="ow">in</span> <span class="n">pick_methods</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">"ar"</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">&quot;ar&quot;</span><span class="p">:</span>
                     <span class="n">loc</span><span class="p">,</span> <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">pick_ar</span><span class="p">(</span>
                         <span class="n">st</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="n">picker_config</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
                     <span class="p">)</span>
-                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">"baer"</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">&quot;baer&quot;</span><span class="p">:</span>
                     <span class="n">loc</span><span class="p">,</span> <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">pick_baer</span><span class="p">(</span>
                         <span class="n">st</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="n">picker_config</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
                     <span class="p">)</span>
-                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">"power"</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">&quot;power&quot;</span><span class="p">:</span>
                     <span class="n">loc</span><span class="p">,</span> <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">pick_power</span><span class="p">(</span>
                         <span class="n">st</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="n">picker_config</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
                     <span class="p">)</span>
-                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">"kalkan"</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">&quot;kalkan&quot;</span><span class="p">:</span>
                     <span class="n">loc</span><span class="p">,</span> <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">pick_kalkan</span><span class="p">(</span>
                         <span class="n">st</span><span class="p">,</span> <span class="n">picker_config</span><span class="o">=</span><span class="n">picker_config</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
                     <span class="p">)</span>
-                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">"yeck"</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">pick_method</span> <span class="o">==</span> <span class="s2">&quot;yeck&quot;</span><span class="p">:</span>
                     <span class="n">loc</span><span class="p">,</span> <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">pick_kalkan</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
                 <span class="n">loc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
                 <span class="n">mean_snr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">row</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">"Stream"</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
-                <span class="s2">"Method"</span><span class="p">:</span> <span class="n">pick_method</span><span class="p">,</span>
-                <span class="s2">"Pick_Time"</span><span class="p">:</span> <span class="n">loc</span><span class="p">,</span>
-                <span class="s2">"Mean_SNR"</span><span class="p">:</span> <span class="n">mean_snr</span><span class="p">,</span>
+                <span class="s2">&quot;Stream&quot;</span><span class="p">:</span> <span class="n">st</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
+                <span class="s2">&quot;Method&quot;</span><span class="p">:</span> <span class="n">pick_method</span><span class="p">,</span>
+                <span class="s2">&quot;Pick_Time&quot;</span><span class="p">:</span> <span class="n">loc</span><span class="p">,</span>
+                <span class="s2">&quot;Mean_SNR&quot;</span><span class="p">:</span> <span class="n">mean_snr</span><span class="p">,</span>
             <span class="p">}</span>
             <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">max_snr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">"Mean_SNR"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="n">max_snr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Mean_SNR&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">max_snr</span><span class="p">):</span>
-            <span class="n">maxrow</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">"Mean_SNR"</span><span class="p">]</span> <span class="o">==</span> <span class="n">max_snr</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">tsplit</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">+</span> <span class="n">maxrow</span><span class="p">[</span><span class="s2">"Pick_Time"</span><span class="p">]</span>
-            <span class="n">preferred_picker</span> <span class="o">=</span> <span class="n">maxrow</span><span class="p">[</span><span class="s2">"Method"</span><span class="p">]</span>
+            <span class="n">maxrow</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Mean_SNR&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">max_snr</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">tsplit</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span> <span class="o">+</span> <span class="n">maxrow</span><span class="p">[</span><span class="s2">&quot;Pick_Time&quot;</span><span class="p">]</span>
+            <span class="n">preferred_picker</span> <span class="o">=</span> <span class="n">maxrow</span><span class="p">[</span><span class="s2">&quot;Method&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tsplit</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
@@ -683,20 +684,20 @@
     <span class="c1"># this is used to shift the P arrival time (i.e., the break between the</span>
     <span class="c1"># noise and signal windows).</span>
     <span class="n">shift</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">if</span> <span class="s2">"p_arrival_shift"</span> <span class="ow">in</span> <span class="n">picker_config</span><span class="p">:</span>
-        <span class="n">shift</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">"p_arrival_shift"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;p_arrival_shift&quot;</span> <span class="ow">in</span> <span class="n">picker_config</span><span class="p">:</span>
+        <span class="n">shift</span> <span class="o">=</span> <span class="n">picker_config</span><span class="p">[</span><span class="s2">&quot;p_arrival_shift&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">tsplit</span> <span class="o">+</span> <span class="n">shift</span> <span class="o">&gt;=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">:</span>
             <span class="n">tsplit</span> <span class="o">+=</span> <span class="n">shift</span>
 
     <span class="k">if</span> <span class="n">tsplit</span> <span class="o">&gt;=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">:</span>
         <span class="c1"># Update trace params</span>
         <span class="n">split_params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"split_time"</span><span class="p">:</span> <span class="n">tsplit</span><span class="p">,</span>
-            <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"p_arrival"</span><span class="p">,</span>
-            <span class="s2">"picker_type"</span><span class="p">:</span> <span class="n">preferred_picker</span><span class="p">,</span>
+            <span class="s2">&quot;split_time&quot;</span><span class="p">:</span> <span class="n">tsplit</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;p_arrival&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;picker_type&quot;</span><span class="p">:</span> <span class="n">preferred_picker</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">,</span> <span class="n">split_params</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">,</span> <span class="n">split_params</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -713,9 +714,9 @@
     <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">epsilon</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Estimate end of signal by using a model of the 5-95% significant</span>
-<span class="sd">    duration, and adding this value to the "signal_split" time. This probably</span>
+<span class="sd">    duration, and adding this value to the &quot;signal_split&quot; time. This probably</span>
 <span class="sd">    only works well when the split is estimated with a p-wave picker since</span>
 <span class="sd">    the velocity method often ends up with split times that are well before</span>
 <span class="sd">    signal actually starts.</span>
@@ -732,11 +733,11 @@
 <span class="sd">        event_lat (float):</span>
 <span class="sd">            Event latitude.</span>
 <span class="sd">        method (str):</span>
-<span class="sd">            Method for estimating signal end time. Either 'velocity'</span>
-<span class="sd">            or 'model'.</span>
+<span class="sd">            Method for estimating signal end time. Either &#39;velocity&#39;</span>
+<span class="sd">            or &#39;model&#39;.</span>
 <span class="sd">        vmin (float):</span>
 <span class="sd">            Velocity (km/s) for estimating end of signal. Only used if</span>
-<span class="sd">            method="velocity".</span>
+<span class="sd">            method=&quot;velocity&quot;.</span>
 <span class="sd">        floor (float):</span>
 <span class="sd">            Minimum duration (sec) applied along with vmin.</span>
 <span class="sd">        model (str):</span>
@@ -745,54 +746,54 @@
 <span class="sd">        epsilon (float):</span>
 <span class="sd">            Number of standard deviations; if epsilon is 1.0, then the signal</span>
 <span class="sd">            window duration is the mean Ds + 1 standard deviation. Only used</span>
-<span class="sd">            for method="model".</span>
+<span class="sd">            for method=&quot;model&quot;.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        trace with stats dict updated to include a</span>
-<span class="sd">        stats['processing_parameters']['signal_end'] dictionary.</span>
+<span class="sd">        stats[&#39;processing_parameters&#39;][&#39;signal_end&#39;] dictionary.</span>
 
-<span class="sd">    """</span>
-    <span class="c1"># Load openquake stuff if method="model"</span>
-    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"model"</span><span class="p">:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Load openquake stuff if method=&quot;model&quot;</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
         <span class="n">dmodel</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
-        <span class="c1"># Set some "conservative" inputs (in that they will tend to give</span>
+        <span class="c1"># Set some &quot;conservative&quot; inputs (in that they will tend to give</span>
         <span class="c1"># larger durations).</span>
         <span class="n">rctx</span> <span class="o">=</span> <span class="n">RuptureContext</span><span class="p">()</span>
         <span class="n">rctx</span><span class="o">.</span><span class="n">mag</span> <span class="o">=</span> <span class="n">event_mag</span>
         <span class="n">rctx</span><span class="o">.</span><span class="n">rake</span> <span class="o">=</span> <span class="o">-</span><span class="mf">90.0</span>
         <span class="n">rctx</span><span class="o">.</span><span class="n">vs30</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">180.0</span><span class="p">])</span>
         <span class="n">rctx</span><span class="o">.</span><span class="n">z1pt0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.51</span><span class="p">])</span>
-        <span class="n">dur_imt</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">"RSD595"</span><span class="p">)</span>
+        <span class="n">dur_imt</span> <span class="o">=</span> <span class="n">imt</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="s2">&quot;RSD595&quot;</span><span class="p">)</span>
         <span class="n">stddev_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">const</span><span class="o">.</span><span class="n">StdDev</span><span class="o">.</span><span class="n">TOTAL</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">):</span>
             <span class="k">continue</span>
-        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"velocity"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;velocity&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">vmin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Must specify vmin if method is "velocity".'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify vmin if method is &quot;velocity&quot;.&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">floor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Must specify floor if method is "velocity".'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify floor if method is &quot;velocity&quot;.&#39;</span><span class="p">)</span>
             <span class="n">epi_dist</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">gps2dist_azimuth</span><span class="p">(</span>
                     <span class="n">lat1</span><span class="o">=</span><span class="n">event_lat</span><span class="p">,</span>
                     <span class="n">lon1</span><span class="o">=</span><span class="n">event_lon</span><span class="p">,</span>
-                    <span class="n">lat2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"latitude"</span><span class="p">],</span>
-                    <span class="n">lon2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"longitude"</span><span class="p">],</span>
+                    <span class="n">lat2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span>
+                    <span class="n">lon2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
                 <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="o">/</span> <span class="mf">1000.0</span>
             <span class="p">)</span>
             <span class="n">end_time</span> <span class="o">=</span> <span class="n">event_time</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="n">floor</span><span class="p">,</span> <span class="n">epi_dist</span> <span class="o">/</span> <span class="n">vmin</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"model"</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Must specify model if method is "model".'</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify model if method is &quot;model&quot;.&#39;</span><span class="p">)</span>
             <span class="n">epi_dist</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">gps2dist_azimuth</span><span class="p">(</span>
                     <span class="n">lat1</span><span class="o">=</span><span class="n">event_lat</span><span class="p">,</span>
                     <span class="n">lon1</span><span class="o">=</span><span class="n">event_lon</span><span class="p">,</span>
-                    <span class="n">lat2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"latitude"</span><span class="p">],</span>
-                    <span class="n">lon2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">][</span><span class="s2">"longitude"</span><span class="p">],</span>
+                    <span class="n">lat2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="s2">&quot;latitude&quot;</span><span class="p">],</span>
+                    <span class="n">lon2</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="s2">&quot;longitude&quot;</span><span class="p">],</span>
                 <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="o">/</span> <span class="mf">1000.0</span>
             <span class="p">)</span>
@@ -805,20 +806,20 @@
             <span class="p">)</span>
             <span class="n">duration</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">lnmu</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">lnstd</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="c1"># Get split time</span>
-            <span class="n">split_time</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">)[</span><span class="s2">"split_time"</span><span class="p">]</span>
+            <span class="n">split_time</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
             <span class="n">end_time</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'method must be either "velocity" or "model".'</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;method must be either &quot;velocity&quot; or &quot;model&quot;.&#39;</span><span class="p">)</span>
         <span class="c1"># Update trace params</span>
         <span class="n">end_params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"end_time"</span><span class="p">:</span> <span class="n">end_time</span><span class="p">,</span>
-            <span class="s2">"method"</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
-            <span class="s2">"vsplit"</span><span class="p">:</span> <span class="n">vmin</span><span class="p">,</span>
-            <span class="s2">"floor"</span><span class="p">:</span> <span class="n">floor</span><span class="p">,</span>
-            <span class="s2">"model"</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
-            <span class="s2">"epsilon"</span><span class="p">:</span> <span class="n">epsilon</span><span class="p">,</span>
+            <span class="s2">&quot;end_time&quot;</span><span class="p">:</span> <span class="n">end_time</span><span class="p">,</span>
+            <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+            <span class="s2">&quot;vsplit&quot;</span><span class="p">:</span> <span class="n">vmin</span><span class="p">,</span>
+            <span class="s2">&quot;floor&quot;</span><span class="p">:</span> <span class="n">floor</span><span class="p">,</span>
+            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model</span><span class="p">,</span>
+            <span class="s2">&quot;epsilon&quot;</span><span class="p">:</span> <span class="n">epsilon</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">,</span> <span class="n">end_params</span><span class="p">)</span>
+        <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">,</span> <span class="n">end_params</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -834,7 +835,7 @@
     <span class="n">site_parameters</span><span class="p">,</span>
     <span class="n">rupture_parameters</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Uses a catalog (list of ScalarEvents) to handle cases where a trace might</span>
 <span class="sd">    contain signals from multiple events. The catalog should contain events</span>
 <span class="sd">    down to a low enough magnitude in relation to the events of interest.</span>
@@ -889,19 +890,19 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream: Processed stream.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="c1"># Check that we know the signal split for each trace in the stream</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">st</span>
 
-    <span class="n">signal_window_starttime</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_split"</span><span class="p">)[</span><span class="s2">"split_time"</span><span class="p">]</span>
+    <span class="n">signal_window_starttime</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
 
-    <span class="n">arrivals</span> <span class="o">=</span> <span class="n">travel_time_df</span><span class="p">[</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">]</span>
+    <span class="n">arrivals</span> <span class="o">=</span> <span class="n">travel_time_df</span><span class="p">[</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">]</span>
     <span class="n">arrivals</span> <span class="o">=</span> <span class="n">arrivals</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
 
     <span class="c1"># Filter by any arrival times that appear in the signal window</span>
@@ -917,8 +918,8 @@
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="c1"># Calculate the recorded PGA for this record</span>
-    <span class="n">stasum</span> <span class="o">=</span> <span class="n">StationSummary</span><span class="o">.</span><span class="n">from_stream</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="p">[</span><span class="s2">"ROTD(50.0)"</span><span class="p">],</span> <span class="p">[</span><span class="s2">"PGA"</span><span class="p">])</span>
-    <span class="n">recorded_pga</span> <span class="o">=</span> <span class="n">stasum</span><span class="o">.</span><span class="n">get_pgm</span><span class="p">(</span><span class="s2">"PGA"</span><span class="p">,</span> <span class="s2">"ROTD(50.0)"</span><span class="p">)</span>
+    <span class="n">stasum</span> <span class="o">=</span> <span class="n">StationSummary</span><span class="o">.</span><span class="n">from_stream</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;ROTD(50.0)&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;PGA&quot;</span><span class="p">])</span>
+    <span class="n">recorded_pga</span> <span class="o">=</span> <span class="n">stasum</span><span class="o">.</span><span class="n">get_pgm</span><span class="p">(</span><span class="s2">&quot;PGA&quot;</span><span class="p">,</span> <span class="s2">&quot;ROTD(50.0)&quot;</span><span class="p">)</span>
 
     <span class="c1"># Load the GMPE model</span>
     <span class="n">gmpe</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="n">gmpe</span><span class="p">)</span>
@@ -977,17 +978,17 @@
     <span class="k">if</span> <span class="p">(</span><span class="n">significant_arrivals</span> <span class="o">&lt;</span> <span class="n">cutoff_time</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                <span class="s2">"A significant arrival from another event occurs within "</span>
-                <span class="s2">"the first </span><span class="si">%s</span><span class="s2"> percent of the signal window"</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">pct_window_reject</span><span class="p">)</span>
+                <span class="s2">&quot;A significant arrival from another event occurs within &quot;</span>
+                <span class="s2">&quot;the first </span><span class="si">%s</span><span class="s2"> percent of the signal window&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">pct_window_reject</span><span class="p">)</span>
             <span class="p">)</span>
 
     <span class="c1"># Otherwise, trim the stream at the first significant arrival</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-            <span class="n">signal_end</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">)</span>
-            <span class="n">signal_end</span><span class="p">[</span><span class="s2">"end_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">significant_arrivals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">signal_end</span><span class="p">[</span><span class="s2">"method"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Trimming before right another event"</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">"signal_end"</span><span class="p">,</span> <span class="n">signal_end</span><span class="p">)</span>
+            <span class="n">signal_end</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">)</span>
+            <span class="n">signal_end</span><span class="p">[</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">significant_arrivals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">signal_end</span><span class="p">[</span><span class="s2">&quot;method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Trimming before right another event&quot;</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">,</span> <span class="n">signal_end</span><span class="p">)</span>
         <span class="n">cut</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>

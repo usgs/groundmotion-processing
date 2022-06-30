@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands.process_waveforms" href="../process_waveforms/index.html" /><link rel="prev" title="gmprocess.subcommands.init" href="../init/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.subcommands.lazy_loader - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.subcommands.lazy_loader - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -488,17 +489,19 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.lazy_loader.LazyLoader" title="gmprocess.subcommands.lazy_loader.LazyLoader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LazyLoader</span></code></a></p></td>
 <td><p>Lazily import a module, mainly to avoid pulling in large dependencies.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.subcommands.lazy_loader.LazyLoader">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.lazy_loader.</span></span><span class="sig-name descname"><span class="pre">LazyLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent_module_globals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/lazy_loader.html#LazyLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.lazy_loader.LazyLoader" title="Permalink to this definition">#</a></dt>
@@ -510,16 +513,20 @@ needed, and this allows them to only be loaded when they are used.</p>
 <dt class="sig sig-object py" id="gmprocess.subcommands.lazy_loader.LazyLoader._load">
 <span class="sig-name descname"><span class="pre">_load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/lazy_loader.html#LazyLoader._load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.lazy_loader.LazyLoader._load" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.subcommands.lazy_loader.LazyLoader.__getattr__">
 <span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/lazy_loader.html#LazyLoader.__getattr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.lazy_loader.LazyLoader.__getattr__" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.subcommands.lazy_loader.LazyLoader.__dir__">
 <span class="sig-name descname"><span class="pre">__dir__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/lazy_loader.html#LazyLoader.__dir__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.lazy_loader.LazyLoader.__dir__" title="Permalink to this definition">#</a></dt>
 <dd><p>Default dir() implementation.</p>
 </dd></dl>
+
 </dd></dl>
+
 </section>
 </section>
 </section>

@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.cosmos" href="../../cosmos/index.html" /><link rel="prev" title="gmprocess.io.bhrc" href="../index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.bhrc.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.bhrc.core - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,33 +487,36 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core.is_bhrc" title="gmprocess.io.bhrc.core.is_bhrc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_bhrc</span></code></a>(filename, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core.is_bhrc" title="gmprocess.io.bhrc.core.is_bhrc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_bhrc</span></code></a>(filename, config=None)</p></td>
 <td><p>Check to see if file is Iran's BHRC format.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core.read_bhrc" title="gmprocess.io.bhrc.core.read_bhrc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_bhrc</span></code></a>(filename, config=None, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core.read_bhrc" title="gmprocess.io.bhrc.core.read_bhrc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_bhrc</span></code></a>(filename, config=None, **kwargs)</p></td>
 <td><p>Read the Iran BHRC strong motion data format.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core._read_header_lines" title="gmprocess.io.bhrc.core._read_header_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_header_lines</span></code></a>(filename, offset)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core._read_header_lines" title="gmprocess.io.bhrc.core._read_header_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_header_lines</span></code></a>(filename, offset)</p></td>
 <td><p>Read the header lines for each channel.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core._read_data" title="gmprocess.io.bhrc.core._read_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_data</span></code></a>(filename, offset, header)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core._read_data" title="gmprocess.io.bhrc.core._read_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_read_data</span></code></a>(filename, offset, header)</p></td>
 <td><p>Read acceleration data from BHRC file.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.bhrc.core.INTIMEFMT" title="gmprocess.io.bhrc.core.INTIMEFMT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INTIMEFMT</span></code></a></p></td>
@@ -552,55 +556,68 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.INTIMEFMT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">INTIMEFMT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">%Y/%m/%d</span> <span class="pre">%H:%M:%S</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.INTIMEFMT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.FLOATRE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">FLOATRE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[-+]?[0-9]*\.?[0-9]+</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.FLOATRE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.INTRE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">INTRE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[-+]?[0-9]*</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.INTRE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.TEXT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">TEXT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">13</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.TEXT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.INT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">INT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">7</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.INT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.FLOAT_HDR_ROWS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">FLOAT_HDR_ROWS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">7</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.FLOAT_HDR_ROWS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.COLS_PER_ROW">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">COLS_PER_ROW</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">10</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.COLS_PER_ROW" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.COLWIDTH">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">COLWIDTH</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">13</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.COLWIDTH" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.SOURCE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">SOURCE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">Road,</span> <span class="pre">Housing</span> <span class="pre">&amp;</span> <span class="pre">Urban</span> <span class="pre">Development</span> <span class="pre">Research</span> <span class="pre">Center</span> <span class="pre">(BHRC)</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.SOURCE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.SOURCE_FORMAT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">SOURCE_FORMAT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">BHRC</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.SOURCE_FORMAT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.NETWORK">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">NETWORK</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">I1</span></em><a class="headerlink" href="#gmprocess.io.bhrc.core.NETWORK" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.LEVELS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">LEVELS</span></span><a class="headerlink" href="#gmprocess.io.bhrc.core.LEVELS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.is_bhrc">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">is_bhrc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/bhrc/core.html#is_bhrc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.bhrc.core.is_bhrc" title="Permalink to this definition">#</a></dt>
@@ -620,6 +637,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core.read_bhrc">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">read_bhrc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/bhrc/core.html#read_bhrc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.bhrc.core.read_bhrc" title="Permalink to this definition">#</a></dt>
@@ -641,6 +659,7 @@ StationTrace objects.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core._read_header_lines">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">_read_header_lines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/bhrc/core.html#_read_header_lines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.bhrc.core._read_header_lines" title="Permalink to this definition">#</a></dt>
@@ -661,6 +680,7 @@ extra sub-dicts, updated offset rows)</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.bhrc.core._read_data">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.bhrc.core.</span></span><span class="sig-name descname"><span class="pre">_read_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/bhrc/core.html#_read_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.bhrc.core._read_data" title="Permalink to this definition">#</a></dt>
@@ -681,6 +701,7 @@ extra sub-dicts, updated offset rows)</p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

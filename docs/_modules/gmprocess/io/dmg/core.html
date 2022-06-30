@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.dmg.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.dmg.core - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -514,57 +515,57 @@
 <span class="n">V2_REAL_HDR_ROWS</span> <span class="o">=</span> <span class="mi">13</span>
 <span class="n">V2_REAL_FMT</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">*</span> <span class="mi">8</span>
 
-<span class="n">V1_MARKER</span> <span class="o">=</span> <span class="s2">"UNCORRECTED ACCELEROGRAM DATA"</span>
-<span class="n">V2_MARKER</span> <span class="o">=</span> <span class="s2">"CORRECTED ACCELEROGRAM"</span>
-<span class="n">V3_MARKER</span> <span class="o">=</span> <span class="s2">"RESPONSE AND FOURIER AMPLITUDE SPECTRA"</span>
+<span class="n">V1_MARKER</span> <span class="o">=</span> <span class="s2">&quot;UNCORRECTED ACCELEROGRAM DATA&quot;</span>
+<span class="n">V2_MARKER</span> <span class="o">=</span> <span class="s2">&quot;CORRECTED ACCELEROGRAM&quot;</span>
+<span class="n">V3_MARKER</span> <span class="o">=</span> <span class="s2">&quot;RESPONSE AND FOURIER AMPLITUDE SPECTRA&quot;</span>
 
 <span class="n">DATE_PATTERNS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
-    <span class="s2">"[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{1}</span><span class="s2">/[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{1}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">TIME_MATCH</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">:..\.[0-9]</span><span class="si">{1}</span><span class="s2">"</span>
+<span class="n">TIME_MATCH</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[0-9]</span><span class="si">{2}</span><span class="s2">:[0-9]</span><span class="si">{2}</span><span class="s2">:..\.[0-9]</span><span class="si">{1}</span><span class="s2">&quot;</span>
 
-<span class="n">code_file</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"data/fdsn_codes.csv"</span><span class="p">)</span>
+<span class="n">code_file</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data/fdsn_codes.csv&quot;</span><span class="p">)</span>
 
 
 <span class="n">CODES</span><span class="p">,</span> <span class="n">SOURCES1</span><span class="p">,</span> <span class="n">SOURCES2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
     <span class="n">code_file</span><span class="p">,</span>
     <span class="n">skip_header</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-    <span class="n">encoding</span><span class="o">=</span><span class="s2">"latin-1"</span><span class="p">,</span>
+    <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;latin-1&quot;</span><span class="p">,</span>
     <span class="n">unpack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">dtype</span><span class="o">=</span><span class="nb">bytes</span><span class="p">,</span>
-    <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span>
+    <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">CODES</span> <span class="o">=</span> <span class="n">CODES</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
-<span class="n">UNITS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"acc"</span><span class="p">,</span> <span class="s2">"vel"</span><span class="p">,</span> <span class="s2">"disp"</span><span class="p">]</span>
+<span class="n">UNITS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;acc&quot;</span><span class="p">,</span> <span class="s2">&quot;vel&quot;</span><span class="p">,</span> <span class="s2">&quot;disp&quot;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="_get_date"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_date">[docs]</a><span class="k">def</span> <span class="nf">_get_date</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-    <span class="sd">"""Parse a datetime object with month/day/year info found from string."""</span>
+    <span class="sd">&quot;&quot;&quot;Parse a datetime object with month/day/year info found from string.&quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">DATE_PATTERNS</span><span class="p">:</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="s2">"%m/</span><span class="si">%d</span><span class="s2">/%y"</span><span class="p">)</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%y&quot;</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">date</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="_get_time"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_time">[docs]</a><span class="k">def</span> <span class="nf">_get_time</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-    <span class="sd">"""Parse a timdelta object with hour, minute, fractional second info found</span>
+    <span class="sd">&quot;&quot;&quot;Parse a timdelta object with hour, minute, fractional second info found</span>
 <span class="sd">    from string.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">TIME_MATCH</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
         <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
@@ -576,7 +577,7 @@
 
 
 <div class="viewcode-block" id="is_dmg"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core.is_dmg">[docs]</a><span class="k">def</span> <span class="nf">is_dmg</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Check to see if file is a DMG strong motion file.</span>
+    <span class="sd">&quot;&quot;&quot;Check to see if file is a DMG strong motion file.</span>
 
 <span class="sd">    Notes:</span>
 <span class="sd">        CSMIP is synonymous to as DMG in this reader.</span>
@@ -589,12 +590,12 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if DMG , False otherwise.</span>
-<span class="sd">    """</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Checking if format is dmg."</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Checking if format is dmg.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">is_binary</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
         <span class="n">first_line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="n">second_line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="n">third_line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
@@ -616,7 +617,7 @@
 
 
 <div class="viewcode-block" id="read_dmg"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core.read_dmg">[docs]</a><span class="k">def</span> <span class="nf">read_dmg</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">"""Read DMG strong motion file.</span>
+    <span class="sd">&quot;&quot;&quot;Read DMG strong motion file.</span>
 
 <span class="sd">    Notes:</span>
 <span class="sd">        CSMIP is synonymous to as DMG in this reader.</span>
@@ -628,69 +629,69 @@
 <span class="sd">            Dictionary containing configuration.</span>
 <span class="sd">        kwargs (ref):</span>
 <span class="sd">            units (str): String determining which timeseries is return. Valid</span>
-<span class="sd">                    options include 'acc', 'vel', 'disp'. Default is 'acc'.</span>
+<span class="sd">                    options include &#39;acc&#39;, &#39;vel&#39;, &#39;disp&#39;. Default is &#39;acc&#39;.</span>
 <span class="sd">            Other arguments will be ignored.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Stream: Obspy Stream containing three channels of acceleration data</span>
 <span class="sd">        (cm/s**2).</span>
-<span class="sd">    """</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Starting read_dmg."</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Starting read_dmg.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_dmg</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> is not a valid DMG strong motion data file."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> is not a valid DMG strong motion data file.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Check for units and location</span>
-    <span class="n">units</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"units"</span><span class="p">,</span> <span class="s2">"acc"</span><span class="p">)</span>
-    <span class="n">location</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"location"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="s2">&quot;acc&quot;</span><span class="p">)</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">units</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">UNITS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"DMG: Not a valid choice of units."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;DMG: Not a valid choice of units.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Check for DMG format and determine volume type</span>
-    <span class="n">line</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">is_dmg</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"uncorrected"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">reader</span> <span class="o">=</span> <span class="s2">"V1"</span>
-        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"corrected"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">reader</span> <span class="o">=</span> <span class="s2">"V2"</span>
-        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"response"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">reader</span> <span class="o">=</span> <span class="s2">"V3"</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;uncorrected&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="s2">&quot;V1&quot;</span>
+        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;corrected&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="s2">&quot;V2&quot;</span>
+        <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;response&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="s2">&quot;V3&quot;</span>
 
     <span class="c1"># Count the number of lines in the file</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">line_count</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">f</span><span class="p">)</span>
 
     <span class="c1"># Read as many channels as are present in the file</span>
     <span class="n">line_offset</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">trace_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">while</span> <span class="n">line_offset</span> <span class="o">&lt;</span> <span class="n">line_count</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">reader</span> <span class="o">==</span> <span class="s2">"V2"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reader</span> <span class="o">==</span> <span class="s2">&quot;V2&quot;</span><span class="p">:</span>
             <span class="n">traces</span><span class="p">,</span> <span class="n">line_offset</span> <span class="o">=</span> <span class="n">_read_volume_two</span><span class="p">(</span>
                 <span class="n">filename</span><span class="p">,</span> <span class="n">line_offset</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">traces</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">trace_list</span> <span class="o">+=</span> <span class="n">traces</span>
-        <span class="k">elif</span> <span class="n">reader</span> <span class="o">==</span> <span class="s2">"V1"</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">reader</span> <span class="o">==</span> <span class="s2">&quot;V1&quot;</span><span class="p">:</span>
             <span class="n">traces</span><span class="p">,</span> <span class="n">line_offset</span> <span class="o">=</span> <span class="n">_read_volume_one</span><span class="p">(</span>
                 <span class="n">filename</span><span class="p">,</span> <span class="n">line_offset</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">traces</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">trace_list</span> <span class="o">+=</span> <span class="n">traces</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"DMG: Not a supported volume."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;DMG: Not a supported volume.&quot;</span><span class="p">)</span>
 
     <span class="n">stream</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">([])</span>
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">trace_list</span><span class="p">:</span>
         <span class="c1"># For our purposes, we only want acceleration, so lets only return</span>
         <span class="c1"># that; we may need to change this later if others start using this</span>
         <span class="c1"># code and want to read in the other data.</span>
-        <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">==</span> <span class="n">units</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">units</span><span class="p">:</span>
             <span class="n">stream</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trace</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">stream</span><span class="p">]</span></div>
 
 
-<div class="viewcode-block" id="_read_volume_one"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._read_volume_one">[docs]</a><span class="k">def</span> <span class="nf">_read_volume_one</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">line_offset</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"acc"</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Read channel data from DMG Volume 1 text file.</span>
+<div class="viewcode-block" id="_read_volume_one"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._read_volume_one">[docs]</a><span class="k">def</span> <span class="nf">_read_volume_one</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">line_offset</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;acc&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read channel data from DMG Volume 1 text file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str):</span>
@@ -704,10 +705,10 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: (list of obspy Trace, int line offset)</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Parse the header portion of the file</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">line_offset</span><span class="p">):</span>
                 <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V1_TEXT_HDR_ROWS</span><span class="p">)]</span>
@@ -728,9 +729,9 @@
 
     <span class="c1"># ------------------------------------------------------------------------------- #</span>
     <span class="c1"># according to the powers that defined the Network.Station.Channel.Location</span>
-    <span class="c1"># "standard", Location is a two character field.  Most data providers,</span>
-    <span class="c1"># including csmip/dmg here, don't always provide this.  We'll flag it as</span>
-    <span class="c1"># "--".</span>
+    <span class="c1"># &quot;standard&quot;, Location is a two character field.  Most data providers,</span>
+    <span class="c1"># including csmip/dmg here, don&#39;t always provide this.  We&#39;ll flag it as</span>
+    <span class="c1"># &quot;--&quot;.</span>
 
     <span class="c1"># Update Feb 4, 2022</span>
     <span class="c1"># In order to be able to store structural/geotech array data in the ASDF file, we</span>
@@ -741,46 +742,46 @@
     <span class="c1"># ------------------------------------------------------------------------------- #</span>
 
     <span class="n">hdr</span> <span class="o">=</span> <span class="n">_get_header_info_v1</span><span class="p">(</span>
-        <span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="s2">"V1"</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+        <span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="s2">&quot;V1&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
     <span class="p">)</span>
     <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"source_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;source_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
 
     <span class="c1"># sometimes (??) a line of text is inserted in between the float header and</span>
-    <span class="c1"># the beginning of the data. Let's check for this...</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="c1"># the beginning of the data. Let&#39;s check for this...</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">skip_rows</span><span class="p">):</span>
             <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="n">test_line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
 
-    <span class="n">has_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">"[A-Z]+|[a-z]+"</span><span class="p">,</span> <span class="n">test_line</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="n">has_text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;[A-Z]+|[a-z]+&quot;</span><span class="p">,</span> <span class="n">test_line</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">has_text</span><span class="p">:</span>
         <span class="n">skip_rows</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">*</span> <span class="mi">8</span>
-        <span class="n">max_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">8</span><span class="p">))</span>
+        <span class="n">max_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">8</span><span class="p">))</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_read_lines</span><span class="p">(</span><span class="n">skip_rows</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="n">acc_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]]</span>
+        <span class="n">acc_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]]</span>
         <span class="n">evenly_spaced</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="c1"># Sometimes, npts is incrrectly specified, leading to nans</span>
         <span class="c1"># in the resulting data. Fix that here</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">acc_data</span><span class="p">)):</span>
             <span class="k">while</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">acc_data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="n">acc_data</span> <span class="o">=</span> <span class="n">acc_data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">acc_data</span><span class="p">)</span>
+            <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">acc_data</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># acceleration data is interleaved between time data</span>
-        <span class="n">max_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="n">max_rows</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span><span class="p">))</span>
         <span class="n">widths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">_read_lines</span><span class="p">(</span><span class="n">skip_rows</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="n">acc_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">][:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]]</span>
-        <span class="n">times</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">][:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]]</span>
+        <span class="n">acc_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">][:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]]</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">][:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]]</span>
         <span class="n">evenly_spaced</span> <span class="o">=</span> <span class="n">is_evenly_spaced</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">unit</span> <span class="ow">in</span> <span class="n">UNIT_CONVERSIONS</span><span class="p">:</span>
         <span class="n">acc_data</span> <span class="o">*=</span> <span class="n">UNIT_CONVERSIONS</span><span class="p">[</span><span class="n">unit</span><span class="p">]</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data converted from </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> to cm/s/s"</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data converted from </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> to cm/s/s&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"DMG: </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> is not a supported unit."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DMG: </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> is not a supported unit.&quot;</span><span class="p">)</span>
 
     <span class="n">acc_trace</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">acc_data</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">Stats</span><span class="p">(</span><span class="n">hdr</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 
@@ -788,16 +789,16 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="n">evenly_spaced</span><span class="p">:</span>
         <span class="n">acc_trace</span> <span class="o">=</span> <span class="n">resample_uneven_trace</span><span class="p">(</span><span class="n">acc_trace</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">acc_data</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
 
-    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="s2">"output_units"</span><span class="p">:</span> <span class="s2">"cm/s^2"</span><span class="p">}</span>
-    <span class="n">acc_trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"remove_response"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="s2">&quot;counts&quot;</span><span class="p">,</span> <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="s2">&quot;cm/s^2&quot;</span><span class="p">}</span>
+    <span class="n">acc_trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">&quot;remove_response&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
 
     <span class="n">traces</span> <span class="o">=</span> <span class="p">[</span><span class="n">acc_trace</span><span class="p">]</span>
     <span class="n">new_offset</span> <span class="o">=</span> <span class="n">skip_rows</span> <span class="o">+</span> <span class="n">max_rows</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># there is an end of record line</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">new_offset</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="_read_volume_two"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._read_volume_two">[docs]</a><span class="k">def</span> <span class="nf">_read_volume_two</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">line_offset</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">"acc"</span><span class="p">):</span>
-    <span class="sd">"""Read channel data from DMG text file.</span>
+<div class="viewcode-block" id="_read_volume_two"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._read_volume_two">[docs]</a><span class="k">def</span> <span class="nf">_read_volume_two</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">line_offset</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s2">&quot;acc&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read channel data from DMG text file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str):</span>
@@ -809,9 +810,9 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: (list of obspy Trace, int line offset)</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"rt"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">line_offset</span><span class="p">):</span>
                 <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">V2_TEXT_HDR_ROWS</span><span class="p">)]</span>
@@ -831,75 +832,75 @@
     <span class="n">skip_rows</span> <span class="o">+=</span> <span class="n">V2_REAL_HDR_ROWS</span>
 
     <span class="c1"># according to the powers that defined the Network.Station.Channel.Location</span>
-    <span class="c1"># "standard", Location is a two character field.  Most data providers,</span>
-    <span class="c1"># including csmip/dmg here, don't always provide this.  We'll flag it as</span>
-    <span class="c1"># "--".</span>
-    <span class="n">hdr</span> <span class="o">=</span> <span class="n">_get_header_info</span><span class="p">(</span><span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="s2">"V2"</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
+    <span class="c1"># &quot;standard&quot;, Location is a two character field.  Most data providers,</span>
+    <span class="c1"># including csmip/dmg here, don&#39;t always provide this.  We&#39;ll flag it as</span>
+    <span class="c1"># &quot;--&quot;.</span>
+    <span class="n">hdr</span> <span class="o">=</span> <span class="n">_get_header_info</span><span class="p">(</span><span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="s2">&quot;V2&quot;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">location</span><span class="p">)</span>
     <span class="n">head</span><span class="p">,</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"source_file"</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;source_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tail</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
 
     <span class="n">traces</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="c1"># read acceleration data</span>
-    <span class="k">if</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">acc_rows</span><span class="p">,</span> <span class="n">acc_fmt</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">_get_data_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">acc_rows</span><span class="p">,</span> <span class="n">acc_fmt</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">_get_data_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">])</span>
         <span class="n">acc_data</span> <span class="o">=</span> <span class="n">_read_lines</span><span class="p">(</span><span class="n">skip_rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">acc_rows</span><span class="p">,</span> <span class="n">acc_fmt</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="n">acc_data</span> <span class="o">=</span> <span class="n">acc_data</span><span class="p">[:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]]</span>
+        <span class="n">acc_data</span> <span class="o">=</span> <span class="n">acc_data</span><span class="p">[:</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]]</span>
         <span class="k">if</span> <span class="n">unit</span> <span class="ow">in</span> <span class="n">UNIT_CONVERSIONS</span><span class="p">:</span>
             <span class="n">acc_data</span> <span class="o">*=</span> <span class="n">UNIT_CONVERSIONS</span><span class="p">[</span><span class="n">unit</span><span class="p">]</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data converted from </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> to cm/s/s"</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data converted from </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> to cm/s/s&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"DMG: </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> is not a supported unit."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DMG: </span><span class="si">{</span><span class="n">unit</span><span class="si">}</span><span class="s2"> is not a supported unit.&quot;</span><span class="p">)</span>
         <span class="n">acc_trace</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">acc_data</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">Stats</span><span class="p">(</span><span class="n">hdr</span><span class="o">.</span><span class="n">copy</span><span class="p">()))</span>
 
-        <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"input_units"</span><span class="p">:</span> <span class="s2">"counts"</span><span class="p">,</span> <span class="s2">"output_units"</span><span class="p">:</span> <span class="s2">"cm/s^2"</span><span class="p">}</span>
-        <span class="n">acc_trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">"remove_response"</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;input_units&quot;</span><span class="p">:</span> <span class="s2">&quot;counts&quot;</span><span class="p">,</span> <span class="s2">&quot;output_units&quot;</span><span class="p">:</span> <span class="s2">&quot;cm/s^2&quot;</span><span class="p">}</span>
+        <span class="n">acc_trace</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span><span class="s2">&quot;remove_response&quot;</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">"acc"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">units</span> <span class="o">==</span> <span class="s2">&quot;acc&quot;</span><span class="p">:</span>
             <span class="n">traces</span> <span class="o">+=</span> <span class="p">[</span><span class="n">acc_trace</span><span class="p">]</span>
         <span class="n">skip_rows</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">acc_rows</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="c1"># -------------------------------------------------------------------------</span>
     <span class="c1"># NOTE: The way we were initially reading velocity and displacement data</span>
-    <span class="c1"># was not correct. I'm deleting it for now since we don't need it. If/when</span>
+    <span class="c1"># was not correct. I&#39;m deleting it for now since we don&#39;t need it. If/when</span>
     <span class="c1"># we revisit this we need to be more careful about how this is handled.</span>
     <span class="c1"># -------------------------------------------------------------------------</span>
 
     <span class="c1"># read velocity data</span>
     <span class="n">vel_hdr</span> <span class="o">=</span> <span class="n">hdr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"vel"</span>
-    <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">63</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">vel_rows</span><span class="p">,</span> <span class="n">vel_fmt</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">_get_data_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">])</span>
+    <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;vel&quot;</span>
+    <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">63</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">vel_rows</span><span class="p">,</span> <span class="n">vel_fmt</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">_get_data_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">])</span>
         <span class="n">vel_data</span> <span class="o">=</span> <span class="n">_read_lines</span><span class="p">(</span><span class="n">skip_rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">vel_rows</span><span class="p">,</span> <span class="n">vel_fmt</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="n">vel_data</span> <span class="o">=</span> <span class="n">vel_data</span><span class="p">[:</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]]</span>
+        <span class="n">vel_data</span> <span class="o">=</span> <span class="n">vel_data</span><span class="p">[:</span> <span class="n">vel_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]]</span>
         <span class="n">skip_rows</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">vel_rows</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="c1"># read displacement data</span>
     <span class="n">disp_hdr</span> <span class="o">=</span> <span class="n">hdr</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"disp"</span>
-    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">][</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cm"</span>
-    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">65</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;disp&quot;</span>
+    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cm&quot;</span>
+    <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">65</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">disp_rows</span><span class="p">,</span> <span class="n">disp_fmt</span><span class="p">,</span> <span class="n">unit</span> <span class="o">=</span> <span class="n">_get_data_format</span><span class="p">(</span>
-            <span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span>
+            <span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span>
         <span class="p">)</span>
         <span class="n">disp_data</span> <span class="o">=</span> <span class="n">_read_lines</span><span class="p">(</span><span class="n">skip_rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">disp_rows</span><span class="p">,</span> <span class="n">disp_fmt</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
-        <span class="n">disp_data</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[:</span> <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]]</span>
+        <span class="n">disp_data</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[:</span> <span class="n">disp_hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]]</span>
         <span class="n">skip_rows</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">disp_rows</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 
-    <span class="c1"># there is an 'end of record' line after the data]</span>
+    <span class="c1"># there is an &#39;end of record&#39; line after the data]</span>
     <span class="n">new_offset</span> <span class="o">=</span> <span class="n">skip_rows</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">traces</span><span class="p">,</span> <span class="n">new_offset</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="_get_header_info_v1"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_header_info_v1">[docs]</a><span class="k">def</span> <span class="nf">_get_header_info_v1</span><span class="p">(</span><span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Return stats structure from various V1 headers.</span>
+<div class="viewcode-block" id="_get_header_info_v1"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_header_info_v1">[docs]</a><span class="k">def</span> <span class="nf">_get_header_info_v1</span><span class="p">(</span><span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return stats structure from various V1 headers.</span>
 
 <span class="sd">    Output is a dictionary like this:</span>
-<span class="sd">     - network (str): Default is '--'. Determined using COSMOS_NETWORKS</span>
+<span class="sd">     - network (str): Default is &#39;--&#39;. Determined using COSMOS_NETWORKS</span>
 <span class="sd">     - station (str)</span>
 <span class="sd">     - channel (str)</span>
-<span class="sd">     - location (str): Default is '--'</span>
+<span class="sd">     - location (str): Default is &#39;--&#39;</span>
 <span class="sd">     - starttime (datetime)</span>
 <span class="sd">     - sampling_rate (float)</span>
 <span class="sd">     - delta (float)</span>
@@ -907,12 +908,12 @@
 <span class="sd">       - latitude (float)</span>
 <span class="sd">       - longitude (float)</span>
 <span class="sd">       - elevation (float): Default is np.nan</span>
-<span class="sd">    - standard (Defaults are either np.nan or '')</span>
+<span class="sd">    - standard (Defaults are either np.nan or &#39;&#39;)</span>
 <span class="sd">      - horizontal_orientation (float): Rotation from north (degrees)</span>
 <span class="sd">      - instrument_period (float): Period of sensor (Hz)</span>
 <span class="sd">      - instrument_damping (float): Fraction of critical</span>
 <span class="sd">      - process_time (datetime): Reported date of processing</span>
-<span class="sd">      - process_level: Either 'V0', 'V1', 'V2', or 'V3'</span>
+<span class="sd">      - process_level: Either &#39;V0&#39;, &#39;V1&#39;, &#39;V2&#39;, or &#39;V3&#39;</span>
 <span class="sd">      - station_name (str): Long form station description</span>
 <span class="sd">      - sensor_serial_number (str): Reported sensor serial</span>
 <span class="sd">      - instrument (str)</span>
@@ -948,72 +949,72 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dictionary: Dictionary of header/metadata information</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hdr</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">standard</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">format_specific</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1"># Required metadata</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="s2">""</span>
-    <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"CDMG"</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">code</span> <span class="o">=</span> <span class="s2">"CDMG"</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;CDMG&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="s2">&quot;CDMG&quot;</span>
 
     <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="n">CODES</span><span class="p">:</span>
         <span class="n">network</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">CODES</span> <span class="o">==</span> <span class="n">network</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="n">SOURCES1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">", "</span> <span class="o">+</span> <span class="n">SOURCES2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">SOURCES1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">SOURCES2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># newer files have a record_id.network.station.location.channel thing</span>
         <span class="c1"># in the 4th line</span>
         <span class="n">recinfo</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">23</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="n">recinfo</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">recinfo</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
             <span class="n">network</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">CODES</span> <span class="o">==</span> <span class="n">network</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">source</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">SOURCES1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">", "</span> <span class="o">+</span> <span class="n">SOURCES2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+                <span class="n">SOURCES1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">SOURCES2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
-            <span class="n">network</span> <span class="o">=</span> <span class="s2">"--"</span>
-            <span class="n">source</span> <span class="o">=</span> <span class="s2">"unknown"</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"network: </span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">network</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;network: </span><span class="si">{</span><span class="n">network</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">station_line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
     <span class="n">station</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"station: </span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;station: </span><span class="si">{</span><span class="n">station</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
     <span class="n">angle</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"angle: </span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;angle: </span><span class="si">{</span><span class="n">angle</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># newer files seem to have the *real* number of points in int header 32</span>
     <span class="k">if</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">27</span><span class="p">]</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">27</span><span class="p">]</span>
     <span class="n">reclen</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"reclen: </span><span class="si">{</span><span class="n">reclen</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"npts: </span><span class="si">{</span><span class="n">hdr</span><span class="p">[</span><span class="s1">'npts'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">reclen</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"sampling_rate: </span><span class="si">{</span><span class="n">hdr</span><span class="p">[</span><span class="s1">'sampling_rate'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_channel</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">])</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;reclen: </span><span class="si">{</span><span class="n">reclen</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;npts: </span><span class="si">{</span><span class="n">hdr</span><span class="p">[</span><span class="s1">&#39;npts&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">reclen</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sampling_rate: </span><span class="si">{</span><span class="n">hdr</span><span class="p">[</span><span class="s1">&#39;sampling_rate&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">]</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_channel</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">])</span>
     <span class="c1"># this format uses codes of 500/600 in this angle to indicate a vertical</span>
-    <span class="c1"># channel Obspy freaks out with azimuth values &gt; 360, so let's just say</span>
+    <span class="c1"># channel Obspy freaks out with azimuth values &gt; 360, so let&#39;s just say</span>
     <span class="c1"># horizontal angle is zero in these cases</span>
-    <span class="k">if</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"Z"</span><span class="p">):</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="s2">"0.0"</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"channel: </span><span class="si">{</span><span class="n">hdr</span><span class="p">[</span><span class="s1">'channel'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">):</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="s2">&quot;0.0&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;channel: </span><span class="si">{</span><span class="n">hdr</span><span class="p">[</span><span class="s1">&#39;channel&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s2">"use_streamcollection"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">"read"</span><span class="p">][</span><span class="s2">"use_streamcollection"</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-                <span class="n">location</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">][</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">if</span> <span class="s2">&quot;use_streamcollection&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">][</span><span class="s2">&quot;use_streamcollection&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">location</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">][</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span><span class="si">:</span><span class="s2">02d</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">if</span> <span class="n">location</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"--"</span>
+    <span class="k">if</span> <span class="n">location</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
 
     <span class="c1"># parse the trigger time</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1022,84 +1023,84 @@
         <span class="c1"># time zone. Figure out if this is the case and modify start time</span>
         <span class="c1"># accordingly</span>
         <span class="c1"># look for three letter string that might be a time zone</span>
-        <span class="k">if</span> <span class="s2">"PDT"</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">"PST"</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
-            <span class="n">timezone</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">"US/Pacific"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;PDT&quot;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;PST&quot;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+            <span class="n">timezone</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">&quot;US/Pacific&quot;</span><span class="p">)</span>
             <span class="n">utcoffset</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">trigger_time</span><span class="p">)</span>
-            <span class="c1"># subtracting because we're going from pacific to utc</span>
+            <span class="c1"># subtracting because we&#39;re going from pacific to utc</span>
             <span class="n">trigger_time</span> <span class="o">-=</span> <span class="n">utcoffset</span>
 
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"starttime"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trigger_time</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;starttime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trigger_time</span>
     <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">"No start time provided on trigger line. "</span>
-            <span class="s2">"This must be set manually for network/station: "</span>
-            <span class="s2">"</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">."</span> <span class="o">%</span> <span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"network"</span><span class="p">],</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"station"</span><span class="p">])</span>
+            <span class="s2">&quot;No start time provided on trigger line. &quot;</span>
+            <span class="s2">&quot;This must be set manually for network/station: &quot;</span>
+            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">])</span>
         <span class="p">)</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Missing start time."</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Missing start time.&quot;</span>
 
     <span class="c1"># Coordinates</span>
     <span class="n">latitude_str</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">longitude_str</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">37</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span> <span class="o">=</span> <span class="n">_get_coords</span><span class="p">(</span><span class="n">latitude_str</span><span class="p">,</span> <span class="n">longitude_str</span><span class="p">)</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">latitude</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">longitude</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Setting elevation to 0.0"</span><span class="p">)</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">latitude</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">longitude</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Setting elevation to 0.0&quot;</span><span class="p">)</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;elevation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
     <span class="c1"># Standard metadata</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">])</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cm/s/s"</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_period"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_damping"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cm/s/s&quot;</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;horizontal_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;vertical_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_period&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_damping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="n">process_time</span> <span class="o">=</span> <span class="n">_get_date</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">if</span> <span class="n">process_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"process_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">)</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;process_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">process_time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"process_time"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;process_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"process_level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"process_level: </span><span class="si">{</span><span class="n">standard</span><span class="p">[</span><span class="s1">'process_level'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">"comments"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">standard</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"structure_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="mi">46</span><span class="p">:</span><span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">39</span><span class="p">:</span><span class="mi">47</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"sensor_serial_number"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">53</span><span class="p">:</span><span class="mi">57</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"dmg"</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">40</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;process_level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;process_level: </span><span class="si">{</span><span class="n">standard</span><span class="p">[</span><span class="s1">&#39;process_level&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;comments&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">standard</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;structure_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="mi">46</span><span class="p">:</span><span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">39</span><span class="p">:</span><span class="mi">47</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;sensor_serial_number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">53</span><span class="p">:</span><span class="mi">57</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dmg&quot;</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">40</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 
     <span class="c1"># these fields can be used for instrument correction</span>
     <span class="c1"># when data is in counts</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_sensitivity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"volts_to_counts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_sensitivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;volts_to_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="c1"># Format specific metadata</span>
-    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"fractional_unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"sensor_sensitivity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;fractional_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;sensor_sensitivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">999</span><span class="p">:</span>
-        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"time_sd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;time_sd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"time_sd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;time_sd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
     <span class="c1"># Set dictionary</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"format_specific"</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_specific</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;format_specific&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_specific</span>
     <span class="k">return</span> <span class="n">hdr</span></div>
 
 
-<div class="viewcode-block" id="_get_header_info"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_header_info">[docs]</a><span class="k">def</span> <span class="nf">_get_header_info</span><span class="p">(</span><span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">""</span><span class="p">):</span>
-    <span class="sd">"""Return stats structure from various headers.</span>
+<div class="viewcode-block" id="_get_header_info"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_header_info">[docs]</a><span class="k">def</span> <span class="nf">_get_header_info</span><span class="p">(</span><span class="n">int_data</span><span class="p">,</span> <span class="n">flt_data</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return stats structure from various headers.</span>
 
 <span class="sd">    Output is a dictionary like this:</span>
-<span class="sd">     - network (str): Default is '--' (unknown). Determined using</span>
+<span class="sd">     - network (str): Default is &#39;--&#39; (unknown). Determined using</span>
 <span class="sd">       COSMOS_NETWORKS</span>
 <span class="sd">     - station (str)</span>
 <span class="sd">     - channel (str)</span>
-<span class="sd">     - location (str): Default is '--'</span>
+<span class="sd">     - location (str): Default is &#39;--&#39;</span>
 <span class="sd">     - starttime (datetime)</span>
 <span class="sd">     - sampling_rate (float)</span>
 <span class="sd">     - delta (float)</span>
@@ -1107,12 +1108,12 @@
 <span class="sd">       - latitude (float)</span>
 <span class="sd">       - longitude (float)</span>
 <span class="sd">       - elevation (float): Default is np.nan</span>
-<span class="sd">    - standard (Defaults are either np.nan or '')</span>
+<span class="sd">    - standard (Defaults are either np.nan or &#39;&#39;)</span>
 <span class="sd">      - horizontal_orientation (float): Rotation from north (degrees)</span>
 <span class="sd">      - instrument_period (float): Period of sensor (Hz)</span>
 <span class="sd">      - instrument_damping (float): Fraction of critical</span>
 <span class="sd">      - process_time (datetime): Reported date of processing</span>
-<span class="sd">      - process_level: Either 'V0', 'V1', 'V2', or 'V3'</span>
+<span class="sd">      - process_level: Either &#39;V0&#39;, &#39;V1&#39;, &#39;V2&#39;, or &#39;V3&#39;</span>
 <span class="sd">      - station_name (str): Long form station description</span>
 <span class="sd">      - sensor_serial_number (str): Reported sensor serial</span>
 <span class="sd">      - instrument (str)</span>
@@ -1142,7 +1143,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dictionary: Dictionary of header/metadata information</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hdr</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">coordinates</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">standard</span> <span class="o">=</span> <span class="p">{}</span>
@@ -1150,35 +1151,35 @@
 
     <span class="c1"># Required metadata</span>
     <span class="n">name_length</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">29</span><span class="p">]</span>
-    <span class="n">station_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" +"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">][:</span><span class="n">name_length</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">code</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">" +"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">name_length</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">station_name</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">6</span><span class="p">][:</span><span class="n">name_length</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">code</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot; +&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">name_length</span><span class="p">:])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="mi">2</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="n">CODES</span><span class="p">:</span>
         <span class="n">network</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">CODES</span> <span class="o">==</span> <span class="n">network</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="n">SOURCES1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">", "</span> <span class="o">+</span> <span class="n">SOURCES2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">SOURCES1</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">SOURCES2</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">network</span> <span class="o">=</span> <span class="s2">"--"</span>
-        <span class="n">source</span> <span class="o">=</span> <span class="s2">"unknown"</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span>
     <span class="n">station_line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
     <span class="n">station</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">12</span><span class="p">:</span><span class="mi">17</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"station"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
     <span class="n">angle</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">26</span><span class="p">]</span>
 
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">60</span><span class="p">]</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"delta"</span><span class="p">]</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_channel</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"sampling_rate"</span><span class="p">])</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">60</span><span class="p">]</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">]</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_channel</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;sampling_rate&quot;</span><span class="p">])</span>
 
     <span class="c1"># this format uses codes of 500/600 in this angle to indicate a vertical</span>
-    <span class="c1"># channel Obspy freaks out with azimuth values &gt; 360, so let's just say</span>
+    <span class="c1"># channel Obspy freaks out with azimuth values &gt; 360, so let&#39;s just say</span>
     <span class="c1"># horizontal angle is zero in these cases</span>
-    <span class="k">if</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"Z"</span><span class="p">):</span>
-        <span class="n">angle</span> <span class="o">=</span> <span class="s2">"0.0"</span>
+    <span class="k">if</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">):</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="s2">&quot;0.0&quot;</span>
 
-    <span class="k">if</span> <span class="n">location</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"--"</span>
+    <span class="k">if</span> <span class="n">location</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"location"</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
 
     <span class="c1"># parse the trigger time</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1187,92 +1188,92 @@
         <span class="c1"># time zone. Figure out if this is the case and modify start time</span>
         <span class="c1"># accordingly</span>
         <span class="c1"># look for three letter string that might be a time zone</span>
-        <span class="k">if</span> <span class="s2">"PDT"</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">"PST"</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
-            <span class="n">timezone</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">"US/Pacific"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;PDT&quot;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;PST&quot;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+            <span class="n">timezone</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s2">&quot;US/Pacific&quot;</span><span class="p">)</span>
             <span class="n">utcoffset</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">(</span><span class="n">trigger_time</span><span class="p">)</span>
-            <span class="c1"># subtracting because we're going from pacific to utc</span>
+            <span class="c1"># subtracting because we&#39;re going from pacific to utc</span>
             <span class="n">trigger_time</span> <span class="o">-=</span> <span class="n">utcoffset</span>
-        <span class="n">hdr</span><span class="p">[</span><span class="s2">"starttime"</span><span class="p">]</span> <span class="o">=</span> <span class="n">trigger_time</span>
+        <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;starttime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trigger_time</span>
     <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">"No start time provided on trigger line. "</span>
-            <span class="s2">"This must be set manually for network/station: "</span>
-            <span class="s2">"</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">."</span> <span class="o">%</span> <span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"network"</span><span class="p">],</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">"station"</span><span class="p">])</span>
+            <span class="s2">&quot;No start time provided on trigger line. &quot;</span>
+            <span class="s2">&quot;This must be set manually for network/station: &quot;</span>
+            <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">])</span>
         <span class="p">)</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Missing start time."</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Missing start time.&quot;</span>
 
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"npts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">52</span><span class="p">]</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;npts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">int_data</span><span class="p">[</span><span class="mi">52</span><span class="p">]</span>
 
     <span class="c1"># Coordinates</span>
     <span class="n">latitude_str</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">20</span><span class="p">:</span><span class="mi">27</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">longitude_str</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">29</span><span class="p">:</span><span class="mi">37</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
     <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span> <span class="o">=</span> <span class="n">_get_coords</span><span class="p">(</span><span class="n">latitude_str</span><span class="p">,</span> <span class="n">longitude_str</span><span class="p">)</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">latitude</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span> <span class="o">=</span> <span class="n">longitude</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Setting elevation to 0.0"</span><span class="p">)</span>
-    <span class="n">coordinates</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">latitude</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">longitude</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Setting elevation to 0.0&quot;</span><span class="p">)</span>
+    <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;elevation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
     <span class="c1"># Standard metadata</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"units_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">"channel"</span><span class="p">])</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_period"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_damping"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;horizontal_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;vertical_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_period&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_damping&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"process_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_date</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">)</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"process_level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
-    <span class="k">if</span> <span class="s2">"comments"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">standard</span><span class="p">:</span>
-        <span class="n">standard</span><span class="p">[</span><span class="s2">"comments"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"structure_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="mi">46</span><span class="p">:</span><span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">39</span><span class="p">:</span><span class="mi">47</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"sensor_serial_number"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">53</span><span class="p">:</span><span class="mi">57</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"corner_frequency"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"acc"</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"dmg"</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_name</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;process_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_date</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">)</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;process_level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">PROCESS_LEVELS</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;comments&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">standard</span><span class="p">:</span>
+        <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;structure_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="mi">46</span><span class="p">:</span><span class="mi">80</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">39</span><span class="p">:</span><span class="mi">47</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;sensor_serial_number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_line</span><span class="p">[</span><span class="mi">53</span><span class="p">:</span><span class="mi">57</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;corner_frequency&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;acc&quot;</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dmg&quot;</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_name</span>
 
     <span class="c1"># these fields can be used for instrument correction</span>
     <span class="c1"># when data is in counts</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"instrument_sensitivity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">standard</span><span class="p">[</span><span class="s2">"volts_to_counts"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument_sensitivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;volts_to_counts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="c1"># Format specific metadata</span>
-    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"fractional_unit"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"sensor_sensitivity"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;fractional_unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;sensor_sensitivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">999</span><span class="p">:</span>
-        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"time_sd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;time_sd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">format_specific</span><span class="p">[</span><span class="s2">"time_sd"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
-    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"scaling_factor"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">51</span><span class="p">]</span>
-    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"low_filter_corner"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">61</span><span class="p">]</span>
-    <span class="n">format_specific</span><span class="p">[</span><span class="s2">"high_filter_corner"</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">72</span><span class="p">]</span>
+        <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;time_sd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">13</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;scaling_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">51</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;low_filter_corner&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">61</span><span class="p">]</span>
+    <span class="n">format_specific</span><span class="p">[</span><span class="s2">&quot;high_filter_corner&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">flt_data</span><span class="p">[</span><span class="mi">72</span><span class="p">]</span>
     <span class="c1"># Set dictionary</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"coordinates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"standard"</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
-    <span class="n">hdr</span><span class="p">[</span><span class="s2">"format_specific"</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_specific</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;coordinates&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;standard&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">standard</span>
+    <span class="n">hdr</span><span class="p">[</span><span class="s2">&quot;format_specific&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_specific</span>
     <span class="k">return</span> <span class="n">hdr</span></div>
 
 
 <div class="viewcode-block" id="_get_coords"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_coords">[docs]</a><span class="k">def</span> <span class="nf">_get_coords</span><span class="p">(</span><span class="n">latitude_str</span><span class="p">,</span> <span class="n">longitude_str</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">latitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">latitude_str</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">latitude_str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"S"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">latitude_str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;S&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">latitude</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">latitude</span>
     <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">"No latitude or invalid latitude format provided. Setting to np.nan."</span><span class="p">,</span>
+            <span class="s2">&quot;No latitude or invalid latitude format provided. Setting to np.nan.&quot;</span><span class="p">,</span>
             <span class="ne">Warning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">longitude</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">longitude_str</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">longitude_str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"W"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">longitude_str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;W&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">longitude</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">longitude</span>
     <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">"No longitude or invalid longitude format provided."</span><span class="p">,</span>
-            <span class="s2">"Setting to np.nan."</span><span class="p">,</span>
+            <span class="s2">&quot;No longitude or invalid longitude format provided.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Setting to np.nan.&quot;</span><span class="p">,</span>
             <span class="ne">Warning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">longitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -1295,15 +1296,15 @@
             <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">errstr</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">"Not enough information to distinguish horizontal from "</span>
-            <span class="s2">"vertical channels."</span>
+            <span class="s2">&quot;Not enough information to distinguish horizontal from &quot;</span>
+            <span class="s2">&quot;vertical channels.&quot;</span>
         <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="s2">"DMG: "</span> <span class="o">+</span> <span class="n">errstr</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">BaseException</span><span class="p">(</span><span class="s2">&quot;DMG: &quot;</span> <span class="o">+</span> <span class="n">errstr</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">channel</span></div>
 
 
 <div class="viewcode-block" id="_read_lines"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._read_lines">[docs]</a><span class="k">def</span> <span class="nf">_read_lines</span><span class="p">(</span><span class="n">skip_rows</span><span class="p">,</span> <span class="n">max_rows</span><span class="p">,</span> <span class="n">widths</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-    <span class="sd">"""Read lines of headers and.</span>
+    <span class="sd">&quot;&quot;&quot;Read lines of headers and.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        skip_rows (int):</span>
@@ -1312,7 +1313,7 @@
 <span class="sd">            Path to possible DMG data file.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        array-like: List of comments or array of data.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">data_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">skip_header</span><span class="o">=</span><span class="n">skip_rows</span><span class="p">,</span>
@@ -1324,7 +1325,7 @@
 
 
 <div class="viewcode-block" id="_get_data_format"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_data_format">[docs]</a><span class="k">def</span> <span class="nf">_get_data_format</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_rows</span><span class="p">,</span> <span class="n">npts</span><span class="p">):</span>
-    <span class="sd">"""Read data header and return the format.</span>
+    <span class="sd">&quot;&quot;&quot;Read data header and return the format.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        skip_rows (int):</span>
@@ -1335,20 +1336,20 @@
 <span class="sd">            Number of data points.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: (int number of rows, list list of widths).</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fmt_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skip_header</span><span class="o">=</span><span class="n">skip_rows</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt_line</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="c1"># Check for a format in header or use default</span>
-    <span class="k">if</span> <span class="n">fmt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"f"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fmt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"("</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fmt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">")"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"("</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">")"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-        <span class="n">cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"f"</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">widths</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"f"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">fmt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fmt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">fmt</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="n">fmt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">widths</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fmt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="mi">8</span>
         <span class="n">widths</span> <span class="o">=</span> <span class="mi">10</span>
 
     <span class="c1"># Check for units</span>
-    <span class="n">line_string</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fmt_line</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">line_string</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fmt_line</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
     <span class="n">physical_units</span> <span class="o">=</span> <span class="n">_get_units</span><span class="p">(</span><span class="n">line_string</span><span class="p">)</span>
 
     <span class="n">fmt</span> <span class="o">=</span> <span class="p">[</span><span class="n">widths</span><span class="p">]</span> <span class="o">*</span> <span class="n">cols</span>
@@ -1357,55 +1358,55 @@
 
 
 <div class="viewcode-block" id="_get_units"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/dmg/core/index.html#gmprocess.io.dmg.core._get_units">[docs]</a><span class="k">def</span> <span class="nf">_get_units</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse units from a text line.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        line (str):</span>
 <span class="sd">            text line which should contain units.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"in units of"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">units_start</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"in units of"</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"units of"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">units_start</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"units of"</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"in"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">units_start</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"in"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;in units of&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">units_start</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;in units of&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;units of&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">units_start</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;units of&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">units_start</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">)</span>
 
-    <span class="n">units_section</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">units_start</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span>
+    <span class="n">units_section</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">units_start</span><span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">"g/10"</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"g/10"</span>
+    <span class="k">if</span> <span class="s2">&quot;g/10&quot;</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;g/10&quot;</span>
     <span class="k">elif</span> <span class="p">(</span>
-        <span class="s2">"10g"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"10*g"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"g10"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"g*10"</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="s2">&quot;10g&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;10*g&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;g10&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;g*10&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
     <span class="p">):</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"g*10"</span>
-    <span class="k">elif</span> <span class="s2">"gal"</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"cm/s/s"</span>
-    <span class="k">elif</span> <span class="s2">"g"</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">and</span> <span class="s2">"g/"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"g"</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;g*10&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;gal&quot;</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;cm/s/s&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;g&quot;</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">and</span> <span class="s2">&quot;g/&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;g&quot;</span>
     <span class="k">elif</span> <span class="p">(</span>
-        <span class="s2">"cm/s/s"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"cm/sec/sec"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"cm/s^2"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"cm/s2"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"cm/sec^2"</span> <span class="ow">in</span> <span class="n">units_section</span>
-        <span class="ow">or</span> <span class="s2">"cm/sec2"</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="s2">&quot;cm/s/s&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;cm/sec/sec&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;cm/s^2&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;cm/s2&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;cm/sec^2&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
+        <span class="ow">or</span> <span class="s2">&quot;cm/sec2&quot;</span> <span class="ow">in</span> <span class="n">units_section</span>
     <span class="p">):</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"cm/s/s"</span>
-    <span class="k">elif</span> <span class="s2">"cm/s"</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">or</span> <span class="s2">"cm/sec"</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"cm/s"</span>
-    <span class="k">elif</span> <span class="s2">"cm"</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"cm"</span>
-    <span class="k">elif</span> <span class="s2">"in/s/s"</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">or</span> <span class="s2">"in/sec/sec"</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"in/s/s"</span>
-    <span class="k">elif</span> <span class="s2">"in/s"</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">or</span> <span class="s2">"in/sec"</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"in/s"</span>
-    <span class="k">elif</span> <span class="s2">"in"</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
-        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">"in"</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;cm/s/s&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;cm/s&quot;</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">or</span> <span class="s2">&quot;cm/sec&quot;</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;cm/s&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;cm&quot;</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;cm&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;in/s/s&quot;</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">or</span> <span class="s2">&quot;in/sec/sec&quot;</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;in/s/s&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;in/s&quot;</span> <span class="ow">in</span> <span class="n">units_section</span> <span class="ow">or</span> <span class="s2">&quot;in/sec&quot;</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;in/s&quot;</span>
+    <span class="k">elif</span> <span class="s2">&quot;in&quot;</span> <span class="ow">in</span> <span class="n">units_section</span><span class="p">:</span>
+        <span class="n">physical_units</span> <span class="o">=</span> <span class="s2">&quot;in&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">physical_units</span> <span class="o">=</span> <span class="n">units_section</span>
     <span class="k">return</span> <span class="n">physical_units</span></div>

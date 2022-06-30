@@ -31,22 +31,29 @@ def test_auto_fchp():
                 {"type": "constant", "highpass": 0.001, "lowpass": 20},
             )
 
-        tmp_st = ridder_fchp(st, config=config)
+        tmp_st = ridder_fchp(
+            st,
+            target=0.008,
+            tol=0.001,
+            maxiter=30,
+            maxfc=0.5,
+            config=config,
+        )
         for tr in tmp_st:
             initial_corners = tr.getParameter("corner_frequencies")
             output_fchp.append(initial_corners["highpass"])
 
     target_fchp = np.array(
         [
-            0.021345158261480087,
-            0.022839239726168643,
-            0.02482398434993213,
-            0.01399481102242619,
-            0.026850167635921275,
-            0.004817661513765862,
-            0.008204101694236587,
-            0.006429246474225982,
-            0.004237087327289796,
+            0.07476589516135154,
+            0.09136251148633885,
+            0.02583069084167848,
+            0.033976399355386044,
+            0.03725355913328573,
+            0.03053503882868939,
+            0.017228598702947552,
+            0.01573055352963156,
+            0.010847722772277246,
         ]
     )
 

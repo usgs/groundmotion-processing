@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.io" href="../../io/index.html" /><link rel="prev" title="gmprocess.core.streamarray" href="../streamarray/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.core.streamcollection - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.core.streamcollection - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -489,50 +490,55 @@ various rules, such as all traces within a stream are from the same station.</p>
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.StreamCollection" title="gmprocess.core.streamcollection.StreamCollection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StreamCollection</span></code></a></p></td>
 <td><p>A collection/list of StationStream objects.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.gather_stream_parameters" title="gmprocess.core.streamcollection.gather_stream_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gather_stream_parameters</span></code></a>(streams)</p></td>
 <td><p>Helper function for gathering the stream parameters into a datastructure</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.insert_stream_parameters" title="gmprocess.core.streamcollection.insert_stream_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_stream_parameters</span></code></a>(streams, stream_params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.insert_stream_parameters" title="gmprocess.core.streamcollection.insert_stream_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_stream_parameters</span></code></a>(streams, stream_params)</p></td>
 <td><p>Helper function for inserting the stream parameters back to the streams.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.split_station" title="gmprocess.core.streamcollection.split_station"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_station</span></code></a>(grouped_trace_list)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.are_duplicates" title="gmprocess.core.streamcollection.are_duplicates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">are_duplicates</span></code></a>(tr1, tr2, max_dist_tolerance)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.are_duplicates" title="gmprocess.core.streamcollection.are_duplicates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">are_duplicates</span></code></a>(tr1, tr2, max_dist_tolerance)</p></td>
 <td><p>Check if traces are duplicates.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.choose_preferred" title="gmprocess.core.streamcollection.choose_preferred"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_preferred</span></code></a>(tr1, tr2, preference_order, process_level_preference, format_preference)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.choose_preferred" title="gmprocess.core.streamcollection.choose_preferred"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_preferred</span></code></a>(tr1, tr2, preference_order, process_level_preference, format_preference)</p></td>
 <td><p>Determines which trace is preferred. Returns the preferred trace.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.core.streamcollection.INDENT" title="gmprocess.core.streamcollection.INDENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">INDENT</span></code></a></p></td>
@@ -548,23 +554,28 @@ various rules, such as all traces within a stream are from the same station.</p>
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.INDENT">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">INDENT</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">2</span></em><a class="headerlink" href="#gmprocess.core.streamcollection.INDENT" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.DEFAULT_IMTS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_IMTS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['PGA',</span> <span class="pre">'PGV',</span> <span class="pre">'SA(0.3)',</span> <span class="pre">'SA(1.0)',</span> <span class="pre">'SA(3.0)']</span></em><a class="headerlink" href="#gmprocess.core.streamcollection.DEFAULT_IMTS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.DEFAULT_IMCS">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_IMCS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['GREATER_OF_TWO_HORIZONTALS',</span> <span class="pre">'CHANNELS']</span></em><a class="headerlink" href="#gmprocess.core.streamcollection.DEFAULT_IMCS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.NETWORKS_USING_LOCATION">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">NETWORKS_USING_LOCATION</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['RE']</span></em><a class="headerlink" href="#gmprocess.core.streamcollection.NETWORKS_USING_LOCATION" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">StreamCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_non_free</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_duplicates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist_tolerance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preference_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_level_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection" title="Permalink to this definition">#</a></dt>
@@ -591,6 +602,7 @@ StationTraces are grouped such that:</p>
 <span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.validate" title="Permalink to this definition">#</a></dt>
 <dd><p>Some validation checks across streams.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.select_colocated">
 <span class="sig-name descname"><span class="pre">select_colocated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['HN?',</span> <span class="pre">'BN?',</span> <span class="pre">'HH?',</span> <span class="pre">'BH?']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">large_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.select_colocated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.select_colocated" title="Permalink to this definition">#</a></dt>
@@ -641,6 +653,7 @@ for m, d in zip(mag, dist):</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.from_directory">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_default_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.from_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.from_directory" title="Permalink to this definition">#</a></dt>
@@ -657,6 +670,7 @@ for m, d in zip(mag, dist):</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.from_traces">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_traces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traces</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.from_traces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.from_traces" title="Permalink to this definition">#</a></dt>
@@ -670,6 +684,7 @@ for m, d in zip(mag, dist):</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.to_dataframe">
 <span class="sig-name descname"><span class="pre">to_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imcs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.to_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.to_dataframe" title="Permalink to this definition">#</a></dt>
@@ -761,25 +776,30 @@ columns):</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.__str__">
 <span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.__str__" title="Permalink to this definition">#</a></dt>
 <dd><p>String summary of the StreamCollection.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.describe_string">
 <span class="sig-name descname"><span class="pre">describe_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.describe_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.describe_string" title="Permalink to this definition">#</a></dt>
 <dd><p>More verbose description of StreamCollection.</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.describe">
 <span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.describe" title="Permalink to this definition">#</a></dt>
 <dd><p>Thin wrapper of describe_string() for printing to stdout</p>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.__group_by_net_sta_inst">
 <span class="sig-name descname"><span class="pre">__group_by_net_sta_inst</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.__group_by_net_sta_inst" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.__handle_duplicates">
 <span class="sig-name descname"><span class="pre">__handle_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist_tolerance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preference_order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_level_preference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_preference</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.__handle_duplicates" title="Permalink to this definition">#</a></dt>
@@ -804,6 +824,7 @@ preferred over dmg files.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.StreamCollection.get_status">
 <span class="sig-name descname"><span class="pre">get_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#StreamCollection.get_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.StreamCollection.get_status" title="Permalink to this definition">#</a></dt>
@@ -831,7 +852,9 @@ If status=’short’ or status=’long’: pandas.Series</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.gather_stream_parameters">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">gather_stream_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#gather_stream_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.gather_stream_parameters" title="Permalink to this definition">#</a></dt>
@@ -846,6 +869,7 @@ and sticking the stream tag into the trace stats dictionaries.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.insert_stream_parameters">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">insert_stream_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream_params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#insert_stream_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.insert_stream_parameters" title="Permalink to this definition">#</a></dt>
@@ -862,10 +886,12 @@ and sticking the stream tag into the trace stats dictionaries.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.split_station">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">split_station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grouped_trace_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#split_station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.split_station" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.are_duplicates">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">are_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_dist_tolerance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#are_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.are_duplicates" title="Permalink to this definition">#</a></dt>
@@ -886,6 +912,7 @@ are at the same location (in meters).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.core.streamcollection.choose_preferred">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.core.streamcollection.</span></span><span class="sig-name descname"><span class="pre">choose_preferred</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preference_order</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">process_level_preference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_preference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/streamcollection.html#choose_preferred"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.streamcollection.choose_preferred" title="Permalink to this definition">#</a></dt>
@@ -912,6 +939,7 @@ preferred over dmg files.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

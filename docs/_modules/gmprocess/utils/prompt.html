@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.prompt - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.prompt - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -489,8 +490,8 @@
 <span class="kn">import</span> <span class="nn">shutil</span>
 
 
-<div class="viewcode-block" id="query_yes_no"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/prompt/index.html#gmprocess.utils.prompt.query_yes_no">[docs]</a><span class="k">def</span> <span class="nf">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">):</span>
-    <span class="sd">"""</span>
+<div class="viewcode-block" id="query_yes_no"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/prompt/index.html#gmprocess.utils.prompt.query_yes_no">[docs]</a><span class="k">def</span> <span class="nf">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ask a yes/no question via raw_input() and return their answer.</span>
 
 <span class="sd">    Args:</span>
@@ -498,49 +499,49 @@
 <span class="sd">            A string that is presented to the user.</span>
 <span class="sd">        default (str):</span>
 <span class="sd">            The presumed answer if the user just hits &lt;Enter&gt;.</span>
-<span class="sd">            It must be "yes" (the default), "no" or None (meaning</span>
+<span class="sd">            It must be &quot;yes&quot; (the default), &quot;no&quot; or None (meaning</span>
 <span class="sd">            an answer is required of the user).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        bool: The "answer" return value is True for "yes" or False for "no".</span>
+<span class="sd">        bool: The &quot;answer&quot; return value is True for &quot;yes&quot; or False for &quot;no&quot;.</span>
 
-<span class="sd">    """</span>
-    <span class="n">valid</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"yes"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"ye"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"no"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"n"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;yes&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;ye&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">" [y/n] "</span>
-    <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">"yes"</span><span class="p">:</span>
-        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">" [Y/n] "</span>
-    <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">"no"</span><span class="p">:</span>
-        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">" [y/N] "</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot; [y/n] &quot;</span>
+    <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">&quot;yes&quot;</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot; [Y/n] &quot;</span>
+    <span class="k">elif</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">&quot;no&quot;</span><span class="p">:</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot; [y/N] &quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"invalid default answer: '</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;invalid default answer: &#39;</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">question</span> <span class="o">+</span> <span class="n">prompt</span><span class="p">)</span>
-        <span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">"&gt; "</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
+        <span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;&gt; &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">default</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">valid</span><span class="p">[</span><span class="n">default</span><span class="p">]</span>
         <span class="k">elif</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">valid</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">valid</span><span class="p">[</span><span class="n">choice</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"Please respond with 'yes' or 'no' (or 'y' or 'n').</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span></div>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Please respond with &#39;yes&#39; or &#39;no&#39; (or &#39;y&#39; or &#39;n&#39;).</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="make_dir"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/prompt/index.html#gmprocess.utils.prompt.make_dir">[docs]</a><span class="k">def</span> <span class="nf">make_dir</span><span class="p">(</span><span class="n">pathstr</span><span class="p">,</span> <span class="n">default</span><span class="p">):</span>
     <span class="n">max_tries</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="n">ntries</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">make_ok</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">ppath</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">ppath</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">make_ok</span><span class="p">:</span>
-        <span class="n">ppath</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Please enter the </span><span class="si">{</span><span class="n">pathstr</span><span class="si">}</span><span class="s2">: [</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">] "</span><span class="p">)</span>
+        <span class="n">ppath</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Please enter the </span><span class="si">{</span><span class="n">pathstr</span><span class="si">}</span><span class="s2">: [</span><span class="si">{</span><span class="n">default</span><span class="si">}</span><span class="s2">] &quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">ppath</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
             <span class="n">ppath</span> <span class="o">=</span> <span class="n">default</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">ppath</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">make_ok</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Cannot make directory: </span><span class="si">%s</span><span class="s2">.  Please try again (</span><span class="si">%d</span><span class="s2"> "</span> <span class="s2">"of </span><span class="si">%d</span><span class="s2"> tries)."</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">ppath</span><span class="p">,</span> <span class="n">ntries</span><span class="p">,</span> <span class="n">max_tries</span><span class="p">))))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Cannot make directory: </span><span class="si">%s</span><span class="s2">.  Please try again (</span><span class="si">%d</span><span class="s2"> &quot;</span> <span class="s2">&quot;of </span><span class="si">%d</span><span class="s2"> tries).&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">ppath</span><span class="p">,</span> <span class="n">ntries</span><span class="p">,</span> <span class="n">max_tries</span><span class="p">))))</span>
             <span class="n">ntries</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">ntries</span> <span class="o">&gt;</span> <span class="n">max_tries</span><span class="p">:</span>
             <span class="k">break</span>
@@ -548,28 +549,28 @@
 
 
 <div class="viewcode-block" id="set_project_paths"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/prompt/index.html#gmprocess.utils.prompt.set_project_paths">[docs]</a><span class="k">def</span> <span class="nf">set_project_paths</span><span class="p">(</span><span class="n">default_conf</span><span class="p">,</span> <span class="n">default_data</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to set project directories.</span>
-<span class="sd">    """</span>
-    <span class="n">new_conf_path</span><span class="p">,</span> <span class="n">conf_ok</span> <span class="o">=</span> <span class="n">make_dir</span><span class="p">(</span><span class="s2">"conf path"</span><span class="p">,</span> <span class="n">default_conf</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_conf_path</span><span class="p">,</span> <span class="n">conf_ok</span> <span class="o">=</span> <span class="n">make_dir</span><span class="p">(</span><span class="s2">&quot;conf path&quot;</span><span class="p">,</span> <span class="n">default_conf</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">conf_ok</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                 <span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
-                    <span class="s2">"Please try to find a path that can be created on this "</span>
-                    <span class="s2">"system and then try again. Exiting."</span>
+                    <span class="s2">&quot;Please try to find a path that can be created on this &quot;</span>
+                    <span class="s2">&quot;system and then try again. Exiting.&quot;</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">new_conf_path</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">new_data_path</span><span class="p">,</span> <span class="n">data_ok</span> <span class="o">=</span> <span class="n">make_dir</span><span class="p">(</span><span class="s2">"data path"</span><span class="p">,</span> <span class="n">default_data</span><span class="p">)</span>
+    <span class="n">new_data_path</span><span class="p">,</span> <span class="n">data_ok</span> <span class="o">=</span> <span class="n">make_dir</span><span class="p">(</span><span class="s2">&quot;data path&quot;</span><span class="p">,</span> <span class="n">default_data</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">data_ok</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                 <span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
-                    <span class="s2">"Please try to find a path that can be created on this "</span>
-                    <span class="s2">"system and then try again. Exiting."</span>
+                    <span class="s2">&quot;Please try to find a path that can be created on this &quot;</span>
+                    <span class="s2">&quot;system and then try again. Exiting.&quot;</span>
                 <span class="p">)</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -579,33 +580,33 @@
 
 
 <div class="viewcode-block" id="get_default_project_paths"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/prompt/index.html#gmprocess.utils.prompt.get_default_project_paths">[docs]</a><span class="k">def</span> <span class="nf">get_default_project_paths</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to get default project paths.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">default_project_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">"~"</span><span class="p">),</span> <span class="s2">"gmprocess_projects"</span><span class="p">,</span> <span class="n">project</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s2">&quot;gmprocess_projects&quot;</span><span class="p">,</span> <span class="n">project</span>
     <span class="p">)</span>
-    <span class="n">default_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">default_project_path</span><span class="p">,</span> <span class="s2">"conf"</span><span class="p">)</span>
-    <span class="n">default_data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">default_project_path</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">)</span>
+    <span class="n">default_conf</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">default_project_path</span><span class="p">,</span> <span class="s2">&quot;conf&quot;</span><span class="p">)</span>
+    <span class="n">default_data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">default_project_path</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
-                <span class="s2">"You will be prompted to supply two directories for this project:"</span>
+                <span class="s2">&quot;You will be prompted to supply two directories for this project:&quot;</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">"</span><span class="se">\n</span><span class="s2">   "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
-                <span class="s2">" - A *config* path, which will store the gmprocess config files."</span>
+                <span class="s2">&quot; - A *config* path, which will store the gmprocess config files.&quot;</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">"</span><span class="se">\n</span><span class="s2">   "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">   &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span>
-                <span class="s2">" - A *data* path, under which will be created directories for "</span>
-                <span class="s2">"each event processed.</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">&quot; - A *data* path, under which will be created directories for &quot;</span>
+                <span class="s2">&quot;each event processed.</span><span class="se">\n</span><span class="s2">&quot;</span>
             <span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>

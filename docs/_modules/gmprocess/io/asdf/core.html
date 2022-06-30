@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.asdf.core - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.asdf.core - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -492,11 +493,11 @@
 <span class="kn">from</span> <span class="nn">.stream_workspace</span> <span class="kn">import</span> <span class="n">StreamWorkspace</span>
 <span class="kn">from</span> <span class="nn">...</span> <span class="kn">import</span> <span class="n">__version__</span> <span class="k">as</span> <span class="n">VERSION</span>
 
-<span class="n">TIMEPAT</span> <span class="o">=</span> <span class="s2">"[0-9]</span><span class="si">{4}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">T"</span>
+<span class="n">TIMEPAT</span> <span class="o">=</span> <span class="s2">&quot;[0-9]</span><span class="si">{4}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">-[0-9]</span><span class="si">{2}</span><span class="s2">T&quot;</span>
 
 
 <div class="viewcode-block" id="is_asdf"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/core/index.html#gmprocess.io.asdf.core.is_asdf">[docs]</a><span class="k">def</span> <span class="nf">is_asdf</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Verify that the input file is an ASDF file.</span>
+    <span class="sd">&quot;&quot;&quot;Verify that the input file is an ASDF file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str):</span>
@@ -506,10 +507,10 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: True if ASDF, False if not.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">"AuxiliaryData"</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;AuxiliaryData&quot;</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
@@ -518,7 +519,7 @@
 
 
 <div class="viewcode-block" id="read_asdf"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/core/index.html#gmprocess.io.asdf.core.read_asdf">[docs]</a><span class="k">def</span> <span class="nf">read_asdf</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">eventid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Read Streams of data (complete with processing metadata) from an ASDF</span>
+    <span class="sd">&quot;&quot;&quot;Read Streams of data (complete with processing metadata) from an ASDF</span>
 <span class="sd">    file.</span>
 
 <span class="sd">    Args:</span>
@@ -531,7 +532,7 @@
 <span class="sd">        list:</span>
 <span class="sd">            List of StationStreams containing processing</span>
 <span class="sd">            and channel metadata.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">workspace</span> <span class="o">=</span> <span class="n">StreamWorkspace</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">eventids</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">getEventIds</span><span class="p">()</span>
     <span class="n">allstreams</span> <span class="o">=</span> <span class="p">[]</span>
@@ -548,7 +549,7 @@
 
 
 <div class="viewcode-block" id="write_asdf"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/asdf/core/index.html#gmprocess.io.asdf.core.write_asdf">[docs]</a><span class="k">def</span> <span class="nf">write_asdf</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">streams</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Write a number of streams (raw or processed) into an ASDF file.</span>
+    <span class="sd">&quot;&quot;&quot;Write a number of streams (raw or processed) into an ASDF file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        filename (str):</span>
@@ -559,7 +560,7 @@
 <span class="sd">            Obspy event object or dict (see get_event_dict())</span>
 <span class="sd">        label (str):</span>
 <span class="sd">            Label to append to all streams being added to ASDF file.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">workspace</span> <span class="o">=</span> <span class="n">StreamWorkspace</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">workspace</span><span class="o">.</span><span class="n">addStreams</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">streams</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">gmprocess_version</span><span class="o">=</span><span class="n">VERSION</span><span class="p">)</span>
     <span class="n">workspace</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>

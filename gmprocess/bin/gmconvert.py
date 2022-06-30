@@ -83,6 +83,10 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
     parser.add_argument(
         "-i", "--indir", help="Directory containing input files to convert."
     )
+    labelhelp = (
+        "Only used when converting from ASDF to specify the stream label to use."
+    )
+    parser.add_argument("-l", "--label", help=labelhelp, default="default")
     parser.add_argument("-o", "--outdir", help="Output directory.", default=os.getcwd())
     parser.add_argument(
         "-f",
@@ -127,7 +131,7 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         for dfile in args.files:
             logging.info(f"Parsing {dfile}...")
             try:
-                streams = readmod.read_data(dfile)
+                streams = readmod.read_data(dfile, label=args.label)
             except BaseException as e:
                 error_dict[dfile] = str(e)
                 continue
@@ -138,17 +142,24 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         error_dict = dict(zip(unprocessed, errors))
 
     sc = streamcollection.StreamCollection(allstreams)
-
     for stream in sc:
+        for tr in stream:
+            tag = tr.stats.tag
+            if tag:
+                label = tag.split("_")[1]
+                trace_id = f"{tr.get_id()}_{label}"
+            else:
+                trace_id = tr.get_id()
+            outfile = os.path.join(outdir, f"{trace_id}.{oformat.lower()}")
+            logging.info(f"Writing data file {outfile}...")
+            tr.write(outfile, format=oformat)
+
         streamid = stream.get_id()
         if len(stream) == 1:
             streamid = stream[0].get_id()
-        outfile = os.path.join(outdir, f"{streamid}.{oformat.lower()}")
         invfile = os.path.join(outdir, f"{streamid}.xml")
         inv_format = "STATIONXML"
         inv = stream.getInventory()
-        logging.info(f"Writing data file {outfile}...")
-        stream.write(outfile, format=oformat)
         logging.info(f"Writing inventory file {invfile}...")
         inv.write(invfile, format=inv_format)
 

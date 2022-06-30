@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.bin.gmworkspace - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.bin.gmworkspace - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -481,10 +482,10 @@
         <article role="main">
           <h1>Source code for gmprocess.bin.gmworkspace</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Python script used to query information about the ASDF workspace stored as</span>
 <span class="sd">an HDF5 file.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 
 <span class="c1"># stdlib imports</span>
@@ -498,24 +499,24 @@
 <span class="c1"># local imports</span>
 <span class="kn">from</span> <span class="nn">gmprocess.io.asdf.utils</span> <span class="kn">import</span> <span class="n">TallyStorage</span>
 
-<span class="n">INDENT</span> <span class="o">=</span> <span class="s2">" "</span> <span class="o">*</span> <span class="mi">4</span>
+<span class="n">INDENT</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="mi">4</span>
 
 
 <div class="viewcode-block" id="format_helptext"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html#gmprocess.bin.gmworkspace.format_helptext">[docs]</a><span class="k">def</span> <span class="nf">format_helptext</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-    <span class="sd">"""Format help text, including wrapping."""</span>
-    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">))</span></div>
+    <span class="sd">&quot;&quot;&quot;Format help text, including wrapping.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">textwrap</span><span class="o">.</span><span class="n">wrap</span><span class="p">(</span><span class="n">text</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="WorkspaceApp"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html#gmprocess.bin.gmworkspace.WorkspaceApp">[docs]</a><span class="k">class</span> <span class="nc">WorkspaceApp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">"""Application for simple queries of the workspace."""</span>
+    <span class="sd">&quot;&quot;&quot;Application for simple queries of the workspace.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Constructor"""</span>
+        <span class="sd">&quot;&quot;&quot;Constructor&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">h5</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">return</span>
 
 <div class="viewcode-block" id="WorkspaceApp.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html#gmprocess.bin.gmworkspace.WorkspaceApp.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">"""Application driver.</span>
+        <span class="sd">&quot;&quot;&quot;Application driver.</span>
 
 <span class="sd">        Keyword arguments:</span>
 <span class="sd">            filename (str):</span>
@@ -526,9 +527,9 @@
 
 <span class="sd">            compute_storage (bool):</span>
 <span class="sd">                Show storage used by workspace.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">args</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_command_line</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">h5</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h5</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">describe</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
@@ -540,14 +541,14 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="WorkspaceApp.describe"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html#gmprocess.bin.gmworkspace.WorkspaceApp.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Show a summary of the workspace contents.</span>
+        <span class="sd">&quot;&quot;&quot;Show a summary of the workspace contents.</span>
 
 <span class="sd">        For groups the entire path is show. For datasets the name,</span>
 <span class="sd">        dimensions, and type are shown.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">_print_dataset</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
-            <span class="sd">"""Print dataset information to stdout.</span>
+            <span class="sd">&quot;&quot;&quot;Print dataset information to stdout.</span>
 
 <span class="sd">            Args:</span>
 <span class="sd">                name (str):</span>
@@ -555,19 +556,19 @@
 
 <span class="sd">                dataset (h5py.Dataset):</span>
 <span class="sd">                    HDF5 dataset</span>
-<span class="sd">            """</span>
-            <span class="n">shape</span> <span class="o">=</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">])</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">])</span>
             <span class="n">indent</span> <span class="o">=</span> <span class="n">INDENT</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">indent</span><span class="si">}{</span><span class="n">name</span><span class="si">}</span><span class="s2"> dims=(</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">) type=</span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">indent</span><span class="si">}{</span><span class="n">name</span><span class="si">}</span><span class="s2"> dims=(</span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">) type=</span><span class="si">{</span><span class="n">dataset</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="k">def</span> <span class="nf">_print_group</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
-            <span class="sd">"""Print group information to stdout.</span>
+            <span class="sd">&quot;&quot;&quot;Print group information to stdout.</span>
 
 <span class="sd">            Args:</span>
 <span class="sd">                items (iterable):</span>
 <span class="sd">                   Iterable object of items in a group.</span>
-<span class="sd">            """</span>
+<span class="sd">            &quot;&quot;&quot;</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">Group</span><span class="p">):</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -576,8 +577,8 @@
                     <span class="n">_print_dataset</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s2">"HDF5 item '</span><span class="si">{}</span><span class="s2">' is of type '</span><span class="si">{}</span><span class="s2">', expected "</span>
-                        <span class="s2">"'h5.Dataset' or 'h5.Group'"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
+                        <span class="s2">&quot;HDF5 item &#39;</span><span class="si">{}</span><span class="s2">&#39; is of type &#39;</span><span class="si">{}</span><span class="s2">&#39;, expected &quot;</span>
+                        <span class="s2">&quot;&#39;h5.Dataset&#39; or &#39;h5.Group&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
                     <span class="p">)</span>
             <span class="k">return</span>
 
@@ -585,13 +586,13 @@
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="WorkspaceApp.compute_storage"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html#gmprocess.bin.gmworkspace.WorkspaceApp.compute_storage">[docs]</a>    <span class="k">def</span> <span class="nf">compute_storage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""Compute the storage of items in a workspace."""</span>
+        <span class="sd">&quot;&quot;&quot;Compute the storage of items in a workspace.&quot;&quot;&quot;</span>
         <span class="n">GROUP_DETAIL</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">"AuxiliaryData"</span><span class="p">,</span>
+            <span class="s2">&quot;AuxiliaryData&quot;</span><span class="p">,</span>
         <span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">_print_subtotal</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-            <span class="sd">"""Print the subtotal for a group to stdout.</span>
+            <span class="sd">&quot;&quot;&quot;Print the subtotal for a group to stdout.</span>
 
 <span class="sd">            Args:</span>
 <span class="sd">                name (str):</span>
@@ -602,11 +603,11 @@
 
 <span class="sd">                level (int):</span>
 <span class="sd">                   Level of group in HDF5 hierarchy (root level is 0).</span>
-<span class="sd">            """</span>
-            <span class="n">mb</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s2">"total_bytes"</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">20</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">INDENT</span> <span class="o">*</span> <span class="n">level</span><span class="si">}{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">mb</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">subgroup</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s2">"groups"</span><span class="p">]:</span>
-                <span class="n">_print_subtotal</span><span class="p">(</span><span class="n">subgroup</span><span class="p">,</span> <span class="n">group</span><span class="p">[</span><span class="s2">"groups"</span><span class="p">][</span><span class="n">subgroup</span><span class="p">],</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">mb</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;total_bytes&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="mi">20</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">INDENT</span> <span class="o">*</span> <span class="n">level</span><span class="si">}{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">mb</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">subgroup</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;groups&quot;</span><span class="p">]:</span>
+                <span class="n">_print_subtotal</span><span class="p">(</span><span class="n">subgroup</span><span class="p">,</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;groups&quot;</span><span class="p">][</span><span class="n">subgroup</span><span class="p">],</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">return</span>
 
         <span class="n">storage</span> <span class="o">=</span> <span class="n">TallyStorage</span><span class="p">(</span><span class="n">GROUP_DETAIL</span><span class="p">)</span>
@@ -614,46 +615,46 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">h5</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">store_subtotals</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
         <span class="n">total</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"total_bytes"</span><span class="p">:</span> <span class="n">total_bytes</span><span class="p">,</span>
-            <span class="s2">"groups"</span><span class="p">:</span> <span class="n">groups</span><span class="p">,</span>
+            <span class="s2">&quot;total_bytes&quot;</span><span class="p">:</span> <span class="n">total_bytes</span><span class="p">,</span>
+            <span class="s2">&quot;groups&quot;</span><span class="p">:</span> <span class="n">groups</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">_print_subtotal</span><span class="p">(</span><span class="s2">"Total"</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
+        <span class="n">_print_subtotal</span><span class="p">(</span><span class="s2">&quot;Total&quot;</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
         <span class="k">return</span></div>
 
 <div class="viewcode-block" id="WorkspaceApp._parse_command_line"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/gmworkspace/index.html#gmprocess.bin.gmworkspace.WorkspaceApp._parse_command_line">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_parse_command_line</span><span class="p">():</span>
-        <span class="sd">"""Parse command line arguments.</span>
+        <span class="sd">&quot;&quot;&quot;Parse command line arguments.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            argsparse.Namespace:</span>
 <span class="sd">                Namespace with parsed arguments.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
 
-        <span class="n">help_filename</span> <span class="o">=</span> <span class="n">format_helptext</span><span class="p">(</span><span class="s2">"Name of workspace file."</span><span class="p">)</span>
+        <span class="n">help_filename</span> <span class="o">=</span> <span class="n">format_helptext</span><span class="p">(</span><span class="s2">&quot;Name of workspace file.&quot;</span><span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">"--filename"</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">"store"</span><span class="p">,</span>
-            <span class="n">dest</span><span class="o">=</span><span class="s2">"filename"</span><span class="p">,</span>
+            <span class="s2">&quot;--filename&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span>
             <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
             <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="n">help_filename</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">help_describe</span> <span class="o">=</span> <span class="n">format_helptext</span><span class="p">(</span>
-            <span class="s2">"Print a summary of workspace contents to stdout. Similar to h5dump."</span>
+            <span class="s2">&quot;Print a summary of workspace contents to stdout. Similar to h5dump.&quot;</span>
         <span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">"--describe"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">"describe"</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">help_describe</span>
+            <span class="s2">&quot;--describe&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;describe&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="n">help_describe</span>
         <span class="p">)</span>
 
         <span class="n">help_storage</span> <span class="o">=</span> <span class="n">format_helptext</span><span class="p">(</span>
-            <span class="s2">"Print a summary of the workspace storage to stdout."</span>
+            <span class="s2">&quot;Print a summary of the workspace storage to stdout.&quot;</span>
         <span class="p">)</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-            <span class="s2">"--compute-storage"</span><span class="p">,</span>
-            <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
-            <span class="n">dest</span><span class="o">=</span><span class="s2">"compute_storage"</span><span class="p">,</span>
+            <span class="s2">&quot;--compute-storage&quot;</span><span class="p">,</span>
+            <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+            <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;compute_storage&quot;</span><span class="p">,</span>
             <span class="n">help</span><span class="o">=</span><span class="n">help_storage</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -666,7 +667,7 @@
     <span class="n">WorkspaceApp</span><span class="p">()</span><span class="o">.</span><span class="n">main</span><span class="p">()</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
         </article>

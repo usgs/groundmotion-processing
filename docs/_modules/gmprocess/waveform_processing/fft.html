@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.fft - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.fft - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -490,7 +491,7 @@
 
 
 <div class="viewcode-block" id="compute_and_smooth_spectrum"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/fft/index.html#gmprocess.waveform_processing.fft.compute_and_smooth_spectrum">[docs]</a><span class="k">def</span> <span class="nf">compute_and_smooth_spectrum</span><span class="p">(</span><span class="n">tr</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nfft</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute raw and smoothed signal spectrum for a given trace.</span>
 
 <span class="sd">    Args:</span>
@@ -500,7 +501,7 @@
 <span class="sd">           Konno-Omachi smoothing bandwidth parameter.</span>
 <span class="sd">        section (str):</span>
 <span class="sd">            Determines the name for the spectrum located in the Cache. This is</span>
-<span class="sd">            usually either "signal" or "noise".</span>
+<span class="sd">            usually either &quot;signal&quot; or &quot;noise&quot;.</span>
 <span class="sd">        window (StationTrace):</span>
 <span class="sd">            Smaller window of the trace for computing the spectrum (usually</span>
 <span class="sd">            either the signal or noise window). If not provided, then the</span>
@@ -514,7 +515,7 @@
 <span class="sd">        StationTrace with signal spectrum dictionaries added as trace</span>
 <span class="sd">        parameters.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">nfft</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">nfft</span> <span class="o">=</span> <span class="n">next_pow_2</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -523,17 +524,17 @@
     <span class="n">spec_raw</span><span class="p">,</span> <span class="n">freqs_raw</span> <span class="o">=</span> <span class="n">compute_fft</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">nfft</span><span class="p">)</span>
     <span class="n">spec_smooth</span><span class="p">,</span> <span class="n">freqs_smooth</span> <span class="o">=</span> <span class="n">smooth_spectrum</span><span class="p">(</span><span class="n">spec_raw</span><span class="p">,</span> <span class="n">freqs_raw</span><span class="p">,</span> <span class="n">nfft</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">)</span>
 
-    <span class="n">raw_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"spec"</span><span class="p">:</span> <span class="n">spec_raw</span><span class="p">,</span> <span class="s2">"freq"</span><span class="p">:</span> <span class="n">freqs_raw</span><span class="p">}</span>
-    <span class="n">smooth_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"spec"</span><span class="p">:</span> <span class="n">spec_smooth</span><span class="p">,</span> <span class="s2">"freq"</span><span class="p">:</span> <span class="n">freqs_smooth</span><span class="p">}</span>
+    <span class="n">raw_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">spec_raw</span><span class="p">,</span> <span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="n">freqs_raw</span><span class="p">}</span>
+    <span class="n">smooth_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;spec&quot;</span><span class="p">:</span> <span class="n">spec_smooth</span><span class="p">,</span> <span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="n">freqs_smooth</span><span class="p">}</span>
 
-    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">_spectrum"</span><span class="p">,</span> <span class="n">raw_dict</span><span class="p">)</span>
-    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="sa">f</span><span class="s2">"smooth_</span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">_spectrum"</span><span class="p">,</span> <span class="n">smooth_dict</span><span class="p">)</span>
+    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">_spectrum&quot;</span><span class="p">,</span> <span class="n">raw_dict</span><span class="p">)</span>
+    <span class="n">tr</span><span class="o">.</span><span class="n">setCached</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;smooth_</span><span class="si">{</span><span class="n">section</span><span class="si">}</span><span class="s2">_spectrum&quot;</span><span class="p">,</span> <span class="n">smooth_dict</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">tr</span></div>
 
 
 <div class="viewcode-block" id="compute_fft"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/fft/index.html#gmprocess.waveform_processing.fft.compute_fft">[docs]</a><span class="k">def</span> <span class="nf">compute_fft</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">nfft</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the FFT of a trace, given the number of points for the FFT.</span>
 <span class="sd">    This uses our convention where we multiply the spectra by the sampling</span>
 <span class="sd">    interval.</span>
@@ -546,7 +547,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: Amplitude data and frequencies.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dt</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
     <span class="n">spec</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfft</span><span class="p">(</span><span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">nfft</span><span class="p">))</span> <span class="o">*</span> <span class="n">dt</span>
     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">rfftfreq</span><span class="p">(</span><span class="n">nfft</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
@@ -554,7 +555,7 @@
 
 
 <div class="viewcode-block" id="smooth_spectrum"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/fft/index.html#gmprocess.waveform_processing.fft.smooth_spectrum">[docs]</a><span class="k">def</span> <span class="nf">smooth_spectrum</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">nfft</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Smooths the amplitude spectrum following the algorithm of</span>
 <span class="sd">    Konno and Ohmachi.</span>
 
@@ -570,7 +571,7 @@
 
 <span class="sd">    Returns:</span>
 <span class="sd">        numpy.ndarray: Smoothed amplitude data and frequencies.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Do a maximum of 301 K-O frequencies in the range of the fft freqs</span>
     <span class="n">nkofreqs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">nfft</span><span class="p">,</span> <span class="mi">302</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>

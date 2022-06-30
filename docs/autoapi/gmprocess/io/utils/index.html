@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.metrics" href="../../metrics/index.html" /><link rel="prev" title="gmprocess.io.stream" href="../stream/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.utils - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.utils - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,19 +487,20 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.is_binary" title="gmprocess.io.utils.is_binary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_binary</span></code></a>(filename)</p></td>
 <td><p>Check if file is binary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced" title="gmprocess.io.utils.is_evenly_spaced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_evenly_spaced</span></code></a>(times, rtol=1e-06, atol=1e-08)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced" title="gmprocess.io.utils.is_evenly_spaced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_evenly_spaced</span></code></a>(times, rtol=1e-06, atol=1e-08)</p></td>
 <td><p>Checks whether times are evenly spaced.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace" title="gmprocess.io.utils.resample_uneven_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample_uneven_trace</span></code></a>(trace, times, data, resample_rate=None, method='linear', config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace" title="gmprocess.io.utils.resample_uneven_trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resample_uneven_trace</span></code></a>(trace, times, data, resample_rate=None, method='linear', config=None)</p></td>
 <td><p>Resample unevenly spaced data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils.flatten_directory" title="gmprocess.io.utils.flatten_directory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten_directory</span></code></a>(directory)</p></td>
@@ -514,25 +516,29 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils.DUPLICATE_MARKER" title="gmprocess.io.utils.DUPLICATE_MARKER"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DUPLICATE_MARKER</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.utils.DUPLICATE_MARKER">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">DUPLICATE_MARKER</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">1</span></em><a class="headerlink" href="#gmprocess.io.utils.DUPLICATE_MARKER" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils.is_binary">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">is_binary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#is_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.is_binary" title="Permalink to this definition">#</a></dt>
@@ -549,6 +555,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils.is_evenly_spaced">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">is_evenly_spaced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#is_evenly_spaced"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.is_evenly_spaced" title="Permalink to this definition">#</a></dt>
@@ -569,6 +576,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils.resample_uneven_trace">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">resample_uneven_trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#resample_uneven_trace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.resample_uneven_trace" title="Permalink to this definition">#</a></dt>
@@ -592,6 +600,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils.flatten_directory">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">flatten_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#flatten_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils.flatten_directory" title="Permalink to this definition">#</a></dt>
@@ -609,18 +618,22 @@ to be read in with teh directory_to_streams method.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils._walk_and_unzip">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">_walk_and_unzip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#_walk_and_unzip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils._walk_and_unzip" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils._split_all_path">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">_split_all_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#_split_all_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils._split_all_path" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.io.utils._handle_duplicates">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">_handle_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#_handle_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils._handle_duplicates" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 </section>
 </section>
 </section>

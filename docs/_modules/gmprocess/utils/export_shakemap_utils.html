@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.export_shakemap_utils - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.export_shakemap_utils - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -506,9 +507,9 @@
     <span class="n">label</span><span class="p">,</span>
     <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">expanded_imts</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">gmprocess_version</span><span class="o">=</span><span class="s2">"unknown"</span><span class="p">,</span>
+    <span class="n">gmprocess_version</span><span class="o">=</span><span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""Create JSON file for ground motion parametric data.</span>
+    <span class="sd">&quot;&quot;&quot;Create JSON file for ground motion parametric data.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        workspace (StreamWorkspace):</span>
@@ -527,7 +528,7 @@
 <span class="sd">            expand for other IMTs also.</span>
 <span class="sd">        gmprocess_version (str):</span>
 <span class="sd">            gmprocess version.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">features</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="n">station_features</span> <span class="o">=</span> <span class="p">[]</span>
@@ -538,7 +539,7 @@
         <span class="k">if</span> <span class="n">stream</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
             <span class="n">npassed</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">npassed</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"No strong motion data found that passes tests. Exiting."</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No strong motion data found that passes tests. Exiting.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
     <span class="c1"># Creating a new provenance document and filling in the software</span>
@@ -558,25 +559,25 @@
         <span class="c1"># channel dictionary with all information about the metrics</span>
         <span class="n">feature</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="n">properties</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"network_code"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"station_code"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
-        <span class="c1"># properties['location_code'] = stream[0].stats.location</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"provider"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"instrument"</span><span class="p">]</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"source_format"</span><span class="p">]</span>
-        <span class="n">struct_desc</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"structure_type"</span><span class="p">]</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;network_code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;station_code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
+        <span class="c1"># properties[&#39;location_code&#39;] = stream[0].stats.location</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;provider&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;source_format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;source_format&quot;</span><span class="p">]</span>
+        <span class="n">struct_desc</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;structure_type&quot;</span><span class="p">]</span>
         <span class="n">struct_type</span> <span class="o">=</span> <span class="n">_get_cosmos_code</span><span class="p">(</span><span class="n">struct_desc</span><span class="p">)</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"station_housing"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"cosmos_code"</span><span class="p">:</span> <span class="n">struct_type</span><span class="p">,</span>
-            <span class="s2">"description"</span><span class="p">:</span> <span class="n">struct_desc</span><span class="p">,</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;station_housing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;cosmos_code&quot;</span><span class="p">:</span> <span class="n">struct_type</span><span class="p">,</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">struct_desc</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">nfeatures</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="n">metrics</span> <span class="o">=</span> <span class="n">workspace</span><span class="o">.</span><span class="n">getStreamMetrics</span><span class="p">(</span>
             <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-            <span class="n">properties</span><span class="p">[</span><span class="s2">"network_code"</span><span class="p">],</span>
-            <span class="n">properties</span><span class="p">[</span><span class="s2">"station_code"</span><span class="p">],</span>
+            <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;network_code&quot;</span><span class="p">],</span>
+            <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;station_code&quot;</span><span class="p">],</span>
             <span class="n">label</span><span class="p">,</span>
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
         <span class="p">)</span>
@@ -597,7 +598,7 @@
             <span class="n">station_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station_feature</span><span class="p">)</span>
 
         <span class="n">components</span> <span class="o">=</span> <span class="n">get_components</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"components"</span><span class="p">]</span> <span class="o">=</span> <span class="n">components</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;components&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">components</span>
 
         <span class="n">provenance</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -606,46 +607,46 @@
 
             <span class="c1"># get trace provenance</span>
             <span class="n">provthing</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">getProvenanceDocument</span><span class="p">(</span><span class="n">base_prov</span><span class="o">=</span><span class="n">base_prov</span><span class="p">)</span>
-            <span class="n">provjson</span> <span class="o">=</span> <span class="n">provthing</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"json"</span><span class="p">)</span>
+            <span class="n">provjson</span> <span class="o">=</span> <span class="n">provthing</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
             <span class="n">provenance_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">provjson</span><span class="p">)</span>
             <span class="n">provenance</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="n">provenance_dict</span>
 
-        <span class="n">properties</span><span class="p">[</span><span class="s2">"provenance"</span><span class="p">]</span> <span class="o">=</span> <span class="n">provenance</span>
-        <span class="n">feature</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Point"</span><span class="p">,</span> <span class="s2">"coordinates"</span><span class="p">:</span> <span class="n">coordinates</span><span class="p">}</span>
-        <span class="n">feature</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Feature"</span>
+        <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;provenance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">provenance</span>
+        <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="n">coordinates</span><span class="p">}</span>
+        <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Feature&quot;</span>
 
         <span class="n">properties</span> <span class="o">=</span> <span class="n">replace_nan</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
 
-        <span class="n">feature</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
+        <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
         <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
 
     <span class="n">event_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"id"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
-        <span class="s2">"time"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">EVENT_TIMEFMT</span><span class="p">),</span>
-        <span class="s2">"location"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-        <span class="s2">"latitude"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-        <span class="s2">"longitude"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-        <span class="s2">"depth"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
-        <span class="s2">"magnitude"</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">EVENT_TIMEFMT</span><span class="p">),</span>
+        <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+        <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+        <span class="s2">&quot;magnitude&quot;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">feature_dict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"FeatureCollection"</span><span class="p">,</span>
-        <span class="s2">"software"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"gmprocess"</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="n">gmprocess_version</span><span class="p">},</span>
-        <span class="s2">"process_time"</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">EVENT_TIMEFMT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"Z"</span><span class="p">,</span>
-        <span class="s2">"event"</span><span class="p">:</span> <span class="n">event_dict</span><span class="p">,</span>
-        <span class="s2">"features"</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;software&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">gmprocess_version</span><span class="p">},</span>
+        <span class="s2">&quot;process_time&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">EVENT_TIMEFMT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="n">event_dict</span><span class="p">,</span>
+        <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="n">station_feature_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"FeatureCollection"</span><span class="p">,</span> <span class="s2">"features"</span><span class="p">:</span> <span class="n">station_features</span><span class="p">}</span>
-    <span class="n">stationfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">_groundmotions_dat.json"</span><span class="p">)</span>
+    <span class="n">station_feature_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span> <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">station_features</span><span class="p">}</span>
+    <span class="n">stationfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">_groundmotions_dat.json&quot;</span><span class="p">)</span>
     <span class="c1"># debugging</span>
     <span class="n">iterdict</span><span class="p">(</span><span class="n">station_feature_dict</span><span class="p">)</span>
     <span class="c1"># end debugging</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">stationfile</span><span class="p">,</span> <span class="s2">"wt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">stationfile</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">station_feature_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="n">jsonfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">_metrics.json"</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">jsonfile</span><span class="p">,</span> <span class="s2">"wt"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">jsonfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">_metrics.json&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">jsonfile</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">feature_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">(</span><span class="n">jsonfile</span><span class="p">,</span> <span class="n">stationfile</span><span class="p">,</span> <span class="n">nfeatures</span><span class="p">)</span></div>
@@ -657,7 +658,7 @@
             <span class="n">iterdict</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">":"</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
+                <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="_get_cosmos_code"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/export_shakemap_utils/index.html#gmprocess.utils.export_shakemap_utils._get_cosmos_code">[docs]</a><span class="k">def</span> <span class="nf">_get_cosmos_code</span><span class="p">(</span><span class="n">desc</span><span class="p">):</span>
@@ -669,43 +670,43 @@
 
 
 <div class="viewcode-block" id="get_station_feature"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/export_shakemap_utils/index.html#gmprocess.utils.export_shakemap_utils.get_station_feature">[docs]</a><span class="k">def</span> <span class="nf">get_station_feature</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">expanded_imts</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="n">scode</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">scode</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">station_feature</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
     <span class="n">station_properties</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-    <span class="n">station_feature</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Feature"</span>
-    <span class="n">station_feature</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">scode</span>
-    <span class="n">station_properties</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span>
+    <span class="n">station_feature</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Feature&quot;</span>
+    <span class="n">station_feature</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scode</span>
+    <span class="n">station_properties</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span>
 
-    <span class="n">station_properties</span><span class="p">[</span><span class="s2">"code"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
-    <span class="n">station_properties</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
-    <span class="n">station_properties</span><span class="p">[</span><span class="s2">"distance"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">distances</span><span class="p">[</span><span class="s2">"epicentral"</span><span class="p">]</span>
-    <span class="c1"># station_properties['source'] = stream[0].stats.standard['source']</span>
-    <span class="n">station_properties</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
+    <span class="n">station_properties</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span>
+    <span class="n">station_properties</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
+    <span class="n">station_properties</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">distances</span><span class="p">[</span><span class="s2">&quot;epicentral&quot;</span><span class="p">]</span>
+    <span class="c1"># station_properties[&#39;source&#39;] = stream[0].stats.standard[&#39;source&#39;]</span>
+    <span class="n">station_properties</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span>
     <span class="n">station_channels</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">station_channel_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"H1"</span><span class="p">,</span> <span class="s2">"H2"</span><span class="p">,</span> <span class="s2">"Z"</span><span class="p">]</span>
+    <span class="n">station_channel_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;H1&quot;</span><span class="p">,</span> <span class="s2">&quot;H2&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">expanded_imts</span><span class="p">:</span>
         <span class="n">imts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="nb">set</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"SA"</span><span class="p">)])</span>
+            <span class="nb">set</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="k">if</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SA&quot;</span><span class="p">)])</span>
         <span class="p">)</span>
         <span class="n">imt_lower</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">imts</span><span class="p">]</span>
-        <span class="n">imt_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">UNITS</span><span class="p">[</span><span class="s2">"SA"</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">imts</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">"PGA"</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-            <span class="n">imts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"PGA"</span><span class="p">)</span>
-            <span class="n">imt_lower</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"pga"</span><span class="p">)</span>
-            <span class="n">imt_units</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UNITS</span><span class="p">[</span><span class="s2">"PGA"</span><span class="p">])</span>
-        <span class="k">if</span> <span class="s2">"PGV"</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
-            <span class="n">imts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"PGV"</span><span class="p">)</span>
-            <span class="n">imt_lower</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"pgv"</span><span class="p">)</span>
-            <span class="n">imt_units</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UNITS</span><span class="p">[</span><span class="s2">"PGV"</span><span class="p">])</span>
+        <span class="n">imt_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;SA&quot;</span><span class="p">]]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">imts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;PGA&quot;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+            <span class="n">imts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;PGA&quot;</span><span class="p">)</span>
+            <span class="n">imt_lower</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;pga&quot;</span><span class="p">)</span>
+            <span class="n">imt_units</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;PGA&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="s2">&quot;PGV&quot;</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+            <span class="n">imts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;PGV&quot;</span><span class="p">)</span>
+            <span class="n">imt_lower</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;pgv&quot;</span><span class="p">)</span>
+            <span class="n">imt_units</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;PGV&quot;</span><span class="p">])</span>
         <span class="n">station_amps</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">imts</span><span class="p">,</span> <span class="nb">zip</span><span class="p">(</span><span class="n">imt_lower</span><span class="p">,</span> <span class="n">imt_units</span><span class="p">))}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">station_amps</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"SA(0.300)"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"sa(0.3)"</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">"SA"</span><span class="p">]),</span>
-            <span class="s2">"SA(1.000)"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"sa(1.0)"</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">"SA"</span><span class="p">]),</span>
-            <span class="s2">"SA(3.000)"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"sa(3.0)"</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">"SA"</span><span class="p">]),</span>
-            <span class="s2">"PGA"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"pga"</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">"PGA"</span><span class="p">]),</span>
-            <span class="s2">"PGV"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"pgv"</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">"PGV"</span><span class="p">]),</span>
+            <span class="s2">&quot;SA(0.300)&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;sa(0.3)&quot;</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;SA&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;SA(1.000)&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;sa(1.0)&quot;</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;SA&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;SA(3.000)&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;sa(3.0)&quot;</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;SA&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;PGA&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pga&quot;</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;PGA&quot;</span><span class="p">]),</span>
+            <span class="s2">&quot;PGV&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;pgv&quot;</span><span class="p">,</span> <span class="n">UNITS</span><span class="p">[</span><span class="s2">&quot;PGV&quot;</span><span class="p">]),</span>
         <span class="p">}</span>
 
     <span class="n">channel_dict</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">channel_dict</span>
@@ -713,34 +714,34 @@
     <span class="k">for</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="n">station_channel_names</span><span class="p">:</span>
         <span class="n">station_channel</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">channel_name</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
-            <span class="n">station_channel</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_dict</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span>
+            <span class="n">station_channel</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_dict</span><span class="p">[</span><span class="n">channel_name</span><span class="p">]</span>
             <span class="n">station_amplitudes</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">gm_imt</span><span class="p">,</span> <span class="n">station_tuple</span> <span class="ow">in</span> <span class="n">station_amps</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="n">imt_value</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get_pgm</span><span class="p">(</span><span class="n">gm_imt</span><span class="p">,</span> <span class="n">channel_name</span><span class="p">)</span>
                 <span class="n">station_amplitude</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
-                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">"ln_sigma"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">"flag"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">"value"</span><span class="p">]</span> <span class="o">=</span> <span class="n">imt_value</span>
-                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">"units"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">&quot;ln_sigma&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">&quot;flag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imt_value</span>
+                <span class="n">station_amplitude</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
                 <span class="n">station_amplitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station_amplitude</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-            <span class="n">station_channel</span><span class="p">[</span><span class="s2">"amplitudes"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_amplitudes</span>
+            <span class="n">station_channel</span><span class="p">[</span><span class="s2">&quot;amplitudes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_amplitudes</span>
             <span class="n">station_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station_channel</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_channels</span><span class="p">):</span>
-        <span class="n">station_properties</span><span class="p">[</span><span class="s2">"channels"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_channels</span>
+        <span class="n">station_properties</span><span class="p">[</span><span class="s2">&quot;channels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_channels</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">station_feature</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_properties</span>
-    <span class="n">station_feature</span><span class="p">[</span><span class="s2">"geometry"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"Point"</span><span class="p">,</span> <span class="s2">"coordinates"</span><span class="p">:</span> <span class="n">coordinates</span><span class="p">}</span>
+    <span class="n">station_feature</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_properties</span>
+    <span class="n">station_feature</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Point&quot;</span><span class="p">,</span> <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="n">coordinates</span><span class="p">}</span>
     <span class="k">return</span> <span class="n">station_feature</span></div>
 
 
 <div class="viewcode-block" id="get_components"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/export_shakemap_utils/index.html#gmprocess.utils.export_shakemap_utils.get_components">[docs]</a><span class="k">def</span> <span class="nf">get_components</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
-    <span class="n">FLOAT_MATCH</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"[0-9]*\.[0-9]*"</span>
+    <span class="n">FLOAT_MATCH</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;[0-9]*\.[0-9]*&quot;</span>
     <span class="n">components</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"H1"</span><span class="p">,</span> <span class="s2">"H2"</span><span class="p">,</span> <span class="s2">"Z"</span><span class="p">]:</span>
-            <span class="n">imtlist</span> <span class="o">=</span> <span class="n">COMPONENTS</span><span class="p">[</span><span class="s2">"CHANNELS"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;H1&quot;</span><span class="p">,</span> <span class="s2">&quot;H2&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]:</span>
+            <span class="n">imtlist</span> <span class="o">=</span> <span class="n">COMPONENTS</span><span class="p">[</span><span class="s2">&quot;CHANNELS&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">imtlist</span> <span class="o">=</span> <span class="n">COMPONENTS</span><span class="p">[</span><span class="n">imc</span><span class="p">]</span>
         <span class="n">measures</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
@@ -749,36 +750,36 @@
         <span class="n">fourier_amplitudes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">fourier_periods</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">imt</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">imts</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"FAS"</span><span class="p">):</span>
-                <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">"FAS"</span>
-            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"SA"</span><span class="p">):</span>
-                <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">"SA"</span>
+            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;FAS&quot;</span><span class="p">):</span>
+                <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">&quot;FAS&quot;</span>
+            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SA&quot;</span><span class="p">):</span>
+                <span class="n">imtstr</span> <span class="o">=</span> <span class="s2">&quot;SA&quot;</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">imtstr</span> <span class="o">=</span> <span class="n">imt</span>
             <span class="k">if</span> <span class="n">imtstr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">imtlist</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">imt_value</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get_pgm</span><span class="p">(</span><span class="n">imt</span><span class="p">,</span> <span class="n">imc</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">imt_value</span><span class="p">):</span>
-                <span class="n">imt_value</span> <span class="o">=</span> <span class="s2">"null"</span>
-            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"SA"</span><span class="p">):</span>
+                <span class="n">imt_value</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
+            <span class="k">if</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;SA&quot;</span><span class="p">):</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">FLOAT_MATCH</span><span class="p">,</span> <span class="n">imt</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
                 <span class="n">spectral_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imt_value</span><span class="p">)</span>
                 <span class="n">spectral_periods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"FAS"</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;FAS&quot;</span><span class="p">):</span>
                 <span class="n">period</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">FLOAT_MATCH</span><span class="p">,</span> <span class="n">imt</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
                 <span class="n">fourier_amplitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">imt_value</span><span class="p">)</span>
                 <span class="n">fourier_periods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"DURATION"</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">imt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;DURATION&quot;</span><span class="p">):</span>
                 <span class="c1"># TODO - Make interval something retrievable from metrics</span>
                 <span class="n">units</span> <span class="o">=</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="n">imt</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-                <span class="n">measures</span><span class="p">[</span><span class="n">imt</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"value"</span><span class="p">:</span> <span class="n">imt_value</span><span class="p">,</span> <span class="s2">"units"</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span> <span class="s2">"interval"</span><span class="p">:</span> <span class="s2">"5-95"</span><span class="p">}</span>
+                <span class="n">measures</span><span class="p">[</span><span class="n">imt</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">imt_value</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="s2">&quot;5-95&quot;</span><span class="p">}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">units</span> <span class="o">=</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="n">imt</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span>
-                <span class="n">measures</span><span class="p">[</span><span class="n">imt</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"value"</span><span class="p">:</span> <span class="n">imt_value</span><span class="p">,</span> <span class="s2">"units"</span><span class="p">:</span> <span class="n">units</span><span class="p">}</span>
+                <span class="n">measures</span><span class="p">[</span><span class="n">imt</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">imt_value</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">units</span><span class="p">}</span>
 
-        <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"H1"</span><span class="p">,</span> <span class="s2">"H2"</span><span class="p">,</span> <span class="s2">"Z"</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">imc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;H1&quot;</span><span class="p">,</span> <span class="s2">&quot;H2&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">]:</span>
             <span class="n">imcname</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">channel_dict</span><span class="p">[</span><span class="n">imc</span><span class="p">]</span>
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"as_recorded"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;as_recorded&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">ttrace</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">component</span><span class="o">=</span><span class="n">imcname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">azimuth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="n">dip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -798,49 +799,49 @@
                 <span class="n">delta</span> <span class="o">=</span> <span class="n">vel_trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">([</span><span class="n">vel_trace</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;=</span> <span class="n">peak_vel</span><span class="p">])[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">peak_pgv_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="p">(</span><span class="n">delta</span> <span class="o">*</span> <span class="n">idx</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">EVENT_TIMEFMT</span><span class="p">)</span>
-                <span class="k">if</span> <span class="s2">"horizontal_orientation"</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">:</span>
-                    <span class="n">azimuth</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"horizontal_orientation"</span><span class="p">]</span>
-                <span class="n">dip</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">"vertical_orientation"</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;horizontal_orientation&quot;</span> <span class="ow">in</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">:</span>
+                    <span class="n">azimuth</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;horizontal_orientation&quot;</span><span class="p">]</span>
+                <span class="n">dip</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="p">[</span><span class="s2">&quot;vertical_orientation&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">sampling_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-                <span class="n">location_code</span> <span class="o">=</span> <span class="s2">""</span>
+                <span class="n">location_code</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                 <span class="n">peak_pga_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
                 <span class="n">peak_pgv_time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"samples_per_second"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampling_rate</span>
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"location_code"</span><span class="p">]</span> <span class="o">=</span> <span class="n">location_code</span>
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"peak_pga_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">peak_pga_time</span>
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"peak_pgv_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">peak_pgv_time</span>
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"azimuth"</span><span class="p">]</span> <span class="o">=</span> <span class="n">azimuth</span>
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"dip"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dip</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;samples_per_second&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampling_rate</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;location_code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location_code</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;peak_pga_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">peak_pga_time</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;peak_pgv_time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">peak_pgv_time</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;azimuth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">azimuth</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;dip&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dip</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">imcname</span> <span class="o">=</span> <span class="n">imc</span>
-            <span class="n">measures</span><span class="p">[</span><span class="s2">"as_recorded"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">measures</span><span class="p">[</span><span class="s2">&quot;as_recorded&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">components</span><span class="p">[</span><span class="n">imcname</span><span class="p">]</span> <span class="o">=</span> <span class="n">measures</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">spectral_values</span><span class="p">):</span>
-            <span class="n">units</span> <span class="o">=</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"sa"</span><span class="p">]</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">&quot;sa&quot;</span><span class="p">]</span>
             <span class="n">damping</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">damping</span>
-            <span class="n">sa_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"units"</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span> <span class="s2">"damping"</span><span class="p">:</span> <span class="n">damping</span><span class="p">,</span> <span class="s2">"method"</span><span class="p">:</span> <span class="s2">"absolute"</span><span class="p">}</span>
-            <span class="n">sa_dict</span><span class="p">[</span><span class="s2">"values"</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_values</span>
-            <span class="n">sa_dict</span><span class="p">[</span><span class="s2">"periods"</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_periods</span>
-            <span class="n">components</span><span class="p">[</span><span class="n">imcname</span><span class="p">][</span><span class="s2">"SA"</span><span class="p">]</span> <span class="o">=</span> <span class="n">sa_dict</span>
+            <span class="n">sa_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span> <span class="s2">&quot;damping&quot;</span><span class="p">:</span> <span class="n">damping</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;absolute&quot;</span><span class="p">}</span>
+            <span class="n">sa_dict</span><span class="p">[</span><span class="s2">&quot;values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_values</span>
+            <span class="n">sa_dict</span><span class="p">[</span><span class="s2">&quot;periods&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">spectral_periods</span>
+            <span class="n">components</span><span class="p">[</span><span class="n">imcname</span><span class="p">][</span><span class="s2">&quot;SA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sa_dict</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fourier_amplitudes</span><span class="p">):</span>
-            <span class="n">units</span> <span class="o">=</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">"fas"</span><span class="p">]</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">XML_UNITS</span><span class="p">[</span><span class="s2">&quot;fas&quot;</span><span class="p">]</span>
             <span class="n">fas_dict</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">"units"</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span>
-                <span class="s2">"values"</span><span class="p">:</span> <span class="n">fourier_amplitudes</span><span class="p">,</span>
-                <span class="s2">"periods"</span><span class="p">:</span> <span class="n">fourier_periods</span><span class="p">,</span>
+                <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span>
+                <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="n">fourier_amplitudes</span><span class="p">,</span>
+                <span class="s2">&quot;periods&quot;</span><span class="p">:</span> <span class="n">fourier_periods</span><span class="p">,</span>
             <span class="p">}</span>
-            <span class="n">components</span><span class="p">[</span><span class="n">imcname</span><span class="p">][</span><span class="s2">"FAS"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fas_dict</span>
+            <span class="n">components</span><span class="p">[</span><span class="n">imcname</span><span class="p">][</span><span class="s2">&quot;FAS&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fas_dict</span>
     <span class="k">return</span> <span class="n">components</span></div>
 
 
 <div class="viewcode-block" id="replace_nan"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/export_shakemap_utils/index.html#gmprocess.utils.export_shakemap_utils.replace_nan">[docs]</a><span class="k">def</span> <span class="nf">replace_nan</span><span class="p">(</span><span class="n">properties</span><span class="p">):</span>
-    <span class="c1"># replace nans in any field in input dictionary with a "null" string.</span>
+    <span class="c1"># replace nans in any field in input dictionary with a &quot;null&quot; string.</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">)):</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-                <span class="n">properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"null"</span>
+                <span class="n">properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;null&quot;</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="n">properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">replace_nan</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">properties</span></div>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.metrics.rotation.rotd - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.metrics.rotation.rotd - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -488,38 +489,38 @@
 
 
 <div class="viewcode-block" id="Rotd"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/rotd/index.html#gmprocess.metrics.rotation.rotd.Rotd">[docs]</a><span class="k">class</span> <span class="nc">Rotd</span><span class="p">(</span><span class="n">Rotation</span><span class="p">):</span>
-    <span class="sd">"""Class for computing the ROTD rotation."""</span>
+    <span class="sd">&quot;&quot;&quot;Class for computing the ROTD rotation.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            rotation_data (obspy.core.stream.Stream or numpy.ndarray):</span>
 <span class="sd">                Intensity measurement component.</span>
 <span class="sd">            event (ScalarEvent):</span>
 <span class="sd">                Defines the focal time, geographical location and magnitude of</span>
 <span class="sd">                an earthquake hypocenter. Default is None.</span>
-<span class="sd">        """</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_rotd</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Rotd.get_rotd"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/rotd/index.html#gmprocess.metrics.rotation.rotd.Rotd.get_rotd">[docs]</a>    <span class="k">def</span> <span class="nf">get_rotd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">"""</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs ROTD rotation.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            StationStreams with rotated data added to stream parameters with</span>
-<span class="sd">            id "rotd".</span>
-<span class="sd">        """</span>
+<span class="sd">            id &quot;rotd&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">horizontals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_horizontals</span><span class="p">()</span>
         <span class="n">osc1</span><span class="p">,</span> <span class="n">osc2</span> <span class="o">=</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
         <span class="n">rotd</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">osc1</span><span class="p">,</span> <span class="n">osc2</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
-        <span class="n">streams</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span><span class="s2">"rotated"</span><span class="p">,</span> <span class="n">rotd</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">"upsampled"</span><span class="p">):</span>
-            <span class="n">up_osc1</span> <span class="o">=</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"upsampled"</span><span class="p">)[</span><span class="s2">"data"</span><span class="p">]</span>
-            <span class="n">up_osc2</span> <span class="o">=</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">"upsampled"</span><span class="p">)[</span><span class="s2">"data"</span><span class="p">]</span>
+        <span class="n">streams</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span><span class="s2">&quot;rotated&quot;</span><span class="p">,</span> <span class="n">rotd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hasCached</span><span class="p">(</span><span class="s2">&quot;upsampled&quot;</span><span class="p">):</span>
+            <span class="n">up_osc1</span> <span class="o">=</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;upsampled&quot;</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+            <span class="n">up_osc2</span> <span class="o">=</span> <span class="n">horizontals</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;upsampled&quot;</span><span class="p">)[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
             <span class="n">up_rotd</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">up_osc1</span><span class="p">,</span> <span class="n">up_osc2</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="kc">True</span><span class="p">)]</span>
-            <span class="n">streams</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span><span class="s2">"upsampled_rotated"</span><span class="p">,</span> <span class="n">up_rotd</span><span class="p">)</span>
+            <span class="n">streams</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span><span class="s2">&quot;upsampled_rotated&quot;</span><span class="p">,</span> <span class="n">up_rotd</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">streams</span></div></div>
 </pre></div>
         </article>

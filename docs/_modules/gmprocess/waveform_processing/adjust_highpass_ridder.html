@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.adjust_highpass_ridder - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.adjust_highpass_ridder - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -492,7 +493,7 @@
 
 
 <div class="viewcode-block" id="ridder_fchp"><a class="viewcode-back" href="../../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html#gmprocess.waveform_processing.adjust_highpass_ridder.ridder_fchp">[docs]</a><span class="k">def</span> <span class="nf">ridder_fchp</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">maxfc</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Search for highpass corner using Ridder's method.</span>
+    <span class="sd">&quot;&quot;&quot;Search for highpass corner using Ridder&#39;s method.</span>
 
 <span class="sd">    Search such that the criterion that the ratio between the maximum of a third order</span>
 <span class="sd">    polynomial fit to the displacement time series and the maximum of the displacement</span>
@@ -511,31 +512,31 @@
 <span class="sd">        tol (float):</span>
 <span class="sd">            tolereance for matching the ratio target</span>
 <span class="sd">        maxiter (float):</span>
-<span class="sd">            maximum number of allowed iterations in Ridder's method</span>
+<span class="sd">            maximum number of allowed iterations in Ridder&#39;s method</span>
 <span class="sd">        maxfc (float):</span>
 <span class="sd">            Maximum allowable value of the highpass corner freq.</span>
 <span class="sd">        int_method (string):</span>
 <span class="sd">            method used to perform integration between acceleration, velocity, and</span>
-<span class="sd">            dispacement. Options are "frequency_domain", "time_domain_zero_init" or</span>
-<span class="sd">            "time_domain_zero_mean"</span>
+<span class="sd">            dispacement. Options are &quot;frequency_domain&quot;, &quot;time_domain_zero_init&quot; or</span>
+<span class="sd">            &quot;time_domain_zero_mean&quot;</span>
 <span class="sd">        config (dict):</span>
 <span class="sd">            Configuration dictionary (or None). See get_config().</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        StationStream.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
-    <span class="n">processing_steps</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"processing"</span><span class="p">]</span>
+    <span class="n">processing_steps</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;processing&quot;</span><span class="p">]</span>
     <span class="n">ps_names</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">ps</span> <span class="ow">in</span> <span class="n">processing_steps</span><span class="p">]</span>
-    <span class="n">ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ps_names</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"highpass_filter"</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">hp_args</span> <span class="o">=</span> <span class="n">processing_steps</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="s2">"highpass_filter"</span><span class="p">]</span>
+    <span class="n">ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ps_names</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;highpass_filter&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">hp_args</span> <span class="o">=</span> <span class="n">processing_steps</span><span class="p">[</span><span class="n">ind</span><span class="p">][</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">]</span>
 
-    <span class="n">frequency_domain</span> <span class="o">=</span> <span class="n">hp_args</span><span class="p">[</span><span class="s2">"frequency_domain"</span><span class="p">]</span>
+    <span class="n">frequency_domain</span> <span class="o">=</span> <span class="n">hp_args</span><span class="p">[</span><span class="s2">&quot;frequency_domain&quot;</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">frequency_domain</span><span class="p">:</span>
         <span class="n">filter_code</span> <span class="o">=</span> <span class="mi">1</span>
@@ -543,11 +544,11 @@
         <span class="n">filter_code</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="n">initial_corners</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">"corner_frequencies"</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">initial_corners</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"reviewed"</span><span class="p">:</span>
+        <span class="n">initial_corners</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;corner_frequencies&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">initial_corners</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;reviewed&quot;</span><span class="p">:</span>
             <span class="k">continue</span>
 
-        <span class="n">initial_f_hp</span> <span class="o">=</span> <span class="n">initial_corners</span><span class="p">[</span><span class="s2">"highpass"</span><span class="p">]</span>
+        <span class="n">initial_f_hp</span> <span class="o">=</span> <span class="n">initial_corners</span><span class="p">[</span><span class="s2">&quot;highpass&quot;</span><span class="p">]</span>
 
         <span class="n">new_f_hp</span> <span class="o">=</span> <span class="n">get_fchp</span><span class="p">(</span>
             <span class="n">dt</span><span class="o">=</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span>
@@ -562,16 +563,16 @@
 
         <span class="c1"># Method did not converge if new_f_hp reaches maxfc</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">maxfc</span> <span class="o">-</span> <span class="n">new_f_hp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-9</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">"auto_fchp did not find an acceptable f_hp."</span><span class="p">)</span>
+            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;auto_fchp did not find an acceptable f_hp.&quot;</span><span class="p">)</span>
             <span class="k">continue</span>
 
         <span class="k">if</span> <span class="n">new_f_hp</span> <span class="o">&gt;</span> <span class="n">initial_f_hp</span><span class="p">:</span>
             <span class="n">tr</span><span class="o">.</span><span class="n">setParameter</span><span class="p">(</span>
-                <span class="s2">"corner_frequencies"</span><span class="p">,</span>
+                <span class="s2">&quot;corner_frequencies&quot;</span><span class="p">,</span>
                 <span class="p">{</span>
-                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"snr_polyfit"</span><span class="p">,</span>
-                    <span class="s2">"highpass"</span><span class="p">:</span> <span class="n">new_f_hp</span><span class="p">,</span>
-                    <span class="s2">"lowpass"</span><span class="p">:</span> <span class="n">initial_corners</span><span class="p">[</span><span class="s2">"lowpass"</span><span class="p">],</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;snr_polyfit&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;highpass&quot;</span><span class="p">:</span> <span class="n">new_f_hp</span><span class="p">,</span>
+                    <span class="s2">&quot;lowpass&quot;</span><span class="p">:</span> <span class="n">initial_corners</span><span class="p">[</span><span class="s2">&quot;lowpass&quot;</span><span class="p">],</span>
                 <span class="p">},</span>
             <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>

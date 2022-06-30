@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.pretesting" href="../pretesting/index.html" /><link rel="prev" title="gmprocess.waveform_processing.nn_quality_assurance" href="../nn_quality_assurance/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.phase - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -486,99 +487,108 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.butter_bandpass" title="gmprocess.waveform_processing.phase.butter_bandpass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">butter_bandpass</span></code></a>(lowcut, highcut, fs, order=5)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.butter_bandpass" title="gmprocess.waveform_processing.phase.butter_bandpass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">butter_bandpass</span></code></a>(lowcut, highcut, fs, order=5)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.butter_bandpass_filter" title="gmprocess.waveform_processing.phase.butter_bandpass_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">butter_bandpass_filter</span></code></a>(data, lowcut, highcut, fs, order=5)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.butter_bandpass_filter" title="gmprocess.waveform_processing.phase.butter_bandpass_filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">butter_bandpass_filter</span></code></a>(data, lowcut, highcut, fs, order=5)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.AICPicker" title="gmprocess.waveform_processing.phase.AICPicker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AICPicker</span></code></a>(data, triggers, search_window, sps)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.AICPicker" title="gmprocess.waveform_processing.phase.AICPicker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AICPicker</span></code></a>(data, triggers, search_window, sps)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.STALTA_Earle" title="gmprocess.waveform_processing.phase.STALTA_Earle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STALTA_Earle</span></code></a>(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold, threshold2, threshdrop)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.STALTA_Earle" title="gmprocess.waveform_processing.phase.STALTA_Earle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STALTA_Earle</span></code></a>(data, datao, sps, STAW, STAW2, LTAW, hanning, threshold, threshold2, threshdrop)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.PowerPicker" title="gmprocess.waveform_processing.phase.PowerPicker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PowerPicker</span></code></a>(tr, highpass=1.4, lowpass=6, order=3, sta=3.0, sta2=3.0, lta=20.0, hanningWindow=3.0, threshDetect=2.0, threshDetect2=2.5, threshRestart=99999999)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.PowerPicker" title="gmprocess.waveform_processing.phase.PowerPicker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PowerPicker</span></code></a>(tr, highpass=1.4, lowpass=6, order=3, sta=3.0, sta2=3.0, lta=20.0, hanningWindow=3.0, threshDetect=2.0, threshDetect2=2.5, threshRestart=99999999)</p></td>
 <td><p>Pick P-wave arrival time.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_kalkan" title="gmprocess.waveform_processing.phase.pick_kalkan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_kalkan</span></code></a>(stream, picker_config=None, config=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_kalkan" title="gmprocess.waveform_processing.phase.pick_kalkan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_kalkan</span></code></a>(stream, picker_config=None, config=None)</p></td>
 <td><p>Wrapper around the Kalkan P-phase picker.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_ar" title="gmprocess.waveform_processing.phase.pick_ar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_ar</span></code></a>(stream, picker_config=None, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_ar" title="gmprocess.waveform_processing.phase.pick_ar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_ar</span></code></a>(stream, picker_config=None, config=None)</p></td>
 <td><p>Wrapper around the AR P-phase picker.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_baer" title="gmprocess.waveform_processing.phase.pick_baer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_baer</span></code></a>(stream, picker_config=None, config=None)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_baer" title="gmprocess.waveform_processing.phase.pick_baer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_baer</span></code></a>(stream, picker_config=None, config=None)</p></td>
 <td><p>Wrapper around the Baer P-phase picker.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_travel" title="gmprocess.waveform_processing.phase.pick_travel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_travel</span></code></a>(stream, origin, model=None, picker_config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_travel" title="gmprocess.waveform_processing.phase.pick_travel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_travel</span></code></a>(stream, origin, model=None, picker_config=None)</p></td>
 <td><p>Use TauP travel time model to find P-Phase arrival time.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_yeck" title="gmprocess.waveform_processing.phase.pick_yeck"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_yeck</span></code></a>(stream)</p></td>
 <td><p>IN DEVELOPMENT! SNR based P-phase picker.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_power" title="gmprocess.waveform_processing.phase.pick_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_power</span></code></a>(stream, picker_config=None, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pick_power" title="gmprocess.waveform_processing.phase.pick_power"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pick_power</span></code></a>(stream, picker_config=None, config=None)</p></td>
 <td><p>Wrapper around the PowerPicker.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.calc_snr2" title="gmprocess.waveform_processing.phase.calc_snr2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_snr2</span></code></a>(stream, loc)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.calc_snr2" title="gmprocess.waveform_processing.phase.calc_snr2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_snr2</span></code></a>(stream, loc)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.sub_calc_snr" title="gmprocess.waveform_processing.phase.sub_calc_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_calc_snr</span></code></a>(data, pidx)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.sub_calc_snr" title="gmprocess.waveform_processing.phase.sub_calc_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_calc_snr</span></code></a>(data, pidx)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.calc_snr" title="gmprocess.waveform_processing.phase.calc_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_snr</span></code></a>(stream, minloc)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.calc_snr" title="gmprocess.waveform_processing.phase.calc_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_snr</span></code></a>(stream, minloc)</p></td>
 <td><p>Calculate mean SNR for all Traces in a StationStream.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pphase_pick" title="gmprocess.waveform_processing.phase.pphase_pick"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pphase_pick</span></code></a>(trace, period=None, damping=0.6, nbins=None, peak_selection=False)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.pphase_pick" title="gmprocess.waveform_processing.phase.pphase_pick"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pphase_pick</span></code></a>(trace, period=None, damping=0.6, nbins=None, peak_selection=False)</p></td>
 <td><p>Compute P-phase arrival time.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase._get_statelevel" title="gmprocess.waveform_processing.phase._get_statelevel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_statelevel</span></code></a>(y, n)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase._get_statelevel" title="gmprocess.waveform_processing.phase._get_statelevel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_get_statelevel</span></code></a>(y, n)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.create_travel_time_dataframe" title="gmprocess.waveform_processing.phase.create_travel_time_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_travel_time_dataframe</span></code></a>(streams, catalog_file, ddepth, ddist, model)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.create_travel_time_dataframe" title="gmprocess.waveform_processing.phase.create_travel_time_dataframe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_travel_time_dataframe</span></code></a>(streams, catalog_file, ddepth, ddist, model)</p></td>
 <td><p>Creates a travel time dataframe, which contains the phase arrrival times</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.phase.NAN_TIME" title="gmprocess.waveform_processing.phase.NAN_TIME"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NAN_TIME</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.NAN_TIME">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">NAN_TIME</span></span><a class="headerlink" href="#gmprocess.waveform_processing.phase.NAN_TIME" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.butter_bandpass">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">butter_bandpass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lowcut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highcut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#butter_bandpass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.butter_bandpass" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.butter_bandpass_filter">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">butter_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowcut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highcut</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#butter_bandpass_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.butter_bandpass_filter" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.AICPicker">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">AICPicker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">triggers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_window</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#AICPicker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.AICPicker" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.STALTA_Earle">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">STALTA_Earle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datao</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">STAW</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">STAW2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LTAW</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hanning</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshdrop</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#STALTA_Earle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.STALTA_Earle" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.PowerPicker">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">PowerPicker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highpass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowpass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sta2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hanningWindow</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshDetect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshDetect2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshRestart</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">99999999</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#PowerPicker"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.PowerPicker" title="Permalink to this definition">#</a></dt>
@@ -609,6 +619,7 @@ another pick.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.pick_kalkan">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pick_kalkan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pick_kalkan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pick_kalkan" title="Permalink to this definition">#</a></dt>
@@ -644,6 +655,7 @@ See picker.yml.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.pick_ar">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pick_ar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pick_ar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pick_ar" title="Permalink to this definition">#</a></dt>
@@ -678,6 +690,7 @@ See picker.yml.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.pick_baer">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pick_baer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pick_baer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pick_baer" title="Permalink to this definition">#</a></dt>
@@ -712,6 +725,7 @@ See picker.yml.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.pick_travel">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pick_travel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pick_travel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pick_travel" title="Permalink to this definition">#</a></dt>
@@ -736,6 +750,7 @@ See picker.yml.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.pick_yeck">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pick_yeck</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pick_yeck"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pick_yeck" title="Permalink to this definition">#</a></dt>
@@ -756,6 +771,7 @@ See picker.yml.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.pick_power">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pick_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pick_power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pick_power" title="Permalink to this definition">#</a></dt>
@@ -790,14 +806,17 @@ See picker.yml.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.calc_snr2">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">calc_snr2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#calc_snr2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.calc_snr2" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.sub_calc_snr">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">sub_calc_snr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pidx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#sub_calc_snr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.sub_calc_snr" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.calc_snr">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">calc_snr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minloc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#calc_snr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.calc_snr" title="Permalink to this definition">#</a></dt>
@@ -818,6 +837,7 @@ noise window (start of trace-&gt;minloc)</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.pphase_pick">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">pphase_pick</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">peak_selection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#pphase_pick"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.pphase_pick" title="Permalink to this definition">#</a></dt>
@@ -860,10 +880,12 @@ picking results)</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase._get_statelevel">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">_get_statelevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#_get_statelevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase._get_statelevel" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.phase.create_travel_time_dataframe">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.phase.</span></span><span class="sig-name descname"><span class="pre">create_travel_time_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">streams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">catalog_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddepth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ddist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/phase.html#create_travel_time_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.phase.create_travel_time_dataframe" title="Permalink to this definition">#</a></dt>
@@ -892,6 +914,7 @@ grid. Recommend value is 0.1 degrees.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

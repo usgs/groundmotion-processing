@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.fft" href="../fft/index.html" /><link rel="prev" title="gmprocess.waveform_processing.baseline_correction" href="../baseline_correction/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -487,30 +488,33 @@
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
 <section id="functions">
 <h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.from_constant" title="gmprocess.waveform_processing.corner_frequencies.from_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_constant</span></code></a>(st, highpass=0.08, lowpass=20.0)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.from_constant" title="gmprocess.waveform_processing.corner_frequencies.from_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_constant</span></code></a>(st, highpass=0.08, lowpass=20.0)</p></td>
 <td><p>Use constant corner frequencies across all records.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.from_magnitude" title="gmprocess.waveform_processing.corner_frequencies.from_magnitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_magnitude</span></code></a>(st, origin, minmag=[-999.0, 3.5, 5.5], highpass=[0.5, 0.3, 0.1], lowpass=[25.0, 35.0, 40.0])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.from_magnitude" title="gmprocess.waveform_processing.corner_frequencies.from_magnitude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_magnitude</span></code></a>(st, origin, minmag=[-999.0, 3.5, 5.5], highpass=[0.5, 0.3, 0.1], lowpass=[25.0, 35.0, 40.0])</p></td>
 <td><p>Use constant corner frequencies across all records.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.from_snr" title="gmprocess.waveform_processing.corner_frequencies.from_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_snr</span></code></a>(st, same_horiz=True, bandwidth=20)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.from_snr" title="gmprocess.waveform_processing.corner_frequencies.from_snr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_snr</span></code></a>(st, same_horiz=True, bandwidth=20)</p></td>
 <td><p>Set corner frequencies from SNR.</p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 </section>
 <section id="attributes">
 <h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
-<div class="table-wrapper"><table class="autosummary longtable docutils align-default">
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
 <colgroup>
-<col style="width: 10%"/>
-<col style="width: 90%"/>
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.TAPER_WIDTH" title="gmprocess.waveform_processing.corner_frequencies.TAPER_WIDTH"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TAPER_WIDTH</span></code></a></p></td>
@@ -523,19 +527,23 @@
 <td><p></p></td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.corner_frequencies.TAPER_WIDTH">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">TAPER_WIDTH</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">0.05</span></em><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.TAPER_WIDTH" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.corner_frequencies.TAPER_TYPE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">TAPER_TYPE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">hann</span></em><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.TAPER_TYPE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.corner_frequencies.TAPER_SIDE">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">TAPER_SIDE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">both</span></em><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.TAPER_SIDE" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.corner_frequencies.from_constant">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">from_constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highpass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowpass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/corner_frequencies.html#from_constant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.from_constant" title="Permalink to this definition">#</a></dt>
@@ -556,6 +564,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.corner_frequencies.from_magnitude">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">from_magnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minmag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[-</span> <span class="pre">999.0,</span> <span class="pre">3.5,</span> <span class="pre">5.5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">highpass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0.5,</span> <span class="pre">0.3,</span> <span class="pre">0.1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowpass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[25.0,</span> <span class="pre">35.0,</span> <span class="pre">40.0]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/corner_frequencies.html#from_magnitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.from_magnitude" title="Permalink to this definition">#</a></dt>
@@ -577,6 +586,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.corner_frequencies.from_snr">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">from_snr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">same_horiz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/corner_frequencies.html#from_snr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.from_snr" title="Permalink to this definition">#</a></dt>
@@ -598,6 +608,7 @@ corner frequencies.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 </section>
 </section>

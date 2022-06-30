@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.nga - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.nga - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -482,9 +483,9 @@
           <h1>Source code for gmprocess.io.nga</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Helper functions for working with the NGA flatfile.</span>
-<span class="sd">"""</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># stdlib imports</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -498,7 +499,7 @@
 
 
 <div class="viewcode-block" id="get_nga_record_sequence_no"><a class="viewcode-back" href="../../../autoapi/gmprocess/io/nga/index.html#gmprocess.io.nga.get_nga_record_sequence_no">[docs]</a><span class="k">def</span> <span class="nf">get_nga_record_sequence_no</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">eq_name</span><span class="p">,</span> <span class="n">distance_tolerance</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
-    <span class="sd">"""</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the associate NGA record sequence number for a given StationStream.</span>
 
 <span class="sd">    Args:</span>
@@ -506,7 +507,7 @@
 <span class="sd">            Station stream to get record sequence number for.</span>
 <span class="sd">        eq_name (str):</span>
 <span class="sd">            Earthquake name for finding NGA record sequence numbers. Must</span>
-<span class="sd">            match a value in the 'Earthquake Name' column of the file</span>
+<span class="sd">            match a value in the &#39;Earthquake Name&#39; column of the file</span>
 <span class="sd">            gmprocess/data/nga_w2_selected.csv.</span>
 <span class="sd">        distance_tolerance (float):</span>
 <span class="sd">            Distance tolerance (in meters) between StationStream location</span>
@@ -517,15 +518,15 @@
 <span class="sd">        int: Matching record sequence number from NGA flatfile. Returns</span>
 <span class="sd">        numpy.nan if record sequence number is not found.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">df_nga</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
         <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
-            <span class="s2">"gmprocess"</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span> <span class="s2">"nga_w2_selected.csv"</span><span class="p">)</span>
+            <span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;nga_w2_selected.csv&quot;</span><span class="p">)</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="n">nga_event</span> <span class="o">=</span> <span class="n">df_nga</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_nga</span><span class="p">[</span><span class="s2">"Earthquake Name"</span><span class="p">]</span> <span class="o">==</span> <span class="n">eq_name</span><span class="p">]</span>
+    <span class="n">nga_event</span> <span class="o">=</span> <span class="n">df_nga</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_nga</span><span class="p">[</span><span class="s2">&quot;Earthquake Name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">eq_name</span><span class="p">]</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span>
     <span class="n">lon</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span>
@@ -533,16 +534,16 @@
     <span class="n">matched_records_nos</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">record_idx</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">nga_event</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">dist</span> <span class="o">=</span> <span class="n">gps2dist_azimuth</span><span class="p">(</span>
-            <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">record</span><span class="p">[</span><span class="s2">"Station Latitude"</span><span class="p">],</span> <span class="n">record</span><span class="p">[</span><span class="s2">"Station Longitude"</span><span class="p">]</span>
+            <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;Station Latitude&quot;</span><span class="p">],</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;Station Longitude&quot;</span><span class="p">]</span>
         <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">distance_tolerance</span><span class="p">:</span>
-            <span class="n">matched_records_nos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">"Record Sequence Number"</span><span class="p">])</span>
+            <span class="n">matched_records_nos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;Record Sequence Number&quot;</span><span class="p">])</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_records_nos</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Found multiple matching records."</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Found multiple matching records.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_records_nos</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Did not find any matching records."</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Did not find any matching records.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">matched_records_nos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>

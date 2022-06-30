@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.bin.list_metrics - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.bin.list_metrics - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -495,18 +496,18 @@
 
 
 <div class="viewcode-block" id="get_class"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/list_metrics/index.html#gmprocess.bin.list_metrics.get_class">[docs]</a><span class="k">def</span> <span class="nf">get_class</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="n">ctype</span><span class="p">):</span>
-    <span class="sd">"""Return class (not instance) corresponding to imc string."""</span>
-    <span class="k">if</span> <span class="n">ctype</span> <span class="o">==</span> <span class="s2">"imt"</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Return class (not instance) corresponding to imc string.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ctype</span> <span class="o">==</span> <span class="s2">&quot;imt&quot;</span><span class="p">:</span>
         <span class="n">compclass</span> <span class="o">=</span> <span class="n">IMT</span>
-    <span class="k">elif</span> <span class="n">ctype</span> <span class="o">==</span> <span class="s2">"imc"</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">ctype</span> <span class="o">==</span> <span class="s2">&quot;imc&quot;</span><span class="p">:</span>
         <span class="n">compclass</span> <span class="o">=</span> <span class="n">IMC</span>
-    <span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">"metrics"</span><span class="p">,</span> <span class="n">ctype</span><span class="p">)</span>
-    <span class="n">imc_directory</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">,</span> <span class="n">datapath</span><span class="p">)</span>
-    <span class="n">modfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imc_directory</span><span class="p">,</span> <span class="n">imc</span> <span class="o">+</span> <span class="s2">".py"</span><span class="p">)</span>
+    <span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="n">ctype</span><span class="p">)</span>
+    <span class="n">imc_directory</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="n">datapath</span><span class="p">)</span>
+    <span class="n">modfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">imc_directory</span><span class="p">,</span> <span class="n">imc</span> <span class="o">+</span> <span class="s2">&quot;.py&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">modfile</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">modname</span> <span class="o">=</span> <span class="n">modfile</span><span class="p">[</span><span class="n">modfile</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">"gmprocess"</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".py"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
-    <span class="n">modname</span> <span class="o">=</span> <span class="n">modname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s2">"."</span><span class="p">)</span>
+    <span class="n">modname</span> <span class="o">=</span> <span class="n">modfile</span><span class="p">[</span><span class="n">modfile</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">)</span> <span class="p">:]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">modname</span> <span class="o">=</span> <span class="n">modname</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
     <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">modname</span><span class="p">)</span>
     <span class="n">tclass</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">mod</span><span class="p">):</span>
@@ -521,40 +522,40 @@
 
 <div class="viewcode-block" id="get_combinations"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/list_metrics/index.html#gmprocess.bin.list_metrics.get_combinations">[docs]</a><span class="k">def</span> <span class="nf">get_combinations</span><span class="p">():</span>
     <span class="n">imts</span><span class="p">,</span> <span class="n">imcs</span> <span class="o">=</span> <span class="n">gather_pgms</span><span class="p">()</span>
-    <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">imts</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"imc"</span><span class="p">])</span>
-    <span class="n">checks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Y"</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">imts</span><span class="p">)</span>
+    <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">imts</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;imc&quot;</span><span class="p">])</span>
+    <span class="n">checks</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Y&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">imts</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">imc</span> <span class="ow">in</span> <span class="n">imcs</span><span class="p">:</span>
-        <span class="n">imc_class</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="s2">"imc"</span><span class="p">)</span>
+        <span class="n">imc_class</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">imc</span><span class="p">,</span> <span class="s2">&quot;imc&quot;</span><span class="p">)</span>
         <span class="n">invalid_imts</span> <span class="o">=</span> <span class="n">imc_class</span><span class="o">.</span><span class="n">_invalid_imts</span>
         <span class="n">row</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">imts</span><span class="p">,</span> <span class="n">checks</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">iimt</span> <span class="ow">in</span> <span class="n">invalid_imts</span><span class="p">:</span>
-            <span class="n">row</span><span class="p">[</span><span class="n">iimt</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="s2">"N"</span>
-        <span class="n">row</span><span class="p">[</span><span class="s2">"imc"</span><span class="p">]</span> <span class="o">=</span> <span class="n">imc</span>
+            <span class="n">row</span><span class="p">[</span><span class="n">iimt</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="s2">&quot;N&quot;</span>
+        <span class="n">row</span><span class="p">[</span><span class="s2">&quot;imc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imc</span>
         <span class="n">dataframe</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">dataframe</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">"imc"</span><span class="p">)</span>
+    <span class="n">dataframe</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;imc&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dataframe</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../autoapi/gmprocess/bin/list_metrics/index.html#gmprocess.bin.list_metrics.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">helpstr</span> <span class="o">=</span> <span class="s2">"""</span>
+    <span class="n">helpstr</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">    Table of supported IMC/IMT combinations is below.</span>
 
 <span class="s2">    Notes:</span>
 
-<span class="s2">    The "channels" IMC will result in three IMC channels</span>
-<span class="s2">    called "H1", "H2", and "Z".</span>
+<span class="s2">    The &quot;channels&quot; IMC will result in three IMC channels</span>
+<span class="s2">    called &quot;H1&quot;, &quot;H2&quot;, and &quot;Z&quot;.</span>
 
-<span class="s2">    The "gmrotd" and "rotd" IMCs will need to be specified as "gmrotd50"</span>
+<span class="s2">    The &quot;gmrotd&quot; and &quot;rotd&quot; IMCs will need to be specified as &quot;gmrotd50&quot;</span>
 <span class="s2">    for the Geometric Mean 50th percentile, rotd100 for the 100th percentile,</span>
 <span class="s2">    and so forth.</span>
-<span class="s2">    """</span>
+<span class="s2">    &quot;&quot;&quot;</span>
     <span class="n">comboframe</span> <span class="o">=</span> <span class="n">get_combinations</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">helpstr</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">comboframe</span><span class="p">)</span></div>
 
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
         </article>

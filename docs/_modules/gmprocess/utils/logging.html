@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.utils.logging - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.utils.logging - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -487,8 +488,8 @@
 <span class="kn">import</span> <span class="nn">logging.config</span>
 
 
-<div class="viewcode-block" id="setup_logger"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/logging/index.html#gmprocess.utils.logging.setup_logger">[docs]</a><span class="k">def</span> <span class="nf">setup_logger</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">"info"</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">"""Setup the logger options.</span>
+<div class="viewcode-block" id="setup_logger"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/logging/index.html#gmprocess.utils.logging.setup_logger">[docs]</a><span class="k">def</span> <span class="nf">setup_logger</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Setup the logger options.</span>
 
 <span class="sd">    This is written to handle a few different situations. It is called by</span>
 <span class="sd">    command line programs that will hand off the args object. However, it</span>
@@ -502,15 +503,15 @@
 <span class="sd">        args (argparse):</span>
 <span class="sd">            Must contain logging options in gmprocess.args.add_shared_args.</span>
 <span class="sd">        level (str):</span>
-<span class="sd">            String indicating logging level; either 'info', 'debug', or</span>
-<span class="sd">            'error'. Only used if args in None.</span>
+<span class="sd">            String indicating logging level; either &#39;info&#39;, &#39;debug&#39;, or</span>
+<span class="sd">            &#39;error&#39;. Only used if args in None.</span>
 <span class="sd">        log_file (str):</span>
 <span class="sd">            Path to send logging to.</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(asctime)s</span><span class="s2"> | "</span> <span class="s2">"</span><span class="si">%(module)s</span><span class="s2">.</span><span class="si">%(funcName)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">"</span>
-    <span class="n">datefmt</span> <span class="o">=</span> <span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S"</span>
+    <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(asctime)s</span><span class="s2"> | &quot;</span> <span class="s2">&quot;</span><span class="si">%(module)s</span><span class="s2">.</span><span class="si">%(funcName)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+    <span class="n">datefmt</span> <span class="o">=</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span>
     <span class="c1"># create a console handler, with verbosity setting chosen by user</span>
     <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
@@ -520,42 +521,42 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">loglevel</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">"debug"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;debug&quot;</span><span class="p">:</span>
             <span class="n">loglevel</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span>
-        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">"info"</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;info&quot;</span><span class="p">:</span>
             <span class="n">loglevel</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
-        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">"error"</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span>
             <span class="n">loglevel</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Not valid level."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Not valid level.&quot;</span><span class="p">)</span>
 
     <span class="n">logdict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"version"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">"formatters"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"standard"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="n">fmt</span><span class="p">,</span> <span class="s2">"datefmt"</span><span class="p">:</span> <span class="n">datefmt</span><span class="p">}},</span>
-        <span class="s2">"loggers"</span><span class="p">:</span> <span class="p">{</span><span class="s2">""</span><span class="p">:</span> <span class="p">{</span><span class="s2">"handlers"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"level"</span><span class="p">:</span> <span class="n">loglevel</span><span class="p">,</span> <span class="s2">"propagate"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}},</span>
+        <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;formatters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;standard&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="n">fmt</span><span class="p">,</span> <span class="s2">&quot;datefmt&quot;</span><span class="p">:</span> <span class="n">datefmt</span><span class="p">}},</span>
+        <span class="s2">&quot;loggers&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;handlers&quot;</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="n">loglevel</span><span class="p">,</span> <span class="s2">&quot;propagate&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}},</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="n">log_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logdict</span><span class="p">[</span><span class="s2">"handlers"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"stream"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"level"</span><span class="p">:</span> <span class="n">loglevel</span><span class="p">,</span>
-                <span class="s2">"formatter"</span><span class="p">:</span> <span class="s2">"standard"</span><span class="p">,</span>
-                <span class="s2">"class"</span><span class="p">:</span> <span class="s2">"logging.StreamHandler"</span><span class="p">,</span>
+        <span class="n">logdict</span><span class="p">[</span><span class="s2">&quot;handlers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;stream&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="n">loglevel</span><span class="p">,</span>
+                <span class="s2">&quot;formatter&quot;</span><span class="p">:</span> <span class="s2">&quot;standard&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;logging.StreamHandler&quot;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">}</span>
-        <span class="n">logdict</span><span class="p">[</span><span class="s2">"loggers"</span><span class="p">][</span><span class="s2">""</span><span class="p">][</span><span class="s2">"handlers"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"stream"</span><span class="p">]</span>
+        <span class="n">logdict</span><span class="p">[</span><span class="s2">&quot;loggers&quot;</span><span class="p">][</span><span class="s2">&quot;&quot;</span><span class="p">][</span><span class="s2">&quot;handlers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;stream&quot;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logdict</span><span class="p">[</span><span class="s2">"handlers"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"event_file"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">"filename"</span><span class="p">:</span> <span class="n">log_file</span><span class="p">,</span>
-                <span class="s2">"level"</span><span class="p">:</span> <span class="n">loglevel</span><span class="p">,</span>
-                <span class="s2">"formatter"</span><span class="p">:</span> <span class="s2">"standard"</span><span class="p">,</span>
-                <span class="s2">"class"</span><span class="p">:</span> <span class="s2">"logging.FileHandler"</span><span class="p">,</span>
+        <span class="n">logdict</span><span class="p">[</span><span class="s2">&quot;handlers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;event_file&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="n">log_file</span><span class="p">,</span>
+                <span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="n">loglevel</span><span class="p">,</span>
+                <span class="s2">&quot;formatter&quot;</span><span class="p">:</span> <span class="s2">&quot;standard&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;logging.FileHandler&quot;</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">}</span>
-        <span class="n">logdict</span><span class="p">[</span><span class="s2">"loggers"</span><span class="p">][</span><span class="s2">""</span><span class="p">][</span><span class="s2">"handlers"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"event_file"</span><span class="p">]</span>
+        <span class="n">logdict</span><span class="p">[</span><span class="s2">&quot;loggers&quot;</span><span class="p">][</span><span class="s2">&quot;&quot;</span><span class="p">][</span><span class="s2">&quot;handlers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;event_file&quot;</span><span class="p">]</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dictConfig</span><span class="p">(</span><span class="n">logdict</span><span class="p">)</span>
 
-    <span class="c1"># Have the logger capture anything from the 'warnings' package,</span>
+    <span class="c1"># Have the logger capture anything from the &#39;warnings&#39; package,</span>
     <span class="c1"># which many libraries use.</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">captureWarnings</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
 </pre></div>

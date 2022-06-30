@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Summary Report" href="build_report.html" /><link rel="prev" title="Colocated Instruments" href="colocated.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>Handling Duplicates - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>Handling Duplicates - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -466,7 +466,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -496,14 +497,14 @@ them.</p>
 <span class="w">    </span><span class="nt">max_dist_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500.0</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1"># List of preferences (in order) for handling duplicate data.</span><span class="w"></span>
-<span class="w">    </span><span class="nt">preference_order</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">'process_level'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'source_format'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'starttime'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'npts'</span><span class="p p-Indicator">,</span><span class="w"></span>
-<span class="w">                       </span><span class="s">'sampling_rate'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'location_code'</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">preference_order</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;process_level&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;source_format&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;starttime&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;npts&#39;</span><span class="p p-Indicator">,</span><span class="w"></span>
+<span class="w">                       </span><span class="s">&#39;sampling_rate&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;location_code&#39;</span><span class="p p-Indicator">]</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1"># Preference for selecting process level when faced with duplicate data</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># but with different processing levels. Must be a list containing</span><span class="w"></span>
-<span class="w">    </span><span class="c1"># 'V0', 'V1', and 'V2'. The first item is the most preferred,</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># &#39;V0&#39;, &#39;V1&#39;, and &#39;V2&#39;. The first item is the most preferred,</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># and the last item is the least preferred.</span><span class="w"></span>
-<span class="w">    </span><span class="nt">process_level_preference</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">'V1'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'V0'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'V2'</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">process_level_preference</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;V1&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;V0&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;V2&#39;</span><span class="p p-Indicator">]</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1"># Preference for selecting the format when faced with duplicate data</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># but with different source formats. Must be a list containing the source</span><span class="w"></span>
@@ -511,7 +512,7 @@ them.</p>
 <span class="w">    </span><span class="c1"># all possible formats.</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1"># Example to always prefer COSMOS files over DMG files</span><span class="w"></span>
-<span class="w">    </span><span class="nt">format_preference</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">'cosmos'</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">'dmg'</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">    </span><span class="nt">format_preference</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;cosmos&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;dmg&#39;</span><span class="p p-Indicator">]</span><span class="w"></span>
 </pre></div>
 </div>
 </section>

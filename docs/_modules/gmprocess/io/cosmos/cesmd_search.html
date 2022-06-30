@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
-        <title>gmprocess.io.cosmos.cesmd_search - gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</title>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
+        <title>gmprocess.io.cosmos.cesmd_search - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev457+g8d3bb7b0.d20220523 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -465,7 +465,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -494,97 +495,97 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">URL_TEMPLATE</span> <span class="o">=</span> <span class="s2">"https://strongmotioncenter.org/wserv/records/query"</span>
-<span class="n">RETURN_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"dataset"</span><span class="p">,</span> <span class="s2">"metadata"</span><span class="p">]</span>
-<span class="n">PROCESS_LEVELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"processed"</span><span class="p">,</span> <span class="s2">"raw"</span><span class="p">,</span> <span class="s2">"plots"</span><span class="p">,</span> <span class="s2">"all"</span><span class="p">]</span>
-<span class="n">GROUP_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"station"</span><span class="p">,</span> <span class="s2">"event"</span><span class="p">]</span>
+<span class="n">URL_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;https://strongmotioncenter.org/wserv/records/query&quot;</span>
+<span class="n">RETURN_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;metadata&quot;</span><span class="p">]</span>
+<span class="n">PROCESS_LEVELS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;processed&quot;</span><span class="p">,</span> <span class="s2">&quot;raw&quot;</span><span class="p">,</span> <span class="s2">&quot;plots&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]</span>
+<span class="n">GROUP_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;event&quot;</span><span class="p">]</span>
 
 <span class="n">NETWORKS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"08"</span><span class="p">:</span> <span class="s2">"Hokkaido University"</span><span class="p">,</span>
-    <span class="s2">"AA"</span><span class="p">:</span> <span class="s2">"AA - Anchorage Strong Motion Network"</span><span class="p">,</span>
-    <span class="s2">"AK"</span><span class="p">:</span> <span class="s2">"AK - University of Alaska Geophysical Institute"</span><span class="p">,</span>
-    <span class="s2">"AZ"</span><span class="p">:</span> <span class="s2">"AZ - Anza"</span><span class="p">,</span>
-    <span class="s2">"BG"</span><span class="p">:</span> <span class="s2">"BG - Berkeley Geysers Network"</span><span class="p">,</span>
-    <span class="s2">"BK"</span><span class="p">:</span> <span class="s2">"BK - Berkeley Digital Seismic Network"</span><span class="p">,</span>
-    <span class="s2">"C1"</span><span class="p">:</span> <span class="s2">"C1 - Red Sismologica Nacional"</span><span class="p">,</span>
-    <span class="s2">"CB"</span><span class="p">:</span> <span class="s2">"CB - Institute of Geophysics China Earthquake Administration (IGP)"</span><span class="p">,</span>
-    <span class="s2">"CE"</span><span class="p">:</span> <span class="s2">"CE - California Strong Motion Instrumentation Program"</span><span class="p">,</span>
-    <span class="s2">"CF"</span><span class="p">:</span> <span class="s2">"CF - Red Acelerografica Nacional de la Comision Federal de Electr"</span><span class="p">,</span>
-    <span class="s2">"CI"</span><span class="p">:</span> <span class="s2">"CI - California Institute of Technology"</span><span class="p">,</span>
-    <span class="s2">"CU"</span><span class="p">:</span> <span class="s2">"CU - Albuquerque Seismological Laboratory"</span><span class="p">,</span>
-    <span class="s2">"C_"</span><span class="p">:</span> <span class="s2">"C_ - C&amp;GS"</span><span class="p">,</span>
-    <span class="s2">"EC"</span><span class="p">:</span> <span class="s2">"EC - Ecuador Seismic Network"</span><span class="p">,</span>
-    <span class="s2">"ES"</span><span class="p">:</span> <span class="s2">"ES - Spanish Digital Seismic Network"</span><span class="p">,</span>
-    <span class="s2">"GI"</span><span class="p">:</span> <span class="s2">"GI - Red Sismologica Nacional-Guatemala"</span><span class="p">,</span>
-    <span class="s2">"G_"</span><span class="p">:</span> <span class="s2">"G_ - GEOSCOPE"</span><span class="p">,</span>
-    <span class="s2">"HV"</span><span class="p">:</span> <span class="s2">"HV - Hawaiian Volcano Observatory Network"</span><span class="p">,</span>
-    <span class="s2">"IT"</span><span class="p">:</span> <span class="s2">"IT - Italian Strong Motion Network"</span><span class="p">,</span>
-    <span class="s2">"IU"</span><span class="p">:</span> <span class="s2">"IU - GSN - IRIS/USGS"</span><span class="p">,</span>
-    <span class="s2">"IV"</span><span class="p">:</span> <span class="s2">"IV - Istituto Nazionale di Geofisica e Vulcanologia"</span><span class="p">,</span>
-    <span class="s2">"JP"</span><span class="p">:</span> <span class="s2">"JP - BRI"</span><span class="p">,</span>
-    <span class="s2">"LA"</span><span class="p">:</span> <span class="s2">"LA - Los Angeles Basin Seismic Network"</span><span class="p">,</span>
-    <span class="s2">"MN"</span><span class="p">:</span> <span class="s2">"MN - Mediterranean Very Broadband Seismographic Network"</span><span class="p">,</span>
-    <span class="s2">"NC"</span><span class="p">:</span> <span class="s2">"NC - USGS Northern California Regional Network"</span><span class="p">,</span>
-    <span class="s2">"ND"</span><span class="p">:</span> <span class="s2">"ND - New Caledonia Broadband Seismic Network (SismoCal)"</span><span class="p">,</span>
-    <span class="s2">"NM"</span><span class="p">:</span> <span class="s2">"NM - New Madrid Seismic Network"</span><span class="p">,</span>
-    <span class="s2">"NN"</span><span class="p">:</span> <span class="s2">"NN - Nevada Seismic Network"</span><span class="p">,</span>
-    <span class="s2">"NP"</span><span class="p">:</span> <span class="s2">"NP - National Strong Motion Project"</span><span class="p">,</span>
-    <span class="s2">"NZ"</span><span class="p">:</span> <span class="s2">"NZ"</span><span class="p">,</span>
-    <span class="s2">"OK"</span><span class="p">:</span> <span class="s2">"OK - Oklahoma Geological Survey"</span><span class="p">,</span>
-    <span class="s2">"OV"</span><span class="p">:</span> <span class="s2">"OV - Observatorio Vulcanologico y Sismologico de Costa Rica"</span><span class="p">,</span>
-    <span class="s2">"PA"</span><span class="p">:</span> <span class="s2">"PA - Observatorio Sismico del Occidente de Panamá"</span><span class="p">,</span>
-    <span class="s2">"PG"</span><span class="p">:</span> <span class="s2">"PG"</span><span class="p">,</span>
-    <span class="s2">"PR"</span><span class="p">:</span> <span class="s2">"PR - Puerto Rico Strong Motion Program (PRSMP)"</span><span class="p">,</span>
-    <span class="s2">"TO"</span><span class="p">:</span> <span class="s2">"TO - Caltech Tectonic Observatory"</span><span class="p">,</span>
-    <span class="s2">"TU"</span><span class="p">:</span> <span class="s2">"TU - Turkey Strong Motion Network"</span><span class="p">,</span>
-    <span class="s2">"US"</span><span class="p">:</span> <span class="s2">"US - National Earthquake Information Center"</span><span class="p">,</span>
-    <span class="s2">"UW"</span><span class="p">:</span> <span class="s2">"UW - PNSN"</span><span class="p">,</span>
-    <span class="s2">"WR"</span><span class="p">:</span> <span class="s2">"WR - California Department of Water Resources"</span><span class="p">,</span>
-    <span class="s2">"_C"</span><span class="p">:</span> <span class="s2">"_C - Chile"</span><span class="p">,</span>
+    <span class="s2">&quot;08&quot;</span><span class="p">:</span> <span class="s2">&quot;Hokkaido University&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AA&quot;</span><span class="p">:</span> <span class="s2">&quot;AA - Anchorage Strong Motion Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AK&quot;</span><span class="p">:</span> <span class="s2">&quot;AK - University of Alaska Geophysical Institute&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;AZ&quot;</span><span class="p">:</span> <span class="s2">&quot;AZ - Anza&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BG&quot;</span><span class="p">:</span> <span class="s2">&quot;BG - Berkeley Geysers Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;BK&quot;</span><span class="p">:</span> <span class="s2">&quot;BK - Berkeley Digital Seismic Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;C1&quot;</span><span class="p">:</span> <span class="s2">&quot;C1 - Red Sismologica Nacional&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CB&quot;</span><span class="p">:</span> <span class="s2">&quot;CB - Institute of Geophysics China Earthquake Administration (IGP)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CE&quot;</span><span class="p">:</span> <span class="s2">&quot;CE - California Strong Motion Instrumentation Program&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CF&quot;</span><span class="p">:</span> <span class="s2">&quot;CF - Red Acelerografica Nacional de la Comision Federal de Electr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CI&quot;</span><span class="p">:</span> <span class="s2">&quot;CI - California Institute of Technology&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CU&quot;</span><span class="p">:</span> <span class="s2">&quot;CU - Albuquerque Seismological Laboratory&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;C_&quot;</span><span class="p">:</span> <span class="s2">&quot;C_ - C&amp;GS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EC&quot;</span><span class="p">:</span> <span class="s2">&quot;EC - Ecuador Seismic Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ES&quot;</span><span class="p">:</span> <span class="s2">&quot;ES - Spanish Digital Seismic Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GI&quot;</span><span class="p">:</span> <span class="s2">&quot;GI - Red Sismologica Nacional-Guatemala&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;G_&quot;</span><span class="p">:</span> <span class="s2">&quot;G_ - GEOSCOPE&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HV&quot;</span><span class="p">:</span> <span class="s2">&quot;HV - Hawaiian Volcano Observatory Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IT&quot;</span><span class="p">:</span> <span class="s2">&quot;IT - Italian Strong Motion Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IU&quot;</span><span class="p">:</span> <span class="s2">&quot;IU - GSN - IRIS/USGS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IV&quot;</span><span class="p">:</span> <span class="s2">&quot;IV - Istituto Nazionale di Geofisica e Vulcanologia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;JP&quot;</span><span class="p">:</span> <span class="s2">&quot;JP - BRI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LA&quot;</span><span class="p">:</span> <span class="s2">&quot;LA - Los Angeles Basin Seismic Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MN&quot;</span><span class="p">:</span> <span class="s2">&quot;MN - Mediterranean Very Broadband Seismographic Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NC&quot;</span><span class="p">:</span> <span class="s2">&quot;NC - USGS Northern California Regional Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ND&quot;</span><span class="p">:</span> <span class="s2">&quot;ND - New Caledonia Broadband Seismic Network (SismoCal)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NM&quot;</span><span class="p">:</span> <span class="s2">&quot;NM - New Madrid Seismic Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NN&quot;</span><span class="p">:</span> <span class="s2">&quot;NN - Nevada Seismic Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NP&quot;</span><span class="p">:</span> <span class="s2">&quot;NP - National Strong Motion Project&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;NZ&quot;</span><span class="p">:</span> <span class="s2">&quot;NZ&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OK&quot;</span><span class="p">:</span> <span class="s2">&quot;OK - Oklahoma Geological Survey&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OV&quot;</span><span class="p">:</span> <span class="s2">&quot;OV - Observatorio Vulcanologico y Sismologico de Costa Rica&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PA&quot;</span><span class="p">:</span> <span class="s2">&quot;PA - Observatorio Sismico del Occidente de Panamá&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PG&quot;</span><span class="p">:</span> <span class="s2">&quot;PG&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PR&quot;</span><span class="p">:</span> <span class="s2">&quot;PR - Puerto Rico Strong Motion Program (PRSMP)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TO&quot;</span><span class="p">:</span> <span class="s2">&quot;TO - Caltech Tectonic Observatory&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;TU&quot;</span><span class="p">:</span> <span class="s2">&quot;TU - Turkey Strong Motion Network&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;US&quot;</span><span class="p">:</span> <span class="s2">&quot;US - National Earthquake Information Center&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UW&quot;</span><span class="p">:</span> <span class="s2">&quot;UW - PNSN&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;WR&quot;</span><span class="p">:</span> <span class="s2">&quot;WR - California Department of Water Resources&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_C&quot;</span><span class="p">:</span> <span class="s2">&quot;_C - Chile&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">STATION_TYPES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"Array"</span><span class="p">:</span> <span class="s2">"A"</span><span class="p">,</span>
-    <span class="s2">"Ground"</span><span class="p">:</span> <span class="s2">"G"</span><span class="p">,</span>
-    <span class="s2">"Building"</span><span class="p">:</span> <span class="s2">"B"</span><span class="p">,</span>
-    <span class="s2">"Bridge"</span><span class="p">:</span> <span class="s2">"Br"</span><span class="p">,</span>
-    <span class="s2">"Dam"</span><span class="p">:</span> <span class="s2">"D"</span><span class="p">,</span>
-    <span class="s2">"Tunnel"</span><span class="p">:</span> <span class="s2">"T"</span><span class="p">,</span>
-    <span class="s2">"Wharf"</span><span class="p">:</span> <span class="s2">"W"</span><span class="p">,</span>
-    <span class="s2">"Other"</span><span class="p">:</span> <span class="s2">"O"</span><span class="p">,</span>
+    <span class="s2">&quot;Array&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Ground&quot;</span><span class="p">:</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Building&quot;</span><span class="p">:</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bridge&quot;</span><span class="p">:</span> <span class="s2">&quot;Br&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Dam&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Tunnel&quot;</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Wharf&quot;</span><span class="p">:</span> <span class="s2">&quot;W&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Other&quot;</span><span class="p">:</span> <span class="s2">&quot;O&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
-<span class="n">FAULT_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"NM"</span><span class="p">,</span> <span class="s2">"RS"</span><span class="p">,</span> <span class="s2">"SS"</span><span class="p">]</span>
+<span class="n">FAULT_TYPES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NM&quot;</span><span class="p">,</span> <span class="s2">&quot;RS&quot;</span><span class="p">,</span> <span class="s2">&quot;SS&quot;</span><span class="p">]</span>
 
 <span class="c1"># for those search parameters where the Python names differ from the ones</span>
 <span class="c1"># defined by the web API, use this translation table.</span>
 <span class="n">KEY_TABLE</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"return_type"</span><span class="p">:</span> <span class="s2">"rettype"</span><span class="p">,</span>
-    <span class="s2">"process_level"</span><span class="p">:</span> <span class="s2">"download"</span><span class="p">,</span>
-    <span class="s2">"group_by"</span><span class="p">:</span> <span class="s2">"groupby"</span><span class="p">,</span>
-    <span class="s2">"min_station_dist"</span><span class="p">:</span> <span class="s2">"minepidist"</span><span class="p">,</span>
-    <span class="s2">"max_station_dist"</span><span class="p">:</span> <span class="s2">"maxepidist"</span><span class="p">,</span>
-    <span class="s2">"network"</span><span class="p">:</span> <span class="s2">"netid"</span><span class="p">,</span>
-    <span class="s2">"station_type"</span><span class="p">:</span> <span class="s2">"sttype"</span><span class="p">,</span>
-    <span class="s2">"include_inactive"</span><span class="p">:</span> <span class="s2">"abandoned"</span><span class="p">,</span>
-    <span class="s2">"station_name"</span><span class="p">:</span> <span class="s2">"stname"</span><span class="p">,</span>
-    <span class="s2">"min_station_latitude"</span><span class="p">:</span> <span class="s2">"minlat"</span><span class="p">,</span>
-    <span class="s2">"max_station_latitude"</span><span class="p">:</span> <span class="s2">"maxlat"</span><span class="p">,</span>
-    <span class="s2">"min_station_longitude"</span><span class="p">:</span> <span class="s2">"minlon"</span><span class="p">,</span>
-    <span class="s2">"max_station_longitude"</span><span class="p">:</span> <span class="s2">"maxlon"</span><span class="p">,</span>
-    <span class="s2">"station_latitude"</span><span class="p">:</span> <span class="s2">"slat"</span><span class="p">,</span>
-    <span class="s2">"station_longitude"</span><span class="p">:</span> <span class="s2">"slon"</span><span class="p">,</span>
-    <span class="s2">"radius_km"</span><span class="p">:</span> <span class="s2">"srad"</span><span class="p">,</span>
-    <span class="s2">"station_code"</span><span class="p">:</span> <span class="s2">"stcode"</span><span class="p">,</span>
-    <span class="s2">"event_name"</span><span class="p">:</span> <span class="s2">"evname"</span><span class="p">,</span>
-    <span class="s2">"fault_type"</span><span class="p">:</span> <span class="s2">"faulttype"</span><span class="p">,</span>
-    <span class="s2">"min_event_latitude"</span><span class="p">:</span> <span class="s2">"eminlat"</span><span class="p">,</span>
-    <span class="s2">"max_event_latitude"</span><span class="p">:</span> <span class="s2">"emaxlat"</span><span class="p">,</span>
-    <span class="s2">"min_event_longitude"</span><span class="p">:</span> <span class="s2">"eminlon"</span><span class="p">,</span>
-    <span class="s2">"max_event_longitude"</span><span class="p">:</span> <span class="s2">"emaxlon"</span><span class="p">,</span>
-    <span class="s2">"event_latitude"</span><span class="p">:</span> <span class="s2">"elat"</span><span class="p">,</span>
-    <span class="s2">"event_longitude"</span><span class="p">:</span> <span class="s2">"elon"</span><span class="p">,</span>
-    <span class="s2">"event_radius"</span><span class="p">:</span> <span class="s2">"erad"</span><span class="p">,</span>
+    <span class="s2">&quot;return_type&quot;</span><span class="p">:</span> <span class="s2">&quot;rettype&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;process_level&quot;</span><span class="p">:</span> <span class="s2">&quot;download&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;group_by&quot;</span><span class="p">:</span> <span class="s2">&quot;groupby&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_station_dist&quot;</span><span class="p">:</span> <span class="s2">&quot;minepidist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_station_dist&quot;</span><span class="p">:</span> <span class="s2">&quot;maxepidist&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="s2">&quot;netid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;station_type&quot;</span><span class="p">:</span> <span class="s2">&quot;sttype&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;include_inactive&quot;</span><span class="p">:</span> <span class="s2">&quot;abandoned&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;station_name&quot;</span><span class="p">:</span> <span class="s2">&quot;stname&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_station_latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;minlat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_station_latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;maxlat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_station_longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;minlon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_station_longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;maxlon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;station_latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;slat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;station_longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;slon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;radius_km&quot;</span><span class="p">:</span> <span class="s2">&quot;srad&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;station_code&quot;</span><span class="p">:</span> <span class="s2">&quot;stcode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;event_name&quot;</span><span class="p">:</span> <span class="s2">&quot;evname&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;fault_type&quot;</span><span class="p">:</span> <span class="s2">&quot;faulttype&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_event_latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;eminlat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_event_latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;emaxlat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;min_event_longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;eminlon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;max_event_longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;emaxlon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;event_latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;elat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;event_longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;elon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;event_radius&quot;</span><span class="p">:</span> <span class="s2">&quot;erad&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 
@@ -594,11 +595,11 @@
     <span class="n">eqtime</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">eqradius</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
     <span class="n">abandoned</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">station_type</span><span class="o">=</span><span class="s2">"Ground"</span><span class="p">,</span>
+    <span class="n">station_type</span><span class="o">=</span><span class="s2">&quot;Ground&quot;</span><span class="p">,</span>
     <span class="n">eqtimewindow</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># seconds</span>
     <span class="n">station_radius</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sa">f</span><span class="s2">"""Retrieve station metadata JSON from CESMD web service.</span>
+    <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Retrieve station metadata JSON from CESMD web service.</span>
 
 <span class="s2">    Args:</span>
 <span class="s2">        eqlat (float):</span>
@@ -612,7 +613,7 @@
 <span class="s2">        abandoned (bool):</span>
 <span class="s2">            Whether or not to include abandoned stations in the search.</span>
 <span class="s2">        station_type (str):</span>
-<span class="s2">            One of the following station types: [</span><span class="si">{</span><span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STATION_TYPES</span><span class="p">)</span><span class="si">}</span><span class="s2">]</span>
+<span class="s2">            One of the following station types: [</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">STATION_TYPES</span><span class="p">)</span><span class="si">}</span><span class="s2">]</span>
 <span class="s2">        eqtimewidow (float):</span>
 <span class="s2">            Earthquake time search window in sec.</span>
 <span class="s2">        station_radius (str):</span>
@@ -625,46 +626,46 @@
 <span class="s2">        ValueError</span>
 <span class="s2">        ConnectionError</span>
 
-<span class="s2">    """</span>
+<span class="s2">    &quot;&quot;&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"rettype"</span><span class="p">:</span> <span class="s2">"metadata"</span><span class="p">,</span>
-        <span class="s2">"groupby"</span><span class="p">:</span> <span class="s2">"event"</span><span class="p">,</span>
-        <span class="s2">"format"</span><span class="p">:</span> <span class="s2">"json"</span><span class="p">,</span>
-        <span class="s2">"nodata"</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
-        <span class="s2">"sttype"</span><span class="p">:</span> <span class="n">STATION_TYPES</span><span class="p">[</span><span class="n">station_type</span><span class="p">],</span>
-        <span class="s2">"abandoned"</span><span class="p">:</span> <span class="n">abandoned</span><span class="p">,</span>
+        <span class="s2">&quot;rettype&quot;</span><span class="p">:</span> <span class="s2">&quot;metadata&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;groupby&quot;</span><span class="p">:</span> <span class="s2">&quot;event&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nodata&quot;</span><span class="p">:</span> <span class="mi">404</span><span class="p">,</span>
+        <span class="s2">&quot;sttype&quot;</span><span class="p">:</span> <span class="n">STATION_TYPES</span><span class="p">[</span><span class="n">station_type</span><span class="p">],</span>
+        <span class="s2">&quot;abandoned&quot;</span><span class="p">:</span> <span class="n">abandoned</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">has_event_info</span> <span class="o">=</span> <span class="p">(</span>
         <span class="p">(</span><span class="n">eqlat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">eqlon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">eqtime</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">has_event_info</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"get_metadata must get either event id or event information."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;get_metadata must get either event id or event information.&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">starttime</span> <span class="o">=</span> <span class="n">eqtime</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">eqtimewindow</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
         <span class="n">endtime</span> <span class="o">=</span> <span class="n">eqtime</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">eqtimewindow</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">"elat"</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqlat</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">"elon"</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqlon</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">"erad"</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqradius</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">"startdate"</span><span class="p">]</span> <span class="o">=</span> <span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S"</span><span class="p">)</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">"enddate"</span><span class="p">]</span> <span class="o">=</span> <span class="n">endtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S"</span><span class="p">)</span>
-        <span class="n">params</span><span class="p">[</span><span class="s2">"maxepidist"</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_radius</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;elat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqlat</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;elon&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqlon</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;erad&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eqradius</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;startdate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">starttime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;enddate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">endtime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s2">&quot;maxepidist&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station_radius</span>
 
     <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s2">"GET"</span><span class="p">,</span> <span class="n">URL_TEMPLATE</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">URL_TEMPLATE</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">'Could not retrieve data from url "</span><span class="si">%s</span><span class="s1">": Server response </span><span class="si">%i</span><span class="s1">'</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;Could not retrieve data from url &quot;</span><span class="si">%s</span><span class="s1">&quot;: Server response </span><span class="si">%i</span><span class="s1">&#39;</span>
         <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"CESMD search url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"CESMD search response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;CESMD search url: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;CESMD search response code: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
     <span class="n">metadata</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">metadata</span></div>
 
 
 <div class="viewcode-block" id="get_stations_dataframe"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cesmd_search/index.html#gmprocess.io.cosmos.cesmd_search.get_stations_dataframe">[docs]</a><span class="k">def</span> <span class="nf">get_stations_dataframe</span><span class="p">(</span><span class="n">metadata</span><span class="p">):</span>
-    <span class="sd">"""Return a dataframe of station information from one event in CESMD</span>
+    <span class="sd">&quot;&quot;&quot;Return a dataframe of station information from one event in CESMD</span>
 <span class="sd">    metadata.</span>
 
 <span class="sd">    Args:</span>
@@ -682,40 +683,40 @@
 <span class="sd">            - raw_avail</span>
 <span class="sd">            - processed_avail</span>
 
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rows</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"network"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"station_code"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"station_name"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"latitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"longitude"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"elevation"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"station_type"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"epidist"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"raw_avail"</span><span class="p">:</span> <span class="p">[],</span>
-        <span class="s2">"processed_avail"</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;station_code&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;station_name&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;elevation&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;station_type&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;epidist&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;raw_avail&quot;</span><span class="p">:</span> <span class="p">[],</span>
+        <span class="s2">&quot;processed_avail&quot;</span><span class="p">:</span> <span class="p">[],</span>
     <span class="p">}</span>
-    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"results"</span><span class="p">][</span><span class="s2">"events"</span><span class="p">]:</span>
-        <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">event</span><span class="p">[</span><span class="s2">"stations"</span><span class="p">]:</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"network"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">"network"</span><span class="p">])</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"station_code"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">"code"</span><span class="p">])</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"station_name"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">"name"</span><span class="p">])</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">"latitude"</span><span class="p">])</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">"longitude"</span><span class="p">])</span>
-            <span class="n">elevation</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">elevation</span> <span class="o">==</span> <span class="s2">"null"</span> <span class="ow">or</span> <span class="n">elevation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">rows</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;results&quot;</span><span class="p">][</span><span class="s2">&quot;events&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">event</span><span class="p">[</span><span class="s2">&quot;stations&quot;</span><span class="p">]:</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">])</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;station_code&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">&quot;code&quot;</span><span class="p">])</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">])</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">])</span>
+            <span class="n">elevation</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s2">&quot;elevation&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">elevation</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span> <span class="ow">or</span> <span class="n">elevation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;elevation&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">rows</span><span class="p">[</span><span class="s2">"elevation"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">elevation</span><span class="p">))</span>
+                    <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;elevation&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">elevation</span><span class="p">))</span>
                 <span class="k">except</span> <span class="ne">BaseException</span><span class="p">:</span>
                     <span class="k">pass</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"station_type"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">"type"</span><span class="p">])</span>
-            <span class="n">record</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s2">"record"</span><span class="p">]</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"epidist"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">"epidist"</span><span class="p">])</span>
-            <span class="n">avail</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">"data_availability"</span><span class="p">]</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"raw_avail"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avail</span><span class="p">[</span><span class="s2">"raw"</span><span class="p">])</span>
-            <span class="n">rows</span><span class="p">[</span><span class="s2">"processed_avail"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avail</span><span class="p">[</span><span class="s2">"processed"</span><span class="p">])</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;station_type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">])</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">station</span><span class="p">[</span><span class="s2">&quot;record&quot;</span><span class="p">]</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;epidist&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;epidist&quot;</span><span class="p">])</span>
+            <span class="n">avail</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;data_availability&quot;</span><span class="p">]</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;raw_avail&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avail</span><span class="p">[</span><span class="s2">&quot;raw&quot;</span><span class="p">])</span>
+            <span class="n">rows</span><span class="p">[</span><span class="s2">&quot;processed_avail&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avail</span><span class="p">[</span><span class="s2">&quot;processed&quot;</span><span class="p">])</span>
 
     <span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">rows</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dataframe</span></div>
@@ -725,14 +726,14 @@
     <span class="n">output</span><span class="p">,</span>
     <span class="n">email</span><span class="p">,</span>
     <span class="n">unpack</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">process_level</span><span class="o">=</span><span class="s2">"raw"</span><span class="p">,</span>
-    <span class="n">group_by</span><span class="o">=</span><span class="s2">"event"</span><span class="p">,</span>
+    <span class="n">process_level</span><span class="o">=</span><span class="s2">&quot;raw&quot;</span><span class="p">,</span>
+    <span class="n">group_by</span><span class="o">=</span><span class="s2">&quot;event&quot;</span><span class="p">,</span>
     <span class="n">minpga</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">maxpga</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">min_station_dist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">max_station_dist</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">network</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">station_type</span><span class="o">=</span><span class="s2">"Ground"</span><span class="p">,</span>
+    <span class="n">station_type</span><span class="o">=</span><span class="s2">&quot;Ground&quot;</span><span class="p">,</span>
     <span class="n">include_inactive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">station_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">min_station_latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -758,7 +759,7 @@
     <span class="n">event_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">eventid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""Retrieve strong motion waveform records from CESMD website.</span>
+    <span class="sd">&quot;&quot;&quot;Retrieve strong motion waveform records from CESMD website.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        output (str):</span>
@@ -769,9 +770,9 @@
 <span class="sd">        email (str):</span>
 <span class="sd">            Email address of requesting user.</span>
 <span class="sd">        process_level (str):</span>
-<span class="sd">            One of 'raw','processed','plots'.</span>
+<span class="sd">            One of &#39;raw&#39;,&#39;processed&#39;,&#39;plots&#39;.</span>
 <span class="sd">        group_by (str):</span>
-<span class="sd">            One of 'event', 'station'</span>
+<span class="sd">            One of &#39;event&#39;, &#39;station&#39;</span>
 <span class="sd">        minpga (float):</span>
 <span class="sd">            Minimum PGA value.</span>
 <span class="sd">        maxpga (float):</span>
@@ -838,59 +839,59 @@
 
 <span class="sd">    Raises:</span>
 <span class="sd">        KeyError</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># getting the inputargs must be the first line of the method!</span>
     <span class="n">inputargs</span> <span class="o">=</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="k">del</span> <span class="n">inputargs</span><span class="p">[</span><span class="s2">"output"</span><span class="p">]</span>
-    <span class="k">del</span> <span class="n">inputargs</span><span class="p">[</span><span class="s2">"unpack"</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">inputargs</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">inputargs</span><span class="p">[</span><span class="s2">&quot;unpack&quot;</span><span class="p">]</span>
 
     <span class="c1"># note: this only supports one of the options or all of them,</span>
     <span class="c1"># no other combinations. ??</span>
     <span class="k">if</span> <span class="n">process_level</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PROCESS_LEVELS</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Only process levels of </span><span class="si">%s</span><span class="s2"> are supported (</span><span class="si">%s</span><span class="s2"> was input)"</span>
-        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROCESS_LEVELS</span><span class="p">),</span> <span class="n">process_level</span><span class="p">)</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Only process levels of </span><span class="si">%s</span><span class="s2"> are supported (</span><span class="si">%s</span><span class="s2"> was input)&quot;</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROCESS_LEVELS</span><span class="p">),</span> <span class="n">process_level</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">group_by</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">GROUP_OPTIONS</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Only process levels of </span><span class="si">%s</span><span class="s2"> are supported (</span><span class="si">%s</span><span class="s2"> was input)"</span>
-        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">GROUP_OPTIONS</span><span class="p">),</span> <span class="n">group_by</span><span class="p">)</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Only process levels of </span><span class="si">%s</span><span class="s2"> are supported (</span><span class="si">%s</span><span class="s2"> was input)&quot;</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">GROUP_OPTIONS</span><span class="p">),</span> <span class="n">group_by</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
 
     <span class="c1"># determine which network user wanted</span>
     <span class="k">if</span> <span class="n">network</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">network</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">NETWORKS</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Network with ID </span><span class="si">%s</span><span class="s2"> not found in list of supported networks."</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Network with ID </span><span class="si">%s</span><span class="s2"> not found in list of supported networks.&quot;</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="n">network</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">station_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">station_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">STATION_TYPES</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Station type </span><span class="si">%s</span><span class="s2"> not found in list of supported types."</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Station type </span><span class="si">%s</span><span class="s2"> not found in list of supported types.&quot;</span>
         <span class="n">tpl</span> <span class="o">=</span> <span class="n">station_type</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
 
-    <span class="c1"># convert 'Ground' to 'G' for example</span>
-    <span class="n">inputargs</span><span class="p">[</span><span class="s2">"station_type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">STATION_TYPES</span><span class="p">[</span><span class="n">inputargs</span><span class="p">[</span><span class="s2">"station_type"</span><span class="p">]]</span>
+    <span class="c1"># convert &#39;Ground&#39; to &#39;G&#39; for example</span>
+    <span class="n">inputargs</span><span class="p">[</span><span class="s2">&quot;station_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">STATION_TYPES</span><span class="p">[</span><span class="n">inputargs</span><span class="p">[</span><span class="s2">&quot;station_type&quot;</span><span class="p">]]</span>
 
     <span class="c1"># check against list of fault types</span>
     <span class="k">if</span> <span class="n">fault_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fault_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">FAULT_TYPES</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">"Fault type </span><span class="si">%s</span><span class="s2"> not found in supported fault types </span><span class="si">%s</span><span class="s2">."</span>
-        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">fault_type</span><span class="p">,</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">FAULT_TYPES</span><span class="p">))</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Fault type </span><span class="si">%s</span><span class="s2"> not found in supported fault types </span><span class="si">%s</span><span class="s2">.&quot;</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="n">fault_type</span><span class="p">,</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">FAULT_TYPES</span><span class="p">))</span>
         <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="n">tpl</span><span class="p">)</span>
 
     <span class="c1"># make sure there is only one method being used to select station</span>
     <span class="c1"># geographically</span>
     <span class="k">if</span> <span class="n">min_station_latitude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">station_latitude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
-            <span class="s2">"Select stations either by bounding box or by radius, not both."</span>
+            <span class="s2">&quot;Select stations either by bounding box or by radius, not both.&quot;</span>
         <span class="p">)</span>
 
     <span class="c1"># make sure there is only one method being used to select events</span>
     <span class="c1"># geographically</span>
     <span class="k">if</span> <span class="n">min_event_latitude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">event_latitude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Select events either by bounding box or by radius, not both."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Select events either by bounding box or by radius, not both.&quot;</span><span class="p">)</span>
 
     <span class="c1"># now convert process levels to string webservice expects</span>
-    <span class="n">levels</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"processed"</span><span class="p">:</span> <span class="s2">"P"</span><span class="p">,</span> <span class="s2">"raw"</span><span class="p">:</span> <span class="s2">"R"</span><span class="p">,</span> <span class="s2">"plots"</span><span class="p">:</span> <span class="s2">"T"</span><span class="p">,</span> <span class="s2">"all"</span><span class="p">:</span> <span class="s2">"P,R,T"</span><span class="p">}</span>
-    <span class="n">inputargs</span><span class="p">[</span><span class="s2">"process_level"</span><span class="p">]</span> <span class="o">=</span> <span class="n">levels</span><span class="p">[</span><span class="n">process_level</span><span class="p">]</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;processed&quot;</span><span class="p">:</span> <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="s2">&quot;raw&quot;</span><span class="p">:</span> <span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;plots&quot;</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span> <span class="s2">&quot;P,R,T&quot;</span><span class="p">}</span>
+    <span class="n">inputargs</span><span class="p">[</span><span class="s2">&quot;process_level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">levels</span><span class="p">[</span><span class="n">process_level</span><span class="p">]</span>
 
     <span class="c1"># now convert input args to keys of parameters expected by</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
@@ -900,74 +901,74 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="c1"># convert all booleans to strings that are 'true' and 'false'</span>
+    <span class="c1"># convert all booleans to strings that are &#39;true&#39; and &#39;false&#39;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
-                <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"true"</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"false"</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
 
     <span class="c1"># add in a couple of parameters that seem to be required</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"orderby"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"epidist-asc"</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"nodata"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"404"</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">"rettype"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"dataset"</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;orderby&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;epidist-asc&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;nodata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;404&quot;</span>
+    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;rettype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dataset&quot;</span>
 
     <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s2">"GET"</span><span class="p">,</span> <span class="n">URL_TEMPLATE</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">URL_TEMPLATE</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">prepare</span><span class="p">()</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span>
     <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"CESMD download url: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"CESMD download response code: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;CESMD download url: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;CESMD download response code: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">'Your url "</span><span class="si">%s</span><span class="s1">" returned a status code of </span><span class="si">%i</span><span class="s1"> with message: "</span><span class="si">%s</span><span class="s1">"'</span>
+        <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;Your url &quot;</span><span class="si">%s</span><span class="s1">&quot; returned a status code of </span><span class="si">%i</span><span class="s1"> with message: &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span>
         <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">reason</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">unpack</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
         <span class="n">fbytes</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-        <span class="n">myzip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">fbytes</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"r"</span><span class="p">)</span>
+        <span class="n">myzip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">fbytes</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
         <span class="n">members</span> <span class="o">=</span> <span class="n">myzip</span><span class="o">.</span><span class="n">namelist</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">members</span><span class="p">:</span>
             <span class="n">finfo</span> <span class="o">=</span> <span class="n">myzip</span><span class="o">.</span><span class="n">getinfo</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">finfo</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">member</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">member</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
                 <span class="n">fin</span> <span class="o">=</span> <span class="n">myzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
-                <span class="n">flatfile</span> <span class="o">=</span> <span class="n">member</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
+                <span class="n">flatfile</span> <span class="o">=</span> <span class="n">member</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
                 <span class="n">outfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">flatfile</span><span class="p">)</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
                     <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fin</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
                 <span class="n">fin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">zfiledata</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">myzip</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">member</span><span class="p">))</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">tmpzip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zfiledata</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"r"</span><span class="p">)</span>
+                    <span class="n">tmpzip</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zfiledata</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
                     <span class="n">tmp_members</span> <span class="o">=</span> <span class="n">tmpzip</span><span class="o">.</span><span class="n">namelist</span><span class="p">()</span>
                     <span class="k">for</span> <span class="n">tmp_member</span> <span class="ow">in</span> <span class="n">tmp_members</span><span class="p">:</span>
                         <span class="n">tfinfo</span> <span class="o">=</span> <span class="n">tmpzip</span><span class="o">.</span><span class="n">getinfo</span><span class="p">(</span><span class="n">tmp_member</span><span class="p">)</span>
                         <span class="k">if</span> <span class="ow">not</span> <span class="n">tfinfo</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
                             <span class="n">fin</span> <span class="o">=</span> <span class="n">tmpzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tmp_member</span><span class="p">)</span>
-                            <span class="n">flatfile</span> <span class="o">=</span> <span class="n">tmp_member</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
+                            <span class="n">flatfile</span> <span class="o">=</span> <span class="n">tmp_member</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
                             <span class="n">parent</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">member</span><span class="p">)</span>
-                            <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"/"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
+                            <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
                             <span class="c1"># sometimes the member ends with .zip.zip (??)</span>
-                            <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+                            <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
                             <span class="n">datadir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
                             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">datadir</span><span class="p">):</span>
                                 <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span>
                             <span class="n">outfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">datadir</span><span class="p">,</span> <span class="n">flatfile</span><span class="p">)</span>
-                            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
+                            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
                                 <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fin</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
                             <span class="n">fin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                     <span class="n">tmpzip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                     <span class="n">zfiledata</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="s1">'Could not unpack sub-zip file "</span><span class="si">%s</span><span class="s1">" due to error '</span>
-                        <span class="s1">'"</span><span class="si">%s</span><span class="s1">". Skipping.'</span>
+                        <span class="s1">&#39;Could not unpack sub-zip file &quot;</span><span class="si">%s</span><span class="s1">&quot; due to error &#39;</span>
+                        <span class="s1">&#39;&quot;</span><span class="si">%s</span><span class="s1">&quot;. Skipping.&#39;</span>
                     <span class="p">)</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
                     <span class="k">continue</span>
@@ -977,15 +978,15 @@
         <span class="n">datafiles</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">fdir</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">tfile</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">tfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".json"</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">tfile</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
                     <span class="n">datafile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">tfile</span><span class="p">)</span>
                     <span class="n">datafiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datafile</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output</span><span class="p">),</span> <span class="n">datafiles</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">".zip"</span><span class="p">):</span>
-            <span class="n">output</span> <span class="o">+=</span> <span class="s2">".zip"</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
+            <span class="n">output</span> <span class="o">+=</span> <span class="s2">&quot;.zip&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="p">[])</span></div>
 </pre></div>

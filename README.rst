@@ -59,7 +59,7 @@ Build info
 | CodeCov | |CodeCov|                                        |
 +---------+--------------------------------------------------+
 
-.. |CodeCov| image:: https://codecov.io/gh/usgs/groundmotion-processing/branch/master/graph/badge.svg
+.. |CodeCov| image:: https://codecov.io/gh/usgs/groundmotion-processing/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/usgs/groundmotion-processing
     :alt: Code Coverage Status
 
