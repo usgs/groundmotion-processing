@@ -19,7 +19,6 @@ import numpy
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.core.inventory import Comment
 
-
 UNITS = {
     'acc': 'cm/s/s',
     'vel': 'cm/s'
