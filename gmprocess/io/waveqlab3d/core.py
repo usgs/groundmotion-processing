@@ -52,7 +52,7 @@ import numpy
 from gmprocess.surfacestream import SurfaceStream
 
 
-def is_waveqlab3d(filename):
+def is_waveqlab3d(filename, config=None):
     """Check to see if file is a waveqlab3d file.
 
     Args:
