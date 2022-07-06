@@ -232,6 +232,9 @@ processing:
     #     threshold: 3.0
 
     - remove_response:
+        #  Apply a bandpass filter in frequency domain to the data before deconvolution?
+        pre_filt: True
+
         # Pre-filtering frequencies. See obspy.core.trace.Trace.remove_response
         # for details. Note: if f3 is Null it will be set to 0.9*fn, if f4 is
         # Null it will be set to fn.
@@ -240,7 +243,7 @@ processing:
         f3: Null
         f4: Null
 
-        # Water level (dB) for deconvolution
+        # Water level (dB) for deconvolution; Set to Null to not apply a water level.
         water_level: 60.0
 
     - detrend:
