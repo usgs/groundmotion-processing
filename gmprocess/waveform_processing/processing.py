@@ -235,7 +235,7 @@ def process_streams(streams, origin, config=None, old_streams=None):
 
 
 def remove_response(
-    st, f1, f2, f3=None, f4=None, water_level=None, inv=None, config=None
+    st, pre_filt, f1, f2, f3=None, f4=None, water_level=None, inv=None, config=None
 ):
     """
     Performs instrument response correction. If the response information is
@@ -249,6 +249,9 @@ def remove_response(
     Args:
         st (StationStream):
             Stream of data.
+        pre_filt (bool):
+            Apply a bandpass filter in frequency domain to the data before
+            deconvolution?
         f1 (float):
             Frequency 1 for pre-filter.
         f2 (float):
@@ -288,6 +291,10 @@ def remove_response(
             f3 = 0.9 * f_n
         if f4 is None:
             f4 = f_n
+        if pre_filt:
+            pre_filt_selected = (f1, f2, f3, f4)
+        else:
+            pre_filt_selected = None
         try:
             resp = inv.get_response(tr.id, tr.stats.starttime)
             paz = resp.get_paz()
@@ -302,7 +309,7 @@ def remove_response(
                         inventory=inv,
                         output="VEL",
                         water_level=water_level,
-                        pre_filt=(f1, f2, f3, f4),
+                        pre_filt=pre_filt_selected,
                         zero_mean=True,
                         taper=False,
                     )
@@ -313,7 +320,7 @@ def remove_response(
                             "input_units": "counts",
                             "output_units": ABBREV_UNITS["VEL"],
                             "water_level": water_level,
-                            "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
+                            "pre_filt_freqs": str(pre_filt_selected),
                         },
                     )
                     diff_conf = config["differentiation"]
@@ -363,6 +370,7 @@ def remove_response(
                             inventory=inv,
                             output=output,
                             water_level=water_level,
+                            pre_filt=pre_filt_selected,
                             zero_mean=True,
                             taper=False,
                         )
@@ -374,7 +382,7 @@ def remove_response(
                                 "input_units": "counts",
                                 "output_units": ABBREV_UNITS[output],
                                 "water_level": water_level,
-                                "pre_filt_freqs": f"{f1:f}, {f2:f}, {f3:f}, {f4:f}",
+                                "pre_filt_freqs": str(pre_filt_selected),
                             },
                         )
                         tr.stats.standard.units = ABBREV_UNITS[output]

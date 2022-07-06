@@ -25,6 +25,7 @@ def test_lowpass_max():
             {"detrend": {"detrending_method": "demean"}},
             {
                 "remove_response": {
+                    "pre_filt": True,
                     "f1": 0.001,
                     "f2": 0.005,
                     "f3": None,
