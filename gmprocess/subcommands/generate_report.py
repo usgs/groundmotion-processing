@@ -55,7 +55,7 @@ class GenerateReportModule(base.SubcommandModule):
 
             logging.info(f"Generating summary report for event {event.id}...")
 
-            config = self.workspace.config
+            config = self._get_config()
             build_conf = config["build_report"]
             report_format = build_conf["format"]
             if report_format == "latex":
@@ -87,7 +87,7 @@ class GenerateReportModule(base.SubcommandModule):
             return False
 
         self.workspace = ws.StreamWorkspace.open(workname)
-        config = self.workspace.config
+        config = self._get_config()
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
         if len(station_list) == 0:
