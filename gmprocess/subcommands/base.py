@@ -100,10 +100,7 @@ class SubcommandModule(ABC):
         if self.gmrecords.args.label is None:
             return
 
-        if hasattr(self.workspace, "config"):
-            config = self.workspace.config
-        else:
-            config = confmod.get_config()
+        config = self._get_config()
 
         self.pstreams = self.workspace.getStreams(
             self.eventid, labels=[self.gmrecords.args.label], config=config

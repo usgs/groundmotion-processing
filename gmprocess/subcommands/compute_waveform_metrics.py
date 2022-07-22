@@ -67,10 +67,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
         self._get_labels()
-        if hasattr(self.workspace, "config"):
-            config = self.workspace.config
-        else:
-            config = confmod.get_config()
+        config = self._get_config()
 
         summaries = []
         metricpaths = []
