@@ -77,10 +77,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         ds = self.workspace.dataset
         self._get_labels()
 
-        if hasattr(self.workspace, "config"):
-            config = self.workspace.config
-        else:
-            config = confmod.get_config()
+        config = self._get_config()
 
         if not hasattr(self, "vs30_grids"):
             vs30_grids = None

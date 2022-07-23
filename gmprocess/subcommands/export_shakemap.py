@@ -66,10 +66,7 @@ class ExportShakeMapModule(base.SubcommandModule):
 
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
-            if hasattr(self.workspace, "config"):
-                config = self.workspace.config
-            else:
-                config = confmod.get_config()
+            config = self._get_config()
 
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = sm_utils.create_json(

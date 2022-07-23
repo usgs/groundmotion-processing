@@ -100,10 +100,7 @@ class SubcommandModule(ABC):
         if self.gmrecords.args.label is None:
             return
 
-        if hasattr(self.workspace, "config"):
-            config = self.workspace.config
-        else:
-            config = confmod.get_config()
+        config = self._get_config()
 
         self.pstreams = self.workspace.getStreams(
             self.eventid, labels=[self.gmrecords.args.label], config=config
@@ -178,3 +175,10 @@ class SubcommandModule(ABC):
                 self.gmrecords.args.label = tmplab
         elif self.gmrecords.args.label is None:
             self.gmrecords.args.label = labels[0]
+
+    def _get_config(self):
+        if hasattr(self, "workspace") and hasattr(self.workspace, "config"):
+            config = self.workspace.config
+        else:
+            config = confmod.get_config()
+        return config

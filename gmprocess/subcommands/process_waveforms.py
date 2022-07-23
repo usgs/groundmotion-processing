@@ -93,10 +93,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
-            if hasattr(workspace, "config"):
-                config = workspace.config
-            else:
-                config = confmod.get_config()
+            config = self._get_config()
             raw_streams = workspace.getStreams(
                 event.id,
                 stations=[station_id],
