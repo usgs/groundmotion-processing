@@ -177,11 +177,8 @@ class SubcommandModule(ABC):
             self.gmrecords.args.label = labels[0]
 
     def _get_config(self):
-        if hasattr(self, "workspace"):
-            if hasattr(self.workspace, "config"):
-                config = self.workspace.config
-            else:
-                config = confmod.get_config()
+        if hasattr(self, "workspace") and hasattr(self.workspace, "config"):
+            config = self.workspace.config
         else:
             config = confmod.get_config()
         return config
