@@ -41,7 +41,7 @@ def test_projects(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree(constants.PROJECTS_PATH_TEST)
+        shutil.rmtree(constants.CONFIG_PATH_TEST)
 
 
 if __name__ == "__main__":

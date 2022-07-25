@@ -348,7 +348,7 @@ def create(config, cwd=False):
     if os.getenv("CALLED_FROM_PYTEST") is None:
         proj_conf_file = os.path.join(proj_dir, new_conf_path, "user.yml")
     else:
-        proj_dir = constants.PROJECTS_PATH_TEST
+        proj_dir = constants.CONFIG_PATH_TEST
         proj_conf_file = os.path.join(proj_dir, "user.yml")
     with open(proj_conf_file, "w", encoding="utf-8") as yf:
         yaml.dump(user_conf, yf)

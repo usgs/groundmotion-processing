@@ -13,7 +13,7 @@ from gmprocess.utils import constants
 def test_import(script_runner):
     try:
         # Need to create profile first.
-        cdir = constants.PROJECTS_PATH_TEST
+        cdir = constants.CONFIG_PATH_TEST
         ddir = pkg_resources.resource_filename(
             "gmprocess", os.path.join("data", "testdata", "demo")
         )
@@ -51,7 +51,7 @@ def test_import(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree(constants.PROJECTS_PATH_TEST)
+        shutil.rmtree(constants.CONFIG_PATH_TEST)
         # Remove created files
         events = ["us6000e2mt", "nn00725272"]
         for e in events:

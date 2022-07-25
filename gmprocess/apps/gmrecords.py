@@ -63,7 +63,7 @@ class GMrecordsApp(object):
             else:
                 PROJECTS_PATH = const.PROJECTS_PATH
         else:
-            PROJECTS_PATH = const.PROJECTS_PATH_TEST
+            PROJECTS_PATH = const.CONFIG_PATH_TEST
 
         self.PROJECTS_PATH = PROJECTS_PATH
         self.PROJECTS_FILE = os.path.join(PROJECTS_PATH, "projects.conf")
@@ -189,15 +189,19 @@ class GMrecordsApp(object):
         )
 
         if os.getenv("CALLED_FROM_PYTEST") is not None:
-            self.conf_path = const.CONFIG_PATH_TEST
+            self.conf_path = const.CONFIG_PATH_TEST  # ~/gmptest
             # Put test config in conf_path
             data_dir = os.path.abspath(
                 pkg_resources.resource_filename("gmprocess", "data")
             )
             test_conf_file = os.path.normpath(
-                os.path.join(data_dir, const.CONFIG_FILE_TEST)
+                os.path.join(data_dir, const.CONFIG_FILE_TEST)  # config_test.yml
             )
-            shutil.copyfile(test_conf_file, os.path.join(self.conf_path, "."))
+            if not os.path.exists(self.conf_path):
+                os.mkdir(self.conf_path)
+            shutil.copyfile(
+                test_conf_file, os.path.join(self.conf_path, const.CONFIG_FILE_TEST)
+            )
 
         if (not os.path.exists(self.conf_path)) or (not os.path.exists(self.data_path)):
             print(
