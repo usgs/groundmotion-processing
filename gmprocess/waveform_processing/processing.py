@@ -46,7 +46,7 @@ from gmprocess.waveform_processing.zero_crossings import (  # noqa: F401
     check_zero_crossings,
 )
 from gmprocess.waveform_processing.nn_quality_assurance import NNet_QA  # noqa: F401
-from gmprocess.waveform_processing.snr import compute_snr  # noqa: F401
+from gmprocess.waveform_processing.snr import compute_snr, snr_check  # noqa: F401
 from gmprocess.waveform_processing.spectrum import fit_spectra  # noqa: F401
 from gmprocess.waveform_processing.windows import (  # noqa: F401
     cut,
@@ -96,8 +96,7 @@ ABBREV_UNITS = {"ACC": "cm/s^2", "VEL": "cm/s", "DISP": "cm"}
 
 
 def process_streams(streams, origin, config=None, old_streams=None):
-    """
-    Run processing steps from the config file.
+    """Run processing steps from the config file.
 
     This method looks in the 'processing' config section and loops over those
     steps and hands off the config options to the appropriate prcessing method.
@@ -144,9 +143,7 @@ def process_streams(streams, origin, config=None, old_streams=None):
     for st in streams:
         logging.debug(f"Checking stream {st.get_id()}...")
         # Estimate noise/signal split time
-        st = signal_split(
-            st, origin, model, picker_config=config["pickers"], config=config
-        )
+        st = signal_split(st, origin, model, config=config)
 
         # Estimate end of signal
         end_conf = window_conf["signal_end"]
@@ -207,22 +204,23 @@ def process_streams(streams, origin, config=None, old_streams=None):
             # Origin is required by some steps and has to be handled specially.
             # There must be a better solution for this...
             if step_name in REQ_ORIGIN:
-                step_args["origin"] = origin
+                step_args = _add_step_arg(step_args, "origin", origin)
             if step_name == "trim_multiple_events":
                 step_args["catalog"] = catalog
                 step_args["travel_time_df"] = travel_time_df
-            if step_name == "compute_snr":
-                step_args["mag"] = origin.magnitude
+            if step_name == "snr_check":
+                step_args = _add_step_arg(step_args, "mag", origin.magnitude)
 
             if step_args is None:
-                stream = globals()[step_name](stream, config)
+                stream = globals()[step_name](stream, config=config)
             else:
                 stream = globals()[step_name](stream, **step_args, config=config)
 
     # -------------------------------------------------------------------------
     # Begin colocated instrument selection
-    if "colocated" in config:
-        colocated_conf = config["colocated"]
+    if config["colocated"]["enabled"]:
+        colocated_conf = config["colocated"].copy()
+        colocated_conf.pop("enabled")
         if isinstance(streams, StreamCollection):
             streams.select_colocated(**colocated_conf, origin=origin)
 
@@ -235,7 +233,15 @@ def process_streams(streams, origin, config=None, old_streams=None):
 
 
 def remove_response(
-    st, pre_filt, f1, f2, f3=None, f4=None, water_level=None, inv=None, config=None
+    st,
+    pre_filt=True,
+    f1=0.001,
+    f2=0.005,
+    f3=None,
+    f4=None,
+    water_level=60,
+    inv=None,
+    config=None,
 ):
     """
     Performs instrument response correction. If the response information is
@@ -425,7 +431,7 @@ def remove_response(
     return st
 
 
-def lowpass_max_frequency(st, fn_fac=0.9, config=None):
+def lowpass_max_frequency(st, fn_fac=0.75, config=None):
     """
     Cap lowpass corner as a fraction of the Nyquist.
 
@@ -563,7 +569,17 @@ def resample(st, new_sampling_rate=None, method=None, a=None, config=None):
 
 
 def get_corner_frequencies(
-    st, origin, method="constant", constant=None, snr=None, magnitude=None, config=None
+    st,
+    origin,
+    method="snr",
+    constant={"highpass": 0.08, "lowpass": 20.0},
+    snr={"same_horiz": True},
+    magnitude={
+        "minmag": [-999.0, 3.5, 5.5],
+        "highpass": [0.5, 0.3, 0.1],
+        "lowpass": [25.0, 35.0, 40.0],
+    },
+    config=None,
 ):
     """
     Select corner frequencies.
@@ -670,7 +686,7 @@ def taper(st, type="hann", width=0.05, side="both", config=None):
     return st
 
 
-def check_instrument(st, n_max=3, n_min=1, require_two_horiz=False, config=None):
+def check_instrument(st, n_max=3, n_min=2, require_two_horiz=True, config=None):
     """
     Test the channels of the station.
 
@@ -779,3 +795,11 @@ def _detrend_pre_event_mean(trace, config=None):
     noise_mean = np.mean(noise.data)
     trace.data = trace.data - noise_mean
     return trace
+
+
+def _add_step_arg(step_args, key, val):
+    if step_args is None:
+        return {key: val}
+    else:
+        step_args[key] = val
+        return step_args

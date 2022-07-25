@@ -8,7 +8,7 @@ Pretesting methods.
 from obspy.signal.trigger import classic_sta_lta
 
 
-def check_free_field(st, reject_non_free_field=False, config=None):
+def check_free_field(st, reject_non_free_field=True, config=None):
     """
     Checks free field status of stream.
 

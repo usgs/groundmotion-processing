@@ -178,8 +178,8 @@ class StreamCollection(StreamArray):
             origin (Origin):
                 Origin object.
         """
-        # Do we have a different large-distnce preference?
-        if large_dist:
+        # Do we have different large distnce preference?
+        if large_dist["enabled"]:
             dist_thresh = large_dist["dist"][0]
             for m, d in zip(large_dist["mag"], large_dist["dist"]):
                 if origin.magnitude > m:

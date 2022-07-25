@@ -4,7 +4,6 @@
 import os
 import pkg_resources
 
-from configobj import ConfigObj
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
 from schema import Schema, Or, Optional
@@ -16,7 +15,7 @@ CONF_SCHEMA = Schema(
     {
         "user": {"name": str, "email": str},
         "fetchers": {
-            Optional("KNETFetcher"): {
+            "KNETFetcher": {
                 "user": str,
                 "password": str,
                 "radius": float,
@@ -24,8 +23,9 @@ CONF_SCHEMA = Schema(
                 "ddepth": float,
                 "dmag": float,
                 "restrict_stations": bool,
+                "enabled": bool,
             },
-            Optional("CESMDFetcher"): {
+            "CESMDFetcher": {
                 "email": str,
                 "process_type": Or("raw", "processed"),
                 "station_type": Or(
@@ -42,14 +42,17 @@ CONF_SCHEMA = Schema(
                 "eq_radius": float,
                 "eq_dt": float,
                 "station_radius": float,
+                "enabled": bool,
             },
-            Optional("TurkeyFetcher"): {
+            "TurkeyFetcher": {
                 "radius": float,
                 "dt": float,
                 "ddepth": float,
                 "dmag": float,
+                "enabled": bool,
             },
-            Optional("FDSNFetcher"): {
+            "FDSNFetcher": {
+                "enabled": bool,
                 "domain": {
                     "type": Or("circular", "rectangular"),
                     "circular": {
@@ -96,7 +99,7 @@ CONF_SCHEMA = Schema(
         },
         "windows": {
             "signal_end": {
-                "method": str,
+                "method": Or("model", "velocity", "magnitude", "none"),
                 "vmin": float,
                 "floor": float,
                 "model": str,
@@ -109,9 +112,15 @@ CONF_SCHEMA = Schema(
             },
         },
         "processing": list,
-        Optional("colocated"): {
+        "colocated": {
+            "enabled": bool,
             "preference": list,
-            Optional("large_dist"): {"preference": list, "mag": list, "dist": list},
+            "large_dist": {
+                "enabled": bool,
+                "preference": list,
+                "mag": list,
+                "dist": list,
+            },
         },
         "duplicate": {
             "max_dist_tolerance": float,
@@ -119,7 +128,7 @@ CONF_SCHEMA = Schema(
             "process_level_preference": list,
             "format_preference": list,
         },
-        "build_report": {"format": "latex"},
+        "build_report": {"enabled": True, "format": "latex"},
         "metrics": {
             "output_imcs": list,
             "output_imts": list,
@@ -160,7 +169,7 @@ CONF_SCHEMA = Schema(
         },
         "pickers": {
             "p_arrival_shift": float,
-            Optional("ar"): {
+            "ar": {
                 "f1": float,
                 "f2": float,
                 "lta_p": float,
@@ -173,7 +182,7 @@ CONF_SCHEMA = Schema(
                 "l_s": float,
                 "s_pick": bool,
             },
-            Optional("baer"): {
+            "baer": {
                 "tdownmax": float,
                 "tupevent": int,
                 "thr1": float,
@@ -181,13 +190,13 @@ CONF_SCHEMA = Schema(
                 "preset_len": int,
                 "p_dur": float,
             },
-            Optional("kalkan"): {
+            "kalkan": {
                 "period": Or("None", float),
                 "damping": float,
                 "nbins": Or("None", float),
                 "peak_selection": bool,
             },
-            Optional("power"): {
+            "power": {
                 "highpass": float,
                 "lowpass": float,
                 "order": int,
@@ -247,18 +256,12 @@ def merge_dicts(dicts):
     return target
 
 
-def get_config(config_file=None, section=None, use_default=False):
+def get_config(config_path=None):
     """Gets the user defined config and validates it.
 
     Args:
-        config_file:
-            Path to config file to use. If None, uses defaults.
-        section (str):
-            Name of section in the config to extract (i.e., 'fetchers', 'processing',
-            'pickers', etc.) If None, whole config is returned.
-        use_default (bool):
-            Use the default "production" config; this takes precedence  over project
-            config settings. Only intended for tutorials/documentation.
+        config_path:
+            Path to directory containing config files to use. If None, uses defaults.
 
     Returns:
         dictionary:
@@ -267,101 +270,61 @@ def get_config(config_file=None, section=None, use_default=False):
         IndexError:
             If input section name is not found.
     """
-    if use_default:
-        data_dir = os.path.abspath(pkg_resources.resource_filename("gmprocess", "data"))
-        config_file = os.path.join(data_dir, constants.CONFIG_FILE_PRODUCTION)
 
-    if config_file is None:
-        # Try not to let tests interfere with actual system:
-        if os.getenv("CALLED_FROM_PYTEST") is None:
-            # Not called from pytest -- Is there a local project?
-            local_proj = os.path.join(os.getcwd(), constants.PROJ_CONF_DIR)
-            local_proj_conf = os.path.join(local_proj, "projects.conf")
-            if os.path.isdir(local_proj) and os.path.isfile(local_proj_conf):
-                # There's a local project
-                config_file = __proj_to_conf_file(local_proj)
-            else:
-                # Is there a system project?
-                sys_proj = constants.PROJECTS_PATH
-                sys_proj_conf = os.path.join(sys_proj, "projects.conf")
-                if os.path.isdir(sys_proj) and os.path.isfile(sys_proj_conf):
-                    config_file = __proj_to_conf_file(sys_proj)
-                else:
-                    # Fall back on conf file in repository
-                    data_dir = os.path.abspath(
-                        pkg_resources.resource_filename("gmprocess", "data")
-                    )
-                    config_file = os.path.join(
-                        data_dir, constants.CONFIG_FILE_PRODUCTION
-                    )
-        else:
-            # When called by pytest
-            data_dir = os.path.abspath(
-                pkg_resources.resource_filename("gmprocess", "data")
-            )
-            config_file = os.path.join(data_dir, constants.CONFIG_FILE_TEST)
-
-    if not os.path.isfile(config_file):
+    # Read in default config from the repository
+    data_dir = os.path.abspath(pkg_resources.resource_filename("gmprocess", "data"))
+    default_config_file = os.path.join(data_dir, constants.CONFIG_FILE_PRODUCTION)
+    if not os.path.isfile(default_config_file):
         fmt = "Missing config file: %s."
-        raise OSError(fmt % config_file)
+        raise OSError(fmt % default_config_file)
     else:
-        with open(config_file, "r", encoding="utf-8") as f:
+        with open(default_config_file, "r", encoding="utf-8") as f:
             yaml = YAML()
             yaml.preserve_quotes = True
-            config = yaml.load(f)
+            default_config = yaml.load(f)
+    # Add in fake user info so validation succeeds
+    default_config["user"] = {"name": "NA", "email": "not@provided.com"}
+    CONF_SCHEMA.validate(default_config)
 
-    if use_default:
-        config["user"] = {"name": "Default", "email": "default@default.comf"}
+    if config_path is None:
+        return default_config
+    else:
+        config = __conf_path_to_config(config_path, default_config)
 
-    CONF_SCHEMA.validate(config)
-
-    if section is not None:
-        if section not in config:
-            raise IndexError(f"Section {section} not found in config file.")
-        else:
-            config = config[section]
-
-    return config
+        return config
 
 
-def update_config(custom_cfg_file):
+def update_config(custom_cfg_file, default_cfg):
     """Merge custom config with default.
 
     Args:
         custom_cfg_file (str):
             Path to custom config.
+        default_cfg (dict):
+            Default config file to be updated.
 
     Returns:
         dict: Merged config dictionary.
 
     """
-    config = get_config()
 
     if not os.path.isfile(custom_cfg_file):
-        return config
+        return default_cfg
     try:
         with open(custom_cfg_file, "rt", encoding="utf-8") as f:
             yaml = YAML()
             yaml.preserve_quotes = True
             custom_cfg = yaml.load(f)
-            update_dict(config, custom_cfg)
+            update_dict(default_cfg, custom_cfg)
     except YAMLError:
         return None
 
-    return config
+    return default_cfg
 
 
-def __proj_to_conf_file(path):
-    # We are switching from absolute to relative paths in this conf file. For
-    # backward compatibility, we're going to try to support both absolute and
-    # relative paths, which is why we need this "try" block to first assume
-    # an absolute path and if the conf does not exist then try a relative path.
-    proj_conf_file = os.path.join(path, "projects.conf")
-    projects_conf = ConfigObj(proj_conf_file, encoding="utf-8")
-    project = projects_conf["project"]
-    current_project = projects_conf["projects"][project]
-    conf_path = current_project["conf_path"]
-    conf_file = os.path.join(conf_path, "config.yml")
-    if not os.path.isfile(conf_file):
-        conf_file = os.path.join(path, conf_path, "config.yml")
-    return conf_file
+def __conf_path_to_config(config_path, default_config):
+    all_files = os.listdir(config_path)
+    conf_files = [f for f in all_files if f.endswith(".yml")]
+    for cf in conf_files:
+        default_config = update_config(os.path.join(config_path, cf), default_config)
+    return default_config

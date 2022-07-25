@@ -22,6 +22,8 @@ from gmprocess.utils.event import ScalarEvent
 
 NAN_TIME = UTCDateTime("1970-01-01T00:00:00")
 
+CONFIG = get_config()
+
 
 def butter_bandpass(lowcut, highcut, fs, order=5):
     nyq = 0.5 * fs
@@ -236,10 +238,8 @@ def pick_kalkan(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section="pickers")
-    if config is None:
-        config = get_config()
-    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+        picker_config = CONFIG["pickers"]
+    min_noise_dur = CONFIG["windows"]["window_checks"]["min_noise_duration"]
     params = picker_config["kalkan"]
     locs = []
     for trace in stream:
@@ -279,10 +279,8 @@ def pick_ar(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section="pickers")
-    if config is None:
-        config = get_config()
-    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+        picker_config = CONFIG["pickers"]
+    min_noise_dur = CONFIG["windows"]["window_checks"]["min_noise_duration"]
     params = picker_config["ar"]
     # Get the east, north, and vertical components from the stream
     st_e = stream.select(channel="??[E1]")
@@ -325,10 +323,8 @@ def pick_baer(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section="pickers")
-    if config is None:
-        config = get_config()
-    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+        picker_config = CONFIG["pickers"]
+    min_noise_dur = CONFIG["windows"]["window_checks"]["min_noise_duration"]
     params = picker_config["baer"]
     locs = []
     for trace in stream:
@@ -367,7 +363,7 @@ def pick_travel(stream, origin, model=None, picker_config=None):
     """
     if model is None:
         if picker_config is None:
-            picker_config = get_config(section="pickers")
+            picker_config = CONFIG["pickers"]
         model = TauPyModel(picker_config["travel_time"]["model"])
     if stream[0].stats.starttime == NAN_TIME:
         return (-1, 0)
@@ -414,8 +410,7 @@ def pick_yeck(stream):
             - Mean signal to noise ratio based on the pick.
     """
     min_window = 5.0  # put into config
-    config = get_config()
-    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+    min_noise_dur = CONFIG["windows"]["window_checks"]["min_noise_duration"]
     locs = []
     for trace in stream:
         data = trace.data
@@ -463,10 +458,8 @@ def pick_power(stream, picker_config=None, config=None):
             - Mean signal to noise ratio based on the pick.
     """
     if picker_config is None:
-        picker_config = get_config(section="pickers")
-    if config is None:
-        config = get_config()
-    min_noise_dur = config["windows"]["window_checks"]["min_noise_duration"]
+        picker_config = CONFIG["pickers"]
+    min_noise_dur = CONFIG["windows"]["window_checks"]["min_noise_duration"]
     params = picker_config["power"]
     locs = []
     for trace in stream:

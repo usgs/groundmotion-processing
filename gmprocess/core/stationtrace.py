@@ -509,24 +509,34 @@ class StationTrace(Trace):
     def filter(
         self,
         type="highpass",
-        config=None,
         freq=0.05,
         corners=5.0,
         zerophase=False,
+        config=None,
+        frequency_domain=True,
         **options,
     ):
+        """Overwrite parent function to allow for conf options.
 
-        if config is None:
-            get_config()
-
+        Args:
+            type (str):
+                What type of filter? "highpass" or "lowpass".
+            freq (float):
+                Corner frequency (Hz).
+            corners (float):
+                Number of poles.
+            zerophase (bool):
+                Zero phase filter?
+            config (dict):
+                Configuration options.
+            frequency_domain (bool):
+                Apply filter in frequency domain?
+        """
+        if zerophase:
+            number_of_passes = 2
+        else:
+            number_of_passes = 1
         if type == "lowpass":
-            processing_steps = config["processing"]
-            ps_names = [list(ps.keys())[0] for ps in processing_steps]
-            ind = int(np.where(np.array(ps_names) == "lowpass_filter")[0][0])
-            lp_args = processing_steps[ind]["lowpass_filter"]
-
-            frequency_domain = lp_args["frequency_domain"]
-            number_of_passes = lp_args["number_of_passes"]
 
             if not frequency_domain:
                 self.setProvenance(
@@ -582,14 +592,6 @@ class StationTrace(Trace):
                 )
 
         if type == "highpass":
-            processing_steps = config["processing"]
-            ps_names = [list(ps.keys())[0] for ps in processing_steps]
-            ind = int(np.where(np.array(ps_names) == "highpass_filter")[0][0])
-            hp_args = processing_steps[ind]["highpass_filter"]
-
-            frequency_domain = hp_args["frequency_domain"]
-            number_of_passes = hp_args["number_of_passes"]
-
             if not frequency_domain:
                 self.setProvenance(
                     "highpass_filter",

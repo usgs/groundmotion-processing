@@ -164,8 +164,9 @@ class GMrecordsApp(object):
                 self._initial_setup()
 
         self.projects_conf = configobj.ConfigObj(self.PROJECTS_FILE, encoding="utf-8")
-        self._validate_config()
-        # self.current_project gets set by _validate_config if it is successful.
+        self._validate_projects_config()
+        # self.current_project gets set by _validate_projects_config if it is
+        # successful.
         if not hasattr(self, "current_project"):
             print("Project validation failed.")
             print("This likely has occurred due to errors in the project conf file: ")
@@ -186,21 +187,23 @@ class GMrecordsApp(object):
                 self.PROJECTS_FILE, os.pardir, self.current_project["data_path"]
             )
         )
+
         if os.getenv("CALLED_FROM_PYTEST") is not None:
-            self.conf_path = const.PROJECTS_PATH_TEST
+            self.conf_path = const.CONFIG_PATH_TEST
+            # Put test config in conf_path
             data_dir = os.path.abspath(
                 pkg_resources.resource_filename("gmprocess", "data")
             )
-            self.conf_file = os.path.normpath(
+            test_conf_file = os.path.normpath(
                 os.path.join(data_dir, const.CONFIG_FILE_TEST)
             )
-        else:
-            self.conf_file = os.path.normpath(
-                os.path.join(self.conf_path, "config.yml")
-            )
+            shutil.copyfile(test_conf_file, os.path.join(self.conf_path, "."))
 
-        if (not os.path.exists(self.conf_file)) or (not os.path.exists(self.data_path)):
-            print(f"Config and/or data path does not exist for project: {self.project}")
+        if (not os.path.exists(self.conf_path)) or (not os.path.exists(self.data_path)):
+            print(
+                "Config and/or data directory does not exist for project: "
+                + self.project
+            )
             config = self.projects_conf
             project = self.project
 
@@ -242,9 +245,9 @@ class GMrecordsApp(object):
         # Only run get_config for assemble and projects
         subcommands_need_conf = ["download", "assemble", "auto_shakemap"]
         if self.args.func.command_name in subcommands_need_conf:
-            self.conf = configmod.get_config(self.conf_file)
+            self.conf = configmod.get_config(config_path=self.conf_path)
 
-    def _validate_config(self):
+    def _validate_projects_config(self):
         if "CALLED_FROM_PYTEST" in os.environ:
             self.project = self.projects_conf["project"]
             self.current_project = self.projects_conf["projects"][self.project]

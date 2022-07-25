@@ -22,7 +22,7 @@ from gmprocess.waveform_processing.phase import create_travel_time_dataframe
 from gmprocess.waveform_processing import corner_frequencies
 from gmprocess.waveform_processing.filtering import lowpass_filter, highpass_filter
 
-PICKER_CONFIG = get_config(section="pickers")
+PICKER_CONFIG = get_config()["pickers"]
 
 knet_data = os.path.join("data", "testdata", "process")
 data_path = pkg_resources.resource_filename("gmprocess", knet_data)

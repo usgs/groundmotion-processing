@@ -2,6 +2,8 @@
 # This section is for configuring data fetching routines.
 fetchers:
     KNETFetcher:
+        # Enable this fetcher?
+        enabled: True
         # NIED requires a username and a password, obtain these by
         # visiting this page:
         # https://hinetwww11.bosai.go.jp/nied/registration/
@@ -19,6 +21,8 @@ fetchers:
         # using magnitude to set maximum station distance
         restrict_stations: false
     CESMDFetcher:
+        # Enable this fetcher?
+        enabled: True
         # CESMD requires an email, register yours by
         # visiting this page:
         # https://strongmotioncenter.org/cgi-bin/CESMD/register.pl
@@ -32,6 +36,8 @@ fetchers:
         # station search radius (km)
         station_radius: 100.0
     TurkeyFetcher:
+        # Enable this fetcher?
+        enabled: False
         # define the distance search radius (km)
         radius: 100.0
         # define the time search threshold (sec)
@@ -41,6 +47,8 @@ fetchers:
         # define the magnitude search threshold (km)
         dmag: 0.3
     FDSNFetcher:
+        # Enable this fetcher?
+        enabled: True
         # The domain section is for defining the search domain.
         domain:
             # Two domian types of supported: circular, rectangular
@@ -153,12 +161,18 @@ read:
 windows:
 
     signal_end:
-        # The end of the signal can be set using a phase velocity.
-        # Alternatively, it can be set with duration model, where the mean
-        # 5-95% significant duration (Ds) is added to the split time. The mean
-        # Ds can also be extended by a number of standard deviations (epsilon).
+        # Options for setting the end of the signal window. Options are set with the key
+        # "method":
+        #    - "velocity": Set the end of the signal can be set using a phase velocity;
+        #      this option makes use of the keys "vmin" and "floor".
+        #    - "model": Set the end of the signal window using a shaking duration model;
+        #      this options makes use of the keys "model" and "epsilon"
+        #    - "magnitude": Use the magnitude-based signal end as defined by CISN, which
+        #      is magnitude/2 (units of minutes).
+        #    - "none": Use the full available record; this is useful if the records
+        #      have already been trimmed to a resonable level and you do not wish to
+        #      further reduce trace duration.
 
-        # Valid options for "method" are "velocity" and "model"
         method: model
         vmin: 1.0
         # Minimum duration in sec for use with 'vmin' option.
@@ -257,20 +271,30 @@ processing:
         # Requires minimum SNR of `threshold` between `min_freq` and `max_freq`
         # using Konno-Omachi smoothed spectra with `bandwidth` parameter.
         bandwidth: 20.0
-        check:
-            threshold: 3.0
-            min_freq: 'f0'  # Either a float or 'f0'. If 'f0', then the Brune
-            # corner frequency of the earthquake will be used as the minimum
-            # frequency for the SNR check.
-            max_freq: 5.0
-            f0_options:
-                stress_drop: 10.0  # bars
-                shear_vel: 3.7     # km/s
-                ceiling: 2.0       # Hz. If the computed f0 is greater than
-                # ceiling, then the ceiling frequency will be used. This should
-                # be less than max_freq.
-                floor: 0.1         # Hz. If the computed f0 is less than the
-                # floor, then the floor frequency will be used.
+
+    - snr_check:
+        # Impose a minimum SNR critera across a frequency band for accepting the record.
+        threshold: 3.0
+
+        # Minimum frequency to apply SNR critera. Can be a float or 'f0'. If 'f0', then
+        # the Brune corner frequency of the earthquake will be used as the minimum
+        # frequency for the SNR check.
+        min_freq: 'f0'
+
+        # Maximum frequency to apply SNR critera.
+        max_freq: 5.0
+        f0_options:
+            stress_drop: 10.0 # bars
+            shear_vel: 3.7 # km/s
+
+            # If the computed f0 is greater than ceiling, then the ceiling frequency
+            # will be used. 
+            ceiling: 2.0 # Hz
+
+            # If the computed f0 is less than the floor, then the floor frequency will
+            # be used.
+            floor: 0.1 # Hz
+
 
     # - NNet_QA:
     #     # Neural network quality assurance method by Bellagamba et al. (2019)
@@ -448,6 +472,8 @@ processing:
         max_dis_ratio: 0.9
 
 colocated:
+    # Enable the colocation algorithm?
+    enabled: True
     # This section is for handling colocated instruments that have otherwise
     # passed tests. For reference:
     #
@@ -470,6 +496,9 @@ colocated:
     #         if eqmag > m:
     #             dist_thresh = d
     large_dist:
+        # Enable separate channel preferences at large distances?
+        enabled: True
+
         preference: [BH?, HH?, HN?, BN?]
         mag: [3, 4, 5, 6, 7]
         dist: [20, 50,100, 300, 600]
@@ -514,6 +543,7 @@ duplicate:
 # the `pdflatex` command and attempt to build the pdf. This requires
 # `summary_plots` to have been run.
 build_report:
+    enabled: True
     format: latex
 
 # -----------------------------------------------------------------------------

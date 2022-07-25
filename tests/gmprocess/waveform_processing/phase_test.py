@@ -27,6 +27,8 @@ import os
 import pkg_resources
 import pandas as pd
 
+CONFIG = get_config()
+
 
 def test_p_pick():
     datapath = os.path.join("data", "testdata", "process")
@@ -79,7 +81,7 @@ def test_pphase_picker():
 
 def test_all_pickers():
     streams = get_streams()
-    picker_config = get_config(section="pickers")
+    picker_config = CONFIG["pickers"]
     methods = ["ar", "baer", "power", "kalkan"]
     columns = ["Stream", "Method", "Pick_Time", "Mean_SNR"]
     df = pd.DataFrame(columns=columns)

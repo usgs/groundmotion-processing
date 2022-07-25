@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -72,18 +71,8 @@ class ProcessWaveformsModule(base.SubcommandModule):
         self._summarize_files_created()
 
     def _process_event(self, event):
-        event_dir = os.path.join(self.gmrecords.data_path, event.id)
-        workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-        if not os.path.isfile(workname):
-            logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file."
-            )
-            logging.info("Continuing to next event.")
-            return event.id
-
-        workspace = ws.StreamWorkspace.open(workname)
-        ds = workspace.dataset
+        self.open_workspace(event.id)
+        ds = self.workspace.dataset
         station_list = ds.waveforms.list()
 
         processed_streams = []
@@ -94,7 +83,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
             config = self._get_config()
-            raw_streams = workspace.getStreams(
+            raw_streams = self.workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=["unprocessed"],
@@ -105,7 +94,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 # being used for the result of THIS round of processing; thus, I'm
                 # using "old_streams" for the previously processed streams which
                 # contain the manually reviewed information
-                old_streams = workspace.getStreams(
+                old_streams = self.workspace.getStreams(
                     event.id,
                     stations=[station_id],
                     labels=[self.process_tag],
@@ -153,7 +142,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
             overwrite = False
 
         for processed_stream in processed_streams:
-            workspace.addStreams(
+            self.workspace.addStreams(
                 event,
                 processed_stream,
                 label=self.process_tag,
@@ -161,5 +150,5 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 overwrite=overwrite,
             )
 
-        workspace.close()
+        self.close_workspace()
         return event.id

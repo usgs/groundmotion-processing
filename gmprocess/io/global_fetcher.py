@@ -40,11 +40,10 @@ def fetch_data(
         config (dict):
             Project config dictionary.
         rawdir (str):
-            Path to location where raw data will be stored. If not specified,
-            raw data will be deleted.
+            Path to location where raw data will be stored. If not specified, raw data
+            will be deleted.
         drop_non_free (bool):
-            Option to ignore non-free-field (borehole, sensors on structures,
-            etc.)
+            Option to ignore non-free-field (borehole, sensors on structures, etc.)
         stream_collection (bool):
             Construct and return a StreamCollection instance?
 
@@ -57,7 +56,9 @@ def fetch_data(
     tfetchers = find_fetchers(lat, lon)
 
     # Remove fetchers if they are not present in the conf file
-    fetchers = {k: v for k, v in tfetchers.items() if k in config["fetchers"]}
+    fetchers = {
+        k: v for k, v in tfetchers.items() if k in config["fetchers"] if k["enabled"]
+    }
     for fname in fetchers.keys():
         if fname not in config["fetchers"]:
             del fetchers[fname]
@@ -128,8 +129,8 @@ def find_fetchers(lat, lon):
             Origin longitude.
 
     Returns:
-        dict: Dictionary of classname:class where each class
-            is a subclass of shakemap.coremods.base.CoreModule.
+        dict: Dictionary of classname:class where each class is a subclass of
+        shakemap.coremods.base.CoreModule.
     """
 
     fetchers = {}

@@ -85,7 +85,7 @@ def assemble(event, config, directory, gmprocess_version):
     logging.debug("workspace.dataset.events:")
     logging.debug(workspace.dataset.events)
     workspace.addGmprocessVersion(gmprocess_version)
-    workspace.addConfig()
+    workspace.addConfig(config=config)
     workspace.addStreams(
         event, stream_array, label="unprocessed", gmprocess_version=gmprocess_version
     )

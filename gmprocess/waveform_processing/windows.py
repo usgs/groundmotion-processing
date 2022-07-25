@@ -29,7 +29,7 @@ from gmprocess.utils.models import load_model
 M_TO_KM = 1.0 / 1000
 
 
-def cut(st, sec_before_split=None, config=None):
+def cut(st, sec_before_split=2.0, config=None):
     """
     Cut/trim the record.
 
@@ -118,7 +118,7 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
     return st
 
 
-def signal_split(st, origin, model=None, picker_config=None, config=None):
+def signal_split(st, origin, model=None, config=None):
     """
     This method tries to identifies the boundary between the noise and signal
     for the waveform. The split time is placed inside the
@@ -136,8 +136,6 @@ def signal_split(st, origin, model=None, picker_config=None, config=None):
             ScalarEvent object.
         model (TauPyModel):
             TauPyModel object for computing travel times.
-        picker_config (dict):
-            Dictionary containing picker configuration information.
         config (dict):
             Dictionary containing system configuration information.
 
@@ -145,10 +143,9 @@ def signal_split(st, origin, model=None, picker_config=None, config=None):
         trace with stats dict updated to include a
         stats['processing_parameters']['signal_split'] dictionary.
     """
-    if picker_config is None:
-        picker_config = get_config(section="pickers")
     if config is None:
         config = get_config()
+    picker_config = config["pickers"]
 
     loc, mean_snr = pick_travel(st, origin, model)
     if loc > 0:

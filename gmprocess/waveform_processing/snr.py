@@ -15,7 +15,14 @@ TAPER_SIDE = "both"
 MIN_POINTS_IN_WINDOW = 10
 
 
-def compute_snr_trace(tr, bandwidth, mag=None, check=None):
+def compute_snr_trace(tr, bandwidth=20.0):
+    """Compute SNR dictionaries for a trace.
+
+    Args:
+        bandwidth (float):
+            Konno-Omachi smoothing bandwidth parameter.
+
+    """
     if tr.hasParameter("signal_split"):
         # Split the noise and signal into two separate traces
         split_prov = tr.getParameter("signal_split")
@@ -91,13 +98,11 @@ def compute_snr_trace(tr, bandwidth, mag=None, check=None):
     else:
         # We do not have an estimate of the signal split time for this trace
         compute_and_smooth_spectrum(tr, bandwidth, "signal")
-    if check is not None:
-        tr = snr_check(tr, mag, **check)
 
     return tr
 
 
-def compute_snr(st, bandwidth, mag=None, check=None, config=None):
+def compute_snr(st, bandwidth=20.0, config=None):
     """Compute SNR dictionaries for a stream, looping over all traces.
 
     Args:
@@ -105,8 +110,6 @@ def compute_snr(st, bandwidth, mag=None, check=None, config=None):
            Trace of data.
         bandwidth (float):
            Konno-Omachi smoothing bandwidth parameter.
-        check (dict):
-            If None, no checks performed.
         config (dict):
             Configuration dictionary (or None). See get_config().
 
@@ -115,26 +118,28 @@ def compute_snr(st, bandwidth, mag=None, check=None, config=None):
     """
     for tr in st:
         # Do we have estimates of the signal split time?
-        compute_snr_trace(tr, bandwidth, mag=mag, check=check)
+        compute_snr_trace(tr, bandwidth)
     return st
 
 
 def snr_check(
-    tr,
+    st,
     mag,
     threshold=3.0,
     min_freq="f0",
     max_freq=5.0,
     f0_options={"stress_drop": 10, "shear_vel": 3.7, "ceiling": 2.0, "floor": 0.1},
+    config=None,
 ):
-    """
-    Check signal-to-noise ratio.
+    """Check signal-to-noise ratio.
 
     Requires noise/singal windowing to have succeeded.
 
     Args:
-        tr (StationTrace):
-            Trace of data.
+        st (StationStream):
+           Trace of data.
+        mag (float):
+            Earthquake magnitude.
         threshold (float):
             Threshold SNR value.
         min_freq (float or str):
@@ -146,36 +151,39 @@ def snr_check(
             Konno-Omachi smoothing bandwidth parameter.
         f0_options (dict):
             Dictionary of f0 options (see config file).
+        config (dict):
+            Configuration dictionary (or None). See get_config().
 
     Returns:
         trace: Trace with SNR check.
     """
-    if tr.hasCached("snr"):
-        snr_dict = tr.getCached("snr")
-        snr = np.array(snr_dict["snr"])
-        freq = np.array(snr_dict["freq"])
+    for tr in st:
+        if tr.hasCached("snr"):
+            snr_dict = tr.getCached("snr")
+            snr = np.array(snr_dict["snr"])
+            freq = np.array(snr_dict["freq"])
 
-        # If min_freq is 'f0', then compute Brune corner frequency
-        if min_freq == "f0":
-            min_freq = brune_f0(
-                moment_from_magnitude(mag),
-                f0_options["stress_drop"],
-                f0_options["shear_vel"],
-            )
-            if min_freq < f0_options["floor"]:
-                min_freq = f0_options["floor"]
-            if min_freq > f0_options["ceiling"]:
-                min_freq = f0_options["ceiling"]
+            # If min_freq is 'f0', then compute Brune corner frequency
+            if min_freq == "f0":
+                min_freq = brune_f0(
+                    moment_from_magnitude(mag),
+                    f0_options["stress_drop"],
+                    f0_options["shear_vel"],
+                )
+                if min_freq < f0_options["floor"]:
+                    min_freq = f0_options["floor"]
+                if min_freq > f0_options["ceiling"]:
+                    min_freq = f0_options["ceiling"]
 
-        # Check if signal criteria is met
-        mask = (freq >= min_freq) & (freq <= max_freq)
-        if np.any(mask):
-            min_snr = np.min(snr[mask])
-        else:
-            min_snr = 0
+            # Check if signal criteria is met
+            mask = (freq >= min_freq) & (freq <= max_freq)
+            if np.any(mask):
+                min_snr = np.min(snr[mask])
+            else:
+                min_snr = 0
 
-        if min_snr < threshold:
-            tr.fail("Failed SNR check; SNR less than threshold.")
-    snr_conf = {"threshold": threshold, "min_freq": min_freq, "max_freq": max_freq}
-    tr.setParameter("snr_conf", snr_conf)
-    return tr
+            if min_snr < threshold:
+                tr.fail("Failed SNR check; SNR less than threshold.")
+        snr_conf = {"threshold": threshold, "min_freq": min_freq, "max_freq": max_freq}
+        tr.setParameter("snr_conf", snr_conf)
+    return st

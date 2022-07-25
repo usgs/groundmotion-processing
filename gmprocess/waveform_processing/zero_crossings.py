@@ -4,7 +4,7 @@
 import numpy as np
 
 
-def check_zero_crossings(st, min_crossings=1.0, config=None):
+def check_zero_crossings(st, min_crossings=0.1, config=None):
     """
     Check for a large enough density.
 
