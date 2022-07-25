@@ -157,7 +157,7 @@ def process_streams(streams, origin, config=None, old_streams=None):
             **end_conf,
         )
         wcheck_conf = window_conf["window_checks"]
-        if wcheck_conf["do_check"]:
+        if wcheck_conf["enabled"]:
             st = window_checks(
                 st,
                 min_noise_duration=wcheck_conf["min_noise_duration"],

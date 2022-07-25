@@ -107,7 +107,7 @@ CONF_SCHEMA = Schema(
                 "epsilon": float,
             },
             "window_checks": {
-                "do_check": bool,
+                "enabled": bool,
                 "min_noise_duration": float,
                 "min_signal_duration": float,
             },
