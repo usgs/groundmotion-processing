@@ -24,6 +24,9 @@ def test_auto_fchp():
     config = get_config()
     config["integration"]["frequency"] = True
 
+    config["processing"][16]["highpass_filter"]["frequency_domain"] = False
+    config["processing"][16]["highpass_filter"]["number_of_passes"] = 2.0
+
     for st in sc:
         for tr in st:
             tr.setParameter(
