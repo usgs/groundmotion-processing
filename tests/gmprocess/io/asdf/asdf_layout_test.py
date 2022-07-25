@@ -15,8 +15,9 @@ from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.asdf.core import write_asdf
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.test_utils import read_data_dir
-from gmprocess.utils.config import update_config
+from gmprocess.utils.config import update_config, get_config
 
+CONFIG = get_config()
 
 datapath = os.path.join("data", "testdata")
 datadir = pkg_resources.resource_filename("gmprocess", datapath)
@@ -41,7 +42,7 @@ def generate_workspace():
     write_asdf(tfilename, raw_data, event, label="unprocessed")
     del raw_data
 
-    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"))
+    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"), CONFIG)
 
     workspace = StreamWorkspace.open(tfilename)
     raw_streams = workspace.getStreams(EVENTID, labels=["unprocessed"], config=config)

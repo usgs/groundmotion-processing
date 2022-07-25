@@ -53,14 +53,15 @@ def assemble(event, config, directory, gmprocess_version):
     streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         in_raw_dir, config=config
     )
-    # Write errors to a csv file
-    failures_file = Path(in_raw_dir) / "read_failures.csv"
-    colnames = ["File", "Failure"]
-    with open(failures_file, "w", newline="") as f:
-        writer = csv.writer(f, delimiter=",", quoting=csv.QUOTE_MINIMAL)
-        writer.writerow(colnames)
-        for ufile, uerror in zip(unprocessed_files, unprocessed_file_errors):
-            writer.writerow([ufile, uerror])
+    # Write errors to a csv file (but not for tests)
+    if os.getenv("CALLED_FROM_PYTEST") is None:
+        failures_file = Path(in_raw_dir) / "read_failures.csv"
+        colnames = ["File", "Failure"]
+        with open(failures_file, "w", newline="") as f:
+            writer = csv.writer(f, delimiter=",", quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(colnames)
+            for ufile, uerror in zip(unprocessed_files, unprocessed_file_errors):
+                writer.writerow([ufile, uerror])
 
     logging.debug("streams:")
     logging.debug(streams)
