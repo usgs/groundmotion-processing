@@ -11,7 +11,7 @@ from gmprocess.waveform_processing.integrate import get_disp
 from gmprocess.utils.config import get_config
 
 
-def check_tail(st, duration, max_vel_ratio=0.1, max_dis_ratio=0.5, config=None):
+def check_tail(st, duration=5.0, max_vel_ratio=0.3, max_dis_ratio=0.9, config=None):
     """Check for abnormally arge values in the tail of the stream.
 
     This QA check looks for the presence of abnomally large values in the tail

@@ -3,6 +3,7 @@
 
 import os
 import pkg_resources
+from pathlib import Path
 
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
@@ -323,8 +324,7 @@ def update_config(custom_cfg_file, default_cfg):
 
 
 def __conf_path_to_config(config_path, default_config):
-    all_files = os.listdir(config_path)
-    conf_files = [f for f in all_files if f.endswith(".yml")]
+    conf_files = Path(config_path).glob("**.yml")
     for cf in conf_files:
-        default_config = update_config(os.path.join(config_path, cf), default_config)
+        default_config = update_config(cf, default_config)
     return default_config

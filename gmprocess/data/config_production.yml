@@ -186,7 +186,7 @@ windows:
     window_checks:
         # Minimum noise duration; can be zero but this will allow for errors
         # to occur if requesting signal-to-noise ratios.
-        do_check: True
+        enabled: True
         min_noise_duration: 1.0
         min_signal_duration: 5.0
 
@@ -199,66 +199,27 @@ processing:
     # Check to keep or ignore non-free-field sensors. Typically, these include
     # sensors attached to a large structure (buildings, dams, bridges, etc.)
     - check_free_field:
-        reject_non_free_field: True
-
-    # Amplitude check to avoid clipping. Units are usually counts (e.g., with
-    # data from IRIS) but some sources will convert to physical units so it
-    # is important to be careful with this step.
-    # - check_max_amplitude:
-    #     min: 5
-    #     max: 2e6
 
     # Check number of traces for each instrument. Max is useful for screening
     # out downhole or structural arrays with the same station code.
     - check_instrument:
-        n_max: 3
-        n_min: 2
-        require_two_horiz: True
 
     # Require a minimum sample rate
     - min_sample_rate:
-        min_sps: 20.0
 
     # Check for clipping
     - check_clipping:
-        # Threshold probability for clipping detection.
-        threshold: 0.2
-
+ 
     - detrend:
-        # Supported obspy methods:
-        #     constant, demean, linear, polynomial, simple, spline
-        # Also:
-        #     baseline_sixth_order, pre
         detrending_method: linear
 
     - detrend:
         detrending_method: demean
 
     - check_zero_crossings:
-        # Require a minimum number of zero crossings per second.
         min_crossings: 0.1
 
-    # STA/LTA is computed for record and the max value must exceed the threshold
-    # below. Units are sec for window lenghts.
-    # - check_sta_lta:
-    #     sta_length: 1.0
-    #     lta_length: 20.0
-    #     threshold: 3.0
-
     - remove_response:
-        #  Apply a bandpass filter in frequency domain to the data before deconvolution?
-        pre_filt: True
-
-        # Pre-filtering frequencies. See obspy.core.trace.Trace.remove_response
-        # for details. Note: if f3 is Null it will be set to 0.9*fn, if f4 is
-        # Null it will be set to fn.
-        f1: 0.001
-        f2: 0.005
-        f3: Null
-        f4: Null
-
-        # Water level (dB) for deconvolution; Set to Null to not apply a water level.
-        water_level: 60.0
 
     - detrend:
         detrending_method: linear
@@ -267,209 +228,32 @@ processing:
         detrending_method: demean
 
     - compute_snr:
-        # Presense of this check says to do the signa-to-noise ratio check.
-        # Requires minimum SNR of `threshold` between `min_freq` and `max_freq`
-        # using Konno-Omachi smoothed spectra with `bandwidth` parameter.
-        bandwidth: 20.0
 
     - snr_check:
-        # Impose a minimum SNR critera across a frequency band for accepting the record.
-        threshold: 3.0
-
-        # Minimum frequency to apply SNR critera. Can be a float or 'f0'. If 'f0', then
-        # the Brune corner frequency of the earthquake will be used as the minimum
-        # frequency for the SNR check.
-        min_freq: 'f0'
-
-        # Maximum frequency to apply SNR critera.
-        max_freq: 5.0
-        f0_options:
-            stress_drop: 10.0 # bars
-            shear_vel: 3.7 # km/s
-
-            # If the computed f0 is greater than ceiling, then the ceiling frequency
-            # will be used. 
-            ceiling: 2.0 # Hz
-
-            # If the computed f0 is less than the floor, then the floor frequency will
-            # be used.
-            floor: 0.1 # Hz
-
-
-    # - NNet_QA:
-    #     # Neural network quality assurance method by Bellagamba et al. (2019)
-    #     acceptance_threshold: 0.5
-    #     model_name: CantWell
 
     - get_corner_frequencies:
-        # Corner frequency selection can use constant values, a function of magnitude, 
-        # or selected dynamically from the signal-to-noise-ratio.
-
-        # Valid options for "method" are: "constant", "magnitude", and "snr". Each have
-        # additional options below.
-        method: snr
-
-        constant:
-            highpass: 0.08
-            lowpass: 20.0
-
-        # The magnitude option is to suppport the corner frequency method used by 
-        # PRISM (https://doi.org/10.3133/ofr20171008; Table 1). 
-        magnitude:
-            minmag: [-999.0, 3.5, 5.5]
-            highpass: [0.5, 0.3, 0.1]
-            lowpass: [25.0, 35.0, 40.0]
-
-        snr:
-            # For dynamic filtering, we require a minimum SNR threshold between
-            # as configured in the snr_check step.
-            same_horiz: True
 
     # Apply a cap to the lowpass corner frequency so that it is guaranteed to be
     # less than or equal to fn_fac * fn, where fn is the Nyquist frequency
     - lowpass_max_frequency:
-        fn_fac: 0.75
-
-    # - adjust_highpass_corner:
-    #     # Options for further refinement of the highpass corner. Currently, this
-    #     # includes criteria employed by:
-    #     #
-    #     #     Dawood, H.M., Rodriguez-Marek, A., Bayless, J., Goulet, C. and
-    #     #     Thompson, E. (2016). A flatfile for the KiK-net database processed
-    #     #     using an automated protocol. Earthquake Spectra, 32(2), pp.1281-1302.
-    #
-    #     # This algorithm begins with an initial corner frequency that was selected
-    #     # as configured in the `get_corner_frequencies` step. It then chcks the
-    #     # criteria descibed below; if the criteria are not met then the high pass
-    #     # corner is increased the multiplicative step factor until the criteria
-    #     # are met:
-    #     step_factor: 1.3
-    #
-    #     # If the criteria are not satisfied for a corner frequency below this
-    #     # threshold then the stream will be rejected/failed:
-    #     maximum_freq: 0.9
-    #
-    #     # Maximum value (in cm) for final displacement:
-    #     max_final_displacement: 0.025
-    #
-    #     # Maximum ratio of the final displacement to the maximum displacement:
-    #     max_displacment_ratio: 0.2
-
-    # - resample:
-    #
-    #       # The new sampling rate, in Hz.
-    #       new_sampling_rate: 200
-    #
-    #       # Currently only supporting Lanczos interpolation, which is
-    #       # generall the preferred method and offers the highest quality
-    #       # interpolation.
-    #       method: lanczos
-    #
-    #       # Width of the Lanczos window, in number of samples. Increasing "a"
-    #       # linearly increases run time, but also increases interpolation.
-    #       # quality.
-    #       a: 50
 
     - cut:
-        # No required options; the presence of this step just indicates when to
-        # cut the time series using the record start and signal end that were
-        # configured in the windows section.
-
-        # Optionally, can specify 'sec_before_split' which shifts the start
-        # time of the signal window (relative to the estimated p-wave arrival). 
-        # If set to "Null" then the beginning of the signal window will be
-        # unchanged.
-        sec_before_split: 2.0
 
     - taper:
-        # Taper to apply to trace.
-        type: hann
-        width: 0.05
-        side: both
        
     - highpass_filter:
-        # Applies a Butterworth highpass filter using the highpass corner
-        # determined with 'corner_frequencies' section.
-        # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
-        frequency_domain: True
-        filter_order: 5.0
-        number_of_passes: 1.0
 
     - lowpass_filter:
-        # Applies a Butterworth lowpass filter using the lowpass corner
-        # determined with 'corner_frequencies' section.
-        # If true, use gmprocess frequency domain implementation; if false, use ObsPy filters
-        frequency_domain: True
-        filter_order: 5.0
-        number_of_passes: 1.0
         
     - detrend:    
         detrending_method: pre
 
     - detrend:
-    #     # The current baseline correction method fits a sixth-order polynomial
-    #     # to the displacement time series, and sets the zeroth- and first-order
-    #     # terms to be zero. The second derivative of the fit polynomial is then
-    #     # removed from the acceleration time series.
         detrending_method: baseline_sixth_order
 
-    # - trim_multiple_events:
-    #     pga_factor: 0.2
-    #     pct_window_reject: 0.7
-    #     gmpe: B14
-    #     site_parameters:
-    #         vs30: 760
-    #     rupture_parameters:
-    #         rake: 0
-
     - fit_spectra:
-        # Fit a Brune spectra by optimizing moment and corner frequency.
-        # Note that it only uses frequencies between the corner frequencies
-        # that are selected based on the options in the 'get_corner_frequencies'
-        # section of this config file.
-
-        # Kappa (sec)
-        kappa: 0.035
-
-        # Radiation pattern factor (Boore and Boatwright, 1984))
-        RP: 0.55
-
-        # Partition of shear-wave energy into horizontal components
-        # 1 / np.sqrt(2.0)
-        VHC: 0.7071068
-
-        # Free surface effect
-        FSE: 2.0
-
-        # Density at source (gm/cc)
-        density: 2.8
-
-        # Shear-wave velocity at source (km/s)
-        shear_vel: 3.7
-
-        # Reference distance (km)
-        R0: 1.0
-
-        # Multiplicative factor for setting bounds on moment, where the
-        # moment (from the catalog moment magnitude) is multiplied and
-        # divided by `moment_factor` to set the bounds for the spectral
-        # optimization.
-        moment_factor: 100.0
-
-        # Min stress for fit search (bars)
-        min_stress: 0.1
-
-        # Max stress for fit search (bars)
-        max_stress: 10000.0
 
     - check_tail:
-        # Tail duration in sec
-        duration: 5.0
-        # Max ratio of the absolute velocity in the tail to the full trace.
-        max_vel_ratio: 0.3
-        # Max ratio of the absolute displacement in the tail to the full 
-        # trace.
-        max_dis_ratio: 0.9
 
 colocated:
     # Enable the colocation algorithm?
