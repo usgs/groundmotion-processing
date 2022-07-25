@@ -122,7 +122,7 @@ def test_signal_split2():
     signal_split(stream, origin)
 
     cmpdict = {
-        "split_time": UTCDateTime(2018, 1, 24, 10, 51, 39, 841483),
+        "split_time": UTCDateTime(2018, 1, 24, 10, 51, 38, 841483),
         "method": "p_arrival",
         "picker_type": "travel_time",
     }
