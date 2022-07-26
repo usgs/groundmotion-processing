@@ -286,31 +286,33 @@ def get_prov_latex(st):
     # start by sorting the channel names
     channels = [tr.stats.channel for tr in st]
     channelidx = np.argsort(channels).tolist()
-    columns = ["Process Step", "Process Attribute"]
 
     trace1 = st[channelidx.index(0)]
-    df = pd.DataFrame(columns=columns)
-    df = trace1.getProvDataFrame()
-    mapper = {"Process Value": f"{trace1.stats.channel} Value"}
-    df = df.rename(mapper=mapper, axis="columns")
+    prov1 = trace1.getProvDataFrame().to_dict()
+    prov_ind = [v for v in prov1["Index"].values()]
+
+    final_dict = {
+        "Process Step": [v for v in prov1["Process Step"].values()],
+        "Process Attribute": [v for v in prov1["Process Attribute"].values()],
+        f"{trace1.stats.channel} Value": [v for v in prov1["Process Value"].values()],
+    }
+
     for i in channelidx[1:]:
         trace2 = st[i]
-        trace2_frame = trace2.getProvDataFrame()
-        df[f"{trace2.stats.channel} Value"] = trace2_frame["Process Value"]
+        prov2 = trace2.getProvDataFrame().to_dict()
+        final_dict[f"{trace2.stats.channel} Value"] = [
+            v for v in prov2["Process Value"].values()
+        ]
 
-    lastrow = None
-    newdf = pd.DataFrame(columns=df.columns)
-    for idx, row in df.iterrows():
-        if lastrow is None:
-            lastrow = row
-            newdf = newdf.append(row, ignore_index=True)
+    last_row = -1
+    for i in range(len(prov_ind)):
+        row = prov_ind[i]
+        if row == last_row:
+            final_dict["Process Step"][i] = ""
             continue
-        if row["Index"] == lastrow["Index"]:
-            row["Process Step"] = ""
-        newdf = newdf.append(row, ignore_index=True)
-        lastrow = row
+        last_row = row
 
-    newdf = newdf.drop(labels="Index", axis="columns")
+    newdf = pd.DataFrame(final_dict)
     prov_string = newdf.to_latex(index=False)
     prov_string = "\\tiny\n" + prov_string
     return prov_string

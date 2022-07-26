@@ -36,6 +36,7 @@ from gmprocess.waveform_processing.filtering import (  # noqa: F401
     lowpass_filter,
     highpass_filter,
 )
+from gmprocess.waveform_processing.taper import taper  # noqa: F401
 from gmprocess.waveform_processing.adjust_highpass import (  # noqa: F401
     adjust_highpass_corner,
 )
@@ -70,27 +71,6 @@ REQ_ORIGIN = [
     "get_corner_frequencies",
 ]
 
-
-TAPER_TYPES = {
-    "cosine": "Cosine",
-    "barthann": "Bartlett-Hann",
-    "bartlett": "Bartlett",
-    "blackman": "Blackman",
-    "blackmanharris": "Blackman-Harris",
-    "bohman": "Bohman",
-    "boxcar": "Boxcar",
-    "chebwin": "Dolph-Chebyshev",
-    "flattop": "Flat top",
-    "gaussian": "Gaussian",
-    "general_gaussian": "Generalized Gaussian",
-    "hamming": "Hamming",
-    "hann": "Hann",
-    "kaiser": "Kaiser",
-    "nuttall": "Blackman-Harris according to Nuttall",
-    "parzen": "Parzen",
-    "slepian": "Slepian",
-    "triang": "Triangular",
-}
 
 ABBREV_UNITS = {"ACC": "cm/s^2", "VEL": "cm/s", "DISP": "cm"}
 
@@ -652,37 +632,6 @@ def get_corner_frequencies(
                     if "lowpass" in rev_fc_dict:
                         base_fc_dict["lowpass"] = rev_fc_dict["lowpass"]
                     tr.setParameter("corner_frequencies", base_fc_dict)
-    return st
-
-
-def taper(st, type="hann", width=0.05, side="both", config=None):
-    """
-    Taper streams.
-
-    Args:
-        st (StationStream):
-            Stream of data.
-        type (str):
-            Taper type.
-        width (float):
-            Taper width as percentage of trace length.
-        side (str):
-            Valid options: "both", "left", "right".
-        config (dict):
-            Configuration dictionary (or None). See get_config().
-
-    Returns:
-        stream: tapered streams.
-    """
-    if not st.passed:
-        return st
-
-    for tr in st:
-        tr.taper(max_percentage=width, type=type, side=side)
-        window_type = TAPER_TYPES[type]
-        tr.setProvenance(
-            "taper", {"window_type": window_type, "taper_width": width, "side": side}
-        )
     return st
 
 

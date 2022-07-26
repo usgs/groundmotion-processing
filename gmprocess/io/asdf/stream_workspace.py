@@ -1347,7 +1347,7 @@ class StreamWorkspace(object):
             row["Software"] = software["name"]
             row["Version"] = software["version"]
             df = df.append(row, ignore_index=True)
-
+        breakpoint()
         return df
 
     def getInventory(self, eventid):

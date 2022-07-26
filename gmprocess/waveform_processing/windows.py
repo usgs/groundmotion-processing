@@ -153,8 +153,7 @@ def signal_split(st, origin, model=None, config=None):
         preferred_picker = "travel_time"
     else:
         pick_methods = ["ar", "baer", "power", "kalkan"]
-        columns = ["Stream", "Method", "Pick_Time", "Mean_SNR"]
-        df = pd.DataFrame(columns=columns)
+        rows = []
         for pick_method in pick_methods:
             try:
                 if pick_method == "ar":
@@ -178,13 +177,15 @@ def signal_split(st, origin, model=None, config=None):
             except BaseException:
                 loc = -1
                 mean_snr = np.nan
-            row = {
-                "Stream": st.get_id(),
-                "Method": pick_method,
-                "Pick_Time": loc,
-                "Mean_SNR": mean_snr,
-            }
-            df = df.append(row, ignore_index=True)
+            rows.append(
+                {
+                    "Stream": st.get_id(),
+                    "Method": pick_method,
+                    "Pick_Time": loc,
+                    "Mean_SNR": mean_snr,
+                }
+            )
+        df = pd.DataFrame(rows)
 
         max_snr = df["Mean_SNR"].max()
         if not np.isnan(max_snr):
@@ -470,7 +471,7 @@ def trim_multiple_events(
             ]
         )
         rctx.rjb = rctx.repi
-        rctx.rhypo = np.sqrt(rctx.repi ** 2 + event.depth_km ** 2)
+        rctx.rhypo = np.sqrt(rctx.repi**2 + event.depth_km**2)
         rctx.rrup = rctx.rhypo
         rctx.sids = np.array(range(np.size(rctx.rrup)))
         pga, sd = gmpe.get_mean_and_stddevs(rctx, rctx, rctx, imt.PGA(), [])

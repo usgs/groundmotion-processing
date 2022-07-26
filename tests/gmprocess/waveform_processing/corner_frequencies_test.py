@@ -60,34 +60,17 @@ def test_corner_frequencies():
                 min_signal_duration=wcheck_conf["min_signal_duration"],
             )
 
-    pconfig = config["processing"]
-
-    # Run SNR check
-    # I think we don't do this anymore.
-    test = [d for d in pconfig if list(d.keys())[0] == "compute_snr"]
-    snr_config = test[0]["compute_snr"]
-    # snr_config["check"]["min_freq"] = 0.2
     for stream in processed_streams:
-        stream = compute_snr(stream, **snr_config)
-    test = [d for d in pconfig if list(d.keys())[0] == "snr_check"]
-    check_config = test[0]["snr_check"]
+        stream = compute_snr(stream)
     for stream in processed_streams:
-        stream = snr_check(stream, mag=origin.magnitude, **check_config)
-
-    # Run get_corner_frequencies
-    test = [d for d in pconfig if list(d.keys())[0] == "get_corner_frequencies"]
-    cf_config = test[0]["get_corner_frequencies"]
-    snr_config = cf_config["snr"]
-
-    # With same_horiz False
-    snr_config["same_horiz"] = False
+        stream = snr_check(stream, mag=origin.magnitude)
 
     lp = []
     hp = []
     for stream in processed_streams:
         if not stream.passed:
             continue
-        stream = get_corner_frequencies(stream, origin, method="snr", snr=snr_config)
+        stream = get_corner_frequencies(stream, origin, method="snr")
         if stream[0].hasParameter("corner_frequencies"):
             cfdict = stream[0].getParameter("corner_frequencies")
             lp.append(cfdict["lowpass"])
@@ -102,15 +85,12 @@ def test_corner_frequencies():
         np.sort(hps), [0.02431315, 0.02431315, 0.02431315], atol=1e-5
     )
 
-    # With same_horiz True
-    snr_config["same_horiz"] = True
-
     lp = []
     hp = []
     for stream in processed_streams:
         if not stream.passed:
             continue
-        stream = get_corner_frequencies(stream, origin, method="snr", snr=snr_config)
+        stream = get_corner_frequencies(stream, origin, method="snr")
         if stream[0].hasParameter("corner_frequencies"):
             cfdict = stream[0].getParameter("corner_frequencies")
             lp.append(cfdict["lowpass"])
@@ -171,21 +151,12 @@ def test_corner_frequencies_magnitude():
                 min_signal_duration=wcheck_conf["min_signal_duration"],
             )
 
-    pconfig = config["processing"]
-
-    # Run get_corner_frequencies
-    test = [d for d in pconfig if list(d.keys())[0] == "get_corner_frequencies"]
-    cf_config = test[0]["get_corner_frequencies"]
-    mag_config = cf_config["magnitude"]
-
     lp = []
     hp = []
     for stream in processed_streams:
         if not stream.passed:
             continue
-        stream = get_corner_frequencies(
-            stream, origin, method="magnitude", magnitude=mag_config
-        )
+        stream = get_corner_frequencies(stream, origin, method="magnitude")
         if stream[0].hasParameter("corner_frequencies"):
             cfdict = stream[0].getParameter("corner_frequencies")
             lp.append(cfdict["lowpass"])

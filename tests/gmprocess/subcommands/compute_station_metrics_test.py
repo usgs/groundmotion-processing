@@ -5,7 +5,6 @@ import io
 import os
 import shutil
 import pkg_resources
-
 from gmprocess.utils import constants
 
 

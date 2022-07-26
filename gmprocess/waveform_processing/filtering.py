@@ -80,7 +80,7 @@ def highpass_filter_trace(
 
 
 def lowpass_filter(
-    st, frequency_domain=True, filter_order=5, number_of_passes=2, config=None
+    st, frequency_domain=True, filter_order=5, number_of_passes=1, config=None
 ):
     """
     Lowpass filter.
@@ -113,7 +113,7 @@ def lowpass_filter(
 
 
 def lowpass_filter_trace(
-    tr, frequency_domain, filter_order=5, number_of_passes=2, config=None
+    tr, frequency_domain, filter_order=5, number_of_passes=1, config=None
 ):
     """
     Lowpass filter.
