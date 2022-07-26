@@ -14,7 +14,7 @@ from gmprocess.waveform_processing.windows import signal_split
 from gmprocess.waveform_processing.windows import signal_end
 from gmprocess.waveform_processing.windows import window_checks
 
-from gmprocess.waveform_processing.processing import get_corner_frequencies
+from gmprocess.waveform_processing.corner_frequencies import get_corner_frequencies
 from gmprocess.waveform_processing.snr import compute_snr, snr_check
 
 

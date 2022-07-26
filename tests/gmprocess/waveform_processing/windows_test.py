@@ -16,7 +16,7 @@ from obspy import UTCDateTime
 from gmprocess.utils.config import get_config
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.waveform_processing.processing import remove_response
+from gmprocess.waveform_processing.instrument_response import remove_response
 from gmprocess.utils.event import get_event_object
 from gmprocess.waveform_processing.phase import create_travel_time_dataframe
 from gmprocess.waveform_processing import corner_frequencies

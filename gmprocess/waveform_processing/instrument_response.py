@@ -8,11 +8,13 @@ Methods for handling instrument response.
 import numpy as np
 import logging
 from gmprocess.core.stationtrace import PROCESS_LEVELS
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 ABBREV_UNITS = {"ACC": "cm/s^2", "VEL": "cm/s", "DISP": "cm"}
 M_TO_CM = 100.0
 
 
+@ProcessingStep
 def remove_response(
     st,
     pre_filt=True,

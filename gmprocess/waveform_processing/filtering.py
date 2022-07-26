@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
+
+@ProcessingStep
 def highpass_filter(
     st, frequency_domain=True, filter_order=5, number_of_passes=1, config=None
 ):
@@ -35,6 +38,7 @@ def highpass_filter(
     return st
 
 
+@ProcessingStep
 def highpass_filter_trace(
     tr, frequency_domain=True, filter_order=5, number_of_passes=1, config=None
 ):
@@ -79,6 +83,7 @@ def highpass_filter_trace(
     return tr
 
 
+@ProcessingStep
 def lowpass_filter(
     st, frequency_domain=True, filter_order=5, number_of_passes=1, config=None
 ):
@@ -112,6 +117,7 @@ def lowpass_filter(
     return st
 
 
+@ProcessingStep
 def lowpass_filter_trace(
     tr, frequency_domain, filter_order=5, number_of_passes=1, config=None
 ):

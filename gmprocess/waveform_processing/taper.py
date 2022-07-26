@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 TAPER_TYPES = {
     "cosine": "Cosine",
@@ -24,6 +25,7 @@ TAPER_TYPES = {
 }
 
 
+@ProcessingStep
 def taper(st, type="hann", width=0.05, side="both", config=None):
     """
     Taper streams.

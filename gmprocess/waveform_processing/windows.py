@@ -25,10 +25,12 @@ from gmprocess.waveform_processing.phase import (
 from gmprocess.utils.config import get_config
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.utils.models import load_model
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 M_TO_KM = 1.0 / 1000
 
 
+@ProcessingStep
 def cut(st, sec_before_split=2.0, config=None):
     """
     Cut/trim the record.
@@ -339,6 +341,7 @@ def signal_end(
     return st
 
 
+@ProcessingStep
 def trim_multiple_events(
     st,
     origin,

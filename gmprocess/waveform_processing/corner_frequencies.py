@@ -8,6 +8,7 @@ Methods for handling/picking corner frequencies.
 import logging
 import numpy as np
 
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 from gmprocess.waveform_processing.snr import compute_snr_trace
 
 # Options for tapering noise/signal windows
@@ -16,6 +17,7 @@ TAPER_TYPE = "hann"
 TAPER_SIDE = "both"
 
 
+@ProcessingStep
 def get_corner_frequencies(
     st,
     origin,
@@ -100,6 +102,47 @@ def get_corner_frequencies(
                     if "lowpass" in rev_fc_dict:
                         base_fc_dict["lowpass"] = rev_fc_dict["lowpass"]
                     tr.setParameter("corner_frequencies", base_fc_dict)
+    return st
+
+
+@ProcessingStep
+def lowpass_max_frequency(st, fn_fac=0.75, config=None):
+    """
+    Cap lowpass corner as a fraction of the Nyquist.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        fn_fac (float):
+            Factor to be multiplied by the Nyquist to cap the lowpass filter.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
+    Returns:
+        StationStream: Resampled stream.
+    """
+    if not st.passed:
+        return st
+
+    for tr in st:
+        if tr.hasParameter("review"):
+            rdict = tr.getParameter("review")
+            if "corner_frequencies" in rdict:
+                rev_fc_dict = rdict["corner_frequencies"]
+                if "lowpass" in rev_fc_dict:
+                    logging.warning(
+                        f"Not applying lowpass_max_frequency for {tr} because the "
+                        "lowpass filter corner was set by manual review."
+                    )
+                    continue
+
+        fn = 0.5 * tr.stats.sampling_rate
+        max_flp = fn * fn_fac
+        freq_dict = tr.getParameter("corner_frequencies")
+        if freq_dict["lowpass"] > max_flp:
+            freq_dict["lowpass"] = max_flp
+            tr.setParameter("corner_frequencies", freq_dict)
+
     return st
 
 
@@ -254,44 +297,4 @@ def from_snr(st, same_horiz=True, bandwidth=20):
                 )
             else:
                 tr.fail("SNR not met within the required bandwidth.")
-    return st
-
-
-def lowpass_max_frequency(st, fn_fac=0.75, config=None):
-    """
-    Cap lowpass corner as a fraction of the Nyquist.
-
-    Args:
-        st (StationStream):
-            Stream of data.
-        fn_fac (float):
-            Factor to be multiplied by the Nyquist to cap the lowpass filter.
-        config (dict):
-            Configuration dictionary (or None). See get_config().
-
-    Returns:
-        StationStream: Resampled stream.
-    """
-    if not st.passed:
-        return st
-
-    for tr in st:
-        if tr.hasParameter("review"):
-            rdict = tr.getParameter("review")
-            if "corner_frequencies" in rdict:
-                rev_fc_dict = rdict["corner_frequencies"]
-                if "lowpass" in rev_fc_dict:
-                    logging.warning(
-                        f"Not applying lowpass_max_frequency for {tr} because the "
-                        "lowpass filter corner was set by manual review."
-                    )
-                    continue
-
-        fn = 0.5 * tr.stats.sampling_rate
-        max_flp = fn * fn_fac
-        freq_dict = tr.getParameter("corner_frequencies")
-        if freq_dict["lowpass"] > max_flp:
-            freq_dict["lowpass"] = max_flp
-            tr.setParameter("corner_frequencies", freq_dict)
-
     return st

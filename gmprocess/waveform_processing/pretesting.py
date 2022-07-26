@@ -8,8 +8,10 @@ Pretesting methods.
 import logging
 from obspy.signal.trigger import classic_sta_lta
 from gmprocess.utils.config import get_config
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 
+@ProcessingStep
 def min_sample_rate(st, min_sps=20.0, config=None):
     """
     Discard records if the sample rate doers not exceed minimum.
@@ -36,6 +38,7 @@ def min_sample_rate(st, min_sps=20.0, config=None):
     return st
 
 
+@ProcessingStep
 def check_instrument(st, n_max=3, n_min=2, require_two_horiz=True, config=None):
     """
     Test the channels of the station.
@@ -89,6 +92,7 @@ def check_instrument(st, n_max=3, n_min=2, require_two_horiz=True, config=None):
     return st
 
 
+@ProcessingStep
 def check_free_field(st, reject_non_free_field=True, config=None):
     """
     Checks free field status of stream.
@@ -114,6 +118,7 @@ def check_free_field(st, reject_non_free_field=True, config=None):
     return st
 
 
+@ProcessingStep
 def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0, config=None):
     """
     Checks that the maximum STA/LTA ratio for AT LEAST ONE of the stream's
@@ -155,6 +160,7 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0, config=Non
     return st
 
 
+@ProcessingStep
 def check_max_amplitude(st, min=5, max=2e6, config=None):
     """
     Checks that the maximum amplitude of the traces in the stream are ALL
@@ -186,6 +192,7 @@ def check_max_amplitude(st, min=5, max=2e6, config=None):
     return st
 
 
+@ProcessingStep
 def max_traces(st, n_max=3, config=None):
     """
     Reject a stream if it has more than n_max traces.

@@ -5,10 +5,12 @@ import inspect
 from gmprocess.waveform_processing.auto_fchp import get_fchp
 from gmprocess.waveform_processing.taper import taper
 from gmprocess.waveform_processing.filtering import highpass_filter
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 FORDER = 5.0
 
 
+@ProcessingStep
 def ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None):
     """Search for highpass corner using Ridder's method.
 
