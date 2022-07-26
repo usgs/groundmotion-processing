@@ -108,7 +108,81 @@ def _test_signal_split():
 
 
 def test_signal_end():
-    pass
+    datafiles, origin = read_data_dir("fdsn", "ci38457511", "*.mseed")
+    streams = []
+    for datafile in datafiles:
+        streams.append(read_data(datafile)[0][0])
+    old_durations = []
+    for tr in streams:
+        old_durations.append((tr.stats.npts - 1) * tr.stats.delta)
+    new_streams = signal_split(streams, origin=origin)
+
+    # Method = none
+    new_streams = signal_end(
+        new_streams,
+        event_time=UTCDateTime(origin.time),
+        event_lon=origin.longitude,
+        event_lat=origin.latitude,
+        event_mag=origin.magnitude,
+        method="none",
+    )
+    new_durations = []
+    for tr in new_streams:
+        new_durations.append(
+            tr.getParameter("signal_end")["end_time"] - UTCDateTime(tr.stats.starttime)
+        )
+    np.testing.assert_allclose(new_durations, old_durations)
+
+    # Method = magnitude
+    new_streams = signal_end(
+        new_streams,
+        event_time=UTCDateTime(origin.time),
+        event_lon=origin.longitude,
+        event_lat=origin.latitude,
+        event_mag=origin.magnitude,
+        method="magnitude",
+    )
+    new_durations = []
+    for tr in new_streams:
+        new_durations.append(
+            tr.getParameter("signal_end")["end_time"] - UTCDateTime(tr.stats.starttime)
+        )
+    target = np.array([212.9617, 212.9617, 212.9617])
+    np.testing.assert_allclose(new_durations, target)
+
+    # Method = velocity
+    new_streams = signal_end(
+        new_streams,
+        event_time=UTCDateTime(origin.time),
+        event_lon=origin.longitude,
+        event_lat=origin.latitude,
+        event_mag=origin.magnitude,
+        method="velocity",
+    )
+    new_durations = []
+    for tr in new_streams:
+        new_durations.append(
+            tr.getParameter("signal_end")["end_time"] - UTCDateTime(tr.stats.starttime)
+        )
+    target = np.array([149.9617, 149.9617, 149.9617])
+    np.testing.assert_allclose(new_durations, target)
+
+    # Method = model
+    new_streams = signal_end(
+        new_streams,
+        event_time=UTCDateTime(origin.time),
+        event_lon=origin.longitude,
+        event_lat=origin.latitude,
+        event_mag=origin.magnitude,
+        method="model",
+    )
+    new_durations = []
+    for tr in new_streams:
+        new_durations.append(
+            tr.getParameter("signal_end")["end_time"] - UTCDateTime(tr.stats.starttime)
+        )
+    target = np.array([89.008733, 89.008733, 89.008733])
+    np.testing.assert_allclose(new_durations, target)
 
 
 def test_signal_split2():

@@ -225,11 +225,11 @@ def signal_end(
     event_lon,
     event_lat,
     event_mag,
-    method=None,
-    vmin=None,
-    floor=None,
-    model=None,
-    epsilon=2.0,
+    method="model",
+    vmin=1.0,
+    floor=120.0,
+    model="AS16",
+    epsilon=3.0,
 ):
     """
     Estimate end of signal by using a model of the 5-95% significant
@@ -250,8 +250,8 @@ def signal_end(
         event_lat (float):
             Event latitude.
         method (str):
-            Method for estimating signal end time. Either 'velocity'
-            or 'model'.
+            Method for estimating signal end time. Can be 'velocity', 'model',
+            'magnitude', or 'none'.
         vmin (float):
             Velocity (km/s) for estimating end of signal. Only used if
             method="velocity".
@@ -286,6 +286,7 @@ def signal_end(
 
     for tr in st:
         if not tr.hasParameter("signal_split"):
+            logging.warning("No signal split in trace, cannot set signal end.")
             continue
         if method == "velocity":
             if vmin is None:
@@ -325,8 +326,19 @@ def signal_end(
             # Get split time
             split_time = tr.getParameter("signal_split")["split_time"]
             end_time = split_time + float(duration)
+        elif method == "magnitude":
+            # According to Hamid:
+            #     duration is {mag}/2 minutes starting 30 seconds
+            #     before the origin time
+            duration = event_mag / 2.0 * 60.0
+            end_time = event_time + duration - 30.0
+        elif method == "none":
+            # need defaults
+            end_time = tr.stats.endtime
         else:
-            raise ValueError('method must be either "velocity" or "model".')
+            raise ValueError(
+                'method must be one of: "velocity", "model", "magnitude", or "none".'
+            )
         # Update trace params
         end_params = {
             "end_time": end_time,

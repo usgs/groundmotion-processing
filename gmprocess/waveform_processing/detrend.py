@@ -16,7 +16,7 @@ def detrend(st, detrending_method=None, config=None):
         st (StationStream):
             Stream of data.
         method (str):
-            Method to detrend; valid options include the 'type' options supported by 
+            Method to detrend; valid options include the 'type' options supported by
             obspy.core.trace.Trace.detrend as well as:
                 - 'baseline_sixth_order', which is for a baseline correction
                    method that fits a sixth-order polynomial to the
