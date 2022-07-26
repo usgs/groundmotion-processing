@@ -5,7 +5,88 @@
 Pretesting methods.
 """
 
+import logging
 from obspy.signal.trigger import classic_sta_lta
+from gmprocess.utils.config import get_config
+
+
+def min_sample_rate(st, min_sps=20.0, config=None):
+    """
+    Discard records if the sample rate doers not exceed minimum.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        min_sps (float):
+            Minimum samples per second.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
+    Returns:
+        StationStream: Stream checked for sample rate criteria.
+    """
+    if not st.passed:
+        return st
+
+    for tr in st:
+        actual_sps = tr.stats.sampling_rate
+        if actual_sps < min_sps:
+            tr.fail(f"Minimum sample rate of {min_sps} not exceeded.")
+
+    return st
+
+
+def check_instrument(st, n_max=3, n_min=2, require_two_horiz=True, config=None):
+    """
+    Test the channels of the station.
+
+    The purpose of the maximum limit is to skip over stations with muliple
+    strong motion instruments, which can occur with downhole or structural
+    arrays since our code currently is not able to reliably group by location
+    within an array.
+
+    The purpose of the minimum and require_two_horiz checks are to ensure the
+    channels are required for subsequent intensity measures such as ROTD.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        n_max (int):
+            Maximum allowed number of streams; default to 3.
+        n_min (int):
+            Minimum allowed number of streams; default to 1.
+        require_two_horiz (bool):
+            Require two horizontal components; default to `False`.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
+    Returns:
+        Stream with adjusted failed fields.
+    """
+    if not st.passed:
+        return st
+
+    if config is None:
+        config = get_config()
+
+    logging.debug("Starting check_instrument")
+    logging.debug(f"len(st) = {len(st)}")
+
+    for failed_test, message in [
+        (len(st) > n_max, f"More than {n_max} traces in stream."),
+        (len(st) < n_min, f"Less than {n_min} traces in stream."),
+        (
+            require_two_horiz and (st.num_horizontal != 2),
+            "Not two horizontal components",
+        ),
+    ]:
+        if failed_test:
+            for tr in st:
+                tr.fail(message)
+            # Stop at first failed test
+            break
+
+    return st
 
 
 def check_free_field(st, reject_non_free_field=True, config=None):
@@ -102,4 +183,39 @@ def check_max_amplitude(st, min=5, max=2e6, config=None):
             if abs(tr.max()) < float(min) or abs(tr.max()) > float(max):
                 tr.fail("Failed max amplitude check.")
 
+    return st
+
+
+def max_traces(st, n_max=3, config=None):
+    """
+    Reject a stream if it has more than n_max traces.
+
+    The purpose of this is to skip over stations with muliple strong motion
+    instruments, which can occur with downhole or structural arrays since our
+    code currently is not able to reliably group by location within an array.
+
+    Args:
+        st (StationStream):
+            Stream of data.
+        n_max (int):
+            Maximum allowed number of streams; default to 3.
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
+    Returns:
+        Stream with adjusted failed fields.
+    """
+    logging.warning(
+        "This function is deprecated. Please replace with "
+        "check_instrument, which includes additional "
+        "functionality."
+    )
+    if not st.passed:
+        return st
+
+    logging.debug("Starting max_traces")
+    logging.debug(f"len(st) = {len(st)}")
+    if len(st) > n_max:
+        for tr in st:
+            tr.fail(f"More than {n_max} traces in stream.")
     return st
