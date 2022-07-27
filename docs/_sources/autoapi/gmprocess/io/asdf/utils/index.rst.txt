@@ -40,7 +40,7 @@ Classes
       :rtype: int
 
 
-   .. py:method:: compute_storage(self, items, store_subtotals=False)
+   .. py:method:: compute_storage(items, store_subtotals=False)
 
       Compute the storage for a group of items. By default only the total
       storage is stored.

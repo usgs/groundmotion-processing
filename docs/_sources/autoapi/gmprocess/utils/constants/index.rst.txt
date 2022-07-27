@@ -17,18 +17,18 @@ Module Contents
 
    
 
-.. py:data:: PROJECTS_PATH_TEST
+.. py:data:: CONFIG_PATH_TEST
    
-
-   
-
-.. py:data:: CONFIG_FILE_TEST
-   :annotation: = config_test.yml
 
    
 
 .. py:data:: CONFIG_FILE_PRODUCTION
    :annotation: = config_production.yml
+
+   
+
+.. py:data:: CONFIG_FILE_TEST
+   :annotation: = config_test.yml
 
    
 

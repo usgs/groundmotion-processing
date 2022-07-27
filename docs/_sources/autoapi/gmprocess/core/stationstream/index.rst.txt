@@ -76,27 +76,27 @@ Attributes
    of the channel code, since these should all be applicable to all traces in
    the StationStream object.
 
-   .. py:method:: validate(self)
+   .. py:method:: validate()
 
       Validation checks for Traces within a StationStream.
 
 
-   .. py:method:: __check_sample_rate(self)
+   .. py:method:: __check_sample_rate()
 
 
-   .. py:method:: __check_npts(self)
+   .. py:method:: __check_npts()
 
 
-   .. py:method:: __check_starts(self)
+   .. py:method:: __check_starts()
 
 
-   .. py:method:: __check_channels(self)
+   .. py:method:: __check_channels()
 
 
-   .. py:method:: __check_id(self)
+   .. py:method:: __check_id()
 
 
-   .. py:method:: get_id(self)
+   .. py:method:: get_id()
 
       Unique identifier for the StationStream.
 
@@ -106,22 +106,22 @@ Attributes
       of the channel (to indicate instrument type).
 
 
-   .. py:method:: get_net_sta(self)
+   .. py:method:: get_net_sta()
 
       Get just the network and station compopnent of the ID.
 
 
-   .. py:method:: get_net_sta_loc(self)
+   .. py:method:: get_net_sta_loc()
 
       Get network, station, and location codes.
 
 
-   .. py:method:: get_inst(self)
+   .. py:method:: get_inst()
 
       Get first two characters of the channel code.
 
 
-   .. py:method:: passed(self)
+   .. py:method:: passed()
       :property:
 
       Check the traces to see if any have failed any processing steps.
@@ -130,13 +130,13 @@ Attributes
       :rtype: bool
 
 
-   .. py:method:: num_horizontal(self)
+   .. py:method:: num_horizontal()
       :property:
 
       Get the number of horizontal components in the StationStream.
 
 
-   .. py:method:: __str__(self, extended=False, indent=0)
+   .. py:method:: __str__(extended=False, indent=0)
 
       String summary of the StationStream.
 
@@ -146,7 +146,7 @@ Attributes
       :type indent: int
 
 
-   .. py:method:: setStreamParam(self, param_id, param_attributes)
+   .. py:method:: setStreamParam(param_id, param_attributes)
 
       Add to the StationStreams's set of arbitrary metadata.
 
@@ -156,7 +156,7 @@ Attributes
       :type param_attributes: dict or list
 
 
-   .. py:method:: getStreamParamKeys(self)
+   .. py:method:: getStreamParamKeys()
 
       Get a list of all available parameter keys.
 
@@ -164,7 +164,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getStreamParam(self, param_id)
+   .. py:method:: getStreamParam(param_id)
 
       Retrieve some arbitrary metadata.
 
@@ -175,7 +175,7 @@ Attributes
       :rtype: dict or list
 
 
-   .. py:method:: getProvenanceDocuments(self, base_prov=None, gmprocess_version='unknown')
+   .. py:method:: getProvenanceDocuments(base_prov=None, gmprocess_version='unknown')
 
       Generate provenance Document.
 
@@ -184,12 +184,12 @@ Attributes
       :returns: Provenance document.
 
 
-   .. py:method:: getInventory(self)
+   .. py:method:: getInventory()
 
       Extract an ObsPy inventory object from a StationStream.
 
 
-   .. py:method:: check_stream(self)
+   .. py:method:: check_stream()
 
       Check StationStream for being flagged as failed.
 

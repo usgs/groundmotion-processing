@@ -70,22 +70,6 @@ And install the gmprocess code in the ``gmprocess`` virtual environment
 
    pip install -e . --no-deps --force-reinstall
 
-Installing via conda
---------------------
-
-The conda package is the easiest way to install the code but it is difficult
-to keep it up to date. This is why we recommend installing from source as
-described above at this time.
-
-.. code-block::
-
-   conda create -n gmprocess gmprocess
-
-See the 
-`conda docs <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`_ 
-for additional details on managing conda virtual environments.
-
-
 
 Tests
 -----

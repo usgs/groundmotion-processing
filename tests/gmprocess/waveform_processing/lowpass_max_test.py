@@ -56,7 +56,7 @@ def test_lowpass_max():
                 "epsilon": 2.0,
             },
             "window_checks": {
-                "do_check": False,
+                "enabled": False,
                 "min_noise_duration": 1.0,
                 "min_signal_duration": 1.0,
             },

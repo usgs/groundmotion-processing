@@ -46,7 +46,7 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Clean (i.e., remove) project data.
 

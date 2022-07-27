@@ -87,14 +87,14 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Compute waveform metrics.
 
       :param gmrecords: GMrecordsApp instance.
 
 
-   .. py:method:: _compute_event_waveform_metrics(self, event)
+   .. py:method:: _compute_event_waveform_metrics(event)
 
 
 

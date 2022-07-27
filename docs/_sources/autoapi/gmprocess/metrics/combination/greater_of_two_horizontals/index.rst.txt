@@ -24,7 +24,7 @@ Classes
    Class for extracting the maximum value between the two horizontal
    channels.
 
-   .. py:method:: get_greater_of_two_horizontals(self)
+   .. py:method:: get_greater_of_two_horizontals()
 
       Picks the greater value between two horizontal channels.
 

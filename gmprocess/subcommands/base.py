@@ -10,6 +10,8 @@ from gmprocess.subcommands.lazy_loader import LazyLoader
 
 base_utils = LazyLoader("base_utils", globals(), "gmprocess.utils.base_utils")
 confmod = LazyLoader("confmod", globals(), "gmprocess.utils.config")
+ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
+const = LazyLoader("const", globals(), "gmprocess.utils.constants")
 
 
 class SubcommandModule(ABC):
@@ -30,6 +32,24 @@ class SubcommandModule(ABC):
     def __init__(self):
         """Dictionary instance variable to track files created by module."""
         self.files_created = {}
+
+    def open_workspace(self, eventid):
+        """Open workspace, add as attribute."""
+        event_dir = os.path.join(self.gmrecords.data_path, eventid)
+        workname = os.path.join(event_dir, const.WORKSPACE_NAME)
+        if not os.path.isfile(workname):
+            logging.info(
+                "No workspace file found for event %s. Please run "
+                "subcommand 'assemble' to generate workspace file."
+            )
+            logging.info("Continuing to next event.")
+            return eventid
+
+        self.workspace = ws.StreamWorkspace.open(workname)
+
+    def close_workspace(self):
+        """Close workspace."""
+        self.workspace.close()
 
     @property
     @abstractmethod

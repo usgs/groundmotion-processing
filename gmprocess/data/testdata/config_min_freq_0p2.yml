@@ -205,18 +205,20 @@ processing:
         # minimum SNR of `threshold` between `min_freq` and `max_freq` using
         # Konno-Omachi smoothed spectra with `bandwidth` parameter.
         bandwidth: 20.0
-        check:
-            threshold: 3.0
-            min_freq: 0.2  # Either a float or 'f0'. If 'f0', then the Brune
-            # corner frequency of the earthquake will be used as the minimum
-            # frequency for the SNR check.
-            max_freq: 5.0
-            f0_options:
-                stress_drop: 10  # bars
-                shear_vel: 3.7   # km/s
-                ceiling: 2.0     # Hz. If the computed f0 is greater than
-                # ceiling, than the ceiling frequency will be used. This should
-                # be less than max_freq.
+
+    - snr_check:
+        threshold: 3.0
+        min_freq: 0.2  # Either a float or 'f0'. If 'f0', then the Brune
+        # corner frequency of the earthquake will be used as the minimum
+        # frequency for the SNR check.
+        max_freq: 5.0
+        f0_options:
+            stress_drop: 10  # bars
+            shear_vel: 3.7   # km/s
+            ceiling: 2.0     # Hz. If the computed f0 is greater than
+            # ceiling, than the ceiling frequency will be used. This should
+            # be less than max_freq.
+
 
     # - NNet_QA:
     #     # Neural network quality assurance method by Bellagamba et al. (2019)

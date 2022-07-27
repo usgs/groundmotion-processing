@@ -9,10 +9,12 @@ from gmprocess.waveform_processing.clipping.clipping_ann import clipNet
 from gmprocess.waveform_processing.clipping.max_amp import Max_Amp
 from gmprocess.waveform_processing.clipping.histogram import Histogram
 from gmprocess.waveform_processing.clipping.ping import Ping
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 M_TO_KM = 1.0 / 1000
 
 
+@ProcessingStep
 def check_clipping(st, origin, threshold=0.2, config=None):
     """Apply clicking check.
 

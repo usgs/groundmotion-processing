@@ -6,14 +6,14 @@ import os
 
 PROJ_CONF_DIR = ".gmprocess"
 PROJECTS_PATH = os.path.join(os.path.expanduser("~"), PROJ_CONF_DIR)
-PROJECTS_PATH_TEST = os.path.join(os.path.expanduser("~"), "gmptest")
 
-CONFIG_FILE_TEST = "config_test.yml"
+CONFIG_PATH_TEST = os.path.join(os.path.expanduser("~"), "gmptest")
 CONFIG_FILE_PRODUCTION = "config_production.yml"
+CONFIG_FILE_TEST = "config_test.yml"
 PICKER_FILE = "picker.yml"
 MODULE_FILE = "modules.yml"
 RUPTURE_FILE = "rupture.json"
-GAL_TO_PCTG = 1 / sp.g
+GAL_TO_PCTG = 1.0 / sp.g
 
 WORKSPACE_NAME = "workspace.h5"
 WORKSPACE_NAME_OLD = "workspace.hdf"
@@ -25,19 +25,19 @@ UNITS = {"PGA": r"%g", "PGV": r"cm/s", "SA": r"%g"}
 # Converts velocity units to cm/s
 # Converts displacement units to cm
 UNIT_CONVERSIONS = {
-    "gal": 1,
-    "cm/s/s": 1,
-    "cm/s^2": 1,
-    "cm/s**2": 1,
-    "in/s/s": sp.inch * 100,
-    "cm/s": 1,
-    "in/s": sp.inch * 100,
-    "cm": 1,
-    "in": sp.inch * 100,
-    "g": sp.g * 100,
-    "g/10": sp.g * 10,
-    "g*10": sp.g * 100,
-    "mg": sp.g / 1000,
+    "gal": 1.0,
+    "cm/s/s": 1.0,
+    "cm/s^2": 1.0,
+    "cm/s**2": 1.0,
+    "in/s/s": sp.inch * 100.0,
+    "cm/s": 1.0,
+    "in/s": sp.inch * 100.0,
+    "cm": 1.0,
+    "in": sp.inch * 100.0,
+    "g": sp.g * 100.0,
+    "g/10": sp.g * 10.0,
+    "g*10": sp.g * 100.0,
+    "mg": sp.g / 1000.0,
 }
 
 # Define the number of decimals that should be written

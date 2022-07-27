@@ -52,7 +52,7 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Import data for an event into the project data directory.
 

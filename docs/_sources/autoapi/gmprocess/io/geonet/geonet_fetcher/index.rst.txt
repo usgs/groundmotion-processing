@@ -101,7 +101,7 @@ Attributes
 
       
 
-   .. py:method:: getMatchingEvents(self, solve=True)
+   .. py:method:: getMatchingEvents(solve=True)
 
       Return a list of dictionaries matching input parameters.
 
@@ -120,7 +120,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: retrieveData(self, event_dict)
+   .. py:method:: retrieveData(event_dict)
 
       Retrieve data from GeoNet FTP, turn into StreamCollection.
 

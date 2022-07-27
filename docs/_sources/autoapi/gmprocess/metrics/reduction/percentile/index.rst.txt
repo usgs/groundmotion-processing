@@ -17,13 +17,13 @@ Classes
 
 
 
-.. py:class:: Percentile(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95])
+.. py:class:: Percentile(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95], config=None)
 
    Bases: :py:obj:`gmprocess.metrics.reduction.reduction.Reduction`
 
    Base class for reduction calculations.
 
-   .. py:method:: get_percentile(self)
+   .. py:method:: get_percentile()
 
       Performs calculation of percentile.
 

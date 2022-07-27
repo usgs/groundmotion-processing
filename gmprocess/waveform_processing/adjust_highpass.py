@@ -10,8 +10,10 @@ from gmprocess.waveform_processing.filtering import (
 )
 from gmprocess.waveform_processing.baseline_correction import correct_baseline
 from gmprocess.waveform_processing.integrate import get_disp
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 
+@ProcessingStep
 def adjust_highpass_corner(
     st,
     step_factor=1.5,

@@ -39,7 +39,7 @@ Attributes
 
    
 
-.. py:function:: cut(st, sec_before_split=None, config=None)
+.. py:function:: cut(st, sec_before_split=2.0, config=None)
 
    Cut/trim the record.
 
@@ -78,7 +78,7 @@ Attributes
    :type min_signal_duration: float
 
 
-.. py:function:: signal_split(st, origin, model=None, picker_config=None, config=None)
+.. py:function:: signal_split(st, origin, model=None, config=None)
 
    This method tries to identifies the boundary between the noise and signal
    for the waveform. The split time is placed inside the
@@ -95,8 +95,6 @@ Attributes
    :type origin: ScalarEvent
    :param model: TauPyModel object for computing travel times.
    :type model: TauPyModel
-   :param picker_config: Dictionary containing picker configuration information.
-   :type picker_config: dict
    :param config: Dictionary containing system configuration information.
    :type config: dict
 
@@ -104,7 +102,7 @@ Attributes
              stats['processing_parameters']['signal_split'] dictionary.
 
 
-.. py:function:: signal_end(st, event_time, event_lon, event_lat, event_mag, method=None, vmin=None, floor=None, model=None, epsilon=2.0)
+.. py:function:: signal_end(st, event_time, event_lon, event_lat, event_mag, method='model', vmin=1.0, floor=120.0, model='AS16', epsilon=3.0)
 
    Estimate end of signal by using a model of the 5-95% significant
    duration, and adding this value to the "signal_split" time. This probably
@@ -122,8 +120,8 @@ Attributes
    :type event_lon: float
    :param event_lat: Event latitude.
    :type event_lat: float
-   :param method: Method for estimating signal end time. Either 'velocity'
-                  or 'model'.
+   :param method: Method for estimating signal end time. Can be 'velocity', 'model',
+                  'magnitude', or 'none'.
    :type method: str
    :param vmin: Velocity (km/s) for estimating end of signal. Only used if
                 method="velocity".

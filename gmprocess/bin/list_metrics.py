@@ -39,18 +39,18 @@ def get_class(imc, ctype):
 
 def get_combinations():
     imts, imcs = gather_pgms()
-    dataframe = pd.DataFrame(columns=imts + ["imc"])
     checks = ["Y"] * len(imts)
+    rows = []
     for imc in imcs:
         imc_class = get_class(imc, "imc")
         invalid_imts = imc_class._invalid_imts
-        row = dict(zip(imts, checks))
+        icheck = checks.copy()
         for iimt in invalid_imts:
-            row[iimt.lower()] = "N"
-        row["imc"] = imc
-        dataframe = dataframe.append(row, ignore_index=True)
-
-    dataframe = dataframe.set_index("imc")
+            ind = imts.index(iimt.lower())
+            icheck[ind] = "N"
+        row = [imc] + icheck
+        rows.append(row)
+    dataframe = pd.DataFrame(rows, columns=["imc/imt"] + imts)
     return dataframe
 
 

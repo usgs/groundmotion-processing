@@ -12,7 +12,7 @@ from gmprocess.utils.config import get_config
 from gmprocess.utils.event import get_event_object
 from gmprocess.waveform_processing.windows import signal_split, signal_end
 from gmprocess.waveform_processing.snr import compute_snr
-from gmprocess.waveform_processing.processing import get_corner_frequencies
+from gmprocess.waveform_processing.corner_frequencies import get_corner_frequencies
 
 
 def test_fit_spectra():

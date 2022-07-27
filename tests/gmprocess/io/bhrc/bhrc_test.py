@@ -30,8 +30,9 @@ def test_bhrc():
     for stream in raw_streams:
         summary = StationSummary.from_config(stream)
         cmp_value = peaks[summary.station_code]
-        pga = summary.pgms.loc["PGA", "GREATER_OF_TWO_HORIZONTALS"].tolist()[0]
-        np.testing.assert_almost_equal(cmp_value, pga)
+        pga1 = summary.pgms.loc["PGA", "H1"].tolist()[0]
+        pga2 = summary.pgms.loc["PGA", "H2"].tolist()[0]
+        np.testing.assert_almost_equal(cmp_value, np.max([pga1, pga2]))
     #     fmt = '%s: %.3f, %.3f'
     #     tpl = (stream[0].stats.station,
     #            stream[0].stats.coordinates['latitude'],

@@ -79,7 +79,7 @@ Classes
       
       
 
-   .. py:method:: _clean_trace(self, tr)
+   .. py:method:: _clean_trace(tr)
 
       Helper function to clean the trace
 
@@ -90,7 +90,7 @@ Classes
       :rtype: clean_tr (StationTrace)
 
 
-   .. py:method:: _detect(self, tr)
+   .. py:method:: _detect(tr)
 
       For all points with amplitude greater than amp_thresh, calculate
       standard deviation (std) of the n_std neighboring points. Fail the
@@ -104,7 +104,7 @@ Classes
       :rtype: bool
 
 
-   .. py:method:: _get_results(self)
+   .. py:method:: _get_results()
 
       Iterates through and runs _detect() on each trace in the stream to
       determine if the record is clipped or not.

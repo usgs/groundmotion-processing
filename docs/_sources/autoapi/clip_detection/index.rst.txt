@@ -62,7 +62,7 @@ Classes
       Iterates through and runs _detect() on each trace in the stream.
       
 
-   .. py:method:: _clean_trace(self, tr)
+   .. py:method:: _clean_trace(tr)
 
       Pre-processing steps.
 
@@ -73,7 +73,7 @@ Classes
       :rtype: clean_tr (StationTrace)
 
 
-   .. py:method:: _detect(self, clip_tr)
+   .. py:method:: _detect(clip_tr)
 
       Clipping detection algorithm for the individual child class
 
@@ -84,7 +84,7 @@ Classes
       :rtype: bool
 
 
-   .. py:method:: _get_results(self)
+   .. py:method:: _get_results()
 
       Iterates through and runs _detect() on each trace in the stream to
       determine if the record is clipped or not.

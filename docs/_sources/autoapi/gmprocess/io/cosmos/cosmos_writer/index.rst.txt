@@ -232,19 +232,19 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: get_cosmos_code(self, iris_code)
+   .. py:method:: get_cosmos_code(iris_code)
 
 
-   .. py:method:: get_agency_desc(self, iris_code)
+   .. py:method:: get_agency_desc(iris_code)
 
 
-   .. py:method:: get_agency_abbrev(self, iris_code)
+   .. py:method:: get_agency_abbrev(iris_code)
 
 
-   .. py:method:: get_matching_network(self, eventid)
+   .. py:method:: get_matching_network(eventid)
 
 
-   .. py:method:: get_row(self, iris_code)
+   .. py:method:: get_row(iris_code)
 
 
 
@@ -257,10 +257,10 @@ Attributes
 
       
 
-   .. py:method:: set_header_value(self, key, value)
+   .. py:method:: set_header_value(key, value)
 
 
-   .. py:method:: write(self, cosmos_file)
+   .. py:method:: write(cosmos_file)
 
 
 
@@ -268,7 +268,7 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: write(self, cosmos_file)
+   .. py:method:: write(cosmos_file)
 
 
 
@@ -276,7 +276,7 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: write(self, cosmos_file)
+   .. py:method:: write(cosmos_file)
 
 
 
@@ -284,10 +284,10 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: write_comment(self, key, value, comment_type)
+   .. py:method:: write_comment(key, value, comment_type)
 
 
-   .. py:method:: write(self, cosmos_file)
+   .. py:method:: write(cosmos_file)
 
 
 
@@ -298,10 +298,10 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: write(self)
+   .. py:method:: write()
 
 
-   .. py:method:: __del__(self)
+   .. py:method:: __del__()
 
 
 

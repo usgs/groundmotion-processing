@@ -47,10 +47,10 @@ REV_PROCESS_LEVELS = {
 
 
 def get_dataframe(filename, stream):
-    df = pd.DataFrame(columns=COLUMNS, index=None)
-    row = pd.Series(index=COLUMNS)
     fpath, fname = os.path.split(filename)
+    rows = []
     for trace in stream:
+        row = {}
         row["Filename"] = filename
         row["Format"] = trace.stats["standard"]["source_format"]
         plevel = trace.stats["standard"]["process_level"]
@@ -65,8 +65,8 @@ def get_dataframe(filename, stream):
         row["Sampling Rate (Hz)"] = trace.stats.sampling_rate
         row["Latitude"] = trace.stats.coordinates["latitude"]
         row["Longitude"] = trace.stats.coordinates["longitude"]
-        df = df.append(row, ignore_index=True)
-
+        rows.append(row.copy())
+    df = pd.DataFrame(rows)
     return df
 
 

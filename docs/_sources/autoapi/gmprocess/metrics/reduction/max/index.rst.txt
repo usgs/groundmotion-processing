@@ -17,13 +17,13 @@ Classes
 
 
 
-.. py:class:: Max(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95])
+.. py:class:: Max(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95], config=None)
 
    Bases: :py:obj:`gmprocess.metrics.reduction.reduction.Reduction`
 
    Class for calculation of maximum value.
 
-   .. py:method:: get_max(self)
+   .. py:method:: get_max()
 
       Performs calculation of maximum value.
 

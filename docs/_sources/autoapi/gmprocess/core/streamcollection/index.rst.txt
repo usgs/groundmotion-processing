@@ -86,12 +86,12 @@ Attributes
       - Check for and handle misaligned start times and end times.
       - Check units
 
-   .. py:method:: validate(self)
+   .. py:method:: validate()
 
       Some validation checks across streams.
 
 
-   .. py:method:: select_colocated(self, preference=['HN?', 'BN?', 'HH?', 'BH?'], large_dist=None, origin=None)
+   .. py:method:: select_colocated(preference=['HN?', 'BN?', 'HH?', 'BH?'], large_dist=None, origin=None)
 
       Detect colocated instruments, return preferred instrument type.
 
@@ -127,7 +127,7 @@ Attributes
       :type origin: Origin
 
 
-   .. py:method:: from_directory(cls, directory, use_default_config=False)
+   .. py:method:: from_directory(directory)
       :classmethod:
 
       Create a StreamCollection instance from a directory of data.
@@ -140,7 +140,7 @@ Attributes
       :returns: StreamCollection instance.
 
 
-   .. py:method:: from_traces(cls, traces)
+   .. py:method:: from_traces(traces)
       :classmethod:
 
       Create a StreamCollection instance from a list of traces.
@@ -151,7 +151,7 @@ Attributes
       :returns: StreamCollection instance.
 
 
-   .. py:method:: to_dataframe(self, origin, imcs=None, imts=None)
+   .. py:method:: to_dataframe(origin, imcs=None, imts=None)
 
       Get a summary dataframe of streams.
 
@@ -216,25 +216,25 @@ Attributes
       :rtype: DataFrame
 
 
-   .. py:method:: __str__(self)
+   .. py:method:: __str__()
 
       String summary of the StreamCollection.
 
 
-   .. py:method:: describe_string(self)
+   .. py:method:: describe_string()
 
       More verbose description of StreamCollection.
 
 
-   .. py:method:: describe(self)
+   .. py:method:: describe()
 
       Thin wrapper of describe_string() for printing to stdout
 
 
-   .. py:method:: __group_by_net_sta_inst(self)
+   .. py:method:: __group_by_net_sta_inst()
 
 
-   .. py:method:: __handle_duplicates(self, max_dist_tolerance, preference_order, process_level_preference, format_preference)
+   .. py:method:: __handle_duplicates(max_dist_tolerance, preference_order, process_level_preference, format_preference)
 
       Removes duplicate data from the StreamCollection, based on the
       process level and format preferences.
@@ -257,7 +257,7 @@ Attributes
       :type format_preference: list
 
 
-   .. py:method:: get_status(self, status)
+   .. py:method:: get_status(status)
 
       Returns a summary of the status of the streams in StreamCollection.
 

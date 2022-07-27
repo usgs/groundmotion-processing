@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 
-def check_zero_crossings(st, min_crossings=1.0, config=None):
+@ProcessingStep
+def check_zero_crossings(st, min_crossings=0.1, config=None):
     """
     Check for a large enough density.
 

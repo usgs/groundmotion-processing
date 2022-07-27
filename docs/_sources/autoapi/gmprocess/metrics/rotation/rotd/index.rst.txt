@@ -23,7 +23,7 @@ Classes
 
    Class for computing the ROTD rotation.
 
-   .. py:method:: get_rotd(self)
+   .. py:method:: get_rotd()
 
       Performs ROTD rotation.
 

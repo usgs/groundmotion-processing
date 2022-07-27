@@ -7,13 +7,14 @@ This module is for computation of theoretical amplitude spectrum methods.
 
 import numpy as np
 from scipy.optimize import minimize
-
 from obspy.geodetics.base import gps2dist_azimuth
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 OUTPUT_UNITS = ["ACC", "VEL", "DISP"]
 M_TO_KM = 1.0 / 1000
 
 
+@ProcessingStep
 def fit_spectra(
     st,
     origin,
@@ -222,9 +223,11 @@ def spectrum_cost(
     Function to compute RMS log residuals for optimization.
 
     Args:
-        x (tuple): Tuple of the moment (dyne-cm) and the stress drop (bars).
-        freq (array): Numpy array of frequencies (Hz).
-        obs_spec (array)
+        x (tuple):
+            Tuple of the moment (dyne-cm) and the stress drop (bars).
+        freq (array):
+            Numpy array of frequencies (Hz).
+        obs_spec (array):
             Numpy array of observed Fourier spectral amplitudes.
         fmin (float):
             Minimum frequency to use in computing residuals.
@@ -247,12 +250,15 @@ def spectrum_cost(
             Density at source (gm/cc).
         R0 (float):
             Reference distance (km).
-        gs_model (str): Name of model for geometric attenuation. Currently only supported value:
+        gs_model (str):
+            Name of model for geometric attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
-        q_model (str): Name of model for anelastic attenuation. Currently only supported value:
+        q_model (str):
+            Name of model for anelastic attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
             - 'none' for no anelastic attenuation
-        crust_mod (str): Name of model for crustal amplification. Currently only supported value:
+        crust_mod (str):
+            Name of model for crustal amplification. Currently onlysupported value:
             - 'BT15' for Boore and Thompson (2015)
             - 'none' for no crustal amplification model.
 
@@ -286,7 +292,7 @@ def spectrum_cost(
     keep = (obs_spec > 0) & (freq >= fmin) & (freq <= fmax)
 
     log_residuals = np.log(obs_spec[keep]) - np.log(mod_spec[keep])
-    return np.sum(log_residuals ** 2)
+    return np.sum(log_residuals**2)
 
 
 def model(
@@ -308,23 +314,37 @@ def model(
     Piece together a model of the ground motion spectrum.
 
     Args:
-        x (tuple): Tuple of the natural log of moment (dyne-cm) and the natural log of stress drop (bars).
-        freq (array): Numpy array of frequencies for computing spectra (Hz).
-        dist (float): Distance (km).
-        kappa (float): Site diminution factor (sec). Typical value for active cruststal
+        x (tuple):
+            Tuple of the natural log of moment (dyne-cm) and the natural log of stress
+            drop (bars).
+        freq (array):
+            Numpy array of frequencies for computing spectra (Hz).
+        dist (float):
+            Distance (km).
+        kappa (float):
+            Site diminution factor (sec). Typical value for active cruststal
             regions is about 0.03-0.04, and stable continental regions is about 0.006.
-        RP (float): Partition of shear-wave energy into horizontal components.
-        VHC (float): Partition of shear-wave energy into horizontal components 1 / np.sqrt(2.0).
-        FSE (float): Free surface effect.
-        shear_vel (float): Shear-wave velocity at source (km/s).
-        density (float): Density at source (gm/cc).
-        R0 (float): Reference distance (km).
-        gs_model (str): Name of model for geometric attenuation. Currently only supported value:
+        RP (float):
+            Partition of shear-wave energy into horizontal components.
+        VHC (float):
+            Partition of shear-wave energy into horizontal components 1 / np.sqrt(2.0).
+        FSE (float):
+            Free surface effect.
+        shear_vel (float):
+            Shear-wave velocity at source (km/s).
+        density (float):
+            Density at source (gm/cc).
+        R0 (float):
+            Reference distance (km).
+        gs_model (str):
+            Name of model for geometric attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
-        q_model (str): Name of model for anelastic attenuation. Currently only supported value:
+        q_model (str):
+            Name of model for anelastic attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
             - 'none' for no anelastic attenuation
-        crust_mod (str): Name of model for crustal amplification. Currently only supported value:
+        crust_mod (str):
+            Name of model for crustal amplification. Currently only supported value:
             - 'BT15' for Boore and Thompson (2015)
             - 'none' for no crustal amplification model.
 
@@ -397,7 +417,7 @@ def brune(
 
     f0 = brune_f0(moment, stress_drop, shear_vel)
     S = 1 / (1 + (freq / f0) ** 2)
-    C = RP * VHC * FSE / (4 * np.pi * density * shear_vel ** 3 * R0) * 1e-20
+    C = RP * VHC * FSE / (4 * np.pi * density * shear_vel**3 * R0) * 1e-20
 
     if output_units == "ACC":
         fpow = 2.0
@@ -482,11 +502,15 @@ def path(freq, dist, gs_mod="REA99", q_mod="REA99"):
     Path term, including geometric and anelastic attenuation.
 
     Args:
-        freq (array): Numpy array of frequencies for computing spectra (Hz).
-        dist (float): Distance (km).
-        gs_model (str): Name of model for geometric attenuation. Currently only supported value:
+        freq (array):
+            Numpy array of frequencies for computing spectra (Hz).
+        dist (float):
+            Distance (km).
+        gs_model (str):
+            Name of model for geometric attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
-        q_model (str): Name of model for anelastic attenuation. Currently only supported value:
+        q_model (str):
+            Name of model for anelastic attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
             - 'none' for no anelastic attenuation
 
@@ -504,8 +528,10 @@ def site(freq, kappa, crust_mod="BT15"):
     Site term, including crustal amplification and kappa.
 
     Args:
-        freq (array): Numpy array of frequencies for computing spectra (Hz).
-        kappa (float): Site diminution factor (sec). Typical value for active cruststal
+        freq (array):
+            Numpy array of frequencies for computing spectra (Hz).
+        kappa (float):
+            Site diminution factor (sec). Typical value for active cruststal
             regions is about 0.03-0.04, and stable continental regions is about 0.006.
         crust_mod (str):
             Name of model for crustal amplification. Currently only supported value:
@@ -522,8 +548,10 @@ def crustal_amplification(freq, model="BT15"):
     Crustal amplification model.
 
     Args:
-        freq (array): Numpy array of frequencies for computing spectra (Hz).
-        model (str): Name of model for crustal amplification. Currently only supported value:
+        freq (array):
+            Numpy array of frequencies for computing spectra (Hz).
+        model (str):
+            Name of model for crustal amplification. Currently only supported value:
             - 'BT15' for Boore and Thompson (2015)
             - 'none' for no crustal amplification model.
     """
@@ -565,9 +593,12 @@ def geometrical_spreading(freq, dist, model="REA99"):
     Effect of geometrical spreading.
 
     Args:
-        freq (array): Numpy array of frequencies for computing spectra (Hz).
-        dist (float): Distance (km).
-        model (str): Name of model for geometric attenuation. Currently only supported value:
+        freq (array):
+            Numpy array of frequencies for computing spectra (Hz).
+        dist (float):
+            Distance (km).
+        model (str):
+            Name of model for geometric attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
 
     Returns:
@@ -590,9 +621,12 @@ def anelastic_attenuation(freq, dist, model="REA99"):
     Effect of anelastic attenuation.
 
     Args:
-        freq (array): Numpy array of frequencies for computing spectra (Hz).
-        dist (float): Distance (km).
-        model (str):  Name of model for anelastic attenuation. Currently only supported value:
+        freq (array):
+            Numpy array of frequencies for computing spectra (Hz).
+        dist (float):
+            Distance (km).
+        model (str):
+            Name of model for anelastic attenuation. Currently only supported value:
             - 'REA99' for Raoof et al. (1999)
             - 'none' for no anelastic attenuation
 
@@ -602,7 +636,7 @@ def anelastic_attenuation(freq, dist, model="REA99"):
 
     if model == "REA99":
         # Frequency dependent quality factor
-        quality_factor = 180 * freq ** 0.45
+        quality_factor = 180 * freq**0.45
         cq = 3.5
         anelastic = np.exp(-np.pi * freq * dist / quality_factor / cq)
     elif model == "none":

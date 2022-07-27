@@ -17,13 +17,13 @@ Classes
 
 
 
-.. py:class:: Smooth_Select(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95])
+.. py:class:: Smooth_Select(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95], config=None)
 
    Bases: :py:obj:`gmprocess.metrics.reduction.reduction.Reduction`
 
    Base class for reduction calculations.
 
-   .. py:method:: get_pick(self)
+   .. py:method:: get_pick()
 
       Performs smoothing and picks values for each defined period.
 
@@ -31,7 +31,7 @@ Classes
       :rtype: picked
 
 
-   .. py:method:: _pick_spectra(self, data)
+   .. py:method:: _pick_spectra(data)
 
 
 

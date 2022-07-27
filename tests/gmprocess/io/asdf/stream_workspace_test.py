@@ -15,7 +15,7 @@ from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.rupture_utils import get_rupture_file
-from gmprocess.utils.config import update_config
+from gmprocess.utils.config import update_config, get_config
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from ruamel.yaml.error import YAMLError
@@ -24,6 +24,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+CONFIG = get_config()
 
 datapath = os.path.join("data", "testdata")
 datadir = pkg_resources.resource_filename("gmprocess", datapath)
@@ -96,7 +97,9 @@ def _test_workspace():
             warnings.filterwarnings("ignore", category=H5pyDeprecationWarning)
             warnings.filterwarnings("ignore", category=YAMLError)
             warnings.filterwarnings("ignore", category=FutureWarning)
-            config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"))
+            config = update_config(
+                os.path.join(datadir, "config_min_freq_0p2.yml"), CONFIG
+            )
             tfile = os.path.join(tdir, "test.hdf")
             raw_streams = []
             for dfile in datafiles:
@@ -221,7 +224,7 @@ def _test_metrics2():
     datafiles, event = read_data_dir("knet", eventid, "*")
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
-    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"))
+    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"), CONFIG)
     config["metrics"]["output_imts"].append("Arias")
     config["metrics"]["output_imcs"].append("arithmetic_mean")
     # Adjust checks so that streams pass checks for this test
@@ -257,11 +260,12 @@ def _test_metrics2():
 
 
 def test_metrics():
+    CONFIG["metrics"]["output_imcs"] = ["channels"]
     eventid = "usb000syza"
     datafiles, event = read_data_dir("knet", eventid, "*")
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
-    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"))
+    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"), CONFIG)
     # turn off sta/lta check and snr checks
     # newconfig = drop_processing(config, ['check_sta_lta', 'compute_snr'])
     # processed_streams = process_streams(raw_streams, event, config=newconfig)
@@ -281,14 +285,18 @@ def test_metrics():
         stream1 = raw_streams[0]
 
         # Get metrics from station summary for raw streams
-        summary1 = StationSummary.from_config(stream1)
+        summary1 = StationSummary.from_config(stream1, config=config)
         s1_df_in = summary1.pgms.sort_values(["IMT", "IMC"])
         array1 = s1_df_in["Result"].to_numpy()
 
         # Compare to metrics from getStreamMetrics for raw streams
-        workspace.calcMetrics(eventid, labels=["raw"])
+        workspace.calcMetrics(eventid, labels=["raw"], config=config)
         summary1_a = workspace.getStreamMetrics(
-            event.id, stream1[0].stats.network, stream1[0].stats.station, "raw"
+            event.id,
+            stream1[0].stats.network,
+            stream1[0].stats.station,
+            "raw",
+            config=config,
         )
         s1_df_out = summary1_a.pgms.sort_values(["IMT", "IMC"])
         array2 = s1_df_out["Result"].to_numpy()
@@ -353,7 +361,7 @@ def _test_vs30_dist_metrics():
     datafiles, event = read_data_dir("fdsn", eventid, "*")
     datadir = os.path.split(datafiles[0])[0]
     raw_streams = StreamCollection.from_directory(datadir)
-    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"))
+    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"), CONFIG)
     processed_streams = process_streams(raw_streams, event, config=config)
     rupture_file = get_rupture_file(datadir)
     grid_file = os.path.join(datadir, "test_grid.grd")

@@ -23,7 +23,7 @@ Classes
 
    Class for computing the derivative.
 
-   .. py:method:: get_derivative(self)
+   .. py:method:: get_derivative()
 
       Calculated the derivative of each trace's data.
 

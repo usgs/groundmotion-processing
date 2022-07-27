@@ -8,6 +8,118 @@ from scipy.integrate import cumtrapz
 import pkg_resources
 import os
 import logging
+from gmprocess.waveform_processing.processing_step import ProcessingStep
+
+
+@ProcessingStep
+def NNet_QA(st, acceptance_threshold, model_name, config=None):
+    """
+    Assess the quality of a stream by analyzing its two horizontal components
+    as described in Bellagamba et al. (2019). Performs three steps:
+    1) Compute the quality metrics (see paper for more info)
+    2) Preprocess the quality metrics (deskew, standardize and decorrelate)
+    3) Evaluate the quality using a neural network-based model
+    Two models are available: 'Cant' and 'CantWell'.
+    To minimize the number of low quality ground motion included, the natural
+    acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
+    Recommended parameters are:
+    -   acceptance_threshold = 0.5 or 0.6
+    -   model_name = 'CantWell'
+
+    Args:
+        st (list of traces):
+            The ground motion record to analyze. Should contain at least 2
+            orthogonal  horizontal traces.
+        acceptance_threshold (float):
+            Threshold from which GM records are considered acceptable.
+        model_name (string):
+            name of the used model ('Cant' or 'CantWell')
+        config (dict):
+            Configuration dictionary (or None). See get_config().
+
+    Returns:
+        st: stream of traces tagged with quality scores and flags,
+        used model name and acceptance threshold
+    """
+
+    # This check only works if we have two horizontal components in the stream
+    if st.num_horizontal != 2:
+        for tr in st:
+            tr.fail(
+                "Stream does not contain two horiztonal components. "
+                "NNet QA check will not be performed."
+            )
+        return st
+
+    # Also need to check that we don't have data arrays of all zeros, as this
+    # will cause problems
+    all_zeros = False
+    for tr in st:
+        if np.all(tr.data == 0):
+            all_zeros = True
+
+    if all_zeros:
+        for tr in st:
+            tr.fail(
+                "The data contains all zeros, so the "
+                "NNet_QA check is not able to be performed."
+            )
+        return st
+
+    # Check that we have the required trace parameters
+    have_params = True
+    for tr in st:
+        if not {"signal_spectrum", "noise_spectrum", "snr"}.issubset(
+            set(tr.getCachedNames())
+        ):
+            have_params = False
+
+    if not have_params:
+        for tr in st:
+            tr.fail(
+                "One or more traces in the stream does have the required "
+                "trace parameters to perform the NNet_QA check."
+            )
+        return st
+
+    # Create the path to the NN folder based on model name
+    nn_path = os.path.join("data", "nn_qa")
+    nn_path = os.path.join(nn_path, model_name)
+    nn_path = pkg_resources.resource_filename("gmprocess", nn_path)
+
+    # Compute the quality metrics
+    qm = computeQualityMetrics(st)
+
+    # Pre-process the qualtiy metrics
+    qm = preprocessQualityMetrics(qm, model_name)
+
+    # Instanciate the NN (based on model_name)
+    NN = neuralNet()
+    NN.loadNN(nn_path)
+
+    # Use NN
+    scores = NN.useNN(qm)[0]
+
+    # Accepted?
+    flag_accept = False
+    if scores[1] >= acceptance_threshold:
+        flag_accept = True
+
+    # Add parameters to Stream (acceptance threshold, model_name, score_lowQ,
+    # score_highQ, highQualityFlag)
+    nnet_dict = {
+        "accept_thres": acceptance_threshold,
+        "model_name": model_name,
+        "score_LQ": scores[0],
+        "score_HQ": scores[1],
+        "pass_QA": flag_accept,
+    }
+    st.setStreamParam("nnet_qa", nnet_dict)
+    if not flag_accept:
+        for tr in st:
+            tr.fail("Failed NNet QA check.")
+
+    return st
 
 
 def isNumber(s):
@@ -872,112 +984,3 @@ def computeQualityMetrics(st):
 
     return qm
 
-
-def NNet_QA(st, acceptance_threshold, model_name, config=None):
-    """
-    Assess the quality of a stream by analyzing its two horizontal components
-    as described in Bellagamba et al. (2019). Performs three steps:
-    1) Compute the quality metrics (see paper for more info)
-    2) Preprocess the quality metrics (deskew, standardize and decorrelate)
-    3) Evaluate the quality using a neural network-based model
-    Two models are available: 'Cant' and 'CantWell'.
-    To minimize the number of low quality ground motion included, the natural
-    acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
-    Recommended parameters are:
-    -   acceptance_threshold = 0.5 or 0.6
-    -   model_name = 'CantWell'
-
-    Args:
-        st (list of traces):
-            The ground motion record to analyze. Should contain at least 2
-            orthogonal  horizontal traces.
-        acceptance_threshold (float):
-            Threshold from which GM records are considered acceptable.
-        model_name (string):
-            name of the used model ('Cant' or 'CantWell')
-        config (dict):
-            Configuration dictionary (or None). See get_config().
-
-    Returns:
-        st: stream of traces tagged with quality scores and flags,
-        used model name and acceptance threshold
-    """
-
-    # This check only works if we have two horizontal components in the stream
-    if st.num_horizontal != 2:
-        for tr in st:
-            tr.fail(
-                "Stream does not contain two horiztonal components. "
-                "NNet QA check will not be performed."
-            )
-        return st
-
-    # Also need to check that we don't have data arrays of all zeros, as this
-    # will cause problems
-    all_zeros = False
-    for tr in st:
-        if np.all(tr.data == 0):
-            all_zeros = True
-
-    if all_zeros:
-        for tr in st:
-            tr.fail(
-                "The data contains all zeros, so the "
-                "NNet_QA check is not able to be performed."
-            )
-        return st
-
-    # Check that we have the required trace parameters
-    have_params = True
-    for tr in st:
-        if not {"signal_spectrum", "noise_spectrum", "snr"}.issubset(
-            set(tr.getCachedNames())
-        ):
-            have_params = False
-
-    if not have_params:
-        for tr in st:
-            tr.fail(
-                "One or more traces in the stream does have the required "
-                "trace parameters to perform the NNet_QA check."
-            )
-        return st
-
-    # Create the path to the NN folder based on model name
-    nn_path = os.path.join("data", "nn_qa")
-    nn_path = os.path.join(nn_path, model_name)
-    nn_path = pkg_resources.resource_filename("gmprocess", nn_path)
-
-    # Compute the quality metrics
-    qm = computeQualityMetrics(st)
-
-    # Pre-process the qualtiy metrics
-    qm = preprocessQualityMetrics(qm, model_name)
-
-    # Instanciate the NN (based on model_name)
-    NN = neuralNet()
-    NN.loadNN(nn_path)
-
-    # Use NN
-    scores = NN.useNN(qm)[0]
-
-    # Accepted?
-    flag_accept = False
-    if scores[1] >= acceptance_threshold:
-        flag_accept = True
-
-    # Add parameters to Stream (acceptance threshold, model_name, score_lowQ,
-    # score_highQ, highQualityFlag)
-    nnet_dict = {
-        "accept_thres": acceptance_threshold,
-        "model_name": model_name,
-        "score_LQ": scores[0],
-        "score_HQ": scores[1],
-        "pass_QA": flag_accept,
-    }
-    st.setStreamParam("nnet_qa", nnet_dict)
-    if not flag_accept:
-        for tr in st:
-            tr.fail("Failed NNet QA check.")
-
-    return st

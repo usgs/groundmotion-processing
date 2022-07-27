@@ -135,17 +135,17 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Compute station metrics.
 
       :param gmrecords: GMrecordsApp instance.
 
 
-   .. py:method:: _event_station_metrics(self, event)
+   .. py:method:: _event_station_metrics(event)
 
 
-   .. py:method:: _get_ps2ff_splines(self)
+   .. py:method:: _get_ps2ff_splines()
 
 
 

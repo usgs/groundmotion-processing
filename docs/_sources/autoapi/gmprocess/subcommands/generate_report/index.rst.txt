@@ -87,7 +87,7 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Generate summary report.
 
@@ -99,7 +99,7 @@ Attributes
       :param gmrecords: GMrecordsApp instance.
 
 
-   .. py:method:: generate_diagnostic_plots(self, event)
+   .. py:method:: generate_diagnostic_plots(event)
 
 
 

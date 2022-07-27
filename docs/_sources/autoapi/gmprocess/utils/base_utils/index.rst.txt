@@ -37,7 +37,6 @@ Functions
                          - longitude Longitude in decimal degrees.
                          - depth Depth in kilometers.
                          - magnitude Earthquake magnitude.
-                         - magnitude_type Earthquake magnitude type.
    :type eventinfo: list or None
    :param directory: Path to a directory containing event subdirectories, each
                      containing an event.json file, where the ID in the json file
@@ -73,14 +72,13 @@ Functions
    Files can contain:
        - one column, in which case that column
          contains ComCat event IDs.
-       - Seven columns, in which case those columns should be:
+       - Six columns, in which case those columns should be:
          - id: any string (no spaces)
          - time: Any ISO standard for date/time.
          - lat: Earthquake latitude in decimal degrees.
          - lon: Earthquake longitude in decimal degrees.
          - depth: Earthquake longitude in kilometers.
          - magnitude: Earthquake magnitude.
-         - magnitude_type: Earthquake magnitude type.
 
    NB: THERE SHOULD NOT BE ANY HEADERS ON THIS FILE!
 

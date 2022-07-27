@@ -17,13 +17,13 @@ Classes
 
 
 
-.. py:class:: Duration(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=None)
+.. py:class:: Duration(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=None, config=None)
 
    Bases: :py:obj:`gmprocess.metrics.reduction.reduction.Reduction`
 
    Class for calculation of duration.
 
-   .. py:method:: get_duration(self)
+   .. py:method:: get_duration()
 
       Performs calculation of arias intensity.
 

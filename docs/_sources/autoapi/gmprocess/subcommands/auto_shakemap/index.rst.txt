@@ -112,7 +112,7 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Chain together subcommands to get shakemap ground motion file.
 

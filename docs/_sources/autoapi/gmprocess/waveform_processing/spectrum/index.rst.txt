@@ -133,7 +133,7 @@ Attributes
                    - 'REA99' for Raoof et al. (1999)
                    - 'none' for no anelastic attenuation
    :type q_model: str
-   :param crust_mod: Name of model for crustal amplification. Currently only supported value:
+   :param crust_mod: Name of model for crustal amplification. Currently onlysupported value:
                      - 'BT15' for Boore and Thompson (2015)
                      - 'none' for no crustal amplification model.
    :type crust_mod: str
@@ -146,7 +146,8 @@ Attributes
 
    Piece together a model of the ground motion spectrum.
 
-   :param x: Tuple of the natural log of moment (dyne-cm) and the natural log of stress drop (bars).
+   :param x: Tuple of the natural log of moment (dyne-cm) and the natural log of stress
+             drop (bars).
    :type x: tuple
    :param freq: Numpy array of frequencies for computing spectra (Hz).
    :type freq: array

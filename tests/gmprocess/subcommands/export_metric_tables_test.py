@@ -12,7 +12,7 @@ from gmprocess.utils import constants
 def test_export_metric_tables(script_runner):
     try:
         # Need to create profile first.
-        cdir = constants.PROJECTS_PATH_TEST
+        cdir = constants.CONFIG_PATH_TEST
         ddir = pkg_resources.resource_filename(
             "gmprocess", os.path.join("data", "testdata", "demo_steps", "exports")
         )
@@ -36,7 +36,7 @@ def test_export_metric_tables(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree(constants.PROJECTS_PATH_TEST)
+        shutil.rmtree(constants.CONFIG_PATH_TEST)
         # Remove created files
         patterns = ["_metrics_", "_events.", "_fit_spectra_parameters"]
         for root, _, files in os.walk(ddir):

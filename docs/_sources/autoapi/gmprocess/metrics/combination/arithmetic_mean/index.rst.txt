@@ -23,7 +23,7 @@ Classes
 
    Class for calculation of arithmetic mean.
 
-   .. py:method:: get_arithmetic_mean(self)
+   .. py:method:: get_arithmetic_mean()
 
       Performs calculation of arithmetic mean.
 

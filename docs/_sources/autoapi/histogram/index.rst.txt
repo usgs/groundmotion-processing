@@ -72,7 +72,7 @@ Classes
       
       
 
-   .. py:method:: _signal_scale(self, signal, alpha)
+   .. py:method:: _signal_scale(signal, alpha)
 
       Helper function to scale signal data
 
@@ -84,7 +84,7 @@ Classes
       :returns: The scaled signal data
 
 
-   .. py:method:: _find_peaks(self, signal, thresh, should_sort)
+   .. py:method:: _find_peaks(signal, thresh, should_sort)
 
       Helper function to find peaks in signal data
 
@@ -99,7 +99,7 @@ Classes
       :rtype: peaks (list)
 
 
-   .. py:method:: _merge_intervals(self, clip_intervals, max_distance_apart)
+   .. py:method:: _merge_intervals(clip_intervals, max_distance_apart)
 
       Helper function to merge clipping intervals
 
@@ -112,7 +112,7 @@ Classes
       :rtype: merged_intervals (list)
 
 
-   .. py:method:: _sort_intervals_by_start(self, clip_intervals)
+   .. py:method:: _sort_intervals_by_start(clip_intervals)
 
       Helper function to sort clipping intervals by starting index
 
@@ -123,7 +123,7 @@ Classes
       :rtype: clip_intervals (list)
 
 
-   .. py:method:: _get_clip_intervals(self, signal, peaks, thresh)
+   .. py:method:: _get_clip_intervals(signal, peaks, thresh)
 
       Helper function to obtain clipping intervals
 
@@ -139,7 +139,7 @@ Classes
       :rtype: clip_intervals (list)
 
 
-   .. py:method:: _clean_trace(self, tr)
+   .. py:method:: _clean_trace(tr)
 
       Pre-processing steps.
 
@@ -150,7 +150,7 @@ Classes
       :rtype: clean_tr (StationTrace)
 
 
-   .. py:method:: _detect(self, tr)
+   .. py:method:: _detect(tr)
 
       Test for clipping using the histogram-based method. This is a slight
       variation on the method described by:
@@ -166,7 +166,7 @@ Classes
       :rtype: bool
 
 
-   .. py:method:: _get_results(self)
+   .. py:method:: _get_results()
 
       Iterates through and runs _detect() on each trace in the stream to
       determine if the record is clipped or not.

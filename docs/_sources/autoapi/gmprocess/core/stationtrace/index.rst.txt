@@ -168,7 +168,7 @@ Attributes
          arbitrary metadata in the form of a dictionary as trace property
          (self.parameters).
 
-   .. py:method:: free_field(self)
+   .. py:method:: free_field()
       :property:
 
       Is this station a free-field station?
@@ -177,7 +177,7 @@ Attributes
       :rtype: bool
 
 
-   .. py:method:: fail(self, reason)
+   .. py:method:: fail(reason)
 
       Note that a check on this StationTrace failed for a given reason.
 
@@ -188,7 +188,7 @@ Attributes
       :type reason: str
 
 
-   .. py:method:: validate(self)
+   .. py:method:: validate()
 
       Ensure that all required metadata fields have been set.
 
@@ -198,7 +198,7 @@ Attributes
       :raises ValueError: - When number of points in header does not match data length.
 
 
-   .. py:method:: differentiate(self, method='gradient', **options)
+   .. py:method:: differentiate(frequency=True)
 
       Differentiate the trace with respect to time.
 
@@ -225,7 +225,7 @@ Attributes
           :func:`numpy.gradient`)
 
 
-   .. py:method:: integrate(self, frequency=False, initial=0.0, demean=False, taper=False, config=None)
+   .. py:method:: integrate(frequency=False, initial=0.0, demean=False, taper=False, config=None)
 
       Integrate a StationTrace with respect to either frequency or time.
 
@@ -245,70 +245,25 @@ Attributes
       :rtype: StationTrace
 
 
-   .. py:method:: filter(self, type='highpass', config=None, freq=0.05, corners=5.0, zerophase=False, **options)
+   .. py:method:: filter(type='highpass', freq=0.05, corners=5.0, zerophase=False, config=None, frequency_domain=True, **options)
 
-      Filter the data of the current trace.
+      Overwrite parent function to allow for conf options.
 
+      :param type: What type of filter? "highpass" or "lowpass".
       :type type: str
-      :param type: String that specifies which filter is applied (e.g.
-          ``"bandpass"``). See the `Supported Filter`_ section below for
-          further details.
-      :param options: Necessary keyword arguments for the respective filter
-          that will be passed on. (e.g. ``freqmin=1.0``, ``freqmax=20.0`` for
-          ``"bandpass"``)
-
-      .. note::
-
-          This operation is performed in place on the actual data arrays. The
-          raw data is not accessible anymore afterwards. To keep your
-          original data, use :meth:`~obspy.core.trace.Trace.copy` to create
-          a copy of your trace object.
-          This also makes an entry with information on the applied processing
-          in ``stats.processing`` of this trace.
-
-      .. rubric:: _`Supported Filter`
-
-      ``'bandpass'``
-          Butterworth-Bandpass (uses :func:`obspy.signal.filter.bandpass`).
-
-      ``'bandstop'``
-          Butterworth-Bandstop (uses :func:`obspy.signal.filter.bandstop`).
-
-      ``'lowpass'``
-          Butterworth-Lowpass (uses :func:`obspy.signal.filter.lowpass`).
-
-      ``'highpass'``
-          Butterworth-Highpass (uses :func:`obspy.signal.filter.highpass`).
-
-      ``'lowpass_cheby_2'``
-          Cheby2-Lowpass (uses :func:`obspy.signal.filter.lowpass_cheby_2`).
-
-      ``'lowpass_fir'`` (experimental)
-          FIR-Lowpass (uses :func:`obspy.signal.filter.lowpass_fir`).
-
-      ``'remez_fir'`` (experimental)
-          Minimax optimal bandpass using Remez algorithm (uses
-          :func:`obspy.signal.filter.remez_fir`).
-
-      .. rubric:: Example
-
-      >>> from obspy import read
-      >>> st = read()
-      >>> tr = st[0]
-      >>> tr.filter("highpass", freq=1.0)  # doctest: +ELLIPSIS
-      <...Trace object at 0x...>
-      >>> tr.plot()  # doctest: +SKIP
-
-      .. plot::
-
-          from obspy import read
-          st = read()
-          tr = st[0]
-          tr.filter("highpass", freq=1.0)
-          tr.plot()
+      :param freq: Corner frequency (Hz).
+      :type freq: float
+      :param corners: Number of poles.
+      :type corners: float
+      :param zerophase: Zero phase filter?
+      :type zerophase: bool
+      :param config: Configuration options.
+      :type config: dict
+      :param frequency_domain: Apply filter in frequency domain?
+      :type frequency_domain: bool
 
 
-   .. py:method:: getProvenanceKeys(self)
+   .. py:method:: getProvenanceKeys()
 
       Get a list of all available provenance keys.
 
@@ -316,7 +271,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getProvenance(self, prov_id)
+   .. py:method:: getProvenance(prov_id)
 
       Get seis-prov compatible attributes whose id matches prov_id.
 
@@ -329,7 +284,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: setProvenance(self, prov_id, prov_attributes)
+   .. py:method:: setProvenance(prov_id, prov_attributes)
 
       Update a trace's provenance information.
 
@@ -341,7 +296,7 @@ Attributes
       :type prov_attributes: dict or list
 
 
-   .. py:method:: getAllProvenance(self)
+   .. py:method:: getAllProvenance()
 
       Get internal list of processing history.
 
@@ -351,7 +306,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getProvenanceDocument(self, base_prov=None, gmprocess_version='unknown')
+   .. py:method:: getProvenanceDocument(base_prov=None, gmprocess_version='unknown')
 
       Generate a provenance document.
 
@@ -362,10 +317,10 @@ Attributes
       :returns: Provenance document.
 
 
-   .. py:method:: setProvenanceDocument(self, provdoc)
+   .. py:method:: setProvenanceDocument(provdoc)
 
 
-   .. py:method:: hasParameter(self, param_id)
+   .. py:method:: hasParameter(param_id)
 
       Check to see if Trace contains a given parameter.
 
@@ -376,7 +331,7 @@ Attributes
       :rtype: bool
 
 
-   .. py:method:: setParameter(self, param_id, param_attributes)
+   .. py:method:: setParameter(param_id, param_attributes)
 
       Add to the StationTrace's set of arbitrary metadata.
 
@@ -386,7 +341,7 @@ Attributes
       :type param_attributes: dict or list
 
 
-   .. py:method:: setCached(self, name, array_dict)
+   .. py:method:: setCached(name, array_dict)
 
       Store a dictionary of arrays in StationTrace.
 
@@ -399,7 +354,7 @@ Attributes
       :type array_dict: dict
 
 
-   .. py:method:: getCached(self, name)
+   .. py:method:: getCached(name)
 
       Retrieve a dictionary of arrays.
 
@@ -410,12 +365,12 @@ Attributes
       :rtype: dict
 
 
-   .. py:method:: hasCached(self, name)
+   .. py:method:: hasCached(name)
 
       Check if StationTrace has cached attribute.
 
 
-   .. py:method:: getCachedNames(self)
+   .. py:method:: getCachedNames()
 
       Return list of arrays that have been cached.
 
@@ -423,7 +378,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getParameterKeys(self)
+   .. py:method:: getParameterKeys()
 
       Get a list of all available parameter keys.
 
@@ -431,7 +386,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getParameter(self, param_id)
+   .. py:method:: getParameter(param_id)
 
       Retrieve some arbitrary metadata.
 
@@ -442,10 +397,10 @@ Attributes
       :rtype: dict or list
 
 
-   .. py:method:: getProvDataFrame(self)
+   .. py:method:: getProvDataFrame()
 
 
-   .. py:method:: getProvSeries(self)
+   .. py:method:: getProvSeries()
 
       Return a pandas Series containing the processing history for the
       trace.
@@ -460,7 +415,7 @@ Attributes
       :rtype: Series
 
 
-   .. py:method:: __str__(self, id_length=None, indent=0)
+   .. py:method:: __str__(id_length=None, indent=0)
 
       Extends Trace __str__.
 

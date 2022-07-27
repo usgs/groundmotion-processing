@@ -29,7 +29,7 @@ Functions
 
    Bases: :py:obj:`object`
 
-   .. py:method:: getMatchingEvents(self, solve=True)
+   .. py:method:: getMatchingEvents(solve=True)
 
       For appropriate fetchers, return a list of dictionaries matching
       input parameters.
@@ -49,7 +49,7 @@ Functions
       :rtype: list
 
 
-   .. py:method:: retrieveData(self, event)
+   .. py:method:: retrieveData(event)
 
       Retrieve data from remote source, turn into StreamCollection.
 
@@ -61,7 +61,7 @@ Functions
       :rtype: StreamCollection
 
 
-   .. py:method:: solveEvents(self, events)
+   .. py:method:: solveEvents(events)
 
       Reduce a list of events down to one that best matches the input.
 

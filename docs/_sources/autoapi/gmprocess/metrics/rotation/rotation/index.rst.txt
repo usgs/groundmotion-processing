@@ -23,7 +23,7 @@ Classes
 
    Base class for rotation calculations.
 
-   .. py:method:: _get_horizontals(self)
+   .. py:method:: _get_horizontals()
 
       Gets the two horizontal components.
 
@@ -35,7 +35,7 @@ Classes
           horizontal channels.
 
 
-   .. py:method:: get_max(self, tr1, pick_peak, tr2=None, percentiles=50)
+   .. py:method:: get_max(tr1, pick_peak, tr2=None, percentiles=50)
 
       Finds the maximum from traces and either picks the geometric mean,
       arithmetic mean, or maximum of the two. The two input can either be
@@ -73,7 +73,7 @@ Classes
       :rtype: If 1D input
 
 
-   .. py:method:: rotate(self, tr1, tr2, combine=False, delta=1.0)
+   .. py:method:: rotate(tr1, tr2, combine=False, delta=1.0)
 
       Rotates a trace through 180 degrees to obtain the
       data at each degree.

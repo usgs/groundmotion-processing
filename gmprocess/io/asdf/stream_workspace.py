@@ -200,7 +200,7 @@ class StreamWorkspace(object):
         self.FORMAT_VERSION = FORMAT_VERSION
 
         # Add the config data as workspace attribute if it is present
-        group_name = f"{'config'}/{'config'}"
+        group_name = "config/config"
         config_exists = group_name in self.dataset._auxiliary_data_group
         if config_exists:
             self.setConfig()
@@ -319,7 +319,7 @@ class StreamWorkspace(object):
 
     def getGmprocessVersion(self):
         """Get gmprocess version from ASDF file."""
-        group_name = f"{'gmprocess_version'}/{'version'}"
+        group_name = "gmprocess_version/version"
         data_exists = group_name in self.dataset._auxiliary_data_group
         if not data_exists:
             logging.error("No version for gmprocess found.")
@@ -1347,7 +1347,7 @@ class StreamWorkspace(object):
             row["Software"] = software["name"]
             row["Version"] = software["version"]
             df = df.append(row, ignore_index=True)
-
+        breakpoint()
         return df
 
     def getInventory(self, eventid):

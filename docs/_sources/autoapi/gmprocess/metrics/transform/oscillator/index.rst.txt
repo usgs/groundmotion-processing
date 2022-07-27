@@ -23,7 +23,7 @@ Classes
 
    Class for computing the oscillator for a given period.
 
-   .. py:method:: get_oscillator(self, config=None)
+   .. py:method:: get_oscillator(config=None)
 
       Calculated the oscillator of each trace's data.
 

@@ -23,7 +23,7 @@ Classes
 
    Class for computing the Radial Transverse rotation.
 
-   .. py:method:: get_radial_transverse(self)
+   .. py:method:: get_radial_transverse()
 
       Performs radial transverse rotation.
 

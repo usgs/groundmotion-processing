@@ -23,7 +23,7 @@ Classes
 
    Class for computing the GMROTD rotation.
 
-   .. py:method:: get_gmrotd(self)
+   .. py:method:: get_gmrotd()
 
       Performs GMROTD rotation.
 

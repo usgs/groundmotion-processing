@@ -70,14 +70,14 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Assemble data and organize it into an ASDF file.
 
       :param gmrecords: GMrecordsApp instance.
 
 
-   .. py:method:: _assemble_event(self, event)
+   .. py:method:: _assemble_event(event)
 
 
 

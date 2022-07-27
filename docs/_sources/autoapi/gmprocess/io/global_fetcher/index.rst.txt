@@ -34,11 +34,10 @@ Functions
    :type magnitude: float
    :param config: Project config dictionary.
    :type config: dict
-   :param rawdir: Path to location where raw data will be stored. If not specified,
-                  raw data will be deleted.
+   :param rawdir: Path to location where raw data will be stored. If not specified, raw data
+                  will be deleted.
    :type rawdir: str
-   :param drop_non_free: Option to ignore non-free-field (borehole, sensors on structures,
-                         etc.)
+   :param drop_non_free: Option to ignore non-free-field (borehole, sensors on structures, etc.)
    :type drop_non_free: bool
    :param stream_collection: Construct and return a StreamCollection instance?
    :type stream_collection: bool
@@ -56,10 +55,8 @@ Functions
    :param lon: Origin longitude.
    :type lon: float
 
-   :returns:
-
-             Dictionary of classname:class where each class
-                 is a subclass of shakemap.coremods.base.CoreModule.
+   :returns: Dictionary of classname:class where each class is a subclass of
+             shakemap.coremods.base.CoreModule.
    :rtype: dict
 
 

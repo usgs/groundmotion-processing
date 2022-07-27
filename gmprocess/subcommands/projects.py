@@ -12,6 +12,7 @@ from gmprocess.subcommands.lazy_loader import LazyLoader
 
 distributed = LazyLoader("distributed", globals(), "dask.distributed")
 ryaml = LazyLoader("yaml", globals(), "ruamel.yaml")
+
 pkg_resources = LazyLoader("pkg_resources", globals(), "pkg_resources")
 
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
@@ -339,18 +340,15 @@ def create(config, cwd=False):
     sproj = Project(project, config["projects"][project], config.filename)
     print(f"\nCreated project: {sproj}")
 
-    # Sart with production conf from repository, then add user info
-    data_path = pkg_resources.resource_filename("gmprocess", "data")
-    current_conf = os.path.join(data_path, constants.CONFIG_FILE_PRODUCTION)
     yaml = ryaml.YAML()
+    yaml.indent(mapping=4)
     yaml.preserve_quotes = True
-    with open(current_conf, "rt", encoding="utf-8") as f:
-        gmrecords_conf = yaml.load(f)
-    gmrecords_conf["user"] = user_info
+    user_conf = {}
+    user_conf["user"] = user_info
     if os.getenv("CALLED_FROM_PYTEST") is None:
-        proj_conf_file = os.path.join(proj_dir, new_conf_path, "config.yml")
+        proj_conf_file = os.path.join(proj_dir, new_conf_path, "user.yml")
     else:
-        proj_dir = constants.PROJECTS_PATH_TEST
-        proj_conf_file = os.path.join(proj_dir, "config.yml")
+        proj_dir = constants.CONFIG_PATH_TEST
+        proj_conf_file = os.path.join(proj_dir, "user.yml")
     with open(proj_conf_file, "w", encoding="utf-8") as yf:
-        yaml.dump(gmrecords_conf, yf)
+        yaml.dump(user_conf, yf)

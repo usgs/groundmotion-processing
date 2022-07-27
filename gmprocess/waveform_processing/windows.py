@@ -25,11 +25,13 @@ from gmprocess.waveform_processing.phase import (
 from gmprocess.utils.config import get_config
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.utils.models import load_model
+from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 M_TO_KM = 1.0 / 1000
 
 
-def cut(st, sec_before_split=None, config=None):
+@ProcessingStep
+def cut(st, sec_before_split=2.0, config=None):
     """
     Cut/trim the record.
 
@@ -118,7 +120,7 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
     return st
 
 
-def signal_split(st, origin, model=None, picker_config=None, config=None):
+def signal_split(st, origin, model=None, config=None):
     """
     This method tries to identifies the boundary between the noise and signal
     for the waveform. The split time is placed inside the
@@ -136,8 +138,6 @@ def signal_split(st, origin, model=None, picker_config=None, config=None):
             ScalarEvent object.
         model (TauPyModel):
             TauPyModel object for computing travel times.
-        picker_config (dict):
-            Dictionary containing picker configuration information.
         config (dict):
             Dictionary containing system configuration information.
 
@@ -145,10 +145,9 @@ def signal_split(st, origin, model=None, picker_config=None, config=None):
         trace with stats dict updated to include a
         stats['processing_parameters']['signal_split'] dictionary.
     """
-    if picker_config is None:
-        picker_config = get_config(section="pickers")
     if config is None:
         config = get_config()
+    picker_config = config["pickers"]
 
     loc, mean_snr = pick_travel(st, origin, model)
     if loc > 0:
@@ -156,8 +155,7 @@ def signal_split(st, origin, model=None, picker_config=None, config=None):
         preferred_picker = "travel_time"
     else:
         pick_methods = ["ar", "baer", "power", "kalkan"]
-        columns = ["Stream", "Method", "Pick_Time", "Mean_SNR"]
-        df = pd.DataFrame(columns=columns)
+        rows = []
         for pick_method in pick_methods:
             try:
                 if pick_method == "ar":
@@ -181,13 +179,15 @@ def signal_split(st, origin, model=None, picker_config=None, config=None):
             except BaseException:
                 loc = -1
                 mean_snr = np.nan
-            row = {
-                "Stream": st.get_id(),
-                "Method": pick_method,
-                "Pick_Time": loc,
-                "Mean_SNR": mean_snr,
-            }
-            df = df.append(row, ignore_index=True)
+            rows.append(
+                {
+                    "Stream": st.get_id(),
+                    "Method": pick_method,
+                    "Pick_Time": loc,
+                    "Mean_SNR": mean_snr,
+                }
+            )
+        df = pd.DataFrame(rows)
 
         max_snr = df["Mean_SNR"].max()
         if not np.isnan(max_snr):
@@ -225,11 +225,11 @@ def signal_end(
     event_lon,
     event_lat,
     event_mag,
-    method=None,
-    vmin=None,
-    floor=None,
-    model=None,
-    epsilon=2.0,
+    method="model",
+    vmin=1.0,
+    floor=120.0,
+    model="AS16",
+    epsilon=3.0,
 ):
     """
     Estimate end of signal by using a model of the 5-95% significant
@@ -250,8 +250,8 @@ def signal_end(
         event_lat (float):
             Event latitude.
         method (str):
-            Method for estimating signal end time. Either 'velocity'
-            or 'model'.
+            Method for estimating signal end time. Can be 'velocity', 'model',
+            'magnitude', or 'none'.
         vmin (float):
             Velocity (km/s) for estimating end of signal. Only used if
             method="velocity".
@@ -286,6 +286,7 @@ def signal_end(
 
     for tr in st:
         if not tr.hasParameter("signal_split"):
+            logging.warning("No signal split in trace, cannot set signal end.")
             continue
         if method == "velocity":
             if vmin is None:
@@ -325,8 +326,19 @@ def signal_end(
             # Get split time
             split_time = tr.getParameter("signal_split")["split_time"]
             end_time = split_time + float(duration)
+        elif method == "magnitude":
+            # According to Hamid:
+            #     duration is {mag}/2 minutes starting 30 seconds
+            #     before the origin time
+            duration = event_mag / 2.0 * 60.0
+            end_time = event_time + duration - 30.0
+        elif method == "none":
+            # need defaults
+            end_time = tr.stats.endtime
         else:
-            raise ValueError('method must be either "velocity" or "model".')
+            raise ValueError(
+                'method must be one of: "velocity", "model", "magnitude", or "none".'
+            )
         # Update trace params
         end_params = {
             "end_time": end_time,
@@ -341,6 +353,7 @@ def signal_end(
     return st
 
 
+@ProcessingStep
 def trim_multiple_events(
     st,
     origin,
@@ -473,7 +486,7 @@ def trim_multiple_events(
             ]
         )
         rctx.rjb = rctx.repi
-        rctx.rhypo = np.sqrt(rctx.repi ** 2 + event.depth_km ** 2)
+        rctx.rhypo = np.sqrt(rctx.repi**2 + event.depth_km**2)
         rctx.rrup = rctx.rhypo
         rctx.sids = np.array(range(np.size(rctx.rrup)))
         pga, sd = gmpe.get_mean_and_stddevs(rctx, rctx, rctx, imt.PGA(), [])

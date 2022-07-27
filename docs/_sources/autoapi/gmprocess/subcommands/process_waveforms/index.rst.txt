@@ -87,14 +87,14 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Process data using steps defined in configuration file.
 
       :param gmrecords: GMrecordsApp instance.
 
 
-   .. py:method:: _process_event(self, event)
+   .. py:method:: _process_event(event)
 
 
 

@@ -24,7 +24,7 @@ Classes
    Class for null combination calculation. This perfoms no action
    other than returning the input combination_data.
 
-   .. py:method:: get_combination_data(self)
+   .. py:method:: get_combination_data()
 
       :returns: The original input without alteration.
       :rtype: self.combination_data

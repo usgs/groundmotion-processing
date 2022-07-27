@@ -57,21 +57,22 @@ class GenerateReportModule(base.SubcommandModule):
 
             config = self._get_config()
             build_conf = config["build_report"]
-            report_format = build_conf["format"]
-            if report_format == "latex":
-                report_file, success = report.build_report_latex(
-                    pstreams,
-                    event_dir,
-                    event,
-                    prefix=f"{gmrecords.project}_{gmrecords.args.label}",
-                    config=config,
-                    gmprocess_version=gmrecords.gmprocess_version,
-                )
-            else:
-                report_file = ""
-                success = False
-            if os.path.isfile(report_file) and success:
-                self.append_file("Summary report", report_file)
+            if build_conf["enabled"]:
+                report_format = build_conf["format"]
+                if report_format == "latex":
+                    report_file, success = report.build_report_latex(
+                        pstreams,
+                        event_dir,
+                        event,
+                        prefix=f"{gmrecords.project}_{gmrecords.args.label}",
+                        config=config,
+                        gmprocess_version=gmrecords.gmprocess_version,
+                    )
+                else:
+                    report_file = ""
+                    success = False
+                if os.path.isfile(report_file) and success:
+                    self.append_file("Summary report", report_file)
 
         self._summarize_files_created()
 
