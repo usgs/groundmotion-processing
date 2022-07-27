@@ -17,14 +17,14 @@ Classes
 
 
 
-.. py:class:: Null_Reduction(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95])
+.. py:class:: Null_Reduction(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95], config=None)
 
    Bases: :py:obj:`gmprocess.metrics.reduction.reduction.Reduction`
 
    Class for null reduction calculation. This perfoms no action
    other than returning the input reduction_data.
 
-   .. py:method:: get_reduction_data(self)
+   .. py:method:: get_reduction_data()
 
       :returns: The original input without alteration.
       :rtype: self.reduction_data

@@ -24,7 +24,7 @@ Classes
    Class for null transform calculation. This perfoms no action
    other than returning the input transform_data.
 
-   .. py:method:: get_transform_data(self)
+   .. py:method:: get_transform_data()
 
       :returns: The original input without alteration.
       :rtype: self.transform_data

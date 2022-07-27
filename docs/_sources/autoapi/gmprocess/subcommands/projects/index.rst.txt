@@ -98,7 +98,7 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Manage gmrecords projects.
 
@@ -115,7 +115,7 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: __repr__(self)
+   .. py:method:: __repr__()
 
       Return repr(self).
 

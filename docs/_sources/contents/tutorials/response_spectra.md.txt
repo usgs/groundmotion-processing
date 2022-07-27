@@ -48,7 +48,7 @@ and the event object for this earthquake
 # Path to example data
 datapath = os.path.join('data', 'testdata', 'demo', 'ci38457511', 'raw')
 datadir = pkg_resources.resource_filename('gmprocess', datapath)
-sc = StreamCollection.from_directory(datadir, use_default_config=True)
+sc = StreamCollection.from_directory(datadir)
 sc.describe()
 ```
 
@@ -58,7 +58,7 @@ because we have not yet subjected them to the QA tests.
 
 ```{code-cell} ipython3
 # Get the default config file
-conf = get_config(use_default=True)
+conf = get_config()
 
 # Get event object
 event = get_event_object('ci38457511')

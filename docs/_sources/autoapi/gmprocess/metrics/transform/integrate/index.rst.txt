@@ -23,7 +23,7 @@ Classes
 
    Class for computing the integral.
 
-   .. py:method:: get_integral(self, config=None)
+   .. py:method:: get_integral(config=None)
 
       Calculated the integral of each trace's data.
 

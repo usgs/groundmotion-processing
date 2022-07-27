@@ -23,7 +23,7 @@ Classes
 
    Base class for the IMT classes.
 
-   .. py:method:: valid_combination(self, imc)
+   .. py:method:: valid_combination(imc)
 
       Checks whether the combinations of imt and imc is valid.
 
@@ -34,7 +34,7 @@ Classes
       :rtype: bool
 
 
-   .. py:method:: steps(self)
+   .. py:method:: steps()
       :property:
 
       Steps for the imt/imc computation.

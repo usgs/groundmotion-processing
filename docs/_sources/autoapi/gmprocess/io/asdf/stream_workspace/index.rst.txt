@@ -111,7 +111,7 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: create(cls, filename, compression=None)
+   .. py:method:: create(filename, compression=None)
       :classmethod:
 
       Load from existing ASDF file.
@@ -125,7 +125,7 @@ Attributes
       :rtype: StreamWorkspace
 
 
-   .. py:method:: open(cls, filename)
+   .. py:method:: open(filename)
       :classmethod:
 
       Load from existing ASDF file.
@@ -137,12 +137,12 @@ Attributes
       :rtype: StreamWorkspace
 
 
-   .. py:method:: close(self)
+   .. py:method:: close()
 
       Close the workspace.
 
 
-   .. py:method:: __repr__(self)
+   .. py:method:: __repr__()
 
       Provide summary string representation of the file.
 
@@ -150,7 +150,7 @@ Attributes
       :rtype: str
 
 
-   .. py:method:: addEvent(self, event)
+   .. py:method:: addEvent(event)
 
       Add event object to file.
 
@@ -158,7 +158,7 @@ Attributes
       :type event: Event
 
 
-   .. py:method:: addConfig(self, config=None, force=False)
+   .. py:method:: addConfig(config=None, force=False)
 
       Add config to an ASDF dataset and workspace attribute.
 
@@ -168,22 +168,22 @@ Attributes
       :type force: bool
 
 
-   .. py:method:: setConfig(self)
+   .. py:method:: setConfig()
 
       Get config from ASDF dataset and set as a workspace attribute.
 
 
-   .. py:method:: addGmprocessVersion(self, version)
+   .. py:method:: addGmprocessVersion(version)
 
       Add gmprocess version to an ASDF file.
 
 
-   .. py:method:: getGmprocessVersion(self)
+   .. py:method:: getGmprocessVersion()
 
       Get gmprocess version from ASDF file.
 
 
-   .. py:method:: addStreams(self, event, streams, label=None, gmprocess_version='unknown', overwrite=False)
+   .. py:method:: addStreams(event, streams, label=None, gmprocess_version='unknown', overwrite=False)
 
       Add a sequence of StationStream objects to an ASDF file.
 
@@ -200,7 +200,7 @@ Attributes
       :type overwrite: bool
 
 
-   .. py:method:: getEventIds(self)
+   .. py:method:: getEventIds()
 
       Return list of event IDs for events in ASDF file.
 
@@ -208,7 +208,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getLabels(self)
+   .. py:method:: getLabels()
 
       Return all of the processing labels.
 
@@ -216,7 +216,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: getStreams(self, eventid, stations=None, labels=None, config=None)
+   .. py:method:: getStreams(eventid, stations=None, labels=None, config=None)
 
       Get Stream from ASDF file given event id and input tags.
 
@@ -234,7 +234,7 @@ Attributes
       :rtype: StreamCollection
 
 
-   .. py:method:: getStations(self)
+   .. py:method:: getStations()
 
       Get list of station codes within the file.
 
@@ -242,7 +242,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: insert_aux(self, datastr, data_name, path, overwrite=False)
+   .. py:method:: insert_aux(datastr, data_name, path, overwrite=False)
 
       Insert a string (usually json or xml) into Auxilliary array.
 
@@ -256,7 +256,7 @@ Attributes
       :type overwrite: bool
 
 
-   .. py:method:: calcMetrics(self, eventid, stations=None, labels=None, config=None, streams=None, stream_label=None, rupture_file=None, calc_station_metrics=True, calc_waveform_metrics=True)
+   .. py:method:: calcMetrics(eventid, stations=None, labels=None, config=None, streams=None, stream_label=None, rupture_file=None, calc_station_metrics=True, calc_waveform_metrics=True)
 
       Calculate waveform and/or station metrics for a set of waveforms.
 
@@ -281,7 +281,7 @@ Attributes
       :type calc_waveform_metrics: bool
 
 
-   .. py:method:: getTables(self, label, config)
+   .. py:method:: getTables(label, config)
 
       Retrieve dataframes containing event information and IMC/IMT
       metrics.
@@ -333,7 +333,7 @@ Attributes
       :rtype: tuple
 
 
-   .. py:method:: getFitSpectraTable(self, eventid, label, config)
+   .. py:method:: getFitSpectraTable(eventid, label, config)
 
       Returns a tuple of two pandas DataFrames. The first contains the
       fit_spectra parameters for each trace in the workspace matching
@@ -352,7 +352,7 @@ Attributes
       :rtype: pandas.DataFrame
 
 
-   .. py:method:: getSNRTable(self, eventid, label, config)
+   .. py:method:: getSNRTable(eventid, label, config)
 
       Returns a tuple of two pandas DataFrames. The first contains the
       fit_spectra parameters for each trace in the workspace matching
@@ -374,7 +374,7 @@ Attributes
       :staticmethod:
 
 
-   .. py:method:: getStreamMetrics(self, eventid, network, station, label, streams=None, stream_label=None, config=None)
+   .. py:method:: getStreamMetrics(eventid, network, station, label, streams=None, stream_label=None, config=None)
 
       Extract a StationSummary object from the ASDF file for a given
       input Stream.
@@ -399,7 +399,7 @@ Attributes
       :rtype: StationSummary
 
 
-   .. py:method:: summarizeLabels(self)
+   .. py:method:: summarizeLabels()
 
       Summarize the processing metadata associated with each label in the
       file.
@@ -417,7 +417,7 @@ Attributes
       :rtype: DataFrame
 
 
-   .. py:method:: getInventory(self, eventid)
+   .. py:method:: getInventory(eventid)
 
       Get an Obspy Inventory object from the ASDF file.
 
@@ -431,7 +431,7 @@ Attributes
       :rtype: Inventory
 
 
-   .. py:method:: hasEvent(self, eventid)
+   .. py:method:: hasEvent(eventid)
 
       Verify that the workspace file contains an event matching eventid.
 
@@ -442,7 +442,7 @@ Attributes
       :rtype: bool
 
 
-   .. py:method:: getEvent(self, eventid)
+   .. py:method:: getEvent(eventid)
 
       Get a ScalarEvent object from the ASDF file.
 
@@ -453,7 +453,7 @@ Attributes
       :rtype: ScalarEvent
 
 
-   .. py:method:: getProvenance(self, eventid, stations=None, labels=None)
+   .. py:method:: getProvenance(eventid, stations=None, labels=None)
 
       Return DataFrame with processing history matching input criteria.
 

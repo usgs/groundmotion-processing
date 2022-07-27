@@ -39,9 +39,15 @@ Attributes
 .. autoapisummary::
 
    gmprocess.waveform_processing.phase.NAN_TIME
+   gmprocess.waveform_processing.phase.CONFIG
 
 
 .. py:data:: NAN_TIME
+   
+
+   
+
+.. py:data:: CONFIG
    
 
    

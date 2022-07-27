@@ -1,17 +1,17 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.zero_crossings" href="../zero_crossings/index.html" /><link rel="prev" title="gmprocess.waveform_processing.spectrum" href="../spectrum/index.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.zero_crossings" href="../zero_crossings/index.html" /><link rel="prev" title="gmprocess.waveform_processing.taper" href="../taper/index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.04.1"/>
-        <title>gmprocess.waveform_processing.windows - gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.waveform_processing.windows - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev468+g45643b49.d20220614 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -192,33 +192,21 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/manual/index.html">Manual</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/data_structures.html">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/workspace.html">   Workspace</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../../../contents/manual/config_file.html">   Configuration File</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/user.html">   user</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/fetchers.html">   fetchers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/read.html">   read</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/windows.html">   windows</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/processing.html">   processing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/colocated.html">   colocated</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/duplicate.html">   duplicate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/build_report.html">   build_report</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/metrics.html">   metrics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../contents/manual/conf_file/pickers.html">   pickers</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/config_file.html">   Configuration File</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/utilities.html">   Utilities</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../contents/developer/index.html">Developer Resources</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../../../contents/developer/index.html">Developer Resources</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/contributing.html">   Contributing Guidelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/new_readers.html">   Adding New Data Readers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/developer/build_docs.html">   Building the Documentation</a></li>
-<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">   API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../index.html">   API</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../apps/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../apps/gmrecords/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.apps.gmrecords</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../bin/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../bin/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../bin/cwb_gather/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.cwb_gather</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../bin/gmconvert/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gmconvert</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../bin/gminfo/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.gminfo</span></code></a></li>
@@ -227,76 +215,76 @@
 <li class="toctree-l4"><a class="reference internal" href="../../bin/list_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.bin.list_metrics</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../core/stationstream/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.stationstream</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../core/stationtrace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.stationtrace</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../core/streamarray/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamarray</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/asdf/stream_workspace/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.stream_workspace</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/asdf/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.utils</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/bhrc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/bhrc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/bhrc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.bhrc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/cosmos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/cosmos/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/cosmos/cesmd_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cesmd_fetcher</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/cosmos/cesmd_search/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cesmd_search</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/cosmos/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/cosmos/cosmos_writer/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cosmos.cosmos_writer</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/cwb/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/cwb/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/cwb/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/dmg/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/dmg/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/dmg/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.dmg.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/esm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/esm/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/esm/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.esm.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/geonet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/geonet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/geonet/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/geonet/geonet_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.geonet.geonet_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/knet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/knet/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/knet/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/knet/knet_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.knet.knet_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/nsmn/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/nsmn/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/nsmn/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/nsmn/turkey_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nsmn.turkey_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/obspy/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/obspy/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/obspy/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy.core</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../io/obspy/fdsn_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.obspy.fdsn_fetcher</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/renadic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/renadic/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/renadic/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.renadic.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/smc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/smc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" role="switch" type="checkbox"/><label for="toctree-checkbox-21"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/smc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.smc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/unam/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/unam/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" role="switch" type="checkbox"/><label for="toctree-checkbox-22"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/unam/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.unam.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/usc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../io/usc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" role="switch" type="checkbox"/><label for="toctree-checkbox-23"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
@@ -312,8 +300,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../../io/utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.utils</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" role="switch" type="checkbox"/><label for="toctree-checkbox-24"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" role="switch" type="checkbox"/><label for="toctree-checkbox-25"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/combination/arithmetic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.arithmetic_mean</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/combination/combination/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.combination</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/combination/geometric_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.geometric_mean</span></code></a></li>
@@ -322,7 +310,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/combination/quadratic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.combination.quadratic_mean</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/imc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/imc/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" role="switch" type="checkbox"/><label for="toctree-checkbox-26"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imc/arithmetic_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.arithmetic_mean</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imc/channels/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.channels</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imc/geometric_mean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.geometric_mean</span></code></a></li>
@@ -334,7 +322,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imc/rotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imc.rotd</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/imt/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/imt/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" role="switch" type="checkbox"/><label for="toctree-checkbox-27"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imt/arias/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.arias</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imt/duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.duration</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imt/fas/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.fas</span></code></a></li>
@@ -345,7 +333,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/imt/sorted_duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.imt.sorted_duration</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/reduction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/reduction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" role="switch" type="checkbox"/><label for="toctree-checkbox-28"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/reduction/arias/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.arias</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/reduction/duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.duration</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/reduction/max/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.max</span></code></a></li>
@@ -356,7 +344,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/reduction/sorted_duration/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.reduction.sorted_duration</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" role="switch" type="checkbox"/><label for="toctree-checkbox-29"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/rotation/gmrotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.gmrotd</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/rotation/null_rotation/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.null_rotation</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/rotation/radial_transverse/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.radial_transverse</span></code></a></li>
@@ -364,7 +352,7 @@
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/rotation/rotd/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.rotd</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="../../metrics/transform/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" role="switch" type="checkbox"/><label for="toctree-checkbox-30"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/transform/differentiate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.differentiate</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/transform/fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.fft</span></code></a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../metrics/transform/integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.integrate</span></code></a></li>
@@ -379,7 +367,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../metrics/station_summary/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.station_summary</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/auto_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
@@ -402,7 +390,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/projects/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.projects</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" role="switch" type="checkbox"/><label for="toctree-checkbox-32"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../utils/args/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.args</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../utils/assemble_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.assemble_utils</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../utils/base_utils/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.base_utils</span></code></a></li>
@@ -423,22 +411,27 @@
 <li class="toctree-l4"><a class="reference internal" href="../../utils/usgs_id_cross_reference/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.utils.usgs_id_cross_reference</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" role="switch" type="checkbox"/><label for="toctree-checkbox-34"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../corner_frequencies/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.corner_frequencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../detrend/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.detrend</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../fft/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.fft</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../filtering/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.filtering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../instrument_response/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.instrument_response</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../integrate/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.integrate</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../nn_quality_assurance/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.nn_quality_assurance</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../phase/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../pretesting/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.pretesting</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.processing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../processing_step/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.processing_step</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../resample/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.resample</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../sanity_checks/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.sanity_checks</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../snr/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.snr</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../spectrum/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.spectrum</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../taper/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.taper</span></code></a></li>
 <li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.windows</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
@@ -482,32 +475,28 @@
         </div>
         <article role="main">
           <section id="module-gmprocess.waveform_processing.windows">
-<span id="gmprocess-waveform-processing-windows"></span><h1><a class="reference internal" href="#module-gmprocess.waveform_processing.windows" title="gmprocess.waveform_processing.windows"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.windows</span></code></a><a class="headerlink" href="#module-gmprocess.waveform_processing.windows" title="Permalink to this headline">#</a></h1>
+<span id="gmprocess-waveform-processing-windows"></span><h1><a class="reference internal" href="#module-gmprocess.waveform_processing.windows" title="gmprocess.waveform_processing.windows"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.windows</span></code></a><a class="headerlink" href="#module-gmprocess.waveform_processing.windows" title="Permalink to this heading">#</a></h1>
 <p>Helper functions for windowing singal and noise in a trace.</p>
 <section id="module-contents">
-<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">#</a></h2>
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="functions">
-<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">#</a></h3>
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.cut" title="gmprocess.waveform_processing.windows.cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code></a>(st, sec_before_split=None, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.cut" title="gmprocess.waveform_processing.windows.cut"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut</span></code></a>(st[, sec_before_split, config])</p></td>
 <td><p>Cut/trim the record.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.window_checks" title="gmprocess.waveform_processing.windows.window_checks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">window_checks</span></code></a>(st, min_noise_duration=0.5, min_signal_duration=5.0)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.window_checks" title="gmprocess.waveform_processing.windows.window_checks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">window_checks</span></code></a>(st[, min_noise_duration, ...])</p></td>
 <td><p>Check if the split/end windowing have long enough durations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_split" title="gmprocess.waveform_processing.windows.signal_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_split</span></code></a>(st, origin, model=None, picker_config=None, config=None)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_split" title="gmprocess.waveform_processing.windows.signal_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_split</span></code></a>(st, origin[, model, config])</p></td>
 <td><p>This method tries to identifies the boundary between the noise and signal</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_end" title="gmprocess.waveform_processing.windows.signal_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_end</span></code></a>(st, event_time, event_lon, event_lat, event_mag, method=None, vmin=None, floor=None, model=None, epsilon=2.0)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.signal_end" title="gmprocess.waveform_processing.windows.signal_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">signal_end</span></code></a>(st, event_time, event_lon, event_lat, event_mag)</p></td>
 <td><p>Estimate end of signal by using a model of the 5-95% significant</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.trim_multiple_events" title="gmprocess.waveform_processing.windows.trim_multiple_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_multiple_events</span></code></a>(st, origin, catalog, travel_time_df, pga_factor, pct_window_reject, gmpe, site_parameters, rupture_parameters)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.trim_multiple_events" title="gmprocess.waveform_processing.windows.trim_multiple_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trim_multiple_events</span></code></a>(st, origin, catalog, ...)</p></td>
 <td><p>Uses a catalog (list of ScalarEvents) to handle cases where a trace might</p></td>
 </tr>
 </tbody>
@@ -515,13 +504,9 @@
 </div>
 </section>
 <section id="attributes">
-<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">#</a></h3>
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">#</a></h3>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.windows.M_TO_KM" title="gmprocess.waveform_processing.windows.M_TO_KM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">M_TO_KM</span></code></a></p></td>
 <td><p></p></td>
@@ -536,7 +521,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.cut">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_before_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#cut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.cut" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sec_before_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#cut"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.cut" title="Permalink to this definition">#</a></dt>
 <dd><p>Cut/trim the record.</p>
 <p>This method minimally requires that the windows.signal_end method has been
 run, in which case the record is trimmed to the end of the signal that
@@ -547,7 +532,7 @@ windows.signal_split mehtod.</p>
 <p># Recent changes to reflect major updates to how oq-hazardlib works:
 # <a class="reference external" href="https://github.com/gem/oq-engine/issues/7018">https://github.com/gem/oq-engine/issues/7018</a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>sec_before_split</strong> (<em>float</em>) – Seconds to trim before split. If None, then the beginning of the
@@ -555,10 +540,10 @@ record will be unchanged.</p></li>
 <li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>cut streams.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>stream</p>
 </dd>
 </dl>
@@ -569,7 +554,7 @@ record will be unchanged.</p></li>
 <span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">window_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_noise_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_signal_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#window_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.window_checks" title="Permalink to this definition">#</a></dt>
 <dd><p>Check if the split/end windowing have long enough durations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>min_noise_duration</strong> (<em>float</em>) – Minimum duration of noise window (sec).</p></li>
@@ -581,7 +566,7 @@ record will be unchanged.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.signal_split">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">signal_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picker_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#signal_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.signal_split" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">signal_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#signal_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.signal_split" title="Permalink to this definition">#</a></dt>
 <dd><p>This method tries to identifies the boundary between the noise and signal
 for the waveform. The split time is placed inside the
 ‘processing_parameters’ key of the trace stats.</p>
@@ -590,16 +575,15 @@ windows. Multiple picker methods are suppored and can be configured in the
 config file
 ‘~/.gmprocess/picker.yml</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>origin</strong> (<a class="reference internal" href="../../utils/event/index.html#gmprocess.utils.event.ScalarEvent" title="gmprocess.utils.event.ScalarEvent"><em>ScalarEvent</em></a>) – ScalarEvent object.</p></li>
 <li><p><strong>model</strong> (<em>TauPyModel</em>) – TauPyModel object for computing travel times.</p></li>
-<li><p><strong>picker_config</strong> (<em>dict</em>) – Dictionary containing picker configuration information.</p></li>
 <li><p><strong>config</strong> (<em>dict</em>) – Dictionary containing system configuration information.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>trace with stats dict updated to include a
 stats[‘processing_parameters’][‘signal_split’] dictionary.</p>
 </dd>
@@ -608,22 +592,22 @@ stats[‘processing_parameters’][‘signal_split’] dictionary.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.windows.signal_end">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">signal_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_mag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#signal_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.signal_end" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.windows.</span></span><span class="sig-name descname"><span class="pre">signal_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_lon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_lat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_mag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'model'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">floor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">120.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AS16'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/windows.html#signal_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.windows.signal_end" title="Permalink to this definition">#</a></dt>
 <dd><p>Estimate end of signal by using a model of the 5-95% significant
 duration, and adding this value to the “signal_split” time. This probably
 only works well when the split is estimated with a p-wave picker since
 the velocity method often ends up with split times that are well before
 signal actually starts.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>event_time</strong> (<em>UTCDateTime</em>) – Event origin time.</p></li>
 <li><p><strong>event_mag</strong> (<em>float</em>) – Event magnitude.</p></li>
 <li><p><strong>event_lon</strong> (<em>float</em>) – Event longitude.</p></li>
 <li><p><strong>event_lat</strong> (<em>float</em>) – Event latitude.</p></li>
-<li><p><strong>method</strong> (<em>str</em>) – Method for estimating signal end time. Either ‘velocity’
-or ‘model’.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Method for estimating signal end time. Can be ‘velocity’, ‘model’,
+‘magnitude’, or ‘none’.</p></li>
 <li><p><strong>vmin</strong> (<em>float</em>) – Velocity (km/s) for estimating end of signal. Only used if
 method=”velocity”.</p></li>
 <li><p><strong>floor</strong> (<em>float</em>) – Minimum duration (sec) applied along with vmin.</p></li>
@@ -634,7 +618,7 @@ window duration is the mean Ds + 1 standard deviation. Only used
 for method=”model”.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>trace with stats dict updated to include a
 stats[‘processing_parameters’][‘signal_end’] dictionary.</p>
 </dd>
@@ -662,7 +646,7 @@ record such that the end time does not include any of the arrivals
 selected in step #3.</p></li>
 </ol>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>origin</strong> (<a class="reference internal" href="../../utils/event/index.html#gmprocess.utils.event.ScalarEvent" title="gmprocess.utils.event.ScalarEvent"><em>ScalarEvent</em></a>) – ScalarEvent object associated with the StationStream.</p></li>
@@ -692,10 +676,10 @@ appropriately.</p>
 <li><p><strong>rupture_parameters</strong> – Dictionary of rupture parameters to input to the GMPE.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Processed stream.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream">StationStream</a></p>
 </dd>
 </dl>
@@ -719,14 +703,14 @@ appropriately.</p>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../spectrum/index.html">
+          <a class="prev-page" href="../taper/index.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.spectrum</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.taper</span></code></div>
                 
               </div>
             </a>
@@ -790,6 +774,7 @@ appropriately.</p>
 </div><script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
     <script src="../../../../_static/jquery.js"></script>
     <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>

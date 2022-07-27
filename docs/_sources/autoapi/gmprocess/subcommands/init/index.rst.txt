@@ -64,7 +64,7 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Initialize the current directory as a gmprocess project directory.
 

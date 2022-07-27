@@ -39,62 +39,62 @@ Attributes
 
    Bases: :py:obj:`object`
 
-   .. py:method:: describe_string(self)
+   .. py:method:: describe_string()
 
       More verbose description of StreamArray.
 
 
-   .. py:method:: describe(self)
+   .. py:method:: describe()
 
       Thin wrapper of describe_string() for printing to stdout
 
 
-   .. py:method:: __len__(self)
+   .. py:method:: __len__()
 
       Number of constituent StationStreams.
 
 
-   .. py:method:: __nonzero__(self)
+   .. py:method:: __nonzero__()
 
 
-   .. py:method:: __add__(self, other)
+   .. py:method:: __add__(other)
 
 
-   .. py:method:: __iter__(self)
+   .. py:method:: __iter__()
 
       Iterator for GMCollection over constituent StationStreams.
 
 
-   .. py:method:: __setitem__(self, index, stream)
+   .. py:method:: __setitem__(index, stream)
 
 
-   .. py:method:: __getitem__(self, index)
+   .. py:method:: __getitem__(index)
 
 
-   .. py:method:: __delitem__(self, index)
+   .. py:method:: __delitem__(index)
 
 
-   .. py:method:: __getslice__(self, i, j, k=1)
+   .. py:method:: __getslice__(i, j, k=1)
 
 
-   .. py:method:: append(self, stream)
+   .. py:method:: append(stream)
 
       Append a single StationStream object.
 
       :param stream: A StationStream object.
 
 
-   .. py:method:: pop(self, index=-1)
+   .. py:method:: pop(index=-1)
 
       Remove and return item at index (default last).
 
 
-   .. py:method:: copy(self)
+   .. py:method:: copy()
 
       Copy method.
 
 
-   .. py:method:: select(self, network=None, station=None, instrument=None)
+   .. py:method:: select(network=None, station=None, instrument=None)
 
       Select Streams.
 
@@ -112,11 +112,11 @@ Attributes
       :type instrument: str
 
 
-   .. py:method:: n_passed(self)
+   .. py:method:: n_passed()
       :property:
 
 
-   .. py:method:: n_failed(self)
+   .. py:method:: n_failed()
       :property:
 
 

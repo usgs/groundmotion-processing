@@ -53,7 +53,7 @@ Functions
 .. py:function:: get_station_feature(stream, metrics, coordinates, expanded_imts=False)
 
 
-.. py:function:: get_components(metrics, stream)
+.. py:function:: get_components(metrics, stream, config)
 
 
 .. py:function:: replace_nan(properties)

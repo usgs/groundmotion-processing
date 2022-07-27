@@ -23,7 +23,7 @@ Classes
 
    Class for calculation of geometric mean.
 
-   .. py:method:: get_geometric_mean(self)
+   .. py:method:: get_geometric_mean()
 
       Performs calculation of geometric mean.
 

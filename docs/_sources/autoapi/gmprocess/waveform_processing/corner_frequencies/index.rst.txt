@@ -18,6 +18,8 @@ Functions
 
 .. autoapisummary::
 
+   gmprocess.waveform_processing.corner_frequencies.get_corner_frequencies
+   gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency
    gmprocess.waveform_processing.corner_frequencies.from_constant
    gmprocess.waveform_processing.corner_frequencies.from_magnitude
    gmprocess.waveform_processing.corner_frequencies.from_snr
@@ -48,6 +50,44 @@ Attributes
    :annotation: = both
 
    
+
+.. py:function:: get_corner_frequencies(st, origin, method='snr', constant={'highpass': 0.08, 'lowpass': 20.0}, snr={'same_horiz': True}, magnitude={'minmag': [-999.0, 3.5, 5.5], 'highpass': [0.5, 0.3, 0.1], 'lowpass': [25.0, 35.0, 40.0]}, config=None)
+
+   Select corner frequencies.
+
+   :param st: Stream of data.
+   :type st: StationStream
+   :param origin: ScalarEvent object.
+   :type origin: ScalarEvent
+   :param method: Which method to use; currently allowed "snr" or "constant".
+   :type method: str
+   :param constant: Dictionary of `constant` method config options.
+   :type constant: dict
+   :param snr: Dictionary of `snr` method config options.
+   :type snr: dict
+   :param magnitude: Dictionary of `magnitude` method config options.
+   :type magnitude: dict
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
+
+   :returns: Stream with selected corner frequencies added.
+   :rtype: strea
+
+
+.. py:function:: lowpass_max_frequency(st, fn_fac=0.75, config=None)
+
+   Cap lowpass corner as a fraction of the Nyquist.
+
+   :param st: Stream of data.
+   :type st: StationStream
+   :param fn_fac: Factor to be multiplied by the Nyquist to cap the lowpass filter.
+   :type fn_fac: float
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
+
+   :returns: Resampled stream.
+   :rtype: StationStream
+
 
 .. py:function:: from_constant(st, highpass=0.08, lowpass=20.0)
 

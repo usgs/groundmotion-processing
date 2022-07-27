@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: Reduction(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95])
+.. py:class:: Reduction(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95], config=None)
 
    Bases: :py:obj:`object`
 

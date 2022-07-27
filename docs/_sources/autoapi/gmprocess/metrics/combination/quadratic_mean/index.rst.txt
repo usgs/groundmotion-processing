@@ -23,7 +23,7 @@ Classes
 
    Class for calculation of quadratic mean.
 
-   .. py:method:: get_quadratic_mean(self)
+   .. py:method:: get_quadratic_mean()
 
       Performs calculation of quadratic mean.
 

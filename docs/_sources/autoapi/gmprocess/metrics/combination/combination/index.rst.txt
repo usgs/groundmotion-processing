@@ -23,7 +23,7 @@ Classes
 
    Base class for combination calculations.
 
-   .. py:method:: _get_horizontals(self)
+   .. py:method:: _get_horizontals()
 
       Gets the two horizontal components.
 

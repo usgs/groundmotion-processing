@@ -59,7 +59,7 @@ Classes
       
       
 
-   .. py:method:: _clean_trace(self, tr)
+   .. py:method:: _clean_trace(tr)
 
       Helper function to clean a trace (no normalizing in this
       algorithm).
@@ -71,7 +71,7 @@ Classes
       :rtype: clean_tr (StationTrace)
 
 
-   .. py:method:: _detect(self, tr)
+   .. py:method:: _detect(tr)
 
       If any point exceeds the threshold, fail the trace. Threshold is
       given as max_amp_thresh, the absolute maximum amplitude of
@@ -84,7 +84,7 @@ Classes
       :rtype: bool
 
 
-   .. py:method:: _get_results(self)
+   .. py:method:: _get_results()
 
       Iterates through and runs _detect() on each trace in the stream to
       determine if the record is clipped or not.

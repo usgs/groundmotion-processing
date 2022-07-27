@@ -23,7 +23,7 @@ Classes
 
    Class for computing the fast fourier transform.
 
-   .. py:method:: get_fft(self)
+   .. py:method:: get_fft()
 
       Calculated the fft of each trace's data.
 
@@ -31,7 +31,7 @@ Classes
       :rtype: numpy.ndarray
 
 
-   .. py:method:: get_nfft(self, trace)
+   .. py:method:: get_nfft(trace)
 
       If allow_nans is True, returns the number of points for the FFT that
       will ensure that the Fourier Amplitude Spectrum can be computed without

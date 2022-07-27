@@ -21,6 +21,7 @@ Functions
 
 .. autoapisummary::
 
+   gmprocess.waveform_processing.nn_quality_assurance.NNet_QA
    gmprocess.waveform_processing.nn_quality_assurance.isNumber
    gmprocess.waveform_processing.nn_quality_assurance.loadCSV
    gmprocess.waveform_processing.nn_quality_assurance.sigmoid
@@ -36,8 +37,36 @@ Functions
    gmprocess.waveform_processing.nn_quality_assurance.calculateHusid
    gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics
    gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics
-   gmprocess.waveform_processing.nn_quality_assurance.NNet_QA
 
+
+
+.. py:function:: NNet_QA(st, acceptance_threshold, model_name, config=None)
+
+   Assess the quality of a stream by analyzing its two horizontal components
+   as described in Bellagamba et al. (2019). Performs three steps:
+   1) Compute the quality metrics (see paper for more info)
+   2) Preprocess the quality metrics (deskew, standardize and decorrelate)
+   3) Evaluate the quality using a neural network-based model
+   Two models are available: 'Cant' and 'CantWell'.
+   To minimize the number of low quality ground motion included, the natural
+   acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
+   Recommended parameters are:
+   -   acceptance_threshold = 0.5 or 0.6
+   -   model_name = 'CantWell'
+
+   :param st: The ground motion record to analyze. Should contain at least 2
+              orthogonal  horizontal traces.
+   :type st: list of traces
+   :param acceptance_threshold: Threshold from which GM records are considered acceptable.
+   :type acceptance_threshold: float
+   :param model_name: name of the used model ('Cant' or 'CantWell')
+   :type model_name: string
+   :param config: Configuration dictionary (or None). See get_config().
+   :type config: dict
+
+   :returns: stream of traces tagged with quality scores and flags,
+             used model name and acceptance threshold
+   :rtype: st
 
 
 .. py:function:: isNumber(s)
@@ -95,7 +124,7 @@ Functions
    Class allowing the instantiation and use of simple (1 or 2 layers)
    neural networks
 
-   .. py:method:: loadNN(self, nn_path)
+   .. py:method:: loadNN(nn_path)
 
       Populate an instantated neural netowrk with data contained in a
       specific folder.
@@ -106,7 +135,7 @@ Functions
       :type information: masterF.txt, weights.csv, biases.csv
 
 
-   .. py:method:: useNN(self, v_input)
+   .. py:method:: useNN(v_input)
 
       Use a populated neural network (i.e. from the input, returns the
       classification score or the regression result).
@@ -276,34 +305,5 @@ Functions
    :type st: list of trace
 
    :returns: List of float containing the 20 quality metrics
-
-
-.. py:function:: NNet_QA(st, acceptance_threshold, model_name, config=None)
-
-   Assess the quality of a stream by analyzing its two horizontal components
-   as described in Bellagamba et al. (2019). Performs three steps:
-   1) Compute the quality metrics (see paper for more info)
-   2) Preprocess the quality metrics (deskew, standardize and decorrelate)
-   3) Evaluate the quality using a neural network-based model
-   Two models are available: 'Cant' and 'CantWell'.
-   To minimize the number of low quality ground motion included, the natural
-   acceptance threshold 0.5 can be raised (up to an extreme value of 0.95).
-   Recommended parameters are:
-   -   acceptance_threshold = 0.5 or 0.6
-   -   model_name = 'CantWell'
-
-   :param st: The ground motion record to analyze. Should contain at least 2
-              orthogonal  horizontal traces.
-   :type st: list of traces
-   :param acceptance_threshold: Threshold from which GM records are considered acceptable.
-   :type acceptance_threshold: float
-   :param model_name: name of the used model ('Cant' or 'CantWell')
-   :type model_name: string
-   :param config: Configuration dictionary (or None). See get_config().
-   :type config: dict
-
-   :returns: stream of traces tagged with quality scores and flags,
-             used model name and acceptance threshold
-   :rtype: st
 
 

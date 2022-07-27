@@ -42,7 +42,7 @@ Attributes
 
    
 
-.. py:class:: SortedDuration(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95])
+.. py:class:: SortedDuration(reduction_data, bandwidth=None, percentile=None, period=None, smoothing=None, interval=[5, 95], config=None)
 
    Bases: :py:obj:`gmprocess.metrics.reduction.reduction.Reduction`
 
@@ -51,7 +51,7 @@ Attributes
    This code is based on the implementation provided by Mahdi Bahrampouri on
    2/2/2021.
 
-   .. py:method:: get_sorted_duration(self)
+   .. py:method:: get_sorted_duration()
 
       Performs calculation of arias intensity.
 

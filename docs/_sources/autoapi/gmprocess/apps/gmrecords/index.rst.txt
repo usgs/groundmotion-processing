@@ -105,30 +105,30 @@ Attributes
              files so that we can split up the current content to make it
              easier to deal with.
 
-   .. py:method:: main(self, **kwargs)
+   .. py:method:: main(**kwargs)
 
 
-   .. py:method:: load_subcommands(self)
+   .. py:method:: load_subcommands()
 
       Load information for subcommands.
 
 
-   .. py:method:: _initialize(self)
+   .. py:method:: _initialize()
 
 
-   .. py:method:: _load_config(self)
+   .. py:method:: _load_config()
 
 
-   .. py:method:: _validate_config(self)
+   .. py:method:: _validate_projects_config()
 
 
-   .. py:method:: _initial_setup(self)
+   .. py:method:: _initial_setup()
 
       Initial setup of ~/.gmprogress/projects.conf; essentially invoke
       # gmrecords projects -c
 
 
-   .. py:method:: _parse_command_line(self)
+   .. py:method:: _parse_command_line()
 
       Parse command line arguments.
 

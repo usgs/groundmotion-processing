@@ -20,6 +20,12 @@ There are two different types of projects:
   when you use a system-level project you can switch between different projects
   easily from any directory on your system.
 
+.. attention:: 
+
+  See the :doc:`Configuration File <../manual/config_file>` section of the Manual for 
+  more information on how configuration options work. 
+
+
 When you create either type of project, you will be prompted to include your
 name and email. This information is used for the data provenance. It is often
 important to be able to track where data originated. If you do not wish to 

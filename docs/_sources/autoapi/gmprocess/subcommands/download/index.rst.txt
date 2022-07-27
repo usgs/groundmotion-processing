@@ -58,7 +58,7 @@ Attributes
 
       
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
 
       Download data and organize it in the project data directory.
 

@@ -32,11 +32,11 @@ Functions
 
    Class to represent a flattened Event with only 1 origin and 1 magnitude.
 
-   .. py:method:: fromEvent(cls, event)
+   .. py:method:: fromEvent(event)
       :classmethod:
 
 
-   .. py:method:: fromParams(self, id, time, lat, lon, depth, magnitude, mag_type=None)
+   .. py:method:: fromParams(id, time, lat, lon, depth, magnitude, mag_type=None)
 
       Create a ScalarEvent (subclass of Event).
 
@@ -56,60 +56,60 @@ Functions
       :type mag_type: str
 
 
-   .. py:method:: __repr__(self)
+   .. py:method:: __repr__()
 
       Return repr(self).
 
 
-   .. py:method:: _get_origin(self)
+   .. py:method:: _get_origin()
 
 
-   .. py:method:: _get_magnitude(self)
+   .. py:method:: _get_magnitude()
 
 
-   .. py:method:: id(self)
+   .. py:method:: id()
       :property:
 
       Return the origin resource_id.
 
 
-   .. py:method:: time(self)
+   .. py:method:: time()
       :property:
 
       Return the origin time.
 
 
-   .. py:method:: latitude(self)
+   .. py:method:: latitude()
       :property:
 
       Return the origin latitude.
 
 
-   .. py:method:: longitude(self)
+   .. py:method:: longitude()
       :property:
 
       Return the origin longitude.
 
 
-   .. py:method:: depth(self)
+   .. py:method:: depth()
       :property:
 
       Return the origin depth.
 
 
-   .. py:method:: depth_km(self)
+   .. py:method:: depth_km()
       :property:
 
       Return the origin depth.
 
 
-   .. py:method:: magnitude(self)
+   .. py:method:: magnitude()
       :property:
 
       Return the magnitude value.
 
 
-   .. py:method:: magnitude_type(self)
+   .. py:method:: magnitude_type()
       :property:
 
       Return the magnitude type.

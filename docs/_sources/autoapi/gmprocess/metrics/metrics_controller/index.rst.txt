@@ -34,7 +34,7 @@ Functions
 
    Class for compiling metrics.
 
-   .. py:method:: from_config(cls, timeseries, config=None, event=None)
+   .. py:method:: from_config(timeseries, config=None, event=None)
       :classmethod:
 
       Create class instance from a config. Can be a custom config or the
@@ -90,7 +90,7 @@ Functions
       and the options for spacing are 'linspace' or 'logspace'.
 
 
-   .. py:method:: step_sets(self)
+   .. py:method:: step_sets()
       :property:
 
       Dictionary of steps for each imt/imc pair.
@@ -99,7 +99,7 @@ Functions
       :rtype: dictionary
 
 
-   .. py:method:: get_steps(self)
+   .. py:method:: get_steps()
 
       Sets up the step_sets dictionary.
 
@@ -111,7 +111,7 @@ Functions
       Invalid imcs and imts will not be added to the dictionary.
 
 
-   .. py:method:: execute_steps(self)
+   .. py:method:: execute_steps()
 
       Executes the steps defined by the step_sets dictionary.
 
@@ -125,7 +125,7 @@ Functions
       filled with a np.nan value.
 
 
-   .. py:method:: perform_first_steps(self, period, percentile, s1, s2, s3, transform_path, rotation_path)
+   .. py:method:: perform_first_steps(period, percentile, s1, s2, s3, transform_path, rotation_path)
 
       Perform the first three metric steps.
 
@@ -138,7 +138,7 @@ Functions
       :type rotation_path: str
 
 
-   .. py:method:: validate_stream(self)
+   .. py:method:: validate_stream()
 
       Validates that the input is a StationStream, the units are either
       'vel' or 'acc', and the length of the traces are all equal.
@@ -149,7 +149,7 @@ Functions
           3. The length of the traces are not equal.
 
 
-   .. py:method:: add_upsampled_traces(self)
+   .. py:method:: add_upsampled_traces()
 
       Convenience method for adding upsampled waveform to traces.
 
@@ -157,7 +157,7 @@ Functions
       for the smallest requested oscillator period.
 
 
-   .. py:method:: _format(self, result, steps)
+   .. py:method:: _format(result, steps)
 
       Creates a dataframe row(rows) structured as:
       imt imc result
@@ -177,7 +177,7 @@ Functions
       :rtype: pandas.DataFrame
 
 
-   .. py:method:: _get_horizontal_time(self)
+   .. py:method:: _get_horizontal_time()
 
       Get the 'times' array for a horizontal channel. This is required for
       spectral accelerations where a rotation (rotd) is requested.
@@ -188,7 +188,7 @@ Functions
       :raises PGMException: if there are no horizontal channels.
 
 
-   .. py:method:: _get_time(self)
+   .. py:method:: _get_time()
 
       Get the 'times' array.
 
@@ -196,7 +196,7 @@ Functions
       :rtype: numpy.ndarray
 
 
-   .. py:method:: _get_subclass(self, classes, base_class)
+   .. py:method:: _get_subclass(classes, base_class)
 
       Get the dynanically imported class required for the calculation step,
       while ignoring the base class.
@@ -273,13 +273,13 @@ Functions
       Can be either a float or integer.
 
 
-   .. py:method:: _get_max_period(self)
+   .. py:method:: _get_max_period()
 
 
-   .. py:method:: _get_min_period(self)
+   .. py:method:: _get_min_period()
 
 
-   .. py:method:: clean_imts(self)
+   .. py:method:: clean_imts()
 
 
 

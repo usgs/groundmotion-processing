@@ -62,7 +62,7 @@ Attributes
    Class allowing the instantiation and use of simple (1 or 2 layers)
    neural networks
 
-   .. py:method:: evaluate(self, v_input)
+   .. py:method:: evaluate(v_input)
 
       Use a populated neural network (i.e. from the input, returns the
       classification score or the regression result).

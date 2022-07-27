@@ -24,6 +24,8 @@ Attributes
 
    gmprocess.subcommands.base.base_utils
    gmprocess.subcommands.base.confmod
+   gmprocess.subcommands.base.ws
+   gmprocess.subcommands.base.const
 
 
 .. py:data:: base_utils
@@ -32,6 +34,16 @@ Attributes
    
 
 .. py:data:: confmod
+   
+
+   
+
+.. py:data:: ws
+   
+
+   
+
+.. py:data:: const
    
 
    
@@ -47,13 +59,23 @@ Attributes
 
       
 
-   .. py:method:: command_name(self)
+   .. py:method:: command_name()
       :property:
 
       Name of subcommand: string, all lowercase.
 
 
-   .. py:method:: arguments(self)
+   .. py:method:: open_workspace(eventid)
+
+      Open workspace, add as attribute.
+
+
+   .. py:method:: close_workspace()
+
+      Close workspace.
+
+
+   .. py:method:: arguments()
       :property:
 
       A list of dicts for each argument of the subcommands. Each dict
@@ -61,25 +83,25 @@ Attributes
       default.
 
 
-   .. py:method:: main(self, gmrecords)
+   .. py:method:: main(gmrecords)
       :abstractmethod:
 
       All main methods should take one gmp object (a GMrecordsApp instance).
 
 
-   .. py:method:: list_arguments(cls)
+   .. py:method:: list_arguments()
       :classmethod:
 
       List the arguments of the subcommand.
 
 
-   .. py:method:: argugments_default_dict(cls)
+   .. py:method:: argugments_default_dict()
       :classmethod:
 
       List the arguments of the subcommand.
 
 
-   .. py:method:: _check_arguments(self)
+   .. py:method:: _check_arguments()
 
       Check subcommand's arguments are present and fix if not.
 
@@ -89,23 +111,26 @@ Attributes
       directly, rather than from the gmrecords command line program.
 
 
-   .. py:method:: append_file(self, tag, filename)
+   .. py:method:: append_file(tag, filename)
 
       Convenience method to add file via tag to self.files_created.
 
 
-   .. py:method:: _summarize_files_created(self)
+   .. py:method:: _summarize_files_created()
 
 
-   .. py:method:: _get_pstreams(self)
+   .. py:method:: _get_pstreams()
 
       Convenience method for recycled code.
 
 
-   .. py:method:: _get_events(self)
+   .. py:method:: _get_events()
 
 
-   .. py:method:: _get_labels(self)
+   .. py:method:: _get_labels()
+
+
+   .. py:method:: _get_config()
 
 
 

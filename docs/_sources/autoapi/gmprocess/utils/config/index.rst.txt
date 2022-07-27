@@ -17,7 +17,7 @@ Functions
    gmprocess.utils.config.merge_dicts
    gmprocess.utils.config.get_config
    gmprocess.utils.config.update_config
-   gmprocess.utils.config.__proj_to_conf_file
+   gmprocess.utils.config.__conf_path_to_config
 
 
 
@@ -59,17 +59,11 @@ Attributes
    :rtype: dictionary
 
 
-.. py:function:: get_config(config_file=None, section=None, use_default=False)
+.. py:function:: get_config(config_path=None)
 
    Gets the user defined config and validates it.
 
-   :param config_file: Path to config file to use. If None, uses defaults.
-   :param section: Name of section in the config to extract (i.e., 'fetchers', 'processing',
-                   'pickers', etc.) If None, whole config is returned.
-   :type section: str
-   :param use_default: Use the default "production" config; this takes precedence  over project
-                       config settings. Only intended for tutorials/documentation.
-   :type use_default: bool
+   :param config_path: Path to directory containing config files to use. If None, uses defaults.
 
    :returns:     Configuration parameters.
    :rtype: dictionary
@@ -77,17 +71,19 @@ Attributes
    :raises IndexError: If input section name is not found.
 
 
-.. py:function:: update_config(custom_cfg_file)
+.. py:function:: update_config(custom_cfg_file, default_cfg)
 
    Merge custom config with default.
 
    :param custom_cfg_file: Path to custom config.
    :type custom_cfg_file: str
+   :param default_cfg: Default config file to be updated.
+   :type default_cfg: dict
 
    :returns: Merged config dictionary.
    :rtype: dict
 
 
-.. py:function:: __proj_to_conf_file(path)
+.. py:function:: __conf_path_to_config(config_path, default_config)
 
 

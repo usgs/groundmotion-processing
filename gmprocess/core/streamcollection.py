@@ -267,7 +267,7 @@ class StreamCollection(StreamArray):
                             )
 
     @classmethod
-    def from_directory(cls, directory, use_default_config=False):
+    def from_directory(cls, directory):
         """Create a StreamCollection instance from a directory of data.
 
         Args:
@@ -279,10 +279,7 @@ class StreamCollection(StreamArray):
         Returns:
             StreamCollection instance.
         """
-        if use_default_config:
-            config = get_config(use_default=True)
-        else:
-            config = None
+        config = get_config()
         streams, missed_files, errors = directory_to_streams(directory, config=config)
 
         # Might eventually want to include some of the missed files and

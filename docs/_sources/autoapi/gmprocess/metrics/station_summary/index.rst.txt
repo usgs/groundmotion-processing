@@ -48,7 +48,7 @@ Attributes
 
    Class for returning pgm values for specific components.
 
-   .. py:method:: available_imcs(self)
+   .. py:method:: available_imcs()
       :property:
 
       Helper method for getting a list of components.
@@ -57,7 +57,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: available_imts(self)
+   .. py:method:: available_imts()
       :property:
 
       Helper method for getting a list of measurement types.
@@ -66,7 +66,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: bandwidth(self)
+   .. py:method:: bandwidth()
       :property:
 
       Helper method for getting the defined bandwidth.
@@ -75,7 +75,7 @@ Attributes
       :rtype: float
 
 
-   .. py:method:: components(self)
+   .. py:method:: components()
       :property:
 
       Helper method returning a list of requested/calculated components.
@@ -84,7 +84,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: coordinates(self)
+   .. py:method:: coordinates()
       :property:
 
       Helper method returning the coordinates of the station.
@@ -93,7 +93,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: damping(self)
+   .. py:method:: damping()
       :property:
 
       Helper method for getting the damping used in the spectral amplitude
@@ -103,7 +103,7 @@ Attributes
       :rtype: float
 
 
-   .. py:method:: elevation(self)
+   .. py:method:: elevation()
       :property:
 
       Helper method for getting the station elevation.
@@ -112,7 +112,7 @@ Attributes
       :rtype: float
 
 
-   .. py:method:: distances(self)
+   .. py:method:: distances()
       :property:
 
       Helper method for getting the distances.
@@ -121,7 +121,7 @@ Attributes
       :rtype: dict
 
 
-   .. py:method:: from_config(cls, stream, config=None, event=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None, vs30_grids=None)
+   .. py:method:: from_config(stream, config=None, event=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None, vs30_grids=None)
       :classmethod:
 
       :param stream: Strong motion timeseries for one station.
@@ -149,7 +149,7 @@ Attributes
          No processing is done by this class.
 
 
-   .. py:method:: from_pgms(cls, station_code, pgms)
+   .. py:method:: from_pgms(station_code, pgms)
       :classmethod:
 
       :param station_code: Station code for the given pgms.
@@ -181,7 +181,7 @@ Attributes
          parametric data from COMCAT.
 
 
-   .. py:method:: from_stream(cls, stream, components, imts, event=None, damping=None, smoothing=None, bandwidth=None, allow_nans=None, config=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None, vs30_grids=None)
+   .. py:method:: from_stream(stream, components, imts, event=None, damping=None, smoothing=None, bandwidth=None, allow_nans=None, config=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None, vs30_grids=None)
       :classmethod:
 
       :param stream: Strong motion timeseries for one station.
@@ -221,7 +221,7 @@ Attributes
          No processing is done by this class.
 
 
-   .. py:method:: get_pgm(self, imt, imc)
+   .. py:method:: get_pgm(imt, imc)
 
       Finds the imt/imc value requested.
 
@@ -234,10 +234,10 @@ Attributes
       :rtype: float
 
 
-   .. py:method:: get_summary(self)
+   .. py:method:: get_summary()
 
 
-   .. py:method:: imts(self)
+   .. py:method:: imts()
       :property:
 
       Helper method returning a list of requested/calculated measurement
@@ -247,7 +247,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: pgms(self)
+   .. py:method:: pgms()
       :property:
 
       Helper method returning a station's pgms.
@@ -256,12 +256,12 @@ Attributes
       :rtype: dictionary
 
 
-   .. py:method:: set_metadata(self)
+   .. py:method:: set_metadata()
 
       Set the metadata for the station
 
 
-   .. py:method:: smoothing(self)
+   .. py:method:: smoothing()
       :property:
 
       Helper method for getting the defined smoothing used for the
@@ -271,7 +271,7 @@ Attributes
       :rtype: string
 
 
-   .. py:method:: starttime(self)
+   .. py:method:: starttime()
       :property:
 
       Helper method returning a station's starttime.
@@ -280,7 +280,7 @@ Attributes
       :rtype: str
 
 
-   .. py:method:: station_code(self)
+   .. py:method:: station_code()
       :property:
 
       Helper method returning a station's station code.
@@ -289,7 +289,7 @@ Attributes
       :rtype: str
 
 
-   .. py:method:: stream(self)
+   .. py:method:: stream()
       :property:
 
       Helper method returning a station's stream.
@@ -298,7 +298,7 @@ Attributes
       :rtype: obspy.core.stream.Stream
 
 
-   .. py:method:: summary(self)
+   .. py:method:: summary()
       :property:
 
       Helper method returning a station's summary.
@@ -307,7 +307,7 @@ Attributes
       :rtype: pandas.Dataframe
 
 
-   .. py:method:: from_xml(cls, xml_stream, xml_station)
+   .. py:method:: from_xml(xml_stream, xml_station)
       :classmethod:
 
       Instantiate a StationSummary from metrics XML stored in ASDF file.
@@ -338,7 +338,7 @@ Attributes
       :rtype: object
 
 
-   .. py:method:: compute_station_metrics(self, rupture=None, vs30_grids=None)
+   .. py:method:: compute_station_metrics(rupture=None, vs30_grids=None)
 
       Computes station metrics (distances, vs30, back azimuth) for the
       StationSummary.
@@ -350,7 +350,7 @@ Attributes
       :type vs30_grids: dict
 
 
-   .. py:method:: get_metric_xml(self)
+   .. py:method:: get_metric_xml()
 
       Return waveform metrics XML as defined for our ASDF implementation.
 
@@ -371,7 +371,7 @@ Attributes
       :raises KeyError: if the requrested imt is not present.
 
 
-   .. py:method:: get_station_xml(self)
+   .. py:method:: get_station_xml()
 
       Return XML for station metrics as defined for our ASDF
       implementation.
@@ -380,7 +380,7 @@ Attributes
       :rtype: str
 
 
-   .. py:method:: toSeries(self)
+   .. py:method:: toSeries()
 
       Render StationSummary as a Pandas Series object.
 
@@ -389,7 +389,7 @@ Attributes
       :rtype: Series
 
 
-   .. py:method:: get_imc_dict(self, imc=None)
+   .. py:method:: get_imc_dict(imc=None)
 
       Get an IMC table.
 
@@ -400,7 +400,7 @@ Attributes
                 value is a dictionary with keys corresponding to IMTs.
 
 
-   .. py:method:: get_sa_arrays(self, imc=None)
+   .. py:method:: get_sa_arrays(imc=None)
 
       Get an SA arrays for selected IMCs.
 

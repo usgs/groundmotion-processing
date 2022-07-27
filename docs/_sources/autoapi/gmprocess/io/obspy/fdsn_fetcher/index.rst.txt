@@ -63,7 +63,7 @@ Attributes
 
       
 
-   .. py:method:: getMatchingEvents(self, solve=True)
+   .. py:method:: getMatchingEvents(solve=True)
 
       Return a list of dictionaries matching input parameters.
 
@@ -82,7 +82,7 @@ Attributes
       :rtype: list
 
 
-   .. py:method:: retrieveData(self)
+   .. py:method:: retrieveData()
 
       Retrieve data from many FDSN services, turn into StreamCollection.
 

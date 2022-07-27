@@ -56,7 +56,7 @@ Attributes
 
    Application for simple queries of the workspace.
 
-   .. py:method:: main(self, **kwargs)
+   .. py:method:: main(**kwargs)
 
       Application driver.
 
@@ -68,7 +68,7 @@ Attributes
       :kwtype compute_storage: bool
 
 
-   .. py:method:: describe(self)
+   .. py:method:: describe()
 
       Show a summary of the workspace contents.
 
@@ -76,7 +76,7 @@ Attributes
       dimensions, and type are shown.
 
 
-   .. py:method:: compute_storage(self)
+   .. py:method:: compute_storage()
 
       Compute the storage of items in a workspace.
 
