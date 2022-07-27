@@ -57,7 +57,10 @@ def fetch_data(
 
     # Remove fetchers if they are not present in the conf file
     fetchers = {
-        k: v for k, v in tfetchers.items() if k in config["fetchers"] if k["enabled"]
+        k: v
+        for k, v in tfetchers.items()
+        if k in config["fetchers"]
+        if config["fetchers"][k]["enabled"]
     }
     for fname in fetchers.keys():
         if fname not in config["fetchers"]:
