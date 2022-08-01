@@ -82,12 +82,11 @@ class ProcessWaveformsModule(base.SubcommandModule):
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
-            config = self._get_config()
             raw_streams = self.workspace.getStreams(
                 event.id,
                 stations=[station_id],
                 labels=["unprocessed"],
-                config=config,
+                config=self.gmrecords.conf,
             )
             if self.gmrecords.args.reprocess:
                 # Don't use "processed_streams" variable name because that is what is
@@ -98,7 +97,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
                     event.id,
                     stations=[station_id],
                     labels=[self.process_tag],
-                    config=config,
+                    config=self.gmrecords.conf,
                 )
                 logging.debug(old_streams.describe())
             else:
@@ -119,14 +118,14 @@ class ProcessWaveformsModule(base.SubcommandModule):
                         processing.process_streams,
                         raw_streams,
                         event,
-                        config,
+                        self.gmrecords.conf,
                         old_streams,
                     )
                     futures.append(future)
                 else:
                     processed_streams.append(
                         processing.process_streams(
-                            raw_streams, event, config, old_streams
+                            raw_streams, event, self.gmrecords.conf, old_streams
                         )
                     )
 

@@ -66,7 +66,6 @@ class ExportShakeMapModule(base.SubcommandModule):
 
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
-            config = self._get_config()
 
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = sm_utils.create_json(
@@ -74,7 +73,7 @@ class ExportShakeMapModule(base.SubcommandModule):
                 event,
                 event_dir,
                 self.gmrecords.args.label,
-                config=config,
+                config=self.gmrecords.conf,
                 expanded_imts=expanded_imts,
             )
 

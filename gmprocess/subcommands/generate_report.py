@@ -44,6 +44,7 @@ class GenerateReportModule(base.SubcommandModule):
         logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
+        config = self.gmrecords.conf
         self._check_arguments()
         self._get_events()
 
@@ -55,7 +56,6 @@ class GenerateReportModule(base.SubcommandModule):
 
             logging.info(f"Generating summary report for event {event.id}...")
 
-            config = self._get_config()
             build_conf = config["build_report"]
             if build_conf["enabled"]:
                 report_format = build_conf["format"]

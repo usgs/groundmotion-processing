@@ -56,7 +56,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
 
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
-            config = self._get_config()
+            config = self.gmrecords.conf
 
             event_table, imc_tables, readmes = self.workspace.getTables(
                 self.gmrecords.args.label, config

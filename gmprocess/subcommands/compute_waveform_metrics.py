@@ -67,7 +67,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
         self._get_labels()
-        config = self._get_config()
+        config = self.gmrecords.conf
 
         summaries = []
         metricpaths = []

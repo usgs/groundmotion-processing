@@ -46,6 +46,7 @@ class SubcommandModule(ABC):
             return eventid
 
         self.workspace = ws.StreamWorkspace.open(workname)
+        self.gmrecords.conf = self._get_config()
 
     def close_workspace(self):
         """Close workspace."""
