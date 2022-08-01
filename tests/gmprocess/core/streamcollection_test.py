@@ -200,13 +200,13 @@ def test_duplicates():
 
     for tr in sc_bad.select(network="--")[0]:
         tr.trim(endtime=UTCDateTime(2))
-        tr.resample(20)
+        tr.resample(20, window='hann')
 
     sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
     assert sc.select(station="23837")[0][0].stats.network == "CE"
 
     for tr in sc_bad.select(network="--")[0]:
-        tr.resample(10)
+        tr.resample(10, window='hann')
 
     sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
     assert sc.select(station="23837")[0][0].stats.network == "CE"
