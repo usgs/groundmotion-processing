@@ -73,7 +73,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             logging.info("Continuing to next event.")
             return event.id
 
-        self.workspace = ws.StreamWorkspace.open(workname)
+        self.open_workspace(event.id)
         ds = self.workspace.dataset
         self._get_labels()
 
