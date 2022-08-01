@@ -192,7 +192,7 @@ def PowerPicker(
             P-wave pick time as number of seconds after start of trace.
     """
     tr_copy = tr.copy()
-    tr_copy.resample(20)
+    tr_copy.resample(20, window='hann')
     tr_copy.detrend()
     data = tr_copy.data
     sps = tr_copy.stats.sampling_rate
