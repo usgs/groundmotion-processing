@@ -44,12 +44,14 @@ class GenerateReportModule(base.SubcommandModule):
         logging.info(f"Running subcommand '{self.command_name}'")
 
         self.gmrecords = gmrecords
-        config = self.gmrecords.conf
+
         self._check_arguments()
         self._get_events()
 
         for event in self.events:
-            event_dir = os.path.join(self.gmrecords.data_path, event.id)
+            self.open_workspace(event.id)
+            config = self.gmrecords.conf
+
             pstreams = self.generate_diagnostic_plots(event)
             if pstreams is None:
                 return
@@ -62,7 +64,7 @@ class GenerateReportModule(base.SubcommandModule):
                 if report_format == "latex":
                     report_file, success = report.build_report_latex(
                         pstreams,
-                        event_dir,
+                        self.event_dir(event.id),
                         event,
                         prefix=f"{gmrecords.project}_{gmrecords.args.label}",
                         config=config,
@@ -77,18 +79,6 @@ class GenerateReportModule(base.SubcommandModule):
         self._summarize_files_created()
 
     def generate_diagnostic_plots(self, event):
-        event_dir = os.path.join(self.gmrecords.data_path, event.id)
-        workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-        if not os.path.isfile(workname):
-            logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file." % event.id
-            )
-            logging.info("Continuing to next event.")
-            return False
-
-        self.workspace = ws.StreamWorkspace.open(workname)
-        config = self._get_config()
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
         if len(station_list) == 0:
@@ -103,6 +93,7 @@ class GenerateReportModule(base.SubcommandModule):
             )
 
         logging.info(f"Creating diagnostic plots for event {event.id}...")
+        event_dir = self.event_dir(event.id)
         plot_dir = os.path.join(event_dir, "plots")
         if not os.path.isdir(plot_dir):
             os.makedirs(plot_dir)
@@ -114,7 +105,7 @@ class GenerateReportModule(base.SubcommandModule):
                 event.id,
                 stations=[station_id],
                 labels=[self.gmrecords.args.label],
-                config=config,
+                config=self.gmrecords.conf,
             )
             if not len(streams):
                 logging.info("No matching streams found. Cannot generate report.")
@@ -128,12 +119,12 @@ class GenerateReportModule(base.SubcommandModule):
                         stream,
                         plot_dir,
                         event,
-                        config=config,
+                        config=self.gmrecords.conf,
                     )
                     futures.append(future)
                 else:
                     results.append(
-                        plot.summary_plots(stream, plot_dir, event, config=config)
+                        plot.summary_plots(stream, plot_dir, event, config=self.gmrecords.conf)
                     )
 
         if self.gmrecords.args.num_processes > 0:
