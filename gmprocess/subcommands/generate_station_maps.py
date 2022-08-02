@@ -41,25 +41,15 @@ class GenerateHTMLMapModule(base.SubcommandModule):
         self._get_events()
 
         for event in self.events:
-            event_dir = os.path.join(self.gmrecords.data_path, event.id)
-            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-            if not os.path.isfile(workname):
-                logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % event.id
-                )
-                logging.info("Continuing to next event.")
-                return False
+            ds = self.open_workspace(event.id)
 
-            self.workspace = ws.StreamWorkspace.open(workname)
-            ds = self.workspace.dataset
             station_list = ds.waveforms.list()
             if len(station_list) == 0:
                 logging.info("No processed waveforms available. No report generated.")
                 return False
 
             self._get_labels()
-            config = self.workspace.config
+            config = self.gmrecords.config
             logging.info(f"Generating station maps for event {event.id}...")
 
             pstreams = []
@@ -76,7 +66,8 @@ class GenerateHTMLMapModule(base.SubcommandModule):
                 for stream in streams:
                     pstreams.append(stream)
 
-            mapfile = report_utils.draw_stations_map(pstreams, event, event_dir)
+            mapfile = report_utils.draw_stations_map(
+                    pstreams, event, self.event_dir(event.id))
             self.append_file("Station map", mapfile)
 
         self._summarize_files_created()

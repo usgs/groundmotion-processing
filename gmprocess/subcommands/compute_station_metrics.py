@@ -61,22 +61,9 @@ class ComputeStationMetricsModule(base.SubcommandModule):
     def _event_station_metrics(self, event):
         self.eventid = event.id
         logging.info(f"Computing station metrics for event {self.eventid}...")
-        event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-        workname = os.path.normpath(
-            os.path.join(event_dir, utils.constants.WORKSPACE_NAME)
-        )
-        if not os.path.isfile(workname):
-            logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file." % self.eventid
-            )
-            logging.info("Continuing to next event.")
-            return event.id
 
-        self.open_workspace(event.id)
-        ds = self.workspace.dataset
+        ds = self.open_workspace(event.id)
         self._get_labels()
-
         config = self.gmrecords.conf
 
         if not hasattr(self, "vs30_grids"):
@@ -95,7 +82,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             self.workspace.close()
             return event.id
 
-        rupture_file = rupt_utils.get_rupture_file(event_dir)
+        rupture_file = rupt_utils.get_rupture_file(self.event_dir(self.eventid))
         origin = rupt.origin.Origin(
             {
                 "id": self.eventid,

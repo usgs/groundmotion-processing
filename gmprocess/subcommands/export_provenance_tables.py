@@ -41,41 +41,31 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
         for event in self.events:
             self.eventid = event.id
             logging.info(f"Creating provenance tables for event {self.eventid}...")
-            event_dir = os.path.normpath(
-                os.path.join(gmrecords.data_path, self.eventid)
-            )
-            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-            if not os.path.isfile(workname):
-                logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % self.eventid
-                )
-                logging.info("Continuing to next event.")
-                continue
 
-            self.workspace = ws.StreamWorkspace.open(workname)
+            self.open_workspace(event.id)
             self._get_pstreams()
 
             if not (hasattr(self, "pstreams") and len(self.pstreams) > 0):
                 logging.info(
                     "No processed waveforms available. No provenance tables created."
                 )
-                self.workspace.close()
                 continue
 
             provdata = self.workspace.getProvenance(
                 self.eventid, labels=self.gmrecords.args.label
             )
-            self.workspace.close()
 
-            basename = f"{gmrecords.project}_{gmrecords.args.label}_provenance"
+            basename = os.path.join(
+                self.event_dir(event.id),
+                f"{gmrecords.project}_{gmrecords.args.label}_provenance"
+            )
             if gmrecords.args.output_format == "csv":
-                csvfile = os.path.join(event_dir, f"{basename}.csv")
-                self.append_file("Provenance", csvfile)
-                provdata.to_csv(csvfile, index=False)
+                fname = basename + '.csv'
+                self.append_file("Provenance", fname)
+                provdata.to_csv(fname, index=False)
             else:
-                excelfile = os.path.join(event_dir, f"{basename}.xlsx")
-                self.append_file("Provenance", excelfile)
-                provdata.to_excel(excelfile, index=False)
+                fname = basename + '.xslx'
+                self.append_file("Provenance", fname)
+                provdata.to_excel(fname, index=False)
 
         self._summarize_files_created()

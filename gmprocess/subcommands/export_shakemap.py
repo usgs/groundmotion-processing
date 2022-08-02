@@ -54,24 +54,14 @@ class ExportShakeMapModule(base.SubcommandModule):
             self.eventid = event.id
             logging.info(f"Creating shakemap files for event {self.eventid}...")
 
-            event_dir = os.path.normpath(os.path.join(gmrecords.data_path, event.id))
-            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-            if not os.path.isfile(workname):
-                logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % event.id
-                )
-                logging.info("Continuing to next event.")
-                continue
-
-            self.workspace = ws.StreamWorkspace.open(workname)
+            self.open_workspace(event.id)
             self._get_labels()
 
             expanded_imts = self.gmrecords.args.expand_imts
             jsonfile, stationfile, _ = sm_utils.create_json(
                 self.workspace,
                 event,
-                event_dir,
+                self.event_dir(event.id),
                 self.gmrecords.args.label,
                 config=self.gmrecords.conf,
                 expanded_imts=expanded_imts,

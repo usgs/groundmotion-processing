@@ -53,21 +53,12 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
     def _compute_event_waveform_metrics(self, event):
         self.eventid = event.id
         logging.info(f"Computing waveform metrics for event {self.eventid}...")
-        event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-        workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
-        if not os.path.isfile(workname):
-            logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file." % self.eventid
-            )
-            logging.info("Continuing to next event.")
-            return event.id
 
-        self.workspace = ws.StreamWorkspace.open(workname)
-        ds = self.workspace.dataset
-        station_list = ds.waveforms.list()
+        ds = self.open_workspace(event.id)
         self._get_labels()
         config = self.gmrecords.conf
+
+        station_list = ds.waveforms.list()
 
         summaries = []
         metricpaths = []

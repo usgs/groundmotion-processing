@@ -33,8 +33,15 @@ class SubcommandModule(ABC):
         """Dictionary instance variable to track files created by module."""
         self.files_created = {}
 
+        self.workspace = None
+
     def open_workspace(self, eventid):
         """Open workspace, add as attribute."""
+
+        if self.workspace is not None:
+            # Close previous workspace
+            self.workspace.close()
+
         event_dir = os.path.join(self.gmrecords.data_path, eventid)
         workname = os.path.join(event_dir, const.WORKSPACE_NAME)
         if not os.path.isfile(workname):
@@ -47,6 +54,13 @@ class SubcommandModule(ABC):
 
         self.workspace = ws.StreamWorkspace.open(workname)
         self.gmrecords.conf = self._get_config()
+
+        return self.workspace.dataset
+
+    def event_dir(self, event_id):
+        return os.path.normpath(
+            os.path.join(self.gmrecords.data_path, event_id)
+        )
 
     def close_workspace(self):
         """Close workspace."""

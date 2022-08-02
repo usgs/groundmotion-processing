@@ -59,19 +59,11 @@ class ExportFailureTablesModule(base.SubcommandModule):
         for event in self.events:
             self.eventid = event.id
             logging.info(f"Creating failure tables for event {self.eventid}...")
-            event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-            workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
-            if not os.path.isfile(workname):
-                logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % self.eventid
-                )
-                logging.info("Continuing to next event.")
-                continue
 
-            self.workspace = ws.StreamWorkspace.open(workname)
+            self.open_workspace(event.id)
+            self._get_labels()
+
             self._get_pstreams()
-            self.workspace.close()
 
             if not (hasattr(self, "pstreams") and len(self.pstreams) > 0):
                 logging.info(
@@ -84,7 +76,7 @@ class ExportFailureTablesModule(base.SubcommandModule):
 
             base_file_name = os.path.normpath(
                 os.path.join(
-                    event_dir,
+                    self.event_dir(event.id),
                     "%s_%s_failure_reasons_%s"
                     % (
                         gmrecords.project,
