@@ -67,9 +67,12 @@ class SubcommandModule(ABC):
 
     def close_workspace(self):
         """Close workspace."""
-        if self.workspace is not None:
+        try:
             logging.debug("Closing the workspace.")
             self.workspace.close()
+        except AttributeError:
+            # Not dataset to close
+            pass
 
     @property
     @abstractmethod
