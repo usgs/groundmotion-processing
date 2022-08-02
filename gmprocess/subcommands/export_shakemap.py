@@ -67,7 +67,6 @@ class ExportShakeMapModule(base.SubcommandModule):
                 expanded_imts=expanded_imts,
             )
 
-            self.workspace.close()
             if jsonfile is not None:
                 self.append_file("shakemap", jsonfile)
             if stationfile is not None:

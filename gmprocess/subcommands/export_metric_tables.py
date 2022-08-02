@@ -44,17 +44,8 @@ class ExportMetricTablesModule(base.SubcommandModule):
         for event in self.events:
             self.eventid = event.id
             logging.info(f"Creating tables for event {self.eventid}...")
-            event_dir = os.path.join(gmrecords.data_path, self.eventid)
-            workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
-            if not os.path.isfile(workname):
-                logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % self.eventid
-                )
-                logging.info("Continuing to next event.")
-                continue
 
-            self.workspace = ws.StreamWorkspace.open(workname)
+            self.open_workspace(event.id)
             self._get_labels()
             config = self.gmrecords.conf
 
@@ -72,7 +63,6 @@ class ExportMetricTablesModule(base.SubcommandModule):
             snr_table, snr_readme = self.workspace.getSNRTable(
                 self.eventid, self.gmrecords.args.label, config
             )
-            self.workspace.close()
 
             outdir = gmrecords.data_path
 

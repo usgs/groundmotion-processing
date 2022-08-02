@@ -145,6 +145,4 @@ class GenerateReportModule(base.SubcommandModule):
         plot.plot_moveout(pstreams, event.latitude, event.longitude, file=moveoutfile)
         self.append_file("Moveout plot", moveoutfile)
 
-        self.workspace.close()
-
         return pstreams

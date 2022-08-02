@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import atexit
+import logging
 import os
 import sys
+
 from abc import ABC, abstractmethod
-import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -35,12 +37,13 @@ class SubcommandModule(ABC):
 
         self.workspace = None
 
+        # Make sure we close the workspace on exit
+        atexit.register(self.close_workspace)
+
     def open_workspace(self, eventid):
         """Open workspace, add as attribute."""
 
-        if self.workspace is not None:
-            # Close previous workspace
-            self.workspace.close()
+        self.close_workspace()
 
         event_dir = os.path.join(self.gmrecords.data_path, eventid)
         workname = os.path.join(event_dir, const.WORKSPACE_NAME)
@@ -64,7 +67,9 @@ class SubcommandModule(ABC):
 
     def close_workspace(self):
         """Close workspace."""
-        self.workspace.close()
+        if self.workspace is not None:
+            logging.debug("Closing the workspace.")
+            self.workspace.close()
 
     @property
     @abstractmethod

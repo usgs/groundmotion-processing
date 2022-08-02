@@ -139,5 +139,4 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                 overwrite=self.gmrecords.args.overwrite,
             )
 
-        self.workspace.close()
         return event.id

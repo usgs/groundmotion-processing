@@ -79,7 +79,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
 
         station_list = ds.waveforms.list()
         if not len(station_list):
-            self.workspace.close()
             return event.id
 
         rupture_file = rupt_utils.get_rupture_file(self.event_dir(self.eventid))
@@ -244,7 +243,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                     "with tag '%s'." % self.gmrecords.args.label
                 )
 
-        self.workspace.close()
         return event.id
 
     def _get_ps2ff_splines(self):
