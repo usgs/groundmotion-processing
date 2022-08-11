@@ -6,7 +6,6 @@ h5py>=2.8
 impactutils>=0.8.29
 ipython>=7.26
 jupyter>=1.0
-libcomcat>=2.0.13
 lxml>=4.6.1
 mapio>=0.7.27
 matplotlib>=3.1.0
