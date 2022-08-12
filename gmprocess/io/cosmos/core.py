@@ -1,24 +1,24 @@
 #!/usr/bin/env python
 
 # stdlib imports
-from datetime import datetime
-import os
-import re
-import pkg_resources
 import logging
+import os
+import pathlib
+import re
+from datetime import datetime
 
 # third party
 import numpy as np
-from obspy.core.trace import Stats
+import pkg_resources
 import scipy.constants as sp
-
-# local imports
-from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.core.stationstream import StationStream
-from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
+from gmprocess.core.stationtrace import PROCESS_LEVELS, TIMEFMT, StationTrace
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.io.utils import is_binary
 
+# local imports
+from gmprocess.utils.constants import UNIT_CONVERSIONS
+from obspy.core.trace import Stats
 
 MICRO_TO_VOLT = 1e6  # convert microvolts to volts
 MSEC_TO_SEC = 1 / 1000.0
@@ -29,7 +29,8 @@ VALID_MARKERS = [
     "RAW ACCELERATION COUNTS",
 ]
 
-code_file = pkg_resources.resource_filename("gmprocess", "data/fdsn_codes.csv")
+# code_file = pkg_resources.resource_filename("gmprocess", "data/fdsn_codes.csv")
+code_file = pathlib.Path(__file__).parent / ".." / ".." / "data" / "fdsn_codes.csv"
 
 CODES, SOURCES1, SOURCES2 = np.genfromtxt(
     code_file,
