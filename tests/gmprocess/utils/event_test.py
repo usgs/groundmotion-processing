@@ -2,14 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import os
-from gmprocess.utils.event import get_event_dict, get_event_object, ScalarEvent
-from obspy.core.event.event import Event
-from obspy.core.event.origin import Origin
-from obspy.core.event.magnitude import Magnitude
-from obspy.core.utcdatetime import UTCDateTime
-from obspy.core.event import read_events
-import vcr
+
 import pkg_resources
+import vcr
+from gmprocess.utils.event import ScalarEvent, get_event_dict, get_event_object
+from obspy.core.event import read_events
+from obspy.core.event.event import Event
+from obspy.core.event.magnitude import Magnitude
+from obspy.core.event.origin import Origin
+from obspy.core.utcdatetime import UTCDateTime
 
 
 def test_scalar():
@@ -87,11 +88,11 @@ def test_event():
         edict = get_event_dict(eid)
         tdict = {
             "id": "us1000j96d",
-            "time": UTCDateTime(2019, 3, 1, 8, 50, 42, 615000),
-            "lat": -14.7007,
-            "lon": -70.1516,
-            "depth": 267,
-            "magnitude": 7.0,
+            "time": UTCDateTime(2019, 3, 1, 8, 50, 42, 591000),
+            "lat": -14.7131,
+            "lon": -70.1546,
+            "depth": 0.267,
+            "magnitude": 7,
             "magnitude_type": "mww",
         }
         for key, value in tdict.items():

@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-import logging
 import datetime
+import logging
+from dataclasses import dataclass
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from libcomcat.search import search
+import requests
 from gmprocess.utils.logging import setup_logger
 
 setup_logger(args=None, level="info")
@@ -15,6 +17,18 @@ DELTA_HOUR = 12
 DIST_SCALER = 20
 COORD_KM_SCALER = 0.009
 ERROR_THRESH = 1.0
+
+SEARCH_TEMPLATE = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson"
+
+
+class Event(object):
+    def __init__(self, eventid, event_time, lat, lon, mag):
+        self.eventid = eventid
+        self.time = event_time
+        self.latitude = lat
+        self.longitude = lon
+        self.depth = depth
+        self.magnitude = mag
 
 
 def cross_reference_to_usgs_id(project_name, eqids, mags, times, lats, lons):
@@ -294,16 +308,30 @@ def find_events(target, buffer):
     Returns:
         usgs_events (list): List of Libcomcat SummaryEvents.
     """
-    usgs_event = search(
-        starttime=target["time"] - buffer["time"],
-        endtime=target["time"] + buffer["time"],
-        latitude=target["lat"],
-        longitude=target["lon"],
-        maxradiuskm=buffer["dist"],
-        maxmagnitude=target["mag"] + buffer["mag"],
-        minmagnitude=target["mag"] - buffer["mag"],
-    )
-    return usgs_event
+    url = SEARCH_TEMPLATE
+    params = {
+        "starttime": (target["time"] - buffer["time"]).strftime(TIMEFMT),
+        "endtime": (target["time"] + buffer["time"]).strftime(TIMEFMT),
+        "latitude": target["lat"],
+        "longitude": target["lon"],
+        "maxradiuskm": buffer["dist"],
+        "maxmagnitude": target["mag"] + buffer["mag"],
+        "minmagnitude": target["mag"] - buffer["mag"],
+    }
+    response = requests.get(url, params=params)
+    usgs_events = []
+    for feature in response.json()["features"]:
+        event = Event(
+            feature["id"],
+            datetime.fromutctimestamp(feature["properties"]["time"] / 1000),
+            feature["geometry"]["coordinates"][1],
+            feature["geometry"]["coordinates"][0],
+            feature["geometry"]["coordinates"][2],
+            feature["properties"]["mag"],
+        )
+        usgs_events.append(event)
+
+    return usgs_events
 
 
 def calculate_error(event, buffer, target):

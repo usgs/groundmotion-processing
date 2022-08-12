@@ -2,30 +2,38 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-import os
+import glob
 import json
 import logging
+import os
 import warnings
-import glob
-import requests
 
 # third party imports
-from libcomcat.search import get_event_by_id
-from obspy.geodetics.base import locations2degrees
-from obspy.core.utcdatetime import UTCDateTime
-from obspy.taup import TauPyModel
 import matplotlib.pyplot as plt
-
 import numpy as np
+import requests
 
 # local imports
 from gmprocess.io.global_fetcher import fetch_data
 from gmprocess.utils.misc import get_rawdir
+from obspy.core.utcdatetime import UTCDateTime
+from obspy.geodetics.base import locations2degrees
+from obspy.taup import TauPyModel
 
 TIMEFMT2 = "%Y-%m-%dT%H:%M:%S.%f"
 
 
 FLOAT_PATTERN = r"[-+]?[0-9]*\.?[0-9]+"
+
+EVENT_TEMPLATE = (
+    "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=[EVENT]"
+)
+
+
+def get_event_data(eventid):
+    event_url = EVENT_TEMPLATE.replace("[EVENT]", eventid)
+    response = requests.get(event_url)
+    return response.json()
 
 
 def download(event, event_dir, config):
@@ -83,9 +91,7 @@ def create_event_file(event, event_dir):
     # download event.json for event
     eventid = event.origins[-1].resource_id.id
     try:
-        tevent = get_event_by_id(eventid)
-        req = requests.get(tevent.detail_url)
-        data = json.loads(req.text)
+        data = get_event_data(eventid)
     except BaseException:
         # convert time to comcat time
         ctime = (event.time - UTCDateTime("1970-01-01T00:00:00.000Z")) * 1000.0
@@ -178,7 +184,7 @@ def plot_raw(rawdir, tcollection, event):
 
 
 def download_rupture_file(event_id, event_dir):
-    """Downlaod rupture file from Comcat.
+    """Download rupture file from Comcat.
 
     Args:
         event_id (str):
@@ -187,14 +193,16 @@ def download_rupture_file(event_id, event_dir):
             Event directory.
     """
     try:
-        event = get_event_by_id(event_id)
+        data = get_event_data(event_id)
     except BaseException:
         logging.info(f"{event_id} not found in ComCat.")
         return
     try:
-        shakemap_prod = event.getProducts("shakemap")
-        shakemap_prod[0].getContent(
-            "rupture.json", os.path.join(event_dir, "rupture.json")
-        )
+        shakemap_prod = data["properties"]["products"]["shakemap"][0]
+        rupture_url = shakemap_prod["contents"]["download/rupture.json"]["url"]
+        jsonfile = os.path.join(event_dir, "rupture.json")
+        with open(jsonfile, "wt") as f:
+            response = requests.get(rupture_url)
+            json.dump(response.json(), f)
     except BaseException:
         logging.info(f"{event_id} does not have a rupture.json file.")

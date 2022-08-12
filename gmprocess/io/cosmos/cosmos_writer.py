@@ -1,24 +1,24 @@
 # stdlib imports
+import logging
+import pathlib
+import re
+import time
 from collections import OrderedDict
 from datetime import datetime
 from enum import Enum
-import logging
-import pathlib
-import pkg_resources
-import re
-import time
 
 # third party imports
 import numpy as np
 import pandas as pd
-from obspy.geodetics.base import gps2dist_azimuth
+import pkg_resources
 import scipy.constants as sp
+from gmprocess.core.stationtrace import TIMEFMT, UNITS
 
 # local imports
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
-from gmprocess.io.cosmos.core import BUILDING_TYPES, SENSOR_TYPES, MICRO_TO_VOLT
-from gmprocess.core.stationtrace import TIMEFMT, UNITS
+from gmprocess.io.cosmos.core import BUILDING_TYPES, MICRO_TO_VOLT, SENSOR_TYPES
 from gmprocess.utils.config import get_config
+from obspy.geodetics.base import gps2dist_azimuth
 
 COSMOS_FORMAT = 1.2
 UTC_TIME_FMT = "%m/%d/%Y, %H:%M:%S.%f"
@@ -249,7 +249,8 @@ class TextHeader(object):
     header_fmt["missing_data_float"] = ["{value:5.1f}", 72, None]
 
     def __init__(self, trace, scalar_event, stream, volume, gmprocess_version):
-        datadir = pkg_resources.resource_filename("gmprocess", "data")
+        # datadir = pkg_resources.resource_filename("gmprocess", "data")
+        datadir = pathlib.Path(__file__).parent / ".." / ".." / "data"
         excelfile = pathlib.Path(datadir) / "cosmos_table4.xls"
         table4 = Table4(excelfile)
         # fill in data for text header
@@ -417,7 +418,8 @@ class IntHeader(object):
     def __init__(self, trace, scalar_event, stream, volume, gmprocess_version):
         self.volume = volume
         self.scalar_event = scalar_event
-        datadir = pkg_resources.resource_filename("gmprocess", "data")
+        # datadir = pkg_resources.resource_filename("gmprocess", "data")
+        datadir = pathlib.Path(__file__).parent / ".." / ".." / "data"
         excelfile = pathlib.Path(datadir) / "cosmos_table4.xls"
         table4 = Table4(excelfile)
         ffmt = cfmt_to_ffmt(INT_FMT, NUM_INT_COLS)
@@ -589,7 +591,8 @@ class FloatHeader(object):
 
 class DataBlock(object):
     def __init__(self, trace, volume, eventid, gmprocess_version):
-        datadir = pkg_resources.resource_filename("gmprocess", "data")
+        # datadir = pkg_resources.resource_filename("gmprocess", "data")
+        datadir = pathlib.Path(__file__).parent / ".." / ".." / "data"
         excelfile = pathlib.Path(datadir) / "cosmos_table4.xls"
         table4 = Table4(excelfile)
         self.volume = volume

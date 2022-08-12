@@ -81,6 +81,13 @@ jobs:
       echo $(Agent.NAME)
       echo $(python.version)
       bash install.sh -p $(python.version)
+      echo "##########"
+      echo `pwd`
+      output=`find . -name '*.pyx'`
+      echo $output
+      output=`find . -name '*.so'`
+      echo $output
+      echo "##########"
     displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
@@ -101,6 +108,7 @@ jobs:
       source activate gmprocess
       pip install -U pytest-console-scripts
       export PYTHONPATH="."
+      find . -name '*.so'
       py.test --cov=. --cov-report=xml
     failOnStderr: true
     displayName: Run tests (mac/linux)

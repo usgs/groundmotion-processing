@@ -3,23 +3,23 @@
 # stdlib imports
 import pathlib
 import shutil
-import tempfile
-from io import StringIO
 import sys
+import tempfile
 import time
+from io import StringIO
 
+from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 
 # local imports
 from gmprocess.io.cosmos.cosmos_writer import (
+    CosmosWriter,
+    DataBlock,
+    FloatHeader,
+    IntHeader,
     TextHeader,
     Volume,
-    IntHeader,
-    FloatHeader,
-    DataBlock,
-    CosmosWriter,
 )
-from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
-from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 
 SAMPLE_INT_HDR = """
  100  Integer-header values follow on 10 lines, Format= (10I8)                  
