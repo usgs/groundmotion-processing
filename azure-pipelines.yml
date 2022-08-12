@@ -82,6 +82,9 @@ jobs:
       echo $(python.version)
       bash install.sh -p $(python.version)
       echo "##########"
+      echo `pwd`
+      output=`find . -name '*.pyx'`
+      echo $output
       output=`find . -name '*.so'`
       echo $output
       echo "##########"
