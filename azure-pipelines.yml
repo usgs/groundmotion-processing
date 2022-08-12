@@ -101,6 +101,7 @@ jobs:
       source activate gmprocess
       pip install -U pytest-console-scripts
       export PYTHONPATH="."
+      find . -name '*.so'
       py.test --cov=. --cov-report=xml
     failOnStderr: true
     displayName: Run tests (mac/linux)
