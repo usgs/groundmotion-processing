@@ -82,7 +82,8 @@ jobs:
       echo $(python.version)
       bash install.sh -p $(python.version)
       echo "##########"
-      find . -name '*.so'
+      output=`find . -name '*.so'`
+      echo $output
       echo "##########"
     displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
