@@ -2,15 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from json.decoder import JSONDecodeError
+
+from gmprocess.utils.download_utils import get_event_data
+
+# from libcomcat.search import get_event_by_id
+from obspy.core.event.event import Event
+from obspy.core.event.magnitude import Magnitude
 
 # third party imports
 from obspy.core.event.origin import Origin
-from obspy.core.event.magnitude import Magnitude
-from obspy.core.event.event import Event
 from obspy.core.utcdatetime import UTCDateTime
-from json.decoder import JSONDecodeError
-
-from libcomcat.search import get_event_by_id
 
 
 class ScalarEvent(Event):
@@ -180,20 +182,20 @@ def get_event_dict(eventid):
             - depth Origin depth.
             - magnitude Origin magnitude.
     """
-    dict_or_id = get_event_by_id(eventid)
-    if dict_or_id.id != eventid:
+    event_data = get_event_data(eventid)
+    if event_data["id"] != eventid:
         logging.warn(
             "Event ID %s is no longer preferred. Updating with the "
-            "preferred event ID: %s." % (eventid, dict_or_id.id)
+            "preferred event ID: %s." % (eventid, event_data["id"])
         )
     event_dict = {
-        "id": dict_or_id.id,
-        "time": UTCDateTime(dict_or_id.time),
-        "lat": dict_or_id.latitude,
-        "lon": dict_or_id.longitude,
-        "depth": dict_or_id.depth,
-        "magnitude": dict_or_id.magnitude,
-        "magnitude_type": dict_or_id._jdict["properties"]["magType"],
+        "id": event_data["id"],
+        "time": UTCDateTime(event_data["properties"]["time"] / 1000),
+        "lat": event_data["geometry"]["coordinates"][1],
+        "lon": event_data["geometry"]["coordinates"][0],
+        "depth": event_data["geometry"]["coordinates"][2] / 1000,
+        "magnitude": event_data["properties"]["mag"],
+        "magnitude_type": event_data["properties"]["magType"],
     }
     return event_dict
 
