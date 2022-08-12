@@ -81,6 +81,9 @@ jobs:
       echo $(Agent.NAME)
       echo $(python.version)
       bash install.sh -p $(python.version)
+      echo "##########"
+      find . -name '*.so'
+      echo "##########"
     displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
@@ -94,9 +97,6 @@ jobs:
       pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
       pip install -e . --no-deps --force-reinstall -vv
       pip install -U pytest-console-scripts
-      echo "##########"
-      find . -name '*.so'
-      echo "##########"
     displayName: Install gmprocess packages (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
