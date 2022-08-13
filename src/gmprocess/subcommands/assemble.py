@@ -4,10 +4,9 @@
 import os
 import sys
 import logging
+from concurrent.futures import ThreadPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
-
-distributed = LazyLoader("distributed", globals(), "dask.distributed")
 
 arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
@@ -48,16 +47,15 @@ class AssembleModule(base.SubcommandModule):
         if gmrecords.args.num_processes:
             # parallelize processing on events
             try:
-                client = distributed.Client(n_workers=gmrecords.args.num_processes)
+                with ThreadPoolExecutor(
+                    max_workers=gmrecords.args.num_processes
+                ) as executor:
+                    executor.map(self._assemble_event, self.events)
             except BaseException as ex:
                 print(ex)
-                print("Could not create a dask client.")
+                print("Could not create ThreadPoolExecutor.")
                 print("To turn off paralleization, use '--num-processes 0'.")
                 sys.exit(1)
-            futures = client.map(self._assemble_event, self.events)
-            for result in distributed.as_completed(futures, with_results=True):
-                logging.info(result)
-            client.shutdown()
         else:
             for event in self.events:
                 self._assemble_event(event)

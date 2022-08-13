@@ -3,10 +3,10 @@
 
 import os
 import logging
+from concurrent.futures import ThreadPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
-distributed = LazyLoader("distributed", globals(), "dask.distributed")
 
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
@@ -96,11 +96,8 @@ class GenerateReportModule(base.SubcommandModule):
             return []
 
         self._get_labels()
-        if self.gmrecords.args.num_processes > 0:
+        if self.gmrecords.args.num_processes:
             futures = []
-            client = distributed.Client(
-                threads_per_worker=1, n_workers=self.gmrecords.args.num_processes
-            )
 
         logging.info(f"Creating diagnostic plots for event {event.id}...")
         plot_dir = os.path.join(event_dir, "plots")
@@ -123,14 +120,17 @@ class GenerateReportModule(base.SubcommandModule):
             for stream in streams:
                 pstreams.append(stream)
                 if self.gmrecords.args.num_processes > 0:
-                    future = client.submit(
-                        plot.summary_plots,
-                        stream,
-                        plot_dir,
-                        event,
-                        config=config,
-                    )
-                    futures.append(future)
+                    with ThreadPoolExecutor(
+                        max_workers=self.gmrecords.args.num_processes
+                    ) as executor:
+                        future = executor.submit(
+                            plot.summary_plots,
+                            stream,
+                            plot_dir,
+                            event,
+                            config=config,
+                        )
+                        futures.append(future)
                 else:
                     results.append(
                         plot.summary_plots(stream, plot_dir, event, config=config)
@@ -139,7 +139,6 @@ class GenerateReportModule(base.SubcommandModule):
         if self.gmrecords.args.num_processes > 0:
             # Collect the results??
             results = [future.result() for future in futures]
-            client.shutdown()
 
         moveoutfile = os.path.join(event_dir, "moveout_plot.png")
         plot.plot_moveout(pstreams, event.latitude, event.longitude, file=moveoutfile)

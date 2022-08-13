@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import logging
+from concurrent.futures import ThreadPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
-distributed = LazyLoader("distributed", globals(), "dask.distributed")
 
 arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
@@ -78,7 +78,6 @@ class ProcessWaveformsModule(base.SubcommandModule):
         processed_streams = []
         if self.gmrecords.args.num_processes > 0:
             futures = []
-            client = distributed.Client(n_workers=self.gmrecords.args.num_processes)
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
@@ -114,15 +113,18 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 logging.info(
                     f"{process_type} '{plabel}' streams for event {event.id}..."
                 )
-                if self.gmrecords.args.num_processes > 0:
-                    future = client.submit(
-                        processing.process_streams,
-                        raw_streams,
-                        event,
-                        config,
-                        old_streams,
-                    )
-                    futures.append(future)
+                if self.gmrecords.args.num_processes:
+                    with ThreadPoolExecutor(
+                        max_workers=self.gmrecords.args.num_processes
+                    ) as executor:
+                        future = executor.submit(
+                            processing.process_streams,
+                            raw_streams,
+                            event,
+                            config,
+                            old_streams,
+                        )
+                        futures.append(future)
                 else:
                     processed_streams.append(
                         processing.process_streams(
@@ -133,7 +135,6 @@ class ProcessWaveformsModule(base.SubcommandModule):
         if self.gmrecords.args.num_processes > 0:
             # Collect the processed streams
             processed_streams = [future.result() for future in futures]
-            client.shutdown()
 
         # Cannot parallelize IO to ASDF file
         if self.gmrecords.args.reprocess:

@@ -3,13 +3,12 @@
 
 import os
 import logging
-import warnings
+from concurrent.futures import ThreadPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
-distributed = LazyLoader("distributed", globals(), "dask.distributed")
 ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
 station_summary = LazyLoader(
     "station_summary", globals(), "gmprocess.metrics.station_summary"
@@ -71,13 +70,8 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
 
         summaries = []
         metricpaths = []
-        if self.gmrecords.args.num_processes > 0:
+        if self.gmrecords.args.num_processes:
             futures = []
-            with warnings.catch_warnings():
-                warnings.filterwarnings(
-                    "ignore", message="Consider scattering large objects ahead of time"
-                )
-                client = distributed.Client(n_workers=self.gmrecords.args.num_processes)
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
@@ -108,15 +102,18 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                         f"Calculating waveform metrics for {stream.get_id()}..."
                     )
                     if self.gmrecords.args.num_processes > 0:
-                        future = client.submit(
-                            station_summary.StationSummary.from_config,
-                            stream=stream,
-                            config=config,
-                            event=event,
-                            calc_waveform_metrics=True,
-                            calc_station_metrics=False,
-                        )
-                        futures.append(future)
+                        with ThreadPoolExecutor(
+                            max_workers=self.gmrecords.args.num_processes
+                        ) as executor:
+                            future = executor.submit(
+                                station_summary.StationSummary.from_config,
+                                stream=stream,
+                                config=config,
+                                event=event,
+                                calc_waveform_metrics=True,
+                                calc_station_metrics=False,
+                            )
+                            futures.append(future)
                     else:
                         summaries.append(
                             station_summary.StationSummary.from_config(
@@ -131,7 +128,6 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         if self.gmrecords.args.num_processes > 0:
             # Collect the processed streams
             summaries = [future.result() for future in futures]
-            client.shutdown()
 
         # Cannot parallelize IO to ASDF file
         logging.info(
