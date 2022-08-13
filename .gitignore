@@ -25,3 +25,4 @@ tags
 # Ignore the C code that gets built by cython
 src/gmprocess/waveform_processing/smoothing/konno_ohmachi.c
 src/gmprocess/waveform_processing/auto_fchp.c
+src/gmprocess/metrics/oscillators.c

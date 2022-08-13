@@ -3,11 +3,12 @@
 
 # third party imports
 import h5py
+import importlib.metadata
 
 # local imports
 from .stream_workspace import StreamWorkspace
-from ... import __version__ as VERSION
 
+VERSION = importlib.metadata.version("gmprocess")
 TIMEPAT = "[0-9]{4}-[0-9]{2}-[0-9]{2}T"
 
 

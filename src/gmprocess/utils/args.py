@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .. import __version__ as VERSION
+import importlib.metadata
+
+VERSION = importlib.metadata.version("gmprocess")
 
 
 def add_shared_args(parser):

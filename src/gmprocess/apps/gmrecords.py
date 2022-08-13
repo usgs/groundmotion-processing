@@ -11,9 +11,11 @@ import inspect
 import argparse
 import logging
 import shutil
+import importlib.metadata
 
-from .. import __version__ as VERSION
 from ..subcommands.lazy_loader import LazyLoader
+
+VERSION = importlib.metadata.version("gmprocess")
 
 configobj = LazyLoader("configobj", globals(), "configobj")
 setuptools_scm = LazyLoader("setuptools_scm", globals(), "setuptools_scm")

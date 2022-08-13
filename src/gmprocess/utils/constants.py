@@ -3,6 +3,9 @@
 
 import scipy.constants as sp
 import os
+import pathlib
+
+DATA_DIR = pathlib.Path(__file__).parent / ".." / "data"
 
 PROJ_CONF_DIR = ".gmprocess"
 PROJECTS_PATH = os.path.join(os.path.expanduser("~"), PROJ_CONF_DIR)

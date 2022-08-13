@@ -44,7 +44,5 @@ ext_modules = [
 
 
 setup(
-    # packages=["metrics"],
-    # package_dir={'': 'gmprocess'},
     ext_modules=cythonize(ext_modules),
 )

@@ -3,9 +3,9 @@
 
 import os.path
 import glob
-import pkg_resources
 
 from gmprocess.utils.base_utils import read_event_json_files
+from gmprocess.utils.constants import DATA_DIR
 
 
 def read_data_dir(file_format, eventid, files=None):
@@ -29,8 +29,7 @@ def read_data_dir(file_format, eventid, files=None):
             - List of data files.
             - Event dictionary.
     """
-    datapath = os.path.join("data", "testdata")
-    testroot = pkg_resources.resource_filename("gmprocess", datapath)
+    testroot = DATA_DIR / "testdata"
     eventdir = os.path.join(testroot, file_format, eventid)
     if not os.path.isdir(eventdir):
         return (None, None)
