@@ -4,7 +4,6 @@
 import os
 import tempfile
 import shutil
-import pkg_resources
 
 # third party imports
 import h5py
@@ -16,11 +15,11 @@ from gmprocess.io.asdf.core import write_asdf
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import update_config, get_config
+from gmprocess.utils.constants import DATA_DIR
 
 CONFIG = get_config()
 
-datapath = os.path.join("data", "testdata")
-datadir = pkg_resources.resource_filename("gmprocess", datapath)
+datadir = DATA_DIR / "testdata"
 
 
 def generate_workspace():
@@ -74,8 +73,7 @@ def test_layout():
     tfilename = setup_module.tfilename
     h5 = h5py.File(tfilename, "r")
 
-    layout_path = os.path.join("data", "testdata", "asdf")
-    testroot = pkg_resources.resource_filename("gmprocess", layout_path)
+    testroot = DATA_DIR / "testdata" / "asdf"
     layout_abspath = os.path.join(testroot, LAYOUT_FILENAME)
     with open(layout_abspath, "r", encoding="utf-8") as fin:
         lines = fin.readlines()

@@ -6,15 +6,14 @@ from collections import OrderedDict
 
 # third party imports
 import numpy as np
-import pkg_resources
 
 from gmprocess.io.smc.core import is_smc, read_smc
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_smc():
-    dpath = os.path.join("data", "testdata", "smc", "nc216859")
-    datadir = pkg_resources.resource_filename("gmprocess", dpath)
+    datadir = DATA_DIR / "testdata" / "smc" / "nc216859"
 
     files = OrderedDict(
         [
@@ -60,14 +59,13 @@ def test_smc():
         success = True
     except Exception:
         success = False
-    assert success == False
+    assert success is False
 
 
 def test_bad():
-    dpath = os.path.join("data", "testdata", "duplicate", "general")
-    datadir = pkg_resources.resource_filename("gmprocess", dpath)
+    datadir = DATA_DIR / "testdata" / "duplicate" / "general"
     tfile = "np01002r_4225a_u.smc"
-    dfile = os.path.join(datadir, tfile)
+    dfile = datadir / tfile
     try:
         streams = read_smc(dfile)
     except Exception as e:

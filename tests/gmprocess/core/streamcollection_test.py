@@ -4,13 +4,14 @@
 import os
 import numpy as np
 import json
-import pkg_resources
+
+from obspy import UTCDateTime
 
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.logging import setup_logger
+from gmprocess.utils.constants import DATA_DIR
 from gmprocess.core.streamcollection import StreamCollection
 
-from obspy import UTCDateTime
 
 setup_logger()
 
@@ -18,8 +19,7 @@ setup_logger()
 def test_StreamCollection():
 
     # read usc data
-    dpath = os.path.join("data", "testdata", "usc", "ci3144585")
-    directory = pkg_resources.resource_filename("gmprocess", dpath)
+    directory = DATA_DIR / "testdata" / "usc" / "ci3144585"
     usc_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         directory
     )
@@ -44,8 +44,7 @@ def test_StreamCollection():
     assert sort_lengths[2] == 3
 
     # read dmg data
-    dpath = os.path.join("data", "testdata", "dmg", "ci3144585")
-    directory = pkg_resources.resource_filename("gmprocess", dpath)
+    directory = DATA_DIR / "testdata" / "dmg" / "ci3144585"
     dmg_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         directory
     )
@@ -101,8 +100,7 @@ def test_StreamCollection():
 
 
 def test_duplicates():
-    datapath = os.path.join("data", "testdata", "duplicate", "general")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "duplicate" / "general"
     streams = directory_to_streams(datadir)[0]
 
     sc_bad = StreamCollection(streams=streams, handle_duplicates=False)
@@ -200,27 +198,25 @@ def test_duplicates():
 
     for tr in sc_bad.select(network="--")[0]:
         tr.trim(endtime=UTCDateTime(2))
-        tr.resample(20, window='hann')
+        tr.resample(20, window="hann")
 
     sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
     assert sc.select(station="23837")[0][0].stats.network == "CE"
 
     for tr in sc_bad.select(network="--")[0]:
-        tr.resample(10, window='hann')
+        tr.resample(10, window="hann")
 
     sc = StreamCollection(streams=sc_bad.streams, handle_duplicates=True)
     assert sc.select(station="23837")[0][0].stats.network == "CE"
 
     # New test for some Hawaii data.
-    datapath = os.path.join("data", "testdata", "duplicate", "hawaii")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "duplicate" / "hawaii"
     streams = directory_to_streams(datadir)[0]
     sc = StreamCollection(streams=streams, handle_duplicates=True)
     assert len(sc) == 1
 
     # New test for some Alaska data.
-    datapath = os.path.join("data", "testdata", "duplicate", "alaska")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "duplicate" / "alaska"
     streams = directory_to_streams(datadir)[0]
     sc = StreamCollection(
         streams=streams, handle_duplicates=True, preference_order=["location_code"]
@@ -232,8 +228,7 @@ def test_duplicates():
 
 
 def test_get_status():
-    dpath = os.path.join("data", "testdata", "status")
-    directory = pkg_resources.resource_filename("gmprocess", dpath)
+    directory = DATA_DIR / "testdata" / "status"
     sc = StreamCollection.from_directory(directory)
 
     # Manually fail some of the streams

@@ -5,7 +5,6 @@ import os
 from datetime import datetime, timedelta
 import re
 import logging
-import pkg_resources
 
 # third party
 from obspy.core.trace import Stats
@@ -13,7 +12,7 @@ import numpy as np
 import pytz
 
 # local imports
-from gmprocess.utils.constants import UNIT_CONVERSIONS
+from gmprocess.utils.constants import UNIT_CONVERSIONS, DATA_DIR
 from gmprocess.io.usc.core import is_usc
 from gmprocess.io.seedname import get_channel_name, get_units_type
 from gmprocess.core.stationtrace import StationTrace, TIMEFMT, PROCESS_LEVELS
@@ -49,7 +48,7 @@ DATE_PATTERNS = [
 
 TIME_MATCH = r"[0-9]{2}:[0-9]{2}:..\.[0-9]{1}"
 
-code_file = pkg_resources.resource_filename("gmprocess", "data/fdsn_codes.csv")
+code_file = DATA_DIR / "fdsn_codes.csv"
 
 
 CODES, SOURCES1, SOURCES2 = np.genfromtxt(

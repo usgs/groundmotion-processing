@@ -6,7 +6,7 @@ import importlib
 from collections import OrderedDict
 import os.path
 import logging
-import pkg_resources
+import pathlib
 
 # third party imports
 import numpy as np
@@ -68,7 +68,7 @@ def _get_format(filename, config):
     """
     # Get the valid formats
     valid_formats = []
-    io_directory = pkg_resources.resource_filename("gmprocess", "io")
+    io_directory = pathlib.Path(__file__).parent
 
     # Create valid list
     for module in os.listdir(io_directory):

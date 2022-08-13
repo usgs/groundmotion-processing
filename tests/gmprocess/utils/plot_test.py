@@ -17,14 +17,13 @@ from gmprocess.utils.plot import (
 )
 import pandas as pd
 from gmprocess.utils.test_utils import read_data_dir
-import pkg_resources
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_regression():
-    datapath = os.path.join("data", "testdata")
-    testroot = pkg_resources.resource_filename("gmprocess", datapath)
-    event_file = os.path.join(testroot, "events.xlsx")
-    imc_file = os.path.join(testroot, "greater_of_two_horizontals.xlsx")
+    testroot = DATA_DIR / "testdata"
+    event_file = testroot / "events.xlsx"
+    imc_file = testroot / "greater_of_two_horizontals.xlsx"
     imc = "G2H"
     event_table = pd.read_excel(event_file, engine="openpyxl")
     imc_table = pd.read_excel(imc_file, engine="openpyxl")

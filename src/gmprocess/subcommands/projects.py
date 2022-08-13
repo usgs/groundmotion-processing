@@ -10,11 +10,7 @@ import shutil
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
-distributed = LazyLoader("distributed", globals(), "dask.distributed")
 ryaml = LazyLoader("yaml", globals(), "ruamel.yaml")
-
-pkg_resources = LazyLoader("pkg_resources", globals(), "pkg_resources")
-
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 constants = LazyLoader("constants", globals(), "gmprocess.utils.constants")
 prompt = LazyLoader("prompt", globals(), "gmprocess.utils.prompt")

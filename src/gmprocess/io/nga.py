@@ -6,13 +6,14 @@ Helper functions for working with the NGA flatfile.
 
 # stdlib imports
 import os
-import pkg_resources
 import logging
 
 # third party imports
 import numpy as np
 import pandas as pd
 from obspy.geodetics.base import gps2dist_azimuth
+
+from gmprocess.utils.constants import DATA_DIR
 
 
 def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
@@ -36,12 +37,8 @@ def get_nga_record_sequence_no(st, eq_name, distance_tolerance=50):
         numpy.nan if record sequence number is not found.
 
     """
-
-    df_nga = pd.read_csv(
-        pkg_resources.resource_filename(
-            "gmprocess", os.path.join("data", "nga_w2_selected.csv")
-        )
-    )
+    data_file = DATA_DIR / "nga_w2_selected.csv"
+    df_nga = pd.read_csv(data_file)
 
     nga_event = df_nga.loc[df_nga["Earthquake Name"] == eq_name]
 

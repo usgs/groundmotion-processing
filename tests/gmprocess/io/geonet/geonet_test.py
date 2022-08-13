@@ -3,8 +3,8 @@
 import os.path
 import numpy as np
 from gmprocess.io.geonet.core import is_geonet, read_geonet
-import pkg_resources
 from gmprocess.utils.config import get_config
+from gmprocess.utils.constants import DATA_DIR
 
 FILTER_FREQ = 0.02
 CORNERS = 4
@@ -12,11 +12,8 @@ config = get_config()
 
 
 def test():
-    dpath_2016 = os.path.join("data", "testdata", "geonet", "us1000778i")
-    datadir_2016 = pkg_resources.resource_filename("gmprocess", dpath_2016)
-
-    dpath_2018 = os.path.join("data", "testdata", "geonet", "nz2018p115908")
-    datadir_2018 = pkg_resources.resource_filename("gmprocess", dpath_2018)
+    datadir_2016 = DATA_DIR / "testdata" / "geonet" / "us1000778i"
+    datadir_2018 = DATA_DIR / "testdata" / "geonet" / "nz2018p115908"
 
     # first test a non-geonet file
     assert is_geonet(os.path.abspath(__file__)) is False

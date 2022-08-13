@@ -9,7 +9,6 @@ from datetime import datetime
 
 # third party
 import numpy as np
-import pkg_resources
 import scipy.constants as sp
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import PROCESS_LEVELS, TIMEFMT, StationTrace
@@ -29,7 +28,6 @@ VALID_MARKERS = [
     "RAW ACCELERATION COUNTS",
 ]
 
-# code_file = pkg_resources.resource_filename("gmprocess", "data/fdsn_codes.csv")
 code_file = pathlib.Path(__file__).parent / ".." / ".." / "data" / "fdsn_codes.csv"
 
 CODES, SOURCES1, SOURCES2 = np.genfromtxt(

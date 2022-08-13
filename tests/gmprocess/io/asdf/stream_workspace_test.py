@@ -5,7 +5,6 @@ import shutil
 import time
 import tempfile
 import warnings
-import pkg_resources
 from ruamel.yaml import YAML
 
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
@@ -16,6 +15,7 @@ from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.rupture_utils import get_rupture_file
 from gmprocess.utils.config import update_config, get_config
+from gmprocess.utils.constants import DATA_DIR
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from ruamel.yaml.error import YAMLError
@@ -26,8 +26,7 @@ import pytest
 
 CONFIG = get_config()
 
-datapath = os.path.join("data", "testdata")
-datadir = pkg_resources.resource_filename("gmprocess", datapath)
+datadir = DATA_DIR / "testdata"
 
 
 def _compare_streams(instream, outstream):

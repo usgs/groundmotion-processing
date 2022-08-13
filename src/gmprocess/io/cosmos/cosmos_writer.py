@@ -10,7 +10,6 @@ from enum import Enum
 # third party imports
 import numpy as np
 import pandas as pd
-import pkg_resources
 import scipy.constants as sp
 from gmprocess.core.stationtrace import TIMEFMT, UNITS
 
@@ -249,7 +248,6 @@ class TextHeader(object):
     header_fmt["missing_data_float"] = ["{value:5.1f}", 72, None]
 
     def __init__(self, trace, scalar_event, stream, volume, gmprocess_version):
-        # datadir = pkg_resources.resource_filename("gmprocess", "data")
         datadir = pathlib.Path(__file__).parent / ".." / ".." / "data"
         excelfile = pathlib.Path(datadir) / "cosmos_table4.xls"
         table4 = Table4(excelfile)
@@ -418,7 +416,6 @@ class IntHeader(object):
     def __init__(self, trace, scalar_event, stream, volume, gmprocess_version):
         self.volume = volume
         self.scalar_event = scalar_event
-        # datadir = pkg_resources.resource_filename("gmprocess", "data")
         datadir = pathlib.Path(__file__).parent / ".." / ".." / "data"
         excelfile = pathlib.Path(datadir) / "cosmos_table4.xls"
         table4 = Table4(excelfile)
@@ -591,7 +588,6 @@ class FloatHeader(object):
 
 class DataBlock(object):
     def __init__(self, trace, volume, eventid, gmprocess_version):
-        # datadir = pkg_resources.resource_filename("gmprocess", "data")
         datadir = pathlib.Path(__file__).parent / ".." / ".." / "data"
         excelfile = pathlib.Path(datadir) / "cosmos_table4.xls"
         table4 = Table4(excelfile)

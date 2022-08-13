@@ -4,7 +4,6 @@
 import io
 import os
 import shutil
-import pkg_resources
 
 from gmprocess.utils import constants
 
@@ -13,9 +12,7 @@ def test_auto_shakemap(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = pkg_resources.resource_filename(
-            "gmprocess", os.path.join("data", "testdata", "demo")
-        )
+        ddir = constants.DATA_DIR / "testdata" / "demo"
         setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()

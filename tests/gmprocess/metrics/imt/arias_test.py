@@ -1,26 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os.path
 import json
 
-# third party imports
 import numpy as np
-import pkg_resources
 
-# local imports
 from gmprocess.io.read import read_data
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_arias():
-    ddir = os.path.join("data", "testdata")
-    datadir = pkg_resources.resource_filename("gmprocess", ddir)
-    data_file = os.path.join(datadir, "arias_data.json")
+    data_file = DATA_DIR / "testdata" / "arias_data.json"
     with open(data_file, "rt", encoding="utf-8") as f:
         jdict = json.load(f)
 

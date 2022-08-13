@@ -4,7 +4,6 @@
 import os
 from pathlib import Path
 
-import pkg_resources
 from gmprocess.utils import constants
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
@@ -271,7 +270,6 @@ def get_config(config_path=None):
     """
 
     # Read in default config from the repository
-    # data_dir = os.path.abspath(pkg_resources.resource_filename("gmprocess", "data"))
     data_dir = Path(__file__).parent / ".." / "data"
     default_config_file = os.path.join(data_dir, constants.CONFIG_FILE_PRODUCTION)
     if not os.path.isfile(default_config_file):

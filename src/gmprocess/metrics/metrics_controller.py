@@ -12,11 +12,10 @@ import pandas as pd
 
 # Local imports
 from gmprocess.utils.config import get_config
-from gmprocess.utils.constants import GAL_TO_PCTG
+from gmprocess.utils.constants import GAL_TO_PCTG, METRICS_XML_FLOAT_STRING_FORMAT
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.gather import gather_pgms
 from gmprocess.core.stationstream import StationStream
-from gmprocess.utils.constants import METRICS_XML_FLOAT_STRING_FORMAT
 
 
 def _get_channel_dict(channel_names):

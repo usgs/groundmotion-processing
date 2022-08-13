@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import numpy as np
-import pkg_resources
 from obspy.core.utcdatetime import UTCDateTime
 from obspy.core.trace import Trace
 
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.constants import DATA_DIR
 
 from invutils import get_inventory
 
@@ -81,9 +80,8 @@ def test_uneven_stream():
 
 
 def test_num_horizontals():
-    data_path = pkg_resources.resource_filename("gmprocess", "data")
     sc = StreamCollection.from_directory(
-        os.path.join(data_path, "testdata", "fdsn", "uw61251926", "strong_motion")
+        DATA_DIR / "testdata" / "fdsn" / "uw61251926" / "strong_motion"
     )
     st = sc.select(station="SP2")[0]
     assert st.num_horizontal == 2

@@ -10,12 +10,12 @@ DOI: 10.1193/122118EQS292M
 
 import csv
 import numpy as np
-import pkg_resources
 import os
 
+from gmprocess.utils.constants import DATA_DIR
+
 # Path to model data
-NN_PATH = os.path.join("data", "nn_clipping")
-NN_PATH = pkg_resources.resource_filename("gmprocess", NN_PATH)
+NN_PATH = DATA_DIR / "nn_clipping"
 
 
 class clipNet:

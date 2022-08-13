@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pkg_resources
 
 import numpy as np
 from obspy import UTCDateTime
@@ -11,11 +10,11 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.config import get_config, update_dict
 from gmprocess.utils.event import get_event_object
 from gmprocess.waveform_processing.processing import process_streams
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_lowpass_max():
-    datapath = os.path.join("data", "testdata", "lowpass_max")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "lowpass_max"
     sc = StreamCollection.from_directory(datadir)
     sc.describe()
 

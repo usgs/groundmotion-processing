@@ -6,7 +6,6 @@ import sys
 import copy
 import importlib
 import pkgutil
-import pkg_resources
 import inspect
 import argparse
 import logging
@@ -192,12 +191,8 @@ class GMrecordsApp(object):
 
         if os.getenv("CALLED_FROM_PYTEST") is not None:
             self.conf_path = const.CONFIG_PATH_TEST  # ~/gmptest
-            # Put test config in conf_path
-            data_dir = os.path.abspath(
-                pkg_resources.resource_filename("gmprocess", "data")
-            )
             test_conf_file = os.path.normpath(
-                os.path.join(data_dir, const.CONFIG_FILE_TEST)  # config_test.yml
+                os.path.join(const.DATA_DIR, const.CONFIG_FILE_TEST)  # config_test.yml
             )
             if not os.path.exists(self.conf_path):
                 os.mkdir(self.conf_path)

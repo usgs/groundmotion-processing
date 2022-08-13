@@ -10,13 +10,13 @@ import logging
 import numpy as np
 from scipy import constants
 import pandas as pd
-import pkg_resources
 
 # local
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace, PROCESS_LEVELS
 from gmprocess.io.seedname import get_channel_name
 from gmprocess.io.utils import is_binary
+from gmprocess.utils.constants import DATA_DIR
 
 
 TIMEFMT = "%m/%d/%Y %H:%M:%S.%f"
@@ -96,8 +96,7 @@ def read_renadic(filename, config=None, **kwargs):
     # but they did provide a PDF table with information about each station,
     # including structure type (free field or something else) and the
     # coordinates
-    data_dir = pkg_resources.resource_filename("gmprocess", "data")
-    tablefile = os.path.join(data_dir, "station_coordinates.xlsx")
+    tablefile = os.path.join(DATA_DIR, "station_coordinates.xlsx")
     table = pd.read_excel(tablefile, engine="openpyxl")
 
     with open(filename, "rt", encoding=ENCODING) as f:

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import pkg_resources
 import time
 
 import numpy as np
@@ -13,6 +11,7 @@ from obspy.core.trace import Stats
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
 from gmprocess.metrics.station_summary import StationSummary
+from gmprocess.utils.constants import DATA_DIR
 
 
 def read_at2(dfile, horient=0.0):
@@ -86,8 +85,7 @@ def read_at2(dfile, horient=0.0):
 
 def test_high_freq_sa():
     t1 = time.time()
-    datapath = os.path.join("data", "testdata", "high_freq_sa")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "high_freq_sa"
     # fnames = [
     #     'RSN10591_ComalTX11-10-20_IU.CCM.BH1.10.AT2',
     #     'RSN10591_ComalTX11-10-20_IU.CCM.BH2.10.AT2'
@@ -96,10 +94,10 @@ def test_high_freq_sa():
         "RSN10590_ComalTX11-10-20_IU.CCM.BH1.00.AT2",
         "RSN10590_ComalTX11-10-20_IU.CCM.BH2.00.AT2",
     ]
-    dfile = os.path.join(datadir, fnames[0])
-    h1 = read_at2(dfile)
-    dfile = os.path.join(datadir, fnames[1])
-    h2 = read_at2(dfile, horient=90.0)
+    dfile = datadir / fnames[0]
+    h1 = read_at2(str(dfile))
+    dfile = datadir / fnames[1]
+    h2 = read_at2(str(dfile), horient=90.0)
     st = StationStream([h1, h2])
 
     periods = [

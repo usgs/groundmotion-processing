@@ -9,7 +9,6 @@ import importlib
 import inspect
 import os
 from pathlib import Path
-import pkg_resources
 
 
 def ProcessingStep(func):
@@ -25,7 +24,7 @@ def collect_processing_steps():
         dict: keys are the function name, values are the module object.
     """
     step_dict = {}
-    root = Path(pkg_resources.resource_filename("gmprocess", "waveform_processing"))
+    root = Path(__file__).parent
     module_files = root.glob("**/*.py")
     for mf in module_files:
         mod_str = str(mf)

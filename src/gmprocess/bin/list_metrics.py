@@ -3,8 +3,8 @@
 import importlib
 import inspect
 import os.path
+import pathlib
 
-import pkg_resources
 import pandas as pd
 
 from gmprocess.metrics.gather import gather_pgms
@@ -18,12 +18,11 @@ def get_class(imc, ctype):
         compclass = IMT
     elif ctype == "imc":
         compclass = IMC
-    datapath = os.path.join("metrics", ctype)
-    imc_directory = pkg_resources.resource_filename("gmprocess", datapath)
+    imc_directory = pathlib.Path(__file__).parent / ".." / "metrics" / ctype
     modfile = os.path.join(imc_directory, imc + ".py")
     if not os.path.isfile(modfile):
         return None
-    modname = modfile[modfile.rfind("gmprocess") :].replace(".py", "")
+    modname = os.path.normpath(modfile[modfile.rfind("gmprocess") :].replace(".py", ""))
     modname = modname.replace(os.path.sep, ".")
     mod = importlib.import_module(modname)
     tclass = None

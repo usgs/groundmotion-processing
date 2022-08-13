@@ -3,14 +3,15 @@
 
 import os
 
-import pkg_resources
 import vcr
-from gmprocess.utils.event import ScalarEvent, get_event_dict, get_event_object
 from obspy.core.event import read_events
 from obspy.core.event.event import Event
 from obspy.core.event.magnitude import Magnitude
 from obspy.core.event.origin import Origin
 from obspy.core.utcdatetime import UTCDateTime
+
+from gmprocess.utils.event import ScalarEvent, get_event_dict, get_event_object
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_scalar():
@@ -38,8 +39,7 @@ def test_scalar():
     assert event.magnitude == mag
     assert event.magnitude_type == mag_type
 
-    subdir = os.path.join("data", "testdata", "usp000hat0_quakeml.xml")
-    quakeml = pkg_resources.resource_filename("gmprocess", subdir)
+    quakeml = DATA_DIR / "testdata" / "usp000hat0_quakeml.xml"
     catalog = read_events(quakeml)
     tevent = catalog.events[0]
     event = ScalarEvent.fromEvent(tevent)
@@ -81,8 +81,7 @@ def test_scalar():
 
 
 def test_event():
-    subdir = os.path.join("data", "testdata", "vcr_event_test.yaml")
-    tape_file = pkg_resources.resource_filename("gmprocess", subdir)
+    tape_file = DATA_DIR / "testdata" / "vcr_event_test.yaml"
     with vcr.use_cassette(tape_file):
         eid = "us1000j96d"  # M7.0 Peru Mar 1 2019
         edict = get_event_dict(eid)

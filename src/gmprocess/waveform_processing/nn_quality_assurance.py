@@ -5,9 +5,9 @@ import csv
 import numpy as np
 import copy
 from scipy.integrate import cumtrapz
-import pkg_resources
 import os
 import logging
+import pathlib
 from gmprocess.waveform_processing.processing_step import ProcessingStep
 
 
@@ -83,9 +83,7 @@ def NNet_QA(st, acceptance_threshold, model_name, config=None):
         return st
 
     # Create the path to the NN folder based on model name
-    nn_path = os.path.join("data", "nn_qa")
-    nn_path = os.path.join(nn_path, model_name)
-    nn_path = pkg_resources.resource_filename("gmprocess", nn_path)
+    nn_path = pathlib.Path(__file__).parent / ".." / "data" / "nn_qa" / model_name
 
     # Compute the quality metrics
     qm = computeQualityMetrics(st)
@@ -480,9 +478,7 @@ def preprocessQualityMetrics(qm, model_name):
         list of float containing the pre-processed quality metrics.
     """
     # Building dir path from model name
-    data_path = os.path.join("data", "nn_qa")
-    data_path = os.path.join(data_path, model_name)
-    data_path = pkg_resources.resource_filename("gmprocess", data_path)
+    data_path = pathlib.Path(__file__).parent / ".." / "data" / "nn_qa" / model_name
 
     # Get resource from the correct dir
     M = loadCSV(os.path.join(data_path, "M.csv"))
@@ -507,7 +503,7 @@ def get_husid(acceleration, time_vector):
         time_vector (np.array):
             Time vector in seconds
     """
-    husid = np.hstack([0.0, cumtrapz(acceleration ** 2.0, time_vector)])
+    husid = np.hstack([0.0, cumtrapz(acceleration**2.0, time_vector)])
     AI = husid / max(husid)
     return husid, AI
 
@@ -780,72 +776,48 @@ def getClassificationMetrics(tr, p_pick, delta_t):
     snr_max = max(snrgm)
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 0.1, 10)
-    snr_average = (
-        np.trapz(
-            snrgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
+    snr_average = np.trapz(
+        snrgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 0.1, 0.5)
-    ft_a1 = (
-        np.trapz(
-            smooth_ftgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
-    snr_a1 = (
-        np.trapz(
-            snrgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
+    ft_a1 = np.trapz(
+        smooth_ftgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    snr_a1 = np.trapz(
+        snrgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 0.5, 1.0)
-    ft_a2 = (
-        np.trapz(
-            smooth_ftgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
-    snr_a2 = (
-        np.trapz(
-            snrgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
+    ft_a2 = np.trapz(
+        smooth_ftgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
+    snr_a2 = np.trapz(
+        snrgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 1.0, 2.0)
-    snr_a3 = (
-        np.trapz(
-            snrgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
+    snr_a3 = np.trapz(
+        snrgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 2.0, 5.0)
-    snr_a4 = (
-        np.trapz(
-            snrgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
+    snr_a4 = np.trapz(
+        snrgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
 
     lower_index_average, upper_index_average = getFreqIndex(snr1_freq, 5.0, 10.0)
-    snr_a5 = (
-        np.trapz(
-            snrgm[lower_index_average:upper_index_average],
-            snr1_freq[lower_index_average:upper_index_average],
-        )
-        / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
-    )
+    snr_a5 = np.trapz(
+        snrgm[lower_index_average:upper_index_average],
+        snr1_freq[lower_index_average:upper_index_average],
+    ) / (snr1_freq[upper_index_average] - snr1_freq[lower_index_average])
 
     ft_a1_a2 = ft_a1 / ft_a2
 
@@ -983,4 +955,3 @@ def computeQualityMetrics(st):
     qm = getClassificationMetrics(tr, p_pick, delta_t)
 
     return qm
-

@@ -6,7 +6,6 @@ import os
 
 # third party imports
 import numpy as np
-import pkg_resources
 
 # local imports
 from gmprocess.core.streamcollection import StreamCollection
@@ -15,9 +14,6 @@ from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.logging import setup_logger
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import get_config, update_dict
-
-datapath = os.path.join("data", "testdata")
-datadir = pkg_resources.resource_filename("gmprocess", datapath)
 
 setup_logger()
 

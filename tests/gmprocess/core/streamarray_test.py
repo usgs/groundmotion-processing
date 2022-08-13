@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-import numpy as np
-import json
-import pkg_resources
 
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.logging import setup_logger
+from gmprocess.utils.constants import DATA_DIR
 from gmprocess.core.streamarray import StreamArray
-
 
 setup_logger()
 
@@ -17,8 +14,7 @@ setup_logger()
 def test_StreamArray():
 
     # read usc data
-    dpath = os.path.join("data", "testdata", "usc", "ci3144585")
-    directory = pkg_resources.resource_filename("gmprocess", dpath)
+    directory = DATA_DIR / "testdata" / "usc" / "ci3144585"
     usc_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         directory
     )
@@ -37,8 +33,7 @@ def test_StreamArray():
     assert bool(usc_sa)
 
     # read dmg data
-    dpath = os.path.join("data", "testdata", "dmg", "ci3144585")
-    directory = pkg_resources.resource_filename("gmprocess", dpath)
+    directory = DATA_DIR / "testdata" / "dmg" / "ci3144585"
     dmg_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         directory
     )

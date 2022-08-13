@@ -1,22 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os
 import warnings
 
-# third party imports
 import numpy as np
-import pkg_resources
 from obspy.core.event import Origin
 
-# local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.base_utils import read_event_json_files
+from gmprocess.utils.constants import DATA_DIR
 
 
 def cmp_dicts(adict, bdict):
@@ -173,10 +169,9 @@ def test_stationsummary():
 
 
 def test_allow_nans():
-    dpath = os.path.join("data", "testdata", "fdsn", "uu60363602")
-    datadir = pkg_resources.resource_filename("gmprocess", dpath)
+    datadir = DATA_DIR / "testdata" / "fdsn" / "uu60363602"
     sc = StreamCollection.from_directory(datadir)
-    origin = read_event_json_files([os.path.join(datadir, "event.json")])[0]
+    origin = read_event_json_files([datadir / "event.json"])[0]
     psc = process_streams(sc, origin)
     st = psc[0]
 

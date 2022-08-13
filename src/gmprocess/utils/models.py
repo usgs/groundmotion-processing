@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pkg_resources
 from importlib import import_module
 from ruamel.yaml import YAML
 
-from gmprocess.utils.constants import MODULE_FILE
+from gmprocess.utils.constants import MODULE_FILE, DATA_DIR
 
 
 def load_model(model):
@@ -19,9 +18,7 @@ def load_model(model):
     Returns:
         The openquake ground shaking intensity model object.
     """
-    mod_file = pkg_resources.resource_filename(
-        "gmprocess", os.path.join("data", MODULE_FILE)
-    )
+    mod_file = DATA_DIR / MODULE_FILE
     with open(mod_file, "r", encoding="utf-8") as f:
         yaml = YAML()
         yaml.preserve_quotes = True

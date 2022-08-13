@@ -3,10 +3,10 @@
 
 # stdlib imports
 import importlib
-import pkg_resources
 import inspect
 import os.path
 import logging
+import pathlib
 
 # local imports
 from .fetcher import DataFetcher
@@ -137,7 +137,7 @@ def find_fetchers(lat, lon):
     """
 
     fetchers = {}
-    root = os.path.abspath(pkg_resources.resource_filename("gmprocess", "io"))
+    root = pathlib.Path(__file__).parent / ".."
     for (rootdir, dirs, files) in os.walk(root):
         if rootdir == root:
             continue
