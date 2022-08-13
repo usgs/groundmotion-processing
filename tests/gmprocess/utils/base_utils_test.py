@@ -2,21 +2,16 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-import os
-import pathlib
 from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
 from gmprocess.utils.base_utils import read_event_json_files
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_read_event_json_files():
 
-    thisdir = pathlib.Path(__file__).parent
-    datadir = os.path.join(
-        thisdir, os.pardir, os.pardir, os.pardir, "gmprocess", "data", "testdata"
-    )
-    datafile = os.path.join(datadir, "event_json", "event.json")
+    datafile = DATA_DIR / "testdata" / "event_json" / "event.json"
 
     eid = "nc51203888"
     time = UTCDateTime("2008-06-06T09:02:53.890000Z")

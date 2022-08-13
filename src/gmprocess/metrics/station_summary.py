@@ -150,7 +150,6 @@ class StationSummary(object):
         calc_waveform_metrics=True,
         calc_station_metrics=True,
         rupture=None,
-        vs30_grids=None,
     ):
         """
         Args:
@@ -166,9 +165,6 @@ class StationSummary(object):
                 Whether to calculate station metrics. Default is True.
             rupture (PointRupture or QuadRupture):
                 esi-utils-rupture rupture object. Default is None.
-            vs30_grids (dict):
-                A dictionary containing the vs30 grid files, names, and
-                descriptions (see config).
 
         Returns:
             class: StationSummary class.
@@ -209,7 +205,7 @@ class StationSummary(object):
                 station._imts = set(pgms.index.get_level_values("IMT"))
                 station.pgms = pgms
         if calc_station_metrics:
-            station.compute_station_metrics(rupture, vs30_grids)
+            station.compute_station_metrics(rupture)
 
         return station
 
@@ -280,7 +276,6 @@ class StationSummary(object):
         calc_waveform_metrics=True,
         calc_station_metrics=True,
         rupture=None,
-        vs30_grids=None,
     ):
         """
         Args:
@@ -311,9 +306,6 @@ class StationSummary(object):
                 Whether to calculate station metrics. Default is True.
             rupture (PointRupture or QuadRupture):
                 esi-utils-rupture rupture object. Default is None.
-            vs30_grids (dict):
-                A dictionary containing the vs30 grid files, names, and
-                descriptions (see config).
         Note:
             Assumes a processed stream with units of gal (1 cm/s^2).
             No processing is done by this class.
@@ -365,7 +357,7 @@ class StationSummary(object):
                 station._imts = set(pgms.index.get_level_values("IMT"))
                 station.pgms = pgms
         if calc_station_metrics:
-            station.compute_station_metrics(rupture, vs30_grids)
+            station.compute_station_metrics(rupture)
         return station
 
     def get_pgm(self, imt, imc):
@@ -639,7 +631,7 @@ class StationSummary(object):
 
         return station
 
-    def compute_station_metrics(self, rupture=None, vs30_grids=None):
+    def compute_station_metrics(self, rupture=None):
         """
         Computes station metrics (distances, vs30, back azimuth) for the
         StationSummary.
@@ -647,9 +639,6 @@ class StationSummary(object):
         Args:
             rupture (PointRupture or QuadRupture):
                 esi-utils-rupture rupture object. Default is None.
-            vs30_grids (dict):
-                A dictionary containing the vs30 grid files, names, and
-                descriptions (see config).
         """
         lat, lon = self.coordinates
         elev = self.elevation
@@ -708,16 +697,6 @@ class StationSummary(object):
                     "gc2_T": gc2_dict["T"][0],
                 }
             )
-
-        if vs30_grids is not None:
-            for vs30_name in vs30_grids.keys():
-                tmpgrid = vs30_grids[vs30_name]
-                self._vs30[vs30_name] = {
-                    "value": tmpgrid["grid_object"].getValue(float(lat), float(lon)),
-                    "column_header": tmpgrid["column_header"],
-                    "readme_entry": tmpgrid["readme_entry"],
-                    "units": tmpgrid["units"],
-                }
 
     def get_metric_xml(self):
         """Return waveform metrics XML as defined for our ASDF implementation.

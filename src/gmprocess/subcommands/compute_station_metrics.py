@@ -193,7 +193,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                     calc_waveform_metrics=False,
                     calc_station_metrics=False,
                     rupture=rupture,
-                    vs30_grids=self.vs30_grids,
                 )
 
                 summary._distances = {
@@ -210,18 +209,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                     "gc2_T": gc2_T,
                 }
                 summary._back_azimuth = sta_baz
-                if self.vs30_grids is not None:
-                    for vs30_name in self.vs30_grids.keys():
-                        tmpgrid = self.vs30_grids[vs30_name]
-                        summary._vs30[vs30_name] = {
-                            "value": tmpgrid["grid_object"].getValue(
-                                st[0].stats.coordinates.latitude,
-                                st[0].stats.coordinates.longitude,
-                            ),
-                            "column_header": tmpgrid["column_header"],
-                            "readme_entry": tmpgrid["readme_entry"],
-                            "units": tmpgrid["units"],
-                        }
 
                 xmlstr = summary.get_station_xml()
                 if config["read"]["use_streamcollection"]:
