@@ -26,7 +26,10 @@ libraries. It is regularly tested on OSX and Linux systems.
 
 .. code-block::
 
-   bash install.sh
+   .. bash install.sh
+   pip install -r requirements.txt .
+   pip install --upgrade --no-dependencies https://github.com/usgs/libcomcat/archive/refs/tags/2.0.16.zip
+   pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
 
 Installing from source (Windows)
 --------------------------------------
@@ -79,6 +82,7 @@ In the root directory of this repositry, you can run our unit tests with
 
 .. code-block::
 
+   pip install pytest
    py.test .
 
 

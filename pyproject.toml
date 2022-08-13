@@ -3,10 +3,12 @@ requires = [
   "setuptools>=42",
   "wheel",
   "setuptools_scm[toml]>=3.4",
-  "cython",
+  "Cython>=0.29.23",
   "numpy<1.22",
 ]
-[tool.setuptools_scm]
-write_to = "gmprocess/version.py"
-write_to_template = '__version__ = "{version}"'
+build-backend = "setuptools.build_meta"
+
+#[tool.setuptools_scm]
+#write_to = "gmprocess/version.py"
+#write_to_template = '__version__ = "{version}"'
 # tag_regex = r"^(?P<prefix>v)?(?P<version>[^\+]+)(?P<suffix>.*)?$"

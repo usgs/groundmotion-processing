@@ -13,7 +13,7 @@ import matplotlib.patches as patches
 import numpy as np
 from obspy.geodetics.base import gps2dist_azimuth
 from obspy.core.utcdatetime import UTCDateTime
-from impactutils.colors.cpalette import ColorPalette
+from esi_utils_colors.cpalette import ColorPalette
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.dates import num2date
 

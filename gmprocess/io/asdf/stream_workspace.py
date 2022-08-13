@@ -14,9 +14,8 @@ import scipy.interpolate as spint
 from obspy.core.utcdatetime import UTCDateTime
 import pandas as pd
 from h5py.h5py_warnings import H5pyDeprecationWarning
-from impactutils.rupture.factory import get_rupture
-from impactutils.rupture.origin import Origin
-from mapio.gmt import GMTGrid
+from esi_utils_rupture.factory import get_rupture
+from esi_utils_rupture.origin import Origin
 
 # local imports
 from gmprocess.core.stationtrace import (
@@ -781,15 +780,6 @@ class StreamWorkspace(object):
         )
         rupture = get_rupture(origin, rupture_file)
 
-        vs30_grids = None
-        if config is not None:
-            if "vs30" in config["metrics"]:
-                vs30_grids = config["metrics"]["vs30"]
-                for vs30_name in vs30_grids:
-                    vs30_grids[vs30_name]["grid_object"] = GMTGrid.load(
-                        vs30_grids[vs30_name]["file"]
-                    )
-
         for stream in streams:
             instrument = stream.get_id()
             logging.info(f"Calculating stream metrics for {instrument}...")
@@ -802,7 +792,6 @@ class StreamWorkspace(object):
                     calc_waveform_metrics=calc_waveform_metrics,
                     calc_station_metrics=calc_station_metrics,
                     rupture=rupture,
-                    vs30_grids=vs30_grids,
                 )
             except BaseException as pgme:
                 fmt = (

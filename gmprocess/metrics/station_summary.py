@@ -9,7 +9,7 @@ import pandas as pd
 from obspy.core.stream import Stream
 from obspy.geodetics.base import gps2dist_azimuth
 from openquake.hazardlib.geo.geodetic import distance
-from impactutils.rupture.point_rupture import PointRupture
+from esi_utils_rupture.point_rupture import PointRupture
 
 # local imports
 from gmprocess.utils.config import get_config
@@ -165,7 +165,7 @@ class StationSummary(object):
             calc_station_metrics (bool):
                 Whether to calculate station metrics. Default is True.
             rupture (PointRupture or QuadRupture):
-                impactutils rupture object. Default is None.
+                esi-utils-rupture rupture object. Default is None.
             vs30_grids (dict):
                 A dictionary containing the vs30 grid files, names, and
                 descriptions (see config).
@@ -310,7 +310,7 @@ class StationSummary(object):
             calc_station_metrics (bool):
                 Whether to calculate station metrics. Default is True.
             rupture (PointRupture or QuadRupture):
-                impactutils rupture object. Default is None.
+                esi-utils-rupture rupture object. Default is None.
             vs30_grids (dict):
                 A dictionary containing the vs30 grid files, names, and
                 descriptions (see config).
@@ -646,7 +646,7 @@ class StationSummary(object):
 
         Args:
             rupture (PointRupture or QuadRupture):
-                impactutils rupture object. Default is None.
+                esi-utils-rupture rupture object. Default is None.
             vs30_grids (dict):
                 A dictionary containing the vs30 grid files, names, and
                 descriptions (see config).

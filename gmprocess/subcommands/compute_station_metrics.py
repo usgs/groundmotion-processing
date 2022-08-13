@@ -8,10 +8,9 @@ from gmprocess.subcommands.lazy_loader import LazyLoader
 
 np = LazyLoader("np", globals(), "numpy")
 spint = LazyLoader("spint", globals(), "scipy.interpolate")
-gmt = LazyLoader("gmt", globals(), "mapio.gmt")
 ob = LazyLoader("ob", globals(), "obspy.geodetics.base")
 oqgeo = LazyLoader("oqgeo", globals(), "openquake.hazardlib.geo.geodetic")
-rupt = LazyLoader("rupt", globals(), "impactutils.rupture")
+rupt = LazyLoader("rupt", globals(), "esi_utils_rupture")
 ps2ff = LazyLoader("ps2ff", globals(), "ps2ff")
 
 arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
@@ -78,17 +77,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         self._get_labels()
 
         config = self._get_config()
-
-        if not hasattr(self, "vs30_grids"):
-            vs30_grids = None
-            if config is not None:
-                if "vs30" in config["metrics"]:
-                    vs30_grids = config["metrics"]["vs30"]
-                    for vs30_name in vs30_grids:
-                        vs30_grids[vs30_name]["grid_object"] = gmt.GMTGrid.load(
-                            vs30_grids[vs30_name]["file"]
-                        )
-            self.vs30_grids = vs30_grids
 
         station_list = ds.waveforms.list()
         if not len(station_list):

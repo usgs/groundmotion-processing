@@ -8,7 +8,7 @@ import shutil
 # third party imports
 import pkg_resources
 
-from impactutils.io.cmd import get_command_output
+from esi_utils_io.cmd import get_command_output
 
 
 def test_gmconvert():
