@@ -6,12 +6,12 @@ import numpy
 from setuptools import Extension, setup
 from Cython.Build import cythonize
 
-osc_sourcefiles = ["gmprocess/metrics/oscillators.pyx", "gmprocess/metrics/cfuncs.c"]
+osc_sourcefiles = ["src/gmprocess/metrics/oscillators.pyx", "src/gmprocess/metrics/cfuncs.c"]
 ko_sourcefiles = [
-    "gmprocess/waveform_processing/smoothing/konno_ohmachi.pyx",
-    "gmprocess/waveform_processing/smoothing/smoothing.c",
+    "src/gmprocess/waveform_processing/smoothing/konno_ohmachi.pyx",
+    "src/gmprocess/waveform_processing/smoothing/smoothing.c",
 ]
-auto_fchp_sourcefiles = ["gmprocess/waveform_processing/auto_fchp.pyx"]
+auto_fchp_sourcefiles = ["src/gmprocess/waveform_processing/auto_fchp.pyx"]
 
 libraries = []
 if os.name == "posix":
@@ -45,6 +45,6 @@ ext_modules = [
 
 setup(
     # packages=["metrics"],
-    package_dir={'': 'gmprocess'},
+    # package_dir={'': 'gmprocess'},
     ext_modules=cythonize(ext_modules),
 )
