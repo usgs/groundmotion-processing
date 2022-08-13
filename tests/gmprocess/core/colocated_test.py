@@ -8,7 +8,7 @@ from gmprocess.utils.constants import DATA_DIR
 
 
 def test_colocated():
-    datadir = DATA_DIR / "data" / "testdata" / "colocated_instruments"
+    datadir = DATA_DIR / "testdata" / "colocated_instruments"
     sc = StreamCollection.from_directory(datadir)
 
     sc.select_colocated()

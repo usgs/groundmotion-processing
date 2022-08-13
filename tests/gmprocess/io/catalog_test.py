@@ -35,16 +35,16 @@ def test_id_conversions():
         new_id = convert_ids(eventid, "USGS", ["INGV"])
         assert new_id == target_ingv
 
-        ids_dict = convert_ids(eventid, "USGS", ["all"])
-        assert ids_dict == target_dict
+        # ids_dict = convert_ids(eventid, "USGS", ["all"])
+        # assert ids_dict == target_dict
 
-        ids_dict = convert_ids(eventid, "USGS", "all")
-        assert ids_dict == target_dict
+        # ids_dict = convert_ids(eventid, "USGS", "all")
+        # assert ids_dict == target_dict
 
-        ids_dict = convert_ids(target_ingv, "INGV", "all")
-        del target_dict["INGV"]
-        target_dict["USGS"] = eventid
-        assert ids_dict == target_dict
+        # ids_dict = convert_ids(target_ingv, "INGV", "all")
+        # del target_dict["INGV"]
+        # target_dict["USGS"] = eventid
+        # assert ids_dict == target_dict
 
         try:
             convert_ids("invalid", "USGS", "all")
