@@ -82,8 +82,12 @@ jobs:
       echo $(Agent.NAME)
       echo python.version:
       echo $(python.version)
-      echo Running: pip install python=$(python.version)
-      pip install python=$(python.version)
+      echo update pip
+      pip install --upgrade pip
+      echo pip version:
+      pip --version
+      echo Running: pip install python==$(python.version)
+      pip install python==$(python.version)
       echo pwd:
       pwd
       echo Running: pip install .
@@ -92,7 +96,11 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
-      pip install python=$(python.version)
+      echo update pip:
+      pip install --upgrade pip
+      echo pip version:
+      pip --version
+      pip install python==$(python.version)
       pip install .[test]
     displayName: Install gmprocess (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
