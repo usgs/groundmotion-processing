@@ -86,27 +86,30 @@ jobs:
       pip install --upgrade pip
       echo pip version:
       pip --version
-      echo Running: pip install python==$(python.version)
-      pip install python==$(python.version)
+      echo python version:
+      python --version
       echo pwd:
       pwd
       echo Running: pip install .
       pip install .[test]
+      echo ls build/
+      ls build/
     displayName: Install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
       echo update pip:
-      pip install --upgrade pip
+      pip install --user --upgrade pip
       echo pip version:
       pip --version
-      pip install python==$(python.version)
-      pip install .[test]
+      echo python version:
+      python --version
+      pip install --user .[test]
     displayName: Install gmprocess (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
-      py.test --cov=. --cov-report=xml
+      pytest --cov=. --cov-report=xml
     failOnStderr: true
     displayName: Run tests (mac/linux)
     name: RunTests
