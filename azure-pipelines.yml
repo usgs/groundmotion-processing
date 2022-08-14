@@ -93,8 +93,6 @@ jobs:
       echo Running: pip install .[test]
       # .so files could not be found on azure without the -e flag.
       pip install -e .[test]
-      echo ls build/
-      ls build/
       echo look for *.so files:
       output=`find . -name '*.so'`
       echo $output
@@ -118,8 +116,6 @@ jobs:
       python --version
       echo pip version
       pip --version
-      echo ls build/
-      ls build/
       echo look for *.so files:
       output=`find . -name '*.so'`
       echo $output
