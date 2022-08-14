@@ -94,6 +94,9 @@ jobs:
       pip install .[test]
       echo ls build/
       ls build/
+      echo look for *.so files:
+      output=`find . -name '*.so'`
+      echo $output
     displayName: Install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
