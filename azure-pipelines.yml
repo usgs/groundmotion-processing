@@ -78,28 +78,26 @@ jobs:
       else
         rm /usr/share/miniconda/pkgs/cache/*.json
       fi
+      echo Agent.NAME:
       echo $(Agent.NAME)
+      echo python.version:
       echo $(python.version)
-      conda create --name gmprocess  python=$(python.version)
-      pip install .
-      echo "##########"
-    displayName: Create conda environment and install gmprocess (mac/linux)
+      echo Running: pip install python=$(python.version)
+      pip install python=$(python.version)
+      echo pwd:
+      pwd
+      echo Running: pip install .
+      pip install .[test]
+    displayName: Install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
-      conda create --name gmprocess  python=$(python.version)
-    displayName: Create conda environment (Windows)
-    condition: eq( variables['Agent.OS'], 'Windows_NT' )
-
-  - script: |
-      call activate gmprocess
+      pip install python=$(python.version)
       pip install .[test]
-    displayName: Install gmprocess packages (Windows)
+    displayName: Install gmprocess (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
-      source activate gmprocess
-      export PYTHONPATH="."
       py.test --cov=. --cov-report=xml
     failOnStderr: true
     displayName: Run tests (mac/linux)
@@ -107,7 +105,6 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
-      call activate gmprocess
       pytest . --capture=no
     displayName: Run tests (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
