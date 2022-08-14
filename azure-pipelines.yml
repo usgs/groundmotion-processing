@@ -91,7 +91,8 @@ jobs:
       echo pwd:
       pwd
       echo Running: pip install .[test]
-      pip install .[test]
+      # .so files could not be found on azure without the -e flag.
+      pip install -e .[test]
       echo ls build/
       ls build/
       echo look for *.so files:
@@ -100,8 +101,6 @@ jobs:
       echo pip list:
       pip list
       ./check_site-packages.py
-      # Copy .so into repository
-      cp /usr/share/miniconda/lib/python3.9/site-packages/gmprocess/metrics/oscillators.cpython-39-x86_64-linux-gnu.so src/gmprocess/metrics/.
     displayName: Install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
