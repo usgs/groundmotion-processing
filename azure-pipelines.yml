@@ -80,13 +80,8 @@ jobs:
       fi
       echo $(Agent.NAME)
       echo $(python.version)
-      bash install.sh -p $(python.version)
-      echo "##########"
-      echo `pwd`
-      output=`find . -name '*.pyx'`
-      echo $output
-      output=`find . -name '*.so'`
-      echo $output
+      conda create --name gmprocess  python=$(python.version)
+      pip install .
       echo "##########"
     displayName: Create conda environment and install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
