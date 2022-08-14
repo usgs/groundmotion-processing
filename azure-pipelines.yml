@@ -92,23 +92,19 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
-      conda create --name gmprocess  python=$(python.version) --file requirements.txt -c conda-forge -y -v
+      conda create --name gmprocess  python=$(python.version)
     displayName: Create conda environment (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
       call activate gmprocess
-      pip install --upgrade --no-dependencies https://github.com/gem/oq-engine/archive/engine-3.12.zip
-      pip install -e . --no-deps --force-reinstall -vv
-      pip install -U pytest-console-scripts
+      pip install .[test]
     displayName: Install gmprocess packages (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
       source activate gmprocess
-      pip install -U pytest-console-scripts
       export PYTHONPATH="."
-      find . -name '*.so'
       py.test --cov=. --cov-report=xml
     failOnStderr: true
     displayName: Run tests (mac/linux)
