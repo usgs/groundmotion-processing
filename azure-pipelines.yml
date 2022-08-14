@@ -100,6 +100,8 @@ jobs:
       echo pip list:
       pip list
       ./check_site-packages.py
+      # Copy .so into repository
+      cp /usr/share/miniconda/lib/python3.9/site-packages/gmprocess/metrics/oscillators.cpython-39-x86_64-linux-gnu.so src/gmprocess/metrics/.
     displayName: Install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
