@@ -105,16 +105,20 @@ jobs:
       python --version
       echo pip version
       pip --version
-      echo ls build/
-      ls build/
-      echo look for *.so files:
-      output=`find . -name '*.so'`
-      echo $output
       pip install --user .[test]
     displayName: Install gmprocess (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
+      echo Installed python version
+      python --version
+      echo pip version
+      pip --version
+      echo ls build/
+      ls build/
+      echo look for *.so files:
+      output=`find . -name '*.so'`
+      echo $output
       pytest --cov=. --cov-report=xml
     failOnStderr: true
     displayName: Run tests (mac/linux)
