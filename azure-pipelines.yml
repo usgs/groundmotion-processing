@@ -80,7 +80,7 @@ jobs:
         rm /usr/share/miniconda/pkgs/cache/*.json
       fi
       conda create -y --name gmprocess pip python=$(python.version)
-      conda activate gmprocess
+      source activate gmprocess
       echo Agent.NAME:
       echo $(Agent.NAME)
       echo python.version:
@@ -118,7 +118,7 @@ jobs:
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
-      conda activate gmprocess
+      source activate gmprocess
       echo Installed python version
       python --version
       echo pip version
