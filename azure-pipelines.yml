@@ -64,6 +64,7 @@ jobs:
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
   - bash: |
+      conda init bash
       if [[ $(Agent.OS) = 'Darwin' ]]
       then
         sudo chown -R $USER $CONDA
