@@ -103,11 +103,13 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
+      conda create --name gmprocess pip fiona python=$(python.version) -y -v
+      call activate gmprocess
       echo Installed python version
       python --version
       echo pip version
       pip --version
-      pip install --user .[test]
+      pip install .[test]
     displayName: Install gmprocess (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
 
@@ -126,6 +128,7 @@ jobs:
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
   - script: |
+      call activate gmprocess
       pytest . --capture=no
     displayName: Run tests (Windows)
     condition: eq( variables['Agent.OS'], 'Windows_NT' )
