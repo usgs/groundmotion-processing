@@ -90,10 +90,9 @@ jobs:
       python --version
       echo pwd:
       pwd
-      echo Running: pip install .[test]
+      echo Running: pip install -e .[test]
       # .so files could not be found on azure without the -e flag.
-      pip install .[test]
-      python setup.py build_ext --inplace
+      pip install -e .[test]
       echo look for *.so files:
       output=`find . -name '*.so'`
       echo $output
