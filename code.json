@@ -1,8 +1,45 @@
-{
-  "version": "2.0.0",
-  "measurementType": {},
-  "agency": "U.S. Department of Interior",
-  "releases": [
+[
+    {
+        "name": "groundmotion-processing",
+        "description": "Read and process ground motion waveform data",
+        "version": "v1.2.0",
+        "status": "Development",
+        "organization": "U.S. Geological Survey",
+        "vcs": "git",
+        "repositoryUrl": "https://github.com/usgs/groundmotion-processing.git",
+        "homepageURL": "https://usgs.github.io/groundmotion-processing",
+        "downloadURL": "https://github.com/usgs/groundmotion-processing/archive/refs/tags/v1.2.0.zip",
+        "disclaimerURL": "https://raw.githubusercontent.com/usgs/groundmotion-processing/v1.2.0/DISCLAIMER.md",
+        "permissions": {
+            "licenses": [
+                {
+                    "name": "Public Domain, CC0-1.0",
+                    "URL": "https://raw.githubusercontent.com/usgs/groundmotion-processing/v1.2.0/LICENSE.md"
+                }
+            ],
+            "usageType": "openSource",
+            "exemptionText": null
+        },
+        "laborHours": null,
+        "languages": [
+            "python",
+            "c"
+        ],
+        "tags": [
+            "earthquake",
+            "impact",
+            "strong motion",
+            "amplitudes",
+            "ground motion"
+        ],
+        "contact": {
+            "name": "Eric Thompson",
+            "email": "emthompson@usgs.gov"
+        },
+        "date": {
+            "metadataLastUpdated": "2022-08-13"
+        }
+    },
     {
         "name": "groundmotion-processing",
         "description": "Read and process ground motion waveform data",
@@ -26,13 +63,14 @@
         },
         "laborHours": null,
         "languages": [
-            "python", "c"
+            "python",
+            "c"
         ],
         "tags": [
             "earthquake",
             "impact",
             "strong motion",
-            "amplitudes",  
+            "amplitudes",
             "ground motion"
         ],
         "contact": {
@@ -43,5 +81,4 @@
             "metadataLastUpdated": "2019-08-22"
         }
     }
-  ]
-}
+]
