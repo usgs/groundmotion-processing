@@ -8,12 +8,12 @@ from gmprocess.waveform_processing.windows import (
     trim_multiple_events,
     cut,
 )
-import pkg_resources
 import os
 import numpy as np
 from obspy import UTCDateTime
 
 from gmprocess.utils.config import get_config
+from gmprocess.utils.constants import DATA_DIR
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.instrument_response import remove_response
@@ -24,15 +24,14 @@ from gmprocess.waveform_processing.filtering import lowpass_filter, highpass_fil
 
 PICKER_CONFIG = get_config()["pickers"]
 
-knet_data = os.path.join("data", "testdata", "process")
-data_path = pkg_resources.resource_filename("gmprocess", knet_data)
+data_path = DATA_DIR / "testdata", "process"
 
 
 def _test_signal_split():
 
-    st1 = read_data(os.path.join(data_path, "AOM0170806140843.EW"))[0]
-    st2 = read_data(os.path.join(data_path, "AOM0170806140843.NS"))[0]
-    st3 = read_data(os.path.join(data_path, "AOM0170806140843.UD"))[0]
+    st1 = read_data(data_path / "AOM0170806140843.EW")[0]
+    st2 = read_data(data_path / "AOM0170806140843.NS")[0]
+    st3 = read_data(data_path / "AOM0170806140843.UD")[0]
     st = st1 + st2 + st3
 
     # Test the AR pick
@@ -222,12 +221,11 @@ def test_signal_split2():
 
 
 def _test_trim_multiple_events():
-    datapath = os.path.join("data", "testdata", "multiple_events")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
-    sc = StreamCollection.from_directory(os.path.join(datadir, "ci38457511"))
+    datadir = DATA_DIR / "testdata" / "multiple_events"
+    sc = StreamCollection.from_directory(datadir / "ci38457511")
     origin = get_event_object("ci38457511")
     df, catalog = create_travel_time_dataframe(
-        sc, os.path.join(datadir, "catalog.csv"), 5, 0.1, "iasp91"
+        sc, datadir / "catalog.csv", 5, 0.1, "iasp91"
     )
     for st in sc:
         st.detrend("demean")

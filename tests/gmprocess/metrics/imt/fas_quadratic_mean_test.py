@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os.path
 import re
 
-# third party imports
 import numpy as np
 import pandas as pd
-import pkg_resources
 
-# Local imports
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_fas():
@@ -21,11 +17,10 @@ def test_fas():
     Testing based upon the work provided in
     https://github.com/arkottke/notebooks/blob/master/effective_amp_spectrum.ipynb
     """
-    ddir = os.path.join("data", "testdata")
-    datadir = pkg_resources.resource_filename("gmprocess", ddir)
-    fas_file = os.path.join(datadir, "fas_quadratic_mean.pkl")
-    p1 = os.path.join(datadir, "peer", "RSN763_LOMAP_GIL067.AT2")
-    p2 = os.path.join(datadir, "peer", "RSN763_LOMAP_GIL337.AT2")
+    datadir = DATA_DIR / "testdata"
+    fas_file = datadir / "fas_quadratic_mean.pkl"
+    p1 = datadir / "peer" / "RSN763_LOMAP_GIL067.AT2"
+    p2 = datadir / "peer" / "RSN763_LOMAP_GIL337.AT2"
 
     stream = StationStream([])
     for idx, fpath in enumerate([p1, p2]):

@@ -1,17 +1,16 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import pathlib
 import shutil
 import sys
 import tempfile
 import time
 from io import StringIO
 
+# local imports
+from gmprocess.utils.constants import DATA_DIR
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
-
-# local imports
 from gmprocess.io.cosmos.cosmos_writer import (
     CosmosWriter,
     DataBlock,
@@ -91,20 +90,7 @@ SAMPLE_DATA_BLOCK = """
 
 
 def get_sample_data(volume):
-    thisdir = pathlib.Path(__file__).parent
-    datafile = (
-        thisdir
-        / ".."
-        / ".."
-        / ".."
-        / ".."
-        / "gmprocess"
-        / "data"
-        / "testdata"
-        / "asdf"
-        / "nc71126864"
-        / "workspace.h5"
-    )
+    datafile = DATA_DIR / "testdata" / "asdf" / "nc71126864" / "workspace.h5"
     workspace = StreamWorkspace.open(datafile)
     t1 = time.time()
     eventid = workspace.getEventIds()[0]
@@ -188,20 +174,7 @@ def test_data_block():
 
 def test_cosmos_writer(datafile=None):
     if datafile is None:
-        thisdir = pathlib.Path(__file__).parent
-        datafile = (
-            thisdir
-            / ".."
-            / ".."
-            / ".."
-            / ".."
-            / "gmprocess"
-            / "data"
-            / "testdata"
-            / "asdf"
-            / "nc71126864"
-            / "workspace.h5"
-        )
+        datafile = DATA_DIR / "testdata" / "asdf" / "nc71126864" / "workspace.h5"
     tempdir = None
     try:
         tempdir = tempfile.mkdtemp()

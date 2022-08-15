@@ -1,32 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os
-
-# third party imports
 import numpy as np
 import scipy.constants as sp
 from obspy import read, read_inventory
 from obspy.geodetics import gps2dist_azimuth
 from obspy.core.event import Origin
-import pkg_resources
 
-# local imports
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.metrics.exception import PGMException
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
+from gmprocess.utils.constants import DATA_DIR
 
 
-ddir = os.path.join("data", "testdata", "fdsnfetch")
-datadir = pkg_resources.resource_filename("gmprocess", ddir)
+datadir = DATA_DIR / "testdata" / "fdsnfetch"
 
 
 def test_radial_transverse():
 
     origin = Origin(latitude=47.149, longitude=-122.7266667)
-    st = read(os.path.join(datadir, "resp_cor", "UW.ALCT.--.*.MSEED"))
+    st = read(datadir / "resp_cor" / "UW.ALCT.--.*.MSEED")
 
     st[0].stats.standard = {}
     st[0].stats.standard["horizontal_orientation"] = 0.0
@@ -38,7 +31,7 @@ def test_radial_transverse():
     st[2].stats.standard["horizontal_orientation"] = np.nan
     st[2].stats["channel"] = "HNZ"
 
-    inv = read_inventory(os.path.join(datadir, "inventory.xml"))
+    inv = read_inventory(datadir / "inventory.xml")
     stalat, stalon = inv[0][0][0].latitude, inv[0][0][0].longitude
 
     for i, tr in enumerate(st):
@@ -91,8 +84,8 @@ def test_radial_transverse():
     np.testing.assert_almost_equal(pgms[1], sp.g * T)
 
     # Test with a station whose channels are not aligned to E-N
-    SEW_st = read(os.path.join(datadir, "resp_cor", "GS.SEW.*.mseed"))
-    SEW_inv = read_inventory(os.path.join(datadir, "inventory_sew.xml"))
+    SEW_st = read(datadir / "resp_cor" / "GS.SEW.*.mseed")
+    SEW_inv = read_inventory(datadir / "inventory_sew.xml")
     stalat, stalon = inv[0][0][0].latitude, inv[0][0][0].longitude
 
     # This needs to be checked. The target data doesn't appear to be

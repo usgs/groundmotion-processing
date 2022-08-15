@@ -1,21 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 
-# stdlib imports
-import os.path
-import pkg_resources
-
-# third party imports
 import numpy as np
 import pandas as pd
 
-# local imports
 from gmprocess.io.geonet.core import read_geonet
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.metrics_controller import MetricsController, _get_channel_dict
 from gmprocess.core.stationstream import StationStream
 from gmprocess.utils.config import get_config
+from gmprocess.utils.constants import DATA_DIR
 
 config = get_config()
 
@@ -226,8 +222,7 @@ def test_controller():
 
 
 def _validate_steps(step_sets, data_type):
-    datafile = os.path.join("data", "testdata", "metrics_controller", "workflows.csv")
-    datafile_abspath = pkg_resources.resource_filename("gmprocess", datafile)
+    datafile_abspath = DATA_DIR / "testdata" / "metrics_controller" / "workflows.csv"
     df = pd.read_csv(datafile_abspath)
     wf_df = df.apply(lambda x: x.astype(str).str.lower())
     # test workflows
@@ -246,17 +241,16 @@ def _validate_steps(step_sets, data_type):
 
 
 def test_exceptions():
-    ddir = os.path.join("data", "testdata", "geonet")
-    homedir = pkg_resources.resource_filename("gmprocess", ddir)
-    datafile_v2 = os.path.join(homedir, "us1000778i", "20161113_110259_WTMC_20.V2A")
+    homedir = DATA_DIR / "testdata" / "geonet"
+    datafile_v2 = homedir / "us1000778i" / "20161113_110259_WTMC_20.V2A"
     stream_v2 = read_geonet(datafile_v2)[0]
     # Check for origin Error
     passed = True
     try:
         m = MetricsController("pga", "radial_transverse", stream_v2, config=config)
-    except PGMException as e:
+    except PGMException:
         passed = False
-    assert passed == False
+    assert passed is False
 
     # -------- Horizontal Channel Errors -----------
     # Check for horizontal passthrough gm
@@ -281,9 +275,9 @@ def test_exceptions():
     # No horizontal channels
     try:
         m = MetricsController("sa3.0", "channels", st3, config=config)
-    except PGMException as e:
+    except PGMException:
         passed = False
-    assert passed == True
+    assert passed is True
 
 
 def test_end_to_end():

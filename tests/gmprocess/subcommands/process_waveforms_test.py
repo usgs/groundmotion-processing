@@ -4,7 +4,6 @@
 import io
 import os
 import shutil
-import pkg_resources
 
 from gmprocess.utils import constants
 
@@ -13,10 +12,7 @@ def test_process_waveforms(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = pkg_resources.resource_filename(
-            "gmprocess",
-            os.path.join("data", "testdata", "demo_steps", "process_waveforms"),
-        )
+        ddir = str(constants.DATA_DIR / "testdata" / "demo_steps" / "process_waveforms")
 
         # Make a copy of the hdf files
         events = ["ci38038071", "ci38457511"]

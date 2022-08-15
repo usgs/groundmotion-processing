@@ -4,7 +4,6 @@
 import io
 import os
 import shutil
-import pkg_resources
 
 from gmprocess.utils import constants
 
@@ -13,9 +12,7 @@ def test_assemble(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = pkg_resources.resource_filename(
-            "gmprocess", os.path.join("data", "testdata", "demo")
-        )
+        ddir = str(constants.DATA_DIR / "testdata" / "demo")
         setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
@@ -38,7 +35,6 @@ def test_assemble(script_runner):
         for event in events:
             for outname in out_names:
                 dfile = os.path.join(ddir, event, outname)
-                print(dfile)
                 assert os.path.isfile(dfile)
 
     except Exception as ex:

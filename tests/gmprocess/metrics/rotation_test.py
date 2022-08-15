@@ -1,25 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# stdlib imports
-import os
 import numpy as np
-import pkg_resources
 
-# local imports
 from gmprocess.metrics.rotation.rotation import Rotation
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
+from gmprocess.utils.constants import DATA_DIR
 
-ddir = os.path.join("data", "testdata", "process")
-datadir = pkg_resources.resource_filename("gmprocess", ddir)
+datadir = DATA_DIR / "testdata" / "process"
 
 
 def test_rotation():
 
     # Create a stream and station summary, convert from m/s^2 to cm/s^2 (GAL)
-    osc1_data = np.genfromtxt(datadir + "/ALCTENE.UW..sac.acc.final.txt")
-    osc2_data = np.genfromtxt(datadir + "/ALCTENN.UW..sac.acc.final.txt")
+    osc1_data = np.genfromtxt(datadir / "ALCTENE.UW..sac.acc.final.txt")
+    osc2_data = np.genfromtxt(datadir / "ALCTENN.UW..sac.acc.final.txt")
     osc1_data = osc1_data.T[1] * 100
     osc2_data = osc2_data.T[1] * 100
 

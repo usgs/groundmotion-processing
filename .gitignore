@@ -8,7 +8,7 @@ build
 .coverage*
 .coverage.xml
 htmlcov
-gmprocess.egg-info/
+**/gmprocess.egg-info/
 .pytest_cache
 *.so
 gmprocess/waveform_processing/smoothing/konno_ohmachi.c
@@ -17,13 +17,12 @@ docs/_site
 docs/Gemfile.lock
 docs/figs/*.aux
 docs/figs/*.log
-gmprocess/_version.py
-gmprocess/version.py
 .vscode/
 dask-worker-space/
 MANIFEST.in
 # Vim tags
 tags
 # Ignore the C code that gets built by cython
-gmprocess/waveform_processing/smoothing/konno_ohmachi.c
-gmprocess/waveform_processing/auto_fchp.c
+src/gmprocess/waveform_processing/smoothing/konno_ohmachi.c
+src/gmprocess/waveform_processing/auto_fchp.c
+src/gmprocess/metrics/oscillators.c

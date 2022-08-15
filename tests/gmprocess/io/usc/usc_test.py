@@ -5,16 +5,15 @@ import os
 
 # third party imports
 import numpy as np
-import pkg_resources
 
 from gmprocess.io.usc.core import is_usc, read_usc
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.core.stationtrace import PROCESS_LEVELS
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_usc():
-    dpath = os.path.join("data", "testdata", "usc", "ci3144585")
-    datadir = pkg_resources.resource_filename("gmprocess", dpath)
+    datadir = DATA_DIR / "testdata" / "usc" / "ci3144585"
     files = {
         "017m30cc.y0a": (-0.049, 0.086),
         "017m30lw.e0a": (0.046, 0.004),
@@ -101,7 +100,7 @@ def test_usc():
     assert stats.sampling_rate == 200
 
     filename = os.path.join(datadir, "017m30bt.s0a")
-    assert is_usc(filename) == True
+    assert is_usc(filename) is True
 
     # test that volume 2 is not available yet
     try:
@@ -109,16 +108,16 @@ def test_usc():
         success = True
     except BaseException:
         success = False
-    assert success == False
+    assert success is False
 
     # test wrong format exception
     try:
-        datadir = os.path.join(homedir, "..", "..", "..", "data", "smc")
-        read_usc(os.path.join(datadir, "0111b.smc"))[0]
+        datadir = DATA_DIR / "smc"
+        read_usc(datadir / "0111b.smc")[0]
         success = True
     except Exception:
         success = False
-    assert success == False
+    assert success is False
 
 
 if __name__ == "__main__":

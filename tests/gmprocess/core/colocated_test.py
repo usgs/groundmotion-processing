@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import os
-import pkg_resources
 
 from gmprocess.core.streamcollection import StreamCollection
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test_colocated():
-    datapath = os.path.join("data", "testdata", "colocated_instruments")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "colocated_instruments"
     sc = StreamCollection.from_directory(datadir)
 
     sc.select_colocated()

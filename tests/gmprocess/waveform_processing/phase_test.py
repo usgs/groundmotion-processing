@@ -15,6 +15,7 @@ from gmprocess.waveform_processing.phase import (
 from gmprocess.io.read import read_data
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import get_config
+from gmprocess.utils.constants import DATA_DIR
 from gmprocess.core.streamcollection import StreamCollection
 from obspy import read, UTCDateTime
 from obspy.core.trace import Trace
@@ -24,39 +25,36 @@ from obspy.taup import TauPyModel
 from scipy.io import loadmat
 import numpy as np
 import os
-import pkg_resources
 import pandas as pd
 
 CONFIG = get_config()
 
 
 def test_p_pick():
-    datapath = os.path.join("data", "testdata", "process")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "process"
     # Testing a strong motion channel
-    tr = read(datadir + "/ALCTENE.UW..sac")[0]
+    tr = read(datadir / "ALCTENE.UW..sac")[0]
     chosen_ppick = UTCDateTime("2001-02-28T18:54:47")
     ppick = PowerPicker(tr)
     ptime = tr.times("utcdatetime")[0] + ppick
     assert (abs(chosen_ppick - ptime)) < 0.2
 
     # Testing a broadband channel
-    tr = read(datadir + "/HAWABHN.US..sac")[0]
+    tr = read(datadir / "HAWABHN.US..sac")[0]
     chosen_ppick = UTCDateTime("2003-01-15T03:42:12.5")
     ppick = PowerPicker(tr)
     ptime = tr.times("utcdatetime")[0] + ppick
     assert (abs(chosen_ppick - ptime)) < 0.2
 
     # Test a Northridge file that should fail to return a P-pick
-    tr = read_data(datadir + "/017m30ah.m0a")[0][0]
+    tr = read_data(datadir / "017m30ah.m0a")[0][0]
     ppick = PowerPicker(tr)
     assert ppick == -1
 
 
 def test_pphase_picker():
     # compare our results with a data file from E. Kalkan
-    datapath = os.path.join("data", "testdata", "strong-motion.mat")
-    datafile = pkg_resources.resource_filename("gmprocess", datapath)
+    datafile = DATA_DIR / "testdata" / "strong-motion.mat"
     matlabfile = loadmat(datafile)
     x = np.squeeze(matlabfile["x"])
 
@@ -131,7 +129,7 @@ def test_all_pickers():
         method = maxrow["Method"]
         try:
             assert cmpdict[station] == method
-        except Exception as e:
+        except BaseException:
             pass
 
 
@@ -164,18 +162,17 @@ def get_streams():
 
 
 def test_get_travel_time_df():
-    datapath = os.path.join("data", "testdata", "travel_times")
-    datadir = pkg_resources.resource_filename("gmprocess", datapath)
+    datadir = DATA_DIR / "testdata" / "travel_times"
 
-    sc1 = StreamCollection.from_directory(os.path.join(datadir, "ci37218996"))
-    sc2 = StreamCollection.from_directory(os.path.join(datadir, "ci38461735"))
+    sc1 = StreamCollection.from_directory(datadir / "ci37218996")
+    sc2 = StreamCollection.from_directory(datadir / "ci38461735")
     scs = [sc1, sc2]
 
     df1, catalog = create_travel_time_dataframe(
-        sc1, os.path.join(datadir, "catalog_test_traveltimes.csv"), 5, 0.1, "iasp91"
+        sc1, datadir / "catalog_test_traveltimes.csv", 5, 0.1, "iasp91"
     )
     df2, catalog = create_travel_time_dataframe(
-        sc2, os.path.join(datadir, "catalog_test_traveltimes.csv"), 5, 0.1, "iasp91"
+        sc2, datadir / "catalog_test_traveltimes.csv", 5, 0.1, "iasp91"
     )
 
     model = TauPyModel("iasp91")

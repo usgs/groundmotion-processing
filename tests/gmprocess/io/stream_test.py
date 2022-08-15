@@ -6,7 +6,6 @@ import os
 
 # third party imports
 import numpy as np
-import pkg_resources
 
 # Local imports
 from gmprocess.io.geonet.core import read_geonet
@@ -15,6 +14,7 @@ from gmprocess.io.read import read_data
 from gmprocess.io.stream import streams_to_dataframe
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.test_utils import read_data_dir
+from gmprocess.utils.constants import DATA_DIR
 
 
 def test():
@@ -64,8 +64,7 @@ def test_grouping():
         assert len(stream) == 3
 
     # dmg
-    dpath = os.path.join("data", "testdata", "dmg")
-    dmg_path = pkg_resources.resource_filename("gmprocess", dpath)
+    dmg_path = DATA_DIR / "testdata" / "dmg"
     dmg_files = []
     for (path, dirs, files) in os.walk(dmg_path):
         for file in files:
