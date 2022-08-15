@@ -14,7 +14,7 @@ report_utils = LazyLoader("report_utils", globals(), "gmprocess.utils.report_uti
 
 
 class GenerateHTMLMapModule(base.SubcommandModule):
-    """Generate station maps (PNG and HTML)."""
+    """Generate interactive station maps."""
 
     command_name = "generate_station_maps"
     aliases = ("maps",)
@@ -28,7 +28,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
     def main(self, gmrecords):
         """Generate summary report.
 
-        This function generates station map (html and png).
+        This function generates station map.
 
         Args:
             gmrecords:

@@ -58,7 +58,7 @@ Attributes
 
    Bases: :py:obj:`base`
 
-   Generate station maps (PNG and HTML).
+   Generate interactive station maps.
 
    .. py:attribute:: command_name
       :annotation: = generate_station_maps
@@ -79,7 +79,7 @@ Attributes
 
       Generate summary report.
 
-      This function generates station map (html and png).
+      This function generates station map.
 
       :param gmrecords: GMrecordsApp instance.
 

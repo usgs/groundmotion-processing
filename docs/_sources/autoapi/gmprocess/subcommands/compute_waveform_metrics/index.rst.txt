@@ -24,7 +24,6 @@ Attributes
 
    gmprocess.subcommands.compute_waveform_metrics.arg_dicts
    gmprocess.subcommands.compute_waveform_metrics.base
-   gmprocess.subcommands.compute_waveform_metrics.distributed
    gmprocess.subcommands.compute_waveform_metrics.ws
    gmprocess.subcommands.compute_waveform_metrics.station_summary
    gmprocess.subcommands.compute_waveform_metrics.const
@@ -37,11 +36,6 @@ Attributes
    
 
 .. py:data:: base
-   
-
-   
-
-.. py:data:: distributed
    
 
    

@@ -24,8 +24,14 @@ Attributes
 
 .. autoapisummary::
 
+   gmprocess.io.asdf.core.VERSION
    gmprocess.io.asdf.core.TIMEPAT
 
+
+.. py:data:: VERSION
+   
+
+   
 
 .. py:data:: TIMEPAT
    :annotation: = [0-9]{4}-[0-9]{2}-[0-9]{2}T

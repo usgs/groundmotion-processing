@@ -52,7 +52,7 @@ myst_enable_extensions = [
     "deflist",
 ]
 
-autoapi_dirs = ["../gmprocess"]
+autoapi_dirs = ["../src/gmprocess"]
 autoapi_add_toctree_entry = False
 
 # Add any paths that contain templates here, relative to this directory.

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.utils.event" href="../event/index.html" /><link rel="prev" title="gmprocess.utils.constants" href="../constants/index.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.utils.download_utils - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>gmprocess.utils.download_utils - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -222,6 +222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -288,7 +289,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -436,7 +436,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -483,17 +482,20 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download" title="gmprocess.utils.download_utils.download"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download</span></code></a>(event, event_dir, config)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.get_event_data" title="gmprocess.utils.download_utils.get_event_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_event_data</span></code></a>(eventid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download" title="gmprocess.utils.download_utils.download"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download</span></code></a>(event, event_dir, config)</p></td>
 <td><p>Download waveform data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.create_event_file" title="gmprocess.utils.download_utils.create_event_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_event_file</span></code></a>(event, event_dir)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.create_event_file" title="gmprocess.utils.download_utils.create_event_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_event_file</span></code></a>(event, event_dir)</p></td>
 <td><p>Write event.json file in event_dir.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.plot_raw" title="gmprocess.utils.download_utils.plot_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_raw</span></code></a>(rawdir, tcollection, event)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.plot_raw" title="gmprocess.utils.download_utils.plot_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_raw</span></code></a>(rawdir, tcollection, event)</p></td>
 <td><p>Make PNG plots of a collection of raw waveforms.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download_rupture_file" title="gmprocess.utils.download_utils.download_rupture_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_rupture_file</span></code></a>(event_id, event_dir)</p></td>
-<td><p>Downlaod rupture file from Comcat.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.download_rupture_file" title="gmprocess.utils.download_utils.download_rupture_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_rupture_file</span></code></a>(event_id, event_dir)</p></td>
+<td><p>Download rupture file from Comcat.</p></td>
 </tr>
 </tbody>
 </table>
@@ -510,6 +512,9 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.FLOAT_PATTERN" title="gmprocess.utils.download_utils.FLOAT_PATTERN"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FLOAT_PATTERN</span></code></a></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.utils.download_utils.EVENT_TEMPLATE" title="gmprocess.utils.download_utils.EVENT_TEMPLATE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EVENT_TEMPLATE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -521,6 +526,16 @@
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.FLOAT_PATTERN">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">FLOAT_PATTERN</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[-+]?[0-9]*\.?[0-9]+</span></em><a class="headerlink" href="#gmprocess.utils.download_utils.FLOAT_PATTERN" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.utils.download_utils.EVENT_TEMPLATE">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">EVENT_TEMPLATE</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&amp;eventid=[EVENT]</span></em><a class="headerlink" href="#gmprocess.utils.download_utils.EVENT_TEMPLATE" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gmprocess.utils.download_utils.get_event_data">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">get_event_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/download_utils.html#get_event_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.download_utils.get_event_data" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -570,7 +585,7 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.utils.download_utils.download_rupture_file">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.utils.download_utils.</span></span><span class="sig-name descname"><span class="pre">download_rupture_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/download_utils.html#download_rupture_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.download_utils.download_rupture_file" title="Permalink to this definition">#</a></dt>
-<dd><p>Downlaod rupture file from Comcat.</p>
+<dd><p>Download rupture file from Comcat.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -648,6 +663,8 @@
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
 <li><a class="reference internal" href="#gmprocess.utils.download_utils.TIMEFMT2">TIMEFMT2</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.download_utils.FLOAT_PATTERN">FLOAT_PATTERN</a></li>
+<li><a class="reference internal" href="#gmprocess.utils.download_utils.EVENT_TEMPLATE">EVENT_TEMPLATE</a></li>
+<li><a class="reference internal" href="#gmprocess.utils.download_utils.get_event_data">get_event_data</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.download_utils.download">download</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.download_utils.create_event_file">create_event_file</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.download_utils.plot_raw">plot_raw</a></li>

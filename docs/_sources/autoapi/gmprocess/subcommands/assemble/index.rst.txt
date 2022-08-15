@@ -22,17 +22,11 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.assemble.distributed
    gmprocess.subcommands.assemble.arg_dicts
    gmprocess.subcommands.assemble.base
    gmprocess.subcommands.assemble.constants
    gmprocess.subcommands.assemble.assemble_utils
 
-
-.. py:data:: distributed
-   
-
-   
 
 .. py:data:: arg_dicts
    

@@ -13,6 +13,7 @@ Functions
 
 .. autoapisummary::
 
+   gmprocess.utils.download_utils.get_event_data
    gmprocess.utils.download_utils.download
    gmprocess.utils.download_utils.create_event_file
    gmprocess.utils.download_utils.plot_raw
@@ -27,6 +28,7 @@ Attributes
 
    gmprocess.utils.download_utils.TIMEFMT2
    gmprocess.utils.download_utils.FLOAT_PATTERN
+   gmprocess.utils.download_utils.EVENT_TEMPLATE
 
 
 .. py:data:: TIMEFMT2
@@ -38,6 +40,14 @@ Attributes
    :annotation: = [-+]?[0-9]*\.?[0-9]+
 
    
+
+.. py:data:: EVENT_TEMPLATE
+   :annotation: = https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventid=[EVENT]
+
+   
+
+.. py:function:: get_event_data(eventid)
+
 
 .. py:function:: download(event, event_dir, config)
 
@@ -75,7 +85,7 @@ Attributes
 
 .. py:function:: download_rupture_file(event_id, event_dir)
 
-   Downlaod rupture file from Comcat.
+   Download rupture file from Comcat.
 
    :param event_id: Event id.
    :type event_id: str

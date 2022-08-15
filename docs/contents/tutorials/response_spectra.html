@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Linear Mixed Effects Regressions" href="lme.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>Response Spectra Calculation and Comparison - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -222,6 +222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/gmprocess/data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -288,7 +289,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -436,7 +436,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/gmprocess/version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -482,7 +481,6 @@ spectra, and compare it to a ground motion prediction equation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pkg_resources</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">_cm</span> <span class="k">as</span> <span class="n">cm</span>
@@ -498,6 +496,7 @@ spectra, and compare it to a ground motion prediction equation.</p>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
 <span class="kn">from</span> <span class="nn">gmprocess.waveform_processing.processing</span> <span class="kn">import</span> <span class="n">process_streams</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.event</span> <span class="kn">import</span> <span class="n">get_event_object</span>
+<span class="kn">from</span> <span class="nn">gmprocess.utils.constants</span> <span class="kn">import</span> <span class="n">DATA_DIR</span>
 <span class="kn">from</span> <span class="nn">gmprocess.metrics.station_summary</span> <span class="kn">import</span> <span class="n">StationSummary</span>
 </pre></div>
 </div>
@@ -509,8 +508,7 @@ and the event object for this earthquake</p>
 <div class="cell tag_remove-stderr docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to example data</span>
-<span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;testdata&#39;</span><span class="p">,</span> <span class="s1">&#39;demo&#39;</span><span class="p">,</span> <span class="s1">&#39;ci38457511&#39;</span><span class="p">,</span> <span class="s1">&#39;raw&#39;</span><span class="p">)</span>
-<span class="n">datadir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;gmprocess&#39;</span><span class="p">,</span> <span class="n">datapath</span><span class="p">)</span>
+<span class="n">datadir</span> <span class="o">=</span> <span class="n">DATA_DIR</span> <span class="o">/</span> <span class="s1">&#39;testdata&#39;</span> <span class="o">/</span> <span class="s1">&#39;demo&#39;</span> <span class="o">/</span> <span class="s1">&#39;ci38457511&#39;</span><span class="o">/</span> <span class="s1">&#39;raw&#39;</span>
 <span class="n">sc</span> <span class="o">=</span> <span class="n">StreamCollection</span><span class="o">.</span><span class="n">from_directory</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span>
 <span class="n">sc</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
 </pre></div>
@@ -573,17 +571,17 @@ metrics, including the response spectra</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3 StationStreams(s) in StreamCollection:
   3 StationTrace(s) in StationStream (passed):
-    CI.CLC.--.HN2 | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (passed)
-    CI.CLC.--.HN1 | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (passed)
-    CI.CLC.--.HNZ | 2019-07-06T03:19:51.680000Z - 2019-07-06T03:20:52.210000Z | 100.0 Hz, 6054 samples (passed)
+    CI.CLC.--.HN2 | 2019-07-06T03:19:50.930000Z - 2019-07-06T03:20:51.450000Z | 100.0 Hz, 6053 samples (passed)
+    CI.CLC.--.HN1 | 2019-07-06T03:19:50.930000Z - 2019-07-06T03:20:51.450000Z | 100.0 Hz, 6053 samples (passed)
+    CI.CLC.--.HNZ | 2019-07-06T03:19:50.930000Z - 2019-07-06T03:20:51.450000Z | 100.0 Hz, 6053 samples (passed)
   3 StationTrace(s) in StationStream (passed):
-    CI.TOW2.--.HN2 | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
-    CI.TOW2.--.HN1 | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
-    CI.TOW2.--.HNZ | 2019-07-06T03:19:53.060000Z - 2019-07-06T03:21:05.850000Z | 100.0 Hz, 7280 samples (passed)
+    CI.TOW2.--.HN2 | 2019-07-06T03:19:52.730000Z - 2019-07-06T03:21:05.520000Z | 100.0 Hz, 7280 samples (passed)
+    CI.TOW2.--.HN1 | 2019-07-06T03:19:52.730000Z - 2019-07-06T03:21:05.520000Z | 100.0 Hz, 7280 samples (passed)
+    CI.TOW2.--.HNZ | 2019-07-06T03:19:52.730000Z - 2019-07-06T03:21:05.520000Z | 100.0 Hz, 7280 samples (passed)
   3 StationTrace(s) in StationStream (passed):
-    CI.CCC.--.HN2 | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
-    CI.CCC.--.HN1 | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
-    CI.CCC.--.HNZ | 2019-07-06T03:19:56.140000Z - 2019-07-06T03:21:28.800000Z | 100.0 Hz, 9267 samples (passed)
+    CI.CCC.--.HN2 | 2019-07-06T03:19:55.980000Z - 2019-07-06T03:21:28.640000Z | 100.0 Hz, 9267 samples (passed)
+    CI.CCC.--.HN1 | 2019-07-06T03:19:55.980000Z - 2019-07-06T03:21:28.640000Z | 100.0 Hz, 9267 samples (passed)
+    CI.CCC.--.HNZ | 2019-07-06T03:19:55.980000Z - 2019-07-06T03:21:28.640000Z | 100.0 Hz, 9267 samples (passed)
 </pre></div>
 </div>
 </div>
@@ -606,11 +604,11 @@ IMT             IMC
 DURATION5-75    H2           9.000000
                 H1           8.610000
                 Z            9.610000
-DURATION5-95    H2          11.380000
+DURATION5-95    H2          11.370000
                 H1          11.280000
 ...                               ...
-SA(7.500)       Z            0.574379
-                ROTD(50.0)   4.020948
+SA(7.500)       Z            0.574400
+                ROTD(50.0)   4.020789
 SORTED_DURATION H2           5.630000
                 H1           5.890000
                 Z            6.560000
@@ -666,6 +664,7 @@ and oscillator periods as arrays</p>
 <span class="n">inputs</span><span class="o">.</span><span class="n">hypo_depth</span> <span class="o">=</span> <span class="n">rotd_dict</span><span class="p">[</span><span class="s1">&#39;ROTD(50.0)&#39;</span><span class="p">][</span><span class="s1">&#39;EarthquakeDepth&#39;</span><span class="p">]</span>
 <span class="n">inputs</span><span class="o">.</span><span class="n">ztor</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">inputs</span><span class="o">.</span><span class="n">rjb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">])</span>
+<span class="n">inputs</span><span class="o">.</span><span class="n">rrup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">])</span>
 <span class="n">inputs</span><span class="o">.</span><span class="n">vs30</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">760.0</span><span class="p">])</span>
 <span class="n">inputs</span><span class="o">.</span><span class="n">sids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
 
@@ -702,7 +701,7 @@ and oscillator periods as arrays</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a45700e65fac7918b21532344d6d166df65853422ba64f6023768af949aca991.png" src="../../_images/a45700e65fac7918b21532344d6d166df65853422ba64f6023768af949aca991.png" />
+<img alt="../../_images/1e153fe1fd4842900e3cad7cd779195f7b8cc15aab763044212152f0e759c2c7.png" src="../../_images/1e153fe1fd4842900e3cad7cd779195f7b8cc15aab763044212152f0e759c2c7.png" />
 </div>
 </div>
 </section>

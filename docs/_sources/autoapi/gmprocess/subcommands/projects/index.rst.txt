@@ -32,9 +32,7 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.projects.distributed
    gmprocess.subcommands.projects.ryaml
-   gmprocess.subcommands.projects.pkg_resources
    gmprocess.subcommands.projects.base
    gmprocess.subcommands.projects.constants
    gmprocess.subcommands.projects.prompt
@@ -42,17 +40,7 @@ Attributes
    gmprocess.subcommands.projects.current_markers
 
 
-.. py:data:: distributed
-   
-
-   
-
 .. py:data:: ryaml
-   
-
-   
-
-.. py:data:: pkg_resources
    
 
    

@@ -24,7 +24,6 @@ Attributes
 
    gmprocess.subcommands.compute_station_metrics.np
    gmprocess.subcommands.compute_station_metrics.spint
-   gmprocess.subcommands.compute_station_metrics.gmt
    gmprocess.subcommands.compute_station_metrics.ob
    gmprocess.subcommands.compute_station_metrics.oqgeo
    gmprocess.subcommands.compute_station_metrics.rupt
@@ -45,11 +44,6 @@ Attributes
    
 
 .. py:data:: spint
-   
-
-   
-
-.. py:data:: gmt
    
 
    

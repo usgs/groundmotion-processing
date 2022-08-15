@@ -44,13 +44,7 @@ Attributes
 .. autoapisummary::
 
    clipping_ann.NN_PATH
-   clipping_ann.NN_PATH
 
-
-.. py:data:: NN_PATH
-   
-
-   
 
 .. py:data:: NN_PATH
    
