@@ -7,7 +7,12 @@ schedules:
   always: true
 
 trigger:
-- main
+  branches:
+    include:
+    - main
+  tags:
+    include:
+    - 'release-*'
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
@@ -146,3 +151,19 @@ jobs:
       bash <(curl -s https://codecov.io/bash)
     displayName: Get coverage (Linux)
     condition: eq( variables['Agent.OS'], 'Linux' )
+
+  - bash: |
+      source activate gmprocess
+      pip install -e .[build]
+      python -m build
+      python3 -m twine upload dist/*
+    displayName: Build (mac/linux)
+    condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT' ), contains(variables['Build.SourceBranch'], 'refs/tags/release-')
+
+  - script: |
+      call activate gmprocess
+      pip install -e .[build]
+      python -m build
+      python3 -m twine upload dist/*
+    displayName: Build (Windows)
+    condition: and(succeeded(), eq( variables['Agent.OS'], 'Windows_NT' ), contains(variables['Build.SourceBranch'], 'refs/tags/release-')
