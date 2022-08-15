@@ -78,7 +78,7 @@ jobs:
       else
         rm /usr/share/miniconda/pkgs/cache/*.json
       fi
-      conda create --name gmprocess pip python=$(python.version)
+      conda create -y --name gmprocess pip python=$(python.version)
       conda activate gmprocess
       echo Agent.NAME:
       echo $(Agent.NAME)
