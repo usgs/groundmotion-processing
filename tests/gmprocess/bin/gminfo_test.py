@@ -9,23 +9,24 @@ from gmprocess.utils.constants import DATA_DIR
 
 
 def test_gminfo():
+    input_dir = DATA_DIR / "testdata" / "geonet"
     out_dir = "temp_dir"
 
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
     try:
         # Concise output, save to file
-        cmd = f"gminfo {DATA_DIR} -c -s {os.path.join(out_dir, 'test.csv')}"
+        cmd = f"gminfo {input_dir} -c -s {os.path.join(out_dir, 'test.csv')}"
 
         rc, so, se = get_command_output(cmd)
         assert rc
 
         # Verbose output
-        cmd = f"gminfo {DATA_DIR}"
+        cmd = f"gminfo {input_dir}"
         rc, so, se = get_command_output(cmd)
         assert rc
-        assert "Caltech" in so.decode()
-        assert "CLC" in so.decode()
+        assert "New Zealand Institute of Geological and Nuclear Science" in so.decode()
+        assert "HSES" in so.decode()
 
     except Exception as e:
         print(so.decode())
