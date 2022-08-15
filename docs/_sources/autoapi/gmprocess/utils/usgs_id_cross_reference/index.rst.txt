@@ -7,6 +7,14 @@
 Module Contents
 ---------------
 
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.utils.usgs_id_cross_reference.Event
+
+
 
 Functions
 ~~~~~~~~~
@@ -37,6 +45,7 @@ Attributes
    gmprocess.utils.usgs_id_cross_reference.DIST_SCALER
    gmprocess.utils.usgs_id_cross_reference.COORD_KM_SCALER
    gmprocess.utils.usgs_id_cross_reference.ERROR_THRESH
+   gmprocess.utils.usgs_id_cross_reference.SEARCH_TEMPLATE
 
 
 .. py:data:: DELTA_MAG
@@ -63,6 +72,16 @@ Attributes
    :annotation: = 1.0
 
    
+
+.. py:data:: SEARCH_TEMPLATE
+   :annotation: = https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson
+
+   
+
+.. py:class:: Event(eventid, event_time, lat, lon, mag)
+
+   Bases: :py:obj:`object`
+
 
 .. py:function:: cross_reference_to_usgs_id(project_name, eqids, mags, times, lats, lons)
 

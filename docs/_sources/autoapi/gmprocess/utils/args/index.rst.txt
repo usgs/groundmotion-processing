@@ -17,6 +17,19 @@ Functions
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.utils.args.VERSION
+
+
+.. py:data:: VERSION
+   
+
+   
+
 .. py:function:: add_shared_args(parser)
 
    Method for arguments shared across all programs.

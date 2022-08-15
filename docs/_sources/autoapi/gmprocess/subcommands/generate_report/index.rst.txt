@@ -22,7 +22,6 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.generate_report.distributed
    gmprocess.subcommands.generate_report.base
    gmprocess.subcommands.generate_report.arg_dicts
    gmprocess.subcommands.generate_report.ws
@@ -30,11 +29,6 @@ Attributes
    gmprocess.subcommands.generate_report.plot
    gmprocess.subcommands.generate_report.const
 
-
-.. py:data:: distributed
-   
-
-   
 
 .. py:data:: base
    

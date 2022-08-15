@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.subcommands.compute_station_metrics - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>gmprocess.subcommands.compute_station_metrics - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -221,6 +221,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/gmprocess/data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -287,7 +288,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -435,7 +435,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/gmprocess/version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -484,10 +483,9 @@
 
 <span class="n">np</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;np&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;numpy&quot;</span><span class="p">)</span>
 <span class="n">spint</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;spint&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;scipy.interpolate&quot;</span><span class="p">)</span>
-<span class="n">gmt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;gmt&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;mapio.gmt&quot;</span><span class="p">)</span>
 <span class="n">ob</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;ob&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;obspy.geodetics.base&quot;</span><span class="p">)</span>
 <span class="n">oqgeo</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;oqgeo&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;openquake.hazardlib.geo.geodetic&quot;</span><span class="p">)</span>
-<span class="n">rupt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;rupt&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;impactutils.rupture&quot;</span><span class="p">)</span>
+<span class="n">rupt</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;rupt&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;esi_utils_rupture&quot;</span><span class="p">)</span>
 <span class="n">ps2ff</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;ps2ff&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;ps2ff&quot;</span><span class="p">)</span>
 
 <span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;arg_dicts&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.arg_dicts&quot;</span><span class="p">)</span>
@@ -554,17 +552,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">()</span>
 
         <span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_config</span><span class="p">()</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;vs30_grids&quot;</span><span class="p">):</span>
-            <span class="n">vs30_grids</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="s2">&quot;vs30&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]:</span>
-                    <span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;metrics&quot;</span><span class="p">][</span><span class="s2">&quot;vs30&quot;</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="n">vs30_grids</span><span class="p">:</span>
-                        <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">&quot;grid_object&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gmt</span><span class="o">.</span><span class="n">GMTGrid</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-                            <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">][</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
-                        <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span> <span class="o">=</span> <span class="n">vs30_grids</span>
 
         <span class="n">station_list</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">waveforms</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">station_list</span><span class="p">):</span>
@@ -681,7 +668,6 @@
                     <span class="n">calc_waveform_metrics</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="n">calc_station_metrics</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="n">rupture</span><span class="o">=</span><span class="n">rupture</span><span class="p">,</span>
-                    <span class="n">vs30_grids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="p">,</span>
                 <span class="p">)</span>
 
                 <span class="n">summary</span><span class="o">.</span><span class="n">_distances</span> <span class="o">=</span> <span class="p">{</span>
@@ -698,18 +684,6 @@
                     <span class="s2">&quot;gc2_T&quot;</span><span class="p">:</span> <span class="n">gc2_T</span><span class="p">,</span>
                 <span class="p">}</span>
                 <span class="n">summary</span><span class="o">.</span><span class="n">_back_azimuth</span> <span class="o">=</span> <span class="n">sta_baz</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                        <span class="n">tmpgrid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span>
-                        <span class="n">summary</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;grid_object&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span>
-                                <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
-                                <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
-                            <span class="p">),</span>
-                            <span class="s2">&quot;column_header&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;column_header&quot;</span><span class="p">],</span>
-                            <span class="s2">&quot;readme_entry&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;readme_entry&quot;</span><span class="p">],</span>
-                            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">],</span>
-                        <span class="p">}</span>
 
                 <span class="n">xmlstr</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get_station_xml</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">][</span><span class="s2">&quot;use_streamcollection&quot;</span><span class="p">]:</span>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.io.cosmos.cosmos_writer - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>gmprocess.io.cosmos.cosmos_writer - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -221,6 +221,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/gmprocess/data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -287,7 +288,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -435,7 +435,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../autoapi/gmprocess/version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -475,26 +474,25 @@
         <article role="main">
           <h1>Source code for gmprocess.io.cosmos.cosmos_writer</h1><div class="highlight"><pre>
 <span></span><span class="c1"># stdlib imports</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">import</span> <span class="nn">pkg_resources</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="c1"># third party imports</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">obspy.geodetics.base</span> <span class="kn">import</span> <span class="n">gps2dist_azimuth</span>
 <span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">gmprocess.core.stationtrace</span> <span class="kn">import</span> <span class="n">TIMEFMT</span><span class="p">,</span> <span class="n">UNITS</span>
 
 <span class="c1"># local imports</span>
 <span class="kn">from</span> <span class="nn">gmprocess.io.asdf.stream_workspace</span> <span class="kn">import</span> <span class="n">StreamWorkspace</span>
-<span class="kn">from</span> <span class="nn">gmprocess.io.cosmos.core</span> <span class="kn">import</span> <span class="n">BUILDING_TYPES</span><span class="p">,</span> <span class="n">SENSOR_TYPES</span><span class="p">,</span> <span class="n">MICRO_TO_VOLT</span>
-<span class="kn">from</span> <span class="nn">gmprocess.core.stationtrace</span> <span class="kn">import</span> <span class="n">TIMEFMT</span><span class="p">,</span> <span class="n">UNITS</span>
+<span class="kn">from</span> <span class="nn">gmprocess.io.cosmos.core</span> <span class="kn">import</span> <span class="n">BUILDING_TYPES</span><span class="p">,</span> <span class="n">MICRO_TO_VOLT</span><span class="p">,</span> <span class="n">SENSOR_TYPES</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
+<span class="kn">from</span> <span class="nn">obspy.geodetics.base</span> <span class="kn">import</span> <span class="n">gps2dist_azimuth</span>
 
 <span class="n">COSMOS_FORMAT</span> <span class="o">=</span> <span class="mf">1.2</span>
 <span class="n">UTC_TIME_FMT</span> <span class="o">=</span> <span class="s2">&quot;%m/</span><span class="si">%d</span><span class="s2">/%Y, %H:%M:%S.</span><span class="si">%f</span><span class="s2">&quot;</span>
@@ -725,7 +723,7 @@
     <span class="n">header_fmt</span><span class="p">[</span><span class="s2">&quot;missing_data_float&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">{value:5.1f}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">scalar_event</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">gmprocess_version</span><span class="p">):</span>
-        <span class="n">datadir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+        <span class="n">datadir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span>
         <span class="n">excelfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;cosmos_table4.xls&quot;</span>
         <span class="n">table4</span> <span class="o">=</span> <span class="n">Table4</span><span class="p">(</span><span class="n">excelfile</span><span class="p">)</span>
         <span class="c1"># fill in data for text header</span>
@@ -893,7 +891,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">scalar_event</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">gmprocess_version</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volume</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scalar_event</span> <span class="o">=</span> <span class="n">scalar_event</span>
-        <span class="n">datadir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+        <span class="n">datadir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span>
         <span class="n">excelfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;cosmos_table4.xls&quot;</span>
         <span class="n">table4</span> <span class="o">=</span> <span class="n">Table4</span><span class="p">(</span><span class="n">excelfile</span><span class="p">)</span>
         <span class="n">ffmt</span> <span class="o">=</span> <span class="n">cfmt_to_ffmt</span><span class="p">(</span><span class="n">INT_FMT</span><span class="p">,</span> <span class="n">NUM_INT_COLS</span><span class="p">)</span>
@@ -1065,7 +1063,7 @@
 
 <div class="viewcode-block" id="DataBlock"><a class="viewcode-back" href="../../../../autoapi/gmprocess/io/cosmos/cosmos_writer/index.html#gmprocess.io.cosmos.cosmos_writer.DataBlock">[docs]</a><span class="k">class</span> <span class="nc">DataBlock</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trace</span><span class="p">,</span> <span class="n">volume</span><span class="p">,</span> <span class="n">eventid</span><span class="p">,</span> <span class="n">gmprocess_version</span><span class="p">):</span>
-        <span class="n">datadir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;gmprocess&quot;</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+        <span class="n">datadir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span>
         <span class="n">excelfile</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">datadir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;cosmos_table4.xls&quot;</span>
         <span class="n">table4</span> <span class="o">=</span> <span class="n">Table4</span><span class="p">(</span><span class="n">excelfile</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volume</span>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands.download" href="../download/index.html" /><link rel="prev" title="gmprocess.subcommands.compute_station_metrics" href="../compute_station_metrics/index.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.subcommands.compute_waveform_metrics - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>gmprocess.subcommands.compute_waveform_metrics - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -222,6 +222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -288,7 +289,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -436,7 +436,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -501,19 +500,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.base" title="gmprocess.subcommands.compute_waveform_metrics.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.distributed" title="gmprocess.subcommands.compute_waveform_metrics.distributed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distributed</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.ws" title="gmprocess.subcommands.compute_waveform_metrics.ws"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ws</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.ws" title="gmprocess.subcommands.compute_waveform_metrics.ws"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ws</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.station_summary" title="gmprocess.subcommands.compute_waveform_metrics.station_summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">station_summary</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.station_summary" title="gmprocess.subcommands.compute_waveform_metrics.station_summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">station_summary</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.const" title="gmprocess.subcommands.compute_waveform_metrics.const"><code class="xref py py-obj docutils literal notranslate"><span class="pre">const</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.const" title="gmprocess.subcommands.compute_waveform_metrics.const"><code class="xref py py-obj docutils literal notranslate"><span class="pre">const</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.confmod" title="gmprocess.subcommands.compute_waveform_metrics.confmod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confmod</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.confmod" title="gmprocess.subcommands.compute_waveform_metrics.confmod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">confmod</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -527,11 +523,6 @@
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.subcommands.compute_waveform_metrics.base">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.compute_waveform_metrics.</span></span><span class="sig-name descname"><span class="pre">base</span></span><a class="headerlink" href="#gmprocess.subcommands.compute_waveform_metrics.base" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.compute_waveform_metrics.distributed">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.compute_waveform_metrics.</span></span><span class="sig-name descname"><span class="pre">distributed</span></span><a class="headerlink" href="#gmprocess.subcommands.compute_waveform_metrics.distributed" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
@@ -659,7 +650,6 @@
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
 <li><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.arg_dicts">arg_dicts</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.base">base</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.distributed">distributed</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.ws">ws</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.station_summary">station_summary</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.compute_waveform_metrics.const">const</a></li>

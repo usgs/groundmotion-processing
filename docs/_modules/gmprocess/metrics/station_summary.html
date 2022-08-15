@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.metrics.station_summary - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>gmprocess.metrics.station_summary - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -221,6 +221,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/gmprocess/data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -287,7 +288,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -435,7 +435,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/gmprocess/version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -485,7 +484,7 @@
 <span class="kn">from</span> <span class="nn">obspy.core.stream</span> <span class="kn">import</span> <span class="n">Stream</span>
 <span class="kn">from</span> <span class="nn">obspy.geodetics.base</span> <span class="kn">import</span> <span class="n">gps2dist_azimuth</span>
 <span class="kn">from</span> <span class="nn">openquake.hazardlib.geo.geodetic</span> <span class="kn">import</span> <span class="n">distance</span>
-<span class="kn">from</span> <span class="nn">impactutils.rupture.point_rupture</span> <span class="kn">import</span> <span class="n">PointRupture</span>
+<span class="kn">from</span> <span class="nn">esi_utils_rupture.point_rupture</span> <span class="kn">import</span> <span class="n">PointRupture</span>
 
 <span class="c1"># local imports</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.config</span> <span class="kn">import</span> <span class="n">get_config</span>
@@ -626,7 +625,6 @@
         <span class="n">calc_waveform_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">calc_station_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">rupture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">vs30_grids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
@@ -641,10 +639,7 @@
 <span class="sd">            calc_station_metrics (bool):</span>
 <span class="sd">                Whether to calculate station metrics. Default is True.</span>
 <span class="sd">            rupture (PointRupture or QuadRupture):</span>
-<span class="sd">                impactutils rupture object. Default is None.</span>
-<span class="sd">            vs30_grids (dict):</span>
-<span class="sd">                A dictionary containing the vs30 grid files, names, and</span>
-<span class="sd">                descriptions (see config).</span>
+<span class="sd">                esi-utils-rupture rupture object. Default is None.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            class: StationSummary class.</span>
@@ -685,7 +680,7 @@
                 <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">&quot;IMT&quot;</span><span class="p">))</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">pgms</span> <span class="o">=</span> <span class="n">pgms</span>
         <span class="k">if</span> <span class="n">calc_station_metrics</span><span class="p">:</span>
-            <span class="n">station</span><span class="o">.</span><span class="n">compute_station_metrics</span><span class="p">(</span><span class="n">rupture</span><span class="p">,</span> <span class="n">vs30_grids</span><span class="p">)</span>
+            <span class="n">station</span><span class="o">.</span><span class="n">compute_station_metrics</span><span class="p">(</span><span class="n">rupture</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">station</span></div>
 
@@ -756,7 +751,6 @@
         <span class="n">calc_waveform_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">calc_station_metrics</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">rupture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">vs30_grids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
@@ -786,10 +780,7 @@
 <span class="sd">            calc_station_metrics (bool):</span>
 <span class="sd">                Whether to calculate station metrics. Default is True.</span>
 <span class="sd">            rupture (PointRupture or QuadRupture):</span>
-<span class="sd">                impactutils rupture object. Default is None.</span>
-<span class="sd">            vs30_grids (dict):</span>
-<span class="sd">                A dictionary containing the vs30 grid files, names, and</span>
-<span class="sd">                descriptions (see config).</span>
+<span class="sd">                esi-utils-rupture rupture object. Default is None.</span>
 <span class="sd">        Note:</span>
 <span class="sd">            Assumes a processed stream with units of gal (1 cm/s^2).</span>
 <span class="sd">            No processing is done by this class.</span>
@@ -841,7 +832,7 @@
                 <span class="n">station</span><span class="o">.</span><span class="n">_imts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">pgms</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">get_level_values</span><span class="p">(</span><span class="s2">&quot;IMT&quot;</span><span class="p">))</span>
                 <span class="n">station</span><span class="o">.</span><span class="n">pgms</span> <span class="o">=</span> <span class="n">pgms</span>
         <span class="k">if</span> <span class="n">calc_station_metrics</span><span class="p">:</span>
-            <span class="n">station</span><span class="o">.</span><span class="n">compute_station_metrics</span><span class="p">(</span><span class="n">rupture</span><span class="p">,</span> <span class="n">vs30_grids</span><span class="p">)</span>
+            <span class="n">station</span><span class="o">.</span><span class="n">compute_station_metrics</span><span class="p">(</span><span class="n">rupture</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">station</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_pgm"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_pgm">[docs]</a>    <span class="k">def</span> <span class="nf">get_pgm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">imt</span><span class="p">,</span> <span class="n">imc</span><span class="p">):</span>
@@ -1115,17 +1106,14 @@
 
         <span class="k">return</span> <span class="n">station</span></div>
 
-<div class="viewcode-block" id="StationSummary.compute_station_metrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.compute_station_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">compute_station_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rupture</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vs30_grids</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="StationSummary.compute_station_metrics"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.compute_station_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">compute_station_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rupture</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes station metrics (distances, vs30, back azimuth) for the</span>
 <span class="sd">        StationSummary.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            rupture (PointRupture or QuadRupture):</span>
-<span class="sd">                impactutils rupture object. Default is None.</span>
-<span class="sd">            vs30_grids (dict):</span>
-<span class="sd">                A dictionary containing the vs30 grid files, names, and</span>
-<span class="sd">                descriptions (see config).</span>
+<span class="sd">                esi-utils-rupture rupture object. Default is None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span>
         <span class="n">elev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">elevation</span>
@@ -1183,17 +1171,7 @@
                     <span class="s2">&quot;gc2_U&quot;</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                     <span class="s2">&quot;gc2_T&quot;</span><span class="p">:</span> <span class="n">gc2_dict</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                 <span class="p">}</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">vs30_grids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">vs30_name</span> <span class="ow">in</span> <span class="n">vs30_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-                <span class="n">tmpgrid</span> <span class="o">=</span> <span class="n">vs30_grids</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_vs30</span><span class="p">[</span><span class="n">vs30_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;grid_object&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">getValue</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">lon</span><span class="p">)),</span>
-                    <span class="s2">&quot;column_header&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;column_header&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;readme_entry&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;readme_entry&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">tmpgrid</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">],</span>
-                <span class="p">}</span></div>
+            <span class="p">)</span></div>
 
 <div class="viewcode-block" id="StationSummary.get_metric_xml"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/station_summary/index.html#gmprocess.metrics.station_summary.StationSummary.get_metric_xml">[docs]</a>    <span class="k">def</span> <span class="nf">get_metric_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return waveform metrics XML as defined for our ASDF implementation.</span>

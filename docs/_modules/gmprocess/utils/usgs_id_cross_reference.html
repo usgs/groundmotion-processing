@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>gmprocess.utils.usgs_id_cross_reference - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -221,6 +221,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/gmprocess/data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -287,7 +288,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -435,7 +435,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../autoapi/gmprocess/version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -475,12 +474,14 @@
         <article role="main">
           <h1>Source code for gmprocess.utils.usgs_id_cross_reference</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">libcomcat.search</span> <span class="kn">import</span> <span class="n">search</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
 
 <span class="n">setup_logger</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;info&quot;</span><span class="p">)</span>
@@ -491,6 +492,18 @@
 <span class="n">DIST_SCALER</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">COORD_KM_SCALER</span> <span class="o">=</span> <span class="mf">0.009</span>
 <span class="n">ERROR_THRESH</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="n">SEARCH_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&quot;</span>
+
+
+<div class="viewcode-block" id="Event"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.Event">[docs]</a><span class="k">class</span> <span class="nc">Event</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventid</span><span class="p">,</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">mag</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eventid</span> <span class="o">=</span> <span class="n">eventid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">event_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">=</span> <span class="n">mag</span></div>
 
 
 <div class="viewcode-block" id="cross_reference_to_usgs_id"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.cross_reference_to_usgs_id">[docs]</a><span class="k">def</span> <span class="nf">cross_reference_to_usgs_id</span><span class="p">(</span><span class="n">project_name</span><span class="p">,</span> <span class="n">eqids</span><span class="p">,</span> <span class="n">mags</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span><span class="p">):</span>
@@ -770,16 +783,30 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        usgs_events (list): List of Libcomcat SummaryEvents.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">usgs_event</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span>
-        <span class="n">starttime</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
-        <span class="n">endtime</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
-        <span class="n">latitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span>
-        <span class="n">longitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span>
-        <span class="n">maxradiuskm</span><span class="o">=</span><span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;dist&quot;</span><span class="p">],</span>
-        <span class="n">maxmagnitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
-        <span class="n">minmagnitude</span><span class="o">=</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">usgs_event</span></div>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">SEARCH_TEMPLATE</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;starttime&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">),</span>
+        <span class="s2">&quot;endtime&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">target</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">TIMEFMT</span><span class="p">),</span>
+        <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;maxradiuskm&quot;</span><span class="p">:</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;dist&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;maxmagnitude&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;minmagnitude&quot;</span><span class="p">:</span> <span class="n">target</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">buffer</span><span class="p">[</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">usgs_events</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;features&quot;</span><span class="p">]:</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span>
+            <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">fromutctimestamp</span><span class="p">(</span><span class="n">feature</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">),</span>
+            <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">][</span><span class="s2">&quot;coordinates&quot;</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">feature</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;mag&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">usgs_events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">usgs_events</span></div>
 
 
 <div class="viewcode-block" id="calculate_error"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/usgs_id_cross_reference/index.html#gmprocess.utils.usgs_id_cross_reference.calculate_error">[docs]</a><span class="k">def</span> <span class="nf">calculate_error</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>

@@ -22,6 +22,7 @@ Attributes
 
 .. autoapisummary::
 
+   gmprocess.apps.gmrecords.VERSION
    gmprocess.apps.gmrecords.configobj
    gmprocess.apps.gmrecords.setuptools_scm
    gmprocess.apps.gmrecords.base
@@ -32,6 +33,11 @@ Attributes
    gmprocess.apps.gmrecords.init
    gmprocess.apps.gmrecords.prompt
 
+
+.. py:data:: VERSION
+   
+
+   
 
 .. py:data:: configobj
    

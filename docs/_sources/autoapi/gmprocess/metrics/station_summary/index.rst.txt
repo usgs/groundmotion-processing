@@ -121,7 +121,7 @@ Attributes
       :rtype: dict
 
 
-   .. py:method:: from_config(stream, config=None, event=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None, vs30_grids=None)
+   .. py:method:: from_config(stream, config=None, event=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None)
       :classmethod:
 
       :param stream: Strong motion timeseries for one station.
@@ -134,11 +134,8 @@ Attributes
       :type calc_waveform_metrics: bool
       :param calc_station_metrics: Whether to calculate station metrics. Default is True.
       :type calc_station_metrics: bool
-      :param rupture: impactutils rupture object. Default is None.
+      :param rupture: esi-utils-rupture rupture object. Default is None.
       :type rupture: PointRupture or QuadRupture
-      :param vs30_grids: A dictionary containing the vs30 grid files, names, and
-                         descriptions (see config).
-      :type vs30_grids: dict
 
       :returns: StationSummary class.
       :rtype: class
@@ -181,7 +178,7 @@ Attributes
          parametric data from COMCAT.
 
 
-   .. py:method:: from_stream(stream, components, imts, event=None, damping=None, smoothing=None, bandwidth=None, allow_nans=None, config=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None, vs30_grids=None)
+   .. py:method:: from_stream(stream, components, imts, event=None, damping=None, smoothing=None, bandwidth=None, allow_nans=None, config=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None)
       :classmethod:
 
       :param stream: Strong motion timeseries for one station.
@@ -209,11 +206,8 @@ Attributes
       :type calc_waveform_metrics: bool
       :param calc_station_metrics: Whether to calculate station metrics. Default is True.
       :type calc_station_metrics: bool
-      :param rupture: impactutils rupture object. Default is None.
+      :param rupture: esi-utils-rupture rupture object. Default is None.
       :type rupture: PointRupture or QuadRupture
-      :param vs30_grids: A dictionary containing the vs30 grid files, names, and
-                         descriptions (see config).
-      :type vs30_grids: dict
 
       .. note::
 
@@ -338,16 +332,13 @@ Attributes
       :rtype: object
 
 
-   .. py:method:: compute_station_metrics(rupture=None, vs30_grids=None)
+   .. py:method:: compute_station_metrics(rupture=None)
 
       Computes station metrics (distances, vs30, back azimuth) for the
       StationSummary.
 
-      :param rupture: impactutils rupture object. Default is None.
+      :param rupture: esi-utils-rupture rupture object. Default is None.
       :type rupture: PointRupture or QuadRupture
-      :param vs30_grids: A dictionary containing the vs30 grid files, names, and
-                         descriptions (see config).
-      :type vs30_grids: dict
 
 
    .. py:method:: get_metric_xml()

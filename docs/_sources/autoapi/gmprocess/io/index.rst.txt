@@ -32,7 +32,6 @@ Submodules
    :titlesonly:
    :maxdepth: 1
 
-   catalog/index.rst
    fetcher/index.rst
    global_fetcher/index.rst
    nga/index.rst

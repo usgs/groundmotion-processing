@@ -20,7 +20,6 @@ There are a lot of imports to take care of first
 
 ```{code-cell} ipython3
 import os
-import pkg_resources
 
 import matplotlib.pyplot as plt
 from matplotlib import _cm as cm
@@ -36,6 +35,7 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.config import get_config
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.event import get_event_object
+from gmprocess.utils.constants import DATA_DIR
 from gmprocess.metrics.station_summary import StationSummary
 ```
 
@@ -46,8 +46,7 @@ and the event object for this earthquake
 ```{code-cell} ipython3
 :tags: [remove-stderr]
 # Path to example data
-datapath = os.path.join('data', 'testdata', 'demo', 'ci38457511', 'raw')
-datadir = pkg_resources.resource_filename('gmprocess', datapath)
+datadir = DATA_DIR / 'testdata' / 'demo' / 'ci38457511'/ 'raw'
 sc = StreamCollection.from_directory(datadir)
 sc.describe()
 ```
@@ -130,6 +129,7 @@ inputs.rake = 90.0
 inputs.hypo_depth = rotd_dict['ROTD(50.0)']['EarthquakeDepth']
 inputs.ztor = 0.0
 inputs.rjb = np.array([5.0])
+inputs.rrup = np.array([5.0])
 inputs.vs30 = np.array([760.0])
 inputs.sids = np.array([0])
 

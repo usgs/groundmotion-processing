@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Initial Setup" href="initial_setup.html" /><link rel="prev" title="Getting Started" href="index.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>Installation - gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</title>
+        <title>Installation - gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev556+g618bb8b2.d20220727 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.1.11.dev587+g1c7feaf6.d20220815 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -222,6 +222,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/core/streamcollection/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.streamcollection</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../../autoapi/gmprocess/data/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.data</span></code></a></li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/io/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../autoapi/gmprocess/io/asdf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/gmprocess/io/asdf/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.core</span></code></a></li>
@@ -288,7 +289,6 @@
 <li class="toctree-l5"><a class="reference internal" href="../../autoapi/gmprocess/io/usc/core/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.usc.core</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/catalog/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.catalog</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/global_fetcher/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.global_fetcher</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/io/nga/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.nga</span></code></a></li>
@@ -436,7 +436,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/zero_crossings/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.zero_crossings</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../autoapi/gmprocess/version/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.version</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -476,26 +475,47 @@
         <article role="main">
           <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
+<p>Note that we used to use conda to manage dependencies but that was creating some
+difficulties and so we are now relying on pip as much as possible.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>There is an old gmprocess package available via conda. Please do not install this!
+It is very out of date and won’t work.</p>
+</div>
+<p>However, we do recommend installing gmprocess into a virtual environment to isolate
+your code from other projects that might create conflicts and
+<a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda</a>
+is good option for accomplishing this.</p>
+<p>We hope to be able to provide pip installs via pypi wheels soon.</p>
 <section id="installing-from-source-mac-and-linux">
 <h2>Installing from source (Mac and Linux)<a class="headerlink" href="#installing-from-source-mac-and-linux" title="Permalink to this heading">#</a></h2>
 <div class="admonition-prerequisites admonition">
 <p class="admonition-title">Prerequisites</p>
 <ul class="simple">
-<li><p>A C compiler. On a mac, this usually means installing XCode/Comomand Line
-tools. For linux, it depends on the variate but is usually very stright
-forward.</p></li>
+<li><p>A C compiler. On a mac, this usually means installing XCode/Comomand Line tools.
+For linux, it depends on the type of linux but is usually very stright forward.</p></li>
 <li><p>Bash shell, curl, and git.</p></li>
 </ul>
 </div>
 <p>First clone this repository and go into the root directory with</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">usgs</span><span class="o">/</span><span class="n">groundmotion</span><span class="o">-</span><span class="n">processing</span><span class="o">.</span><span class="n">git</span>
-<span class="n">cd</span> <span class="n">groundmotion</span><span class="o">-</span><span class="n">processing</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/usgs/groundmotion-processing.git
+$ cd groundmotion-processing
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">install.sh</span></code> script in the root directory of the package installs this
-package and all other dependencies, including python and the required python
-libraries. It is regularly tested on OSX and Linux systems.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="n">install</span><span class="o">.</span><span class="n">sh</span>
+<p>Now install with pip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install .
+</pre></div>
+</div>
+<p>Note that this will install the minimum requirements to run the code. There are
+additional optional packages that can be installed that support running the unit tests
+(<code class="docutils literal notranslate"><span class="pre">test</span></code>), code development (<code class="docutils literal notranslate"><span class="pre">dev</span></code>), and building the documentation (<code class="docutils literal notranslate"><span class="pre">doc</span></code>). To install
+these, you need to add the relevant option in brackets:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install .[test,dev,doc]
+</pre></div>
+</div>
+<p>For development, it is also conveninet to install the code in “editable” mode by adding
+the <code class="docutils literal notranslate"><span class="pre">-e</span></code> option:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e .[test,dev,doc]
 </pre></div>
 </div>
 </section>
@@ -508,42 +528,38 @@ helped users install the code using the following steps.</p>
 <div class="admonition-prerequisites admonition">
 <p class="admonition-title">Prerequisites</p>
 <ul class="simple">
-<li><p>A C compiler. We have had success follwing these
-<a class="reference external" href="https://github.com/cython/cython/wiki/CythonExtensionsOnWindows#using-windows-sdk-cc-compiler-works-for-all-python-versions">instructions</a>
+<li><p>A C compiler. We have had success follwing
+<a class="reference external" href="https://github.com/cython/cython/wiki/CythonExtensionsOnWindows#using-windows-sdk-cc-compiler-works-for-all-python-versions">these instructions</a>
 from cython.</p></li>
 <li><p>Git and some kind of console.</p></li>
 </ul>
 </div>
 <p>First clone this repository and go into the root directory with</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">usgs</span><span class="o">/</span><span class="n">groundmotion</span><span class="o">-</span><span class="n">processing</span><span class="o">.</span><span class="n">git</span>
-<span class="n">cd</span> <span class="n">groundmotion</span><span class="o">-</span><span class="n">processing</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/usgs/groundmotion-processing.git
+$ cd groundmotion-processing
 </pre></div>
 </div>
+<p>There is one depenency (<a class="reference external" href="https://pypi.org/project/Fiona/">fiona</a>) that we have not been
+able to install with pip on Windows systems. So we rely on conda for this.</p>
 <p>Then install the <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> virtual environment and all of the dependencies
 and activate the environment</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">gmprocess</span>  <span class="n">python</span><span class="o">=</span><span class="mf">3.8</span> <span class="o">--</span><span class="n">file</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span> <span class="o">--</span><span class="n">strict</span><span class="o">-</span><span class="n">channel</span><span class="o">-</span><span class="n">priority</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="o">-</span><span class="n">y</span> <span class="o">-</span><span class="n">v</span>
-<span class="n">call</span> <span class="n">activate</span> <span class="n">gmprocess</span>
-</pre></div>
-</div>
-<p>Also, we need to install OpenQuake via pip rather than conda:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">dependencies</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">gem</span><span class="o">/</span><span class="n">oq</span><span class="o">-</span><span class="n">engine</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">engine</span><span class="o">-</span><span class="mf">3.12</span><span class="o">.</span><span class="n">zip</span>
-</pre></div>
-</div>
-<p>And install the gmprocess code in the <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> virtual environment</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="o">.</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">deps</span> <span class="o">--</span><span class="n">force</span><span class="o">-</span><span class="n">reinstall</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create --name gmprocess python=3.8 pip fiona 
+$ call activate gmprocess
+$ pip install -e .
 </pre></div>
 </div>
 </section>
 <section id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">#</a></h2>
-<p>In the root directory of this repositry, you can run our unit tests with
-<code class="docutils literal notranslate"><span class="pre">pytest</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="o">.</span>
+<p>If you included the optional <code class="docutils literal notranslate"><span class="pre">test</span></code> dependencies in the install step, then you can run
+the unit tests  in the root directory of this repositry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ py.test .
 </pre></div>
 </div>
-<p>This will be followed by a lot of terminal output. Warnings are expected to
-occur and do not indicate a problem. Errors indicate that something has gone
-wrong.</p>
+<p>This will be followed by a lot of terminal output. Warnings are expected to occur and
+do not indicate a problem. Errors indicate that something has gone wrong and you will
+want to troubleshoot. You can create an issue in github if you are not able to resolve
+the problem.</p>
 </section>
 </section>
 
