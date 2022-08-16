@@ -9,11 +9,11 @@ import numpy as np
 from gmprocess.io.usc.core import is_usc, read_usc
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.core.stationtrace import PROCESS_LEVELS
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_usc():
-    datadir = DATA_DIR / "testdata" / "usc" / "ci3144585"
+    datadir = TEST_DATA_DIR / "usc" / "ci3144585"
     files = {
         "017m30cc.y0a": (-0.049, 0.086),
         "017m30lw.e0a": (0.046, 0.004),
@@ -112,7 +112,7 @@ def test_usc():
 
     # test wrong format exception
     try:
-        datadir = DATA_DIR / "smc"
+        datadir = TEST_DATA_DIR / "smc"
         read_usc(datadir / "0111b.smc")[0]
         success = True
     except Exception:

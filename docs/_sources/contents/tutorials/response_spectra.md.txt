@@ -46,7 +46,7 @@ and the event object for this earthquake
 ```{code-cell} ipython3
 :tags: [remove-stderr]
 # Path to example data
-datadir = DATA_DIR / 'testdata' / 'demo' / 'ci38457511'/ 'raw'
+datadir = DATA_DIR / 'demo' / 'ci38457511'/ 'raw'
 sc = StreamCollection.from_directory(datadir)
 sc.describe()
 ```

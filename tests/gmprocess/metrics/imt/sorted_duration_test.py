@@ -5,11 +5,11 @@ import numpy as np
 
 from gmprocess.io.read import read_data
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_sorted_duration():
-    datadir = DATA_DIR / "testdata" / "cosmos" / "us1000hyfh"
+    datadir = TEST_DATA_DIR / "cosmos" / "us1000hyfh"
     data_file = datadir / "us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c"
     stream = read_data(data_file)[0]
 

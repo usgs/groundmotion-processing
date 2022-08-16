@@ -10,7 +10,7 @@ def test_compute_station_metrics(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = constants.DATA_DIR / "testdata" / "demo_steps" / "compute_metrics"
+        ddir = constants.TEST_DATA_DIR / "demo_steps" / "compute_metrics"
 
         # Make a copy of the hdf files
         events = ["ci38457511"]
@@ -51,7 +51,7 @@ def test_compute_station_metrics_rupt(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = constants.DATA_DIR / "testdata" / "demo_steps" / "compute_metrics"
+        ddir = constants.TEST_DATA_DIR / "demo_steps" / "compute_metrics"
 
         # Make a copy of the hdf files
         events = ["ci38457511_rupt"]

@@ -1,0 +1,12 @@
+# -----------------------------------------------------------------------------
+# This section is for processing steps that will affect the waveform and get
+# recorded as seismological provenance data.
+processing:
+    # Apply a maximum number of traces per stream. This can occur with downhole
+    # or structural arrays since our code currently is not able to reliably
+    # group by location within an array.
+    - check_instrument:
+        n_max: 3
+        n_min: 1
+        require_two_horiz: True
+

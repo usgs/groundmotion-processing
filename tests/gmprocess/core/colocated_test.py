@@ -4,11 +4,11 @@
 import os
 
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_colocated():
-    datadir = DATA_DIR / "testdata" / "colocated_instruments"
+    datadir = TEST_DATA_DIR / "colocated_instruments"
     sc = StreamCollection.from_directory(datadir)
 
     sc.select_colocated()

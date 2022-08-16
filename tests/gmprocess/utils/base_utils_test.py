@@ -6,12 +6,12 @@ from obspy.core.utcdatetime import UTCDateTime
 
 # local imports
 from gmprocess.utils.base_utils import read_event_json_files
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_read_event_json_files():
 
-    datafile = DATA_DIR / "testdata" / "event_json" / "event.json"
+    datafile = TEST_DATA_DIR / "event_json" / "event.json"
 
     eid = "nc51203888"
     time = UTCDateTime("2008-06-06T09:02:53.890000Z")

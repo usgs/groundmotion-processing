@@ -7,7 +7,7 @@ from obspy.core.trace import Trace
 
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 from invutils import get_inventory
 
@@ -81,7 +81,7 @@ def test_uneven_stream():
 
 def test_num_horizontals():
     sc = StreamCollection.from_directory(
-        DATA_DIR / "testdata" / "fdsn" / "uw61251926" / "strong_motion"
+        TEST_DATA_DIR / "fdsn" / "uw61251926" / "strong_motion"
     )
     st = sc.select(station="SP2")[0]
     assert st.num_horizontal == 2

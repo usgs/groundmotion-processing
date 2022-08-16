@@ -10,10 +10,10 @@ from obspy.core.event import Origin
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
-datadir = DATA_DIR / "testdata" / "fdsnfetch"
+datadir = TEST_DATA_DIR / "fdsnfetch"
 
 
 def test_radial_transverse():

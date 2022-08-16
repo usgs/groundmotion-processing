@@ -12,12 +12,12 @@ from gmprocess.utils.event import get_event_object
 from gmprocess.waveform_processing.windows import signal_split, signal_end
 from gmprocess.waveform_processing.snr import compute_snr
 from gmprocess.waveform_processing.corner_frequencies import get_corner_frequencies
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_fit_spectra():
     config = get_config()
-    datadir = DATA_DIR / "testdata" / "demo" / "ci38457511" / "raw"
+    datadir = TEST_DATA_DIR / "demo" / "ci38457511" / "raw"
     event = get_event_object("ci38457511")
     sc = StreamCollection.from_directory(datadir)
     for st in sc:

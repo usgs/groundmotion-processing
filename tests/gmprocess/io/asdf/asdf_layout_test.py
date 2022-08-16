@@ -15,19 +15,13 @@ from gmprocess.io.asdf.core import write_asdf
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import update_config, get_config
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 CONFIG = get_config()
-
-datadir = DATA_DIR / "testdata"
 
 
 def generate_workspace():
     """Generate simple HDF5 with ASDF layout for testing."""
-    PCOMMANDS = [
-        "assemble",
-        "process",
-    ]
     EVENTID = "us1000778i"
     LABEL = "ptest"
     datafiles, event = read_data_dir("geonet", EVENTID, "*.V1A")
@@ -41,7 +35,9 @@ def generate_workspace():
     write_asdf(tfilename, raw_data, event, label="unprocessed")
     del raw_data
 
-    config = update_config(os.path.join(datadir, "config_min_freq_0p2.yml"), CONFIG)
+    config = update_config(
+        os.path.join(TEST_DATA_DIR, "config_min_freq_0p2.yml"), CONFIG
+    )
 
     workspace = StreamWorkspace.open(tfilename)
     raw_streams = workspace.getStreams(EVENTID, labels=["unprocessed"], config=config)
@@ -65,15 +61,11 @@ def teardown_module(module):
 
 def test_layout():
     LAYOUT_FILENAME = "asdf_layout.txt"
-    LAYOUT_TYPES = {
-        "group": h5py.Group,
-        "dataset": h5py.Dataset,
-    }
 
     tfilename = setup_module.tfilename
     h5 = h5py.File(tfilename, "r")
 
-    testroot = DATA_DIR / "testdata" / "asdf"
+    testroot = TEST_DATA_DIR / "asdf"
     layout_abspath = os.path.join(testroot, LAYOUT_FILENAME)
     with open(layout_abspath, "r", encoding="utf-8") as fin:
         lines = fin.readlines()

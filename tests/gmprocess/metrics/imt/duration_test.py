@@ -11,11 +11,11 @@ from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
 from gmprocess.metrics.reduction.duration import Duration
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_duration():
-    data_file = DATA_DIR / "testdata" / "duration_data.json"
+    data_file = TEST_DATA_DIR / "duration_data.json"
     with open(data_file, "rt", encoding="utf-8") as f:
         jdict = json.load(f)
 
@@ -90,7 +90,7 @@ def test_duration():
 
 
 def test_duration575():
-    datadir = DATA_DIR / "testdata" / "cosmos" / "us1000hyfh"
+    datadir = TEST_DATA_DIR / "cosmos" / "us1000hyfh"
     data_file = datadir / "us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c"
     stream = read_data(data_file)[0]
 

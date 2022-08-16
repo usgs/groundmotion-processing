@@ -5,11 +5,11 @@ import os
 import shutil
 
 from esi_utils_io.cmd import get_command_output
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_gminfo():
-    input_dir = DATA_DIR / "testdata" / "geonet"
+    input_dir = TEST_DATA_DIR / "geonet"
     out_dir = "temp_dir"
 
     if not os.path.exists(out_dir):

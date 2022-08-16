@@ -5,7 +5,7 @@ import os
 
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.logging import setup_logger
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 from gmprocess.core.streamarray import StreamArray
 
 setup_logger()
@@ -14,10 +14,8 @@ setup_logger()
 def test_StreamArray():
 
     # read usc data
-    directory = DATA_DIR / "testdata" / "usc" / "ci3144585"
-    usc_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
-        directory
-    )
+    directory = TEST_DATA_DIR / "usc" / "ci3144585"
+    usc_streams, _, _ = directory_to_streams(directory)
     assert len(usc_streams) == 7
 
     usc_sa = StreamArray(usc_streams)
@@ -33,7 +31,7 @@ def test_StreamArray():
     assert bool(usc_sa)
 
     # read dmg data
-    directory = DATA_DIR / "testdata" / "dmg" / "ci3144585"
+    directory = TEST_DATA_DIR / "dmg" / "ci3144585"
     dmg_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         directory
     )

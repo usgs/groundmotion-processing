@@ -12,6 +12,11 @@ Module Contents
 
    
 
+.. py:data:: TEST_DATA_DIR
+   
+
+   
+
 .. py:data:: PROJ_CONF_DIR
    :annotation: = .gmprocess
 

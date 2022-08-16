@@ -22,18 +22,16 @@ First, some imports
 
 ```{code-cell} ipython3
 import os
-import pkg_resources
 
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.utils.constants import DATA_DIR
 ```
 
 And now we open an example ASDF file
 
 ```{code-cell} ipython3
 # Path to example data
-rel_path = os.path.join(
-  'data', 'testdata', 'asdf', 'nc72282711', 'workspace.h5')
-data_path = pkg_resources.resource_filename('gmprocess', rel_path)
+data_path = DATA_DIR / 'asdf' / 'nc72282711' / 'workspace.h5'
 workspace = StreamWorkspace.open(data_path)
 ```
 

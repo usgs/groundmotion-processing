@@ -1,0 +1,220 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=us10006g7d&source_catalog=USGS&misfit_dloc=105&all_catalogs=False&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WQPU/DMBCGd36Gh0zB307aSBEDIJSBDhRYMKpC4hRLTVJsJwGh/nfcQKUKhaHi
+        tld3unvuefoENQUJC0GtbaUdSDDElJM4jjibUxEz3ypyl2/aNUjAwyK7AiHozMaHV+e2iUQSDcMA
+        rdK21sW2NX4Wqk6iqrTNYCVSvWqcRESit06Zj4sx6zKlmER4RvkKjxUFVWvq3KVOvTt/Q5f+xO8Z
+        sAtPA76+XV7+F/jn/XS/6/zufhnYtjOFWvkfBBVihqfIvzvTvIRiNmdEEI4FE8d+s8XN4wSuerHK
+        9LpQFupm3UPtff6l98hiMKrOyjTGMYs4OVg9xN3z2RdQyoHPAAIAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:28:25 GMT']
+      Server: [nginx/1.13.0]
+      Set-Cookie: [BIGipServerpool-seismicportal=43559104.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=us10006g7d&source_catalog=USGS&misfit_dloc=105&all_catalogs=False&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WQPU/DMBCGd36Gh0zB307aSBEDIJSBDhRYMKpC4hRLTVJsJwGh/nfcQKUKhaHi
+        tld3unvuefoENQUJC0GtbaUdSDDElJM4jjibUxEz3ypyl2/aNUjAwyK7AiHozMaHV+e2iUQSDcMA
+        rdK21sW2NX4Wqk6iqrTNYCVSvWqcRESit06Zj4sx6zKlmER4RvkKjxUFVWvq3KVOvTt/Q5f+xO8Z
+        sAtPA76+XV7+F/jn/XS/6/zufhnYtjOFWvkfBBVihqfIvzvTvIRiNmdEEI4FE8d+s8XN4wSuerHK
+        9LpQFupm3UPtff6l98hiMKrOyjTGMYs4OVg9xN3z2RdQyoHPAAIAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:29:26 GMT']
+      Server: [nginx/1.13.0]
+      Set-Cookie: [BIGipServerpool-seismicportal=43559104.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=us10006g7d&source_catalog=USGS&misfit_dloc=105&all_catalogs=False&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WQPU/DMBCGd36Gh0zB307aSBEDIJSBDhRYMKpC4hRLTVJsJwGh/nfcQKUKhaHi
+        tld3unvuefoENQUJC0GtbaUdSDDElJM4jjibUxEz3ypyl2/aNUjAwyK7AiHozMaHV+e2iUQSDcMA
+        rdK21sW2NX4Wqk6iqrTNYCVSvWqcRESit06Zj4sx6zKlmER4RvkKjxUFVWvq3KVOvTt/Q5f+xO8Z
+        sAtPA76+XV7+F/jn/XS/6/zufhnYtjOFWvkfBBVihqfIvzvTvIRiNmdEEI4FE8d+s8XN4wSuerHK
+        9LpQFupm3UPtff6l98hiMKrOyjTGMYs4OVg9xN3z2RdQyoHPAAIAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:30:27 GMT']
+      Server: [nginx/1.13.0]
+      Set-Cookie: [BIGipServerpool-seismicportal=43559104.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=us10006g7d&source_catalog=USGS&misfit_dloc=105&all_catalogs=True&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WQPU/DMBCGd36Gh0zB307aSBEDIJSBDhRYMKpC4hRLTVJsJwGh/nfcQKUKhaHi
+        tld3unvuefoENQUJC0GtbaUdSDDElJM4jjibUxEz3ypyl2/aNUjAwyK7AiHozMaHV+e2iUQSDcMA
+        rdK21sW2NX4Wqk6iqrTNYCVSvWqcRESit06Zj4sx6zKlmER4RvkKjxUFVWvq3KVOvTt/Q5f+xO8Z
+        sAtPA76+XV7+F/jn/XS/6/zufhnYtjOFWvkfBBVihqfIvzvTvIRiNmdEEI4FE8d+s8XN4wSuerHK
+        9LpQFupm3UPtff6l98hiMKrOyjTGMYs4OVg9xN3z2RdQyoHPAAIAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:52:49 GMT']
+      Server: [nginx/1.13.3]
+      Set-Cookie: [BIGipServerpool-seismicportal=26781888.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=us10006g7d&source_catalog=USGS&misfit_dloc=105&all_catalogs=True&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WQPU/DMBCGd36Gh0zB307aSBEDIJSBDhRYMKpC4hRLTVJsJwGh/nfcQKUKhaHi
+        tld3unvuefoENQUJC0GtbaUdSDDElJM4jjibUxEz3ypyl2/aNUjAwyK7AiHozMaHV+e2iUQSDcMA
+        rdK21sW2NX4Wqk6iqrTNYCVSvWqcRESit06Zj4sx6zKlmER4RvkKjxUFVWvq3KVOvTt/Q5f+xO8Z
+        sAtPA76+XV7+F/jn/XS/6/zufhnYtjOFWvkfBBVihqfIvzvTvIRiNmdEEI4FE8d+s8XN4wSuerHK
+        9LpQFupm3UPtff6l98hiMKrOyjTGMYs4OVg9xN3z2RdQyoHPAAIAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:53:50 GMT']
+      Server: [nginx/1.13.3]
+      Set-Cookie: [BIGipServerpool-seismicportal=26781888.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=7073641&source_catalog=INGV&misfit_dloc=105&all_catalogs=True&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA53RTUvDQBAG4Ls/Yw49xexHsts2EDyoiAc9GD11pYRkky42TbsfjSL9767RoJGi
+        4N6GGXYe3lm8QkMhiQJolKmUhQSHeM7jmLOYUjxljAdQ5DZftzUk8HB7fQEBOL32xcrabSKQQF3X
+        hUYq06hi22o/G0onUFWaTWcEknu5sQIRgXZO6pezvlZlSjHheEbjJe4fn1StbnKbWvls/Q5V+hU/
+        Z+AQHAETiqN5RBiJMYvYyJtdZSOv6cEy13a1c/mTDJ2pTVi3+7+9zhAP5fW0HKSF2Q/Qr+Zx4i+Z
+        Xt5k5yPjPzL9vFD6/tfp3X02Ma3ThVz6mBllbIYH8vdwPzpweDx5A9PYUSYGAgAA
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:54:51 GMT']
+      Server: [nginx/1.13.3]
+      Set-Cookie: [BIGipServerpool-seismicportal=26781888.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=invalid&source_catalog=USGS&misfit_dloc=105&all_catalogs=True&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body: {string: 'null
+
+'}
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:54:52 GMT']
+      Server: [nginx/1.13.3]
+      Set-Cookie: [BIGipServerpool-seismicportal=26781888.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+    status: {code: 400, message: Bad Request}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.19.1]
+    method: GET
+    uri: http://www.seismicportal.eu/eventid/api/convert?collect_dloc=1.5&out_catalog=all&source_id=us10006g7d&source_catalog=USGS&misfit_dloc=105&all_catalogs=False&misfit_dmag=0.8&collect_dtime=60&misfit_dtime=13
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WQPU/DMBCGd36Gh0zB307aSBEDIJSBDhRYMKpC4hRLTVJsJwGh/nfcQKUKhaHi
+        tld3unvuefoENQUJC0GtbaUdSDDElJM4jjibUxEz3ypyl2/aNUjAwyK7AiHozMaHV+e2iUQSDcMA
+        rdK21sW2NX4Wqk6iqrTNYCVSvWqcRESit06Zj4sx6zKlmER4RvkKjxUFVWvq3KVOvTt/Q5f+xO8Z
+        sAtPA76+XV7+F/jn/XS/6/zufhnYtjOFWvkfBBVihqfIvzvTvIRiNmdEEI4FE8d+s8XN4wSuerHK
+        9LpQFupm3UPtff6l98hiMKrOyjTGMYs4OVg9xN3z2RdQyoHPAAIAAA==
+    headers:
+      Access-Control-Allow-Origin: ['*']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json]
+      Date: ['Tue, 18 Dec 2018 17:55:53 GMT']
+      Server: [nginx/1.13.3]
+      Set-Cookie: [BIGipServerpool-seismicportal=26781888.20480.0000; path=/; Httponly]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding]
+    status: {code: 200, message: OK}
+version: 1

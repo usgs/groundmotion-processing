@@ -11,7 +11,7 @@ from obspy.core.trace import Stats
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
 from gmprocess.metrics.station_summary import StationSummary
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def read_at2(dfile, horient=0.0):
@@ -85,11 +85,7 @@ def read_at2(dfile, horient=0.0):
 
 def test_high_freq_sa():
     t1 = time.time()
-    datadir = DATA_DIR / "testdata" / "high_freq_sa"
-    # fnames = [
-    #     'RSN10591_ComalTX11-10-20_IU.CCM.BH1.10.AT2',
-    #     'RSN10591_ComalTX11-10-20_IU.CCM.BH2.10.AT2'
-    # ]
+    datadir = TEST_DATA_DIR / "high_freq_sa"
     fnames = [
         "RSN10590_ComalTX11-10-20_IU.CCM.BH1.00.AT2",
         "RSN10590_ComalTX11-10-20_IU.CCM.BH2.00.AT2",

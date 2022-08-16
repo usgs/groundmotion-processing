@@ -14,11 +14,7 @@ kernelspec:
 
 It may be useful to compare seismograms interactively on a map. Although gmprocess does not have this capability, it is relatively straightforward to do using folium for generating the map and altair for creating the figures.
 
-Note that the altair package is needed for the interactive plotting, but is not used by gmprocess and will need to be installed separately. The package can be installed via conda or mamba:
-
-```conda install altair```
-
-```mamba install altair```
+Note that the `altair` package is needed for the interactive plotting, but is not used by gmprocess and will need to be installed separately. The package can be installed via conda or mamba.
 
 We first take care of the imports. 
 
@@ -29,18 +25,16 @@ import folium
 import altair as alt
 import json
 import os
-import pkg_resources
 
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
+from gmprocess.utils.constants import DATA_DIR
 ```
 
 We are using a ground motion dataset of earthquakes from the 2001 Nisqually earthquake. The processed waveforms in the ASDF file will be used for this tutorial.
 
 ```{code-cell} ipython3
 # Open ASDF file containing Nisqually dataset
-rel_path = os.path.join(
-  'data', 'testdata', 'asdf', 'uw10530748', 'workspace.h5')
-data_path = pkg_resources.resource_filename('gmprocess', rel_path)
+data_path = DATA_DIR / 'asdf' / 'uw10530748' / 'workspace.h5'
 workspace = StreamWorkspace.open(data_path)
 ```
 

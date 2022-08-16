@@ -12,7 +12,7 @@ def test_auto_shakemap(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = constants.DATA_DIR / "testdata" / "demo"
+        ddir = constants.TEST_DATA_DIR / "demo"
         setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()

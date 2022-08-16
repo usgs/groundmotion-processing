@@ -8,11 +8,11 @@ from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_rotd():
-    datadir = DATA_DIR / "testdata" / "process"
+    datadir = TEST_DATA_DIR / "process"
     # Create a stream and station summary, convert from m/s^2 to cm/s^2 (GAL)
     osc1_data = np.genfromtxt(datadir / "ALCTENE.UW..sac.acc.final.txt")
     osc2_data = np.genfromtxt(datadir / "ALCTENN.UW..sac.acc.final.txt")

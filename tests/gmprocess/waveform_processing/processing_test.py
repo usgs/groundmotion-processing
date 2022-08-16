@@ -12,9 +12,8 @@ from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.logging import setup_logger
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import update_config, get_config
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
-datadir = DATA_DIR / "testdata"
 CONFIG = get_config()
 
 setup_logger()
@@ -32,7 +31,7 @@ def test_process_streams():
 
     sc.describe()
 
-    config = update_config(datadir / "config_min_freq_0p2.yml", CONFIG)
+    config = update_config(TEST_DATA_DIR / "config_min_freq_0p2.yml", CONFIG)
 
     test = process_streams(sc, origin, config=config)
 
@@ -91,7 +90,7 @@ def test_check_instrument():
     sc = StreamCollection(streams)
     sc.describe()
 
-    config = update_config(datadir / "config_test_check_instr.yml", CONFIG)
+    config = update_config(TEST_DATA_DIR / "config_test_check_instr.yml", CONFIG)
     test = process_streams(sc, origin, config=config)
 
     for sta, expected in [("CVS", True), ("GASB", True), ("SBT", False)]:

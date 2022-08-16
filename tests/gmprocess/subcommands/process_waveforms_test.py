@@ -12,7 +12,7 @@ def test_process_waveforms(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = str(constants.DATA_DIR / "testdata" / "demo_steps" / "process_waveforms")
+        ddir = str(constants.TEST_DATA_DIR / "demo_steps" / "process_waveforms")
 
         # Make a copy of the hdf files
         events = ["ci38038071", "ci38457511"]

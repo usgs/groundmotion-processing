@@ -11,7 +11,7 @@ from obspy.core.event.origin import Origin
 from obspy.core.utcdatetime import UTCDateTime
 
 from gmprocess.utils.event import ScalarEvent, get_event_dict, get_event_object
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_scalar():
@@ -39,7 +39,7 @@ def test_scalar():
     assert event.magnitude == mag
     assert event.magnitude_type == mag_type
 
-    quakeml = DATA_DIR / "testdata" / "usp000hat0_quakeml.xml"
+    quakeml = TEST_DATA_DIR / "usp000hat0_quakeml.xml"
     catalog = read_events(quakeml)
     tevent = catalog.events[0]
     event = ScalarEvent.fromEvent(tevent)
@@ -81,7 +81,7 @@ def test_scalar():
 
 
 def test_event():
-    tape_file = DATA_DIR / "testdata" / "vcr_event_test.yaml"
+    tape_file = TEST_DATA_DIR / "vcr_event_test.yaml"
     with vcr.use_cassette(tape_file):
         eid = "us1000j96d"  # M7.0 Peru Mar 1 2019
         edict = get_event_dict(eid)
