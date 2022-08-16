@@ -4,11 +4,11 @@ import os.path
 import numpy as np
 from gmprocess.io.esm.core import is_esm, read_esm
 from gmprocess.utils.test_utils import read_data_dir
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test():
-    datadir = DATA_DIR / "testdata" / "esm" / "us60004wsq"
+    datadir = TEST_DATA_DIR / "esm" / "us60004wsq"
 
     esm_file1 = os.path.join(datadir, "HI.ARS1..HNE.D.20190728.160908.C.ACC.ASC")
     esm_file2 = os.path.join(datadir, "HI.ARS1..HNN.D.20190728.160908.C.ACC.ASC")

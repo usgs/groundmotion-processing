@@ -13,7 +13,7 @@ import numpy as np
 from obspy import UTCDateTime
 
 from gmprocess.utils.config import get_config
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.instrument_response import remove_response
@@ -24,7 +24,7 @@ from gmprocess.waveform_processing.filtering import lowpass_filter, highpass_fil
 
 PICKER_CONFIG = get_config()["pickers"]
 
-data_path = DATA_DIR / "testdata", "process"
+data_path = TEST_DATA_DIR / "process"
 
 
 def _test_signal_split():
@@ -221,7 +221,7 @@ def test_signal_split2():
 
 
 def _test_trim_multiple_events():
-    datadir = DATA_DIR / "testdata" / "multiple_events"
+    datadir = TEST_DATA_DIR / "multiple_events"
     sc = StreamCollection.from_directory(datadir / "ci38457511")
     origin = get_event_object("ci38457511")
     df, catalog = create_travel_time_dataframe(

@@ -15,7 +15,7 @@ from gmprocess.waveform_processing.phase import (
 from gmprocess.io.read import read_data
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.utils.config import get_config
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 from gmprocess.core.streamcollection import StreamCollection
 from obspy import read, UTCDateTime
 from obspy.core.trace import Trace
@@ -31,7 +31,7 @@ CONFIG = get_config()
 
 
 def test_p_pick():
-    datadir = DATA_DIR / "testdata" / "process"
+    datadir = TEST_DATA_DIR / "process"
     # Testing a strong motion channel
     tr = read(datadir / "ALCTENE.UW..sac")[0]
     chosen_ppick = UTCDateTime("2001-02-28T18:54:47")
@@ -54,7 +54,7 @@ def test_p_pick():
 
 def test_pphase_picker():
     # compare our results with a data file from E. Kalkan
-    datafile = DATA_DIR / "testdata" / "strong-motion.mat"
+    datafile = TEST_DATA_DIR / "strong-motion.mat"
     matlabfile = loadmat(datafile)
     x = np.squeeze(matlabfile["x"])
 
@@ -145,14 +145,14 @@ def test_travel_time():
         "NZ.THZ.HN": 42.016420026730088,
     }
     for stream in streams:
-        minloc, mean_snr = pick_travel(stream, origin)
+        minloc, _ = pick_travel(stream, origin)
         np.testing.assert_almost_equal(minloc, cmps[stream.get_id()])
 
 
 def get_streams():
-    datafiles1, origin1 = read_data_dir("cwb", "us1000chhc", "*.dat")
-    datafiles2, origin2 = read_data_dir("nsmn", "us20009ynd", "*.txt")
-    datafiles3, origin3 = read_data_dir("geonet", "us1000778i", "*.V1A")
+    datafiles1, _ = read_data_dir("cwb", "us1000chhc", "*.dat")
+    datafiles2, _ = read_data_dir("nsmn", "us20009ynd", "*.txt")
+    datafiles3, _ = read_data_dir("geonet", "us1000778i", "*.V1A")
     datafiles = datafiles1 + datafiles2 + datafiles3
     streams = []
     for datafile in datafiles:
@@ -162,7 +162,7 @@ def get_streams():
 
 
 def test_get_travel_time_df():
-    datadir = DATA_DIR / "testdata" / "travel_times"
+    datadir = TEST_DATA_DIR / "travel_times"
 
     sc1 = StreamCollection.from_directory(datadir / "ci37218996")
     sc2 = StreamCollection.from_directory(datadir / "ci38461735")

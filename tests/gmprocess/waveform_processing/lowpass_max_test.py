@@ -10,11 +10,11 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.config import get_config, update_dict
 from gmprocess.utils.event import get_event_object
 from gmprocess.waveform_processing.processing import process_streams
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_lowpass_max():
-    datadir = DATA_DIR / "testdata" / "lowpass_max"
+    datadir = TEST_DATA_DIR / "lowpass_max"
     sc = StreamCollection.from_directory(datadir)
     sc.describe()
 
@@ -32,8 +32,6 @@ def test_lowpass_max():
                     "water_level": 60,
                 }
             },
-            #            {'detrend': {'detrending_method': 'linear'}},
-            #            {'detrend': {'detrending_method': 'demean'}},
             {
                 "get_corner_frequencies": {
                     "constant": {"highpass": 0.08, "lowpass": 20.0},

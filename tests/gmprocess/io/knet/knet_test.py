@@ -4,11 +4,11 @@ import os.path
 import numpy as np
 from gmprocess.io.knet.core import is_knet, read_knet
 from gmprocess.utils.test_utils import read_data_dir
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test():
-    datadir = DATA_DIR / "testdata" / "knet" / "us2000cnnl"
+    datadir = TEST_DATA_DIR / "knet" / "us2000cnnl"
 
     knet_file1 = os.path.join(datadir, "AOM0051801241951.EW")
     knet_file2 = os.path.join(datadir, "AOM0051801241951.NS")
@@ -49,7 +49,7 @@ def test():
     assert not success
 
     # test some kiknet files
-    datadir = DATA_DIR / "testdata" / "kiknet" / "usp000a1b0"
+    datadir = TEST_DATA_DIR / "kiknet" / "usp000a1b0"
     kiknet_file1 = os.path.join(datadir, "AICH040010061330.EW2")
     kiknet_file2 = os.path.join(datadir, "AICH040010061330.NS2")
     kiknet_file3 = os.path.join(datadir, "AICH040010061330.UD2")

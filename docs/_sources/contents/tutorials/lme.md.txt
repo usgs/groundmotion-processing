@@ -34,6 +34,7 @@ from openquake.hazardlib.gsim.base import SitesContext
 from openquake.hazardlib.gsim.base import RuptureContext
 from openquake.hazardlib.gsim.base import DistancesContext
 from openquake.hazardlib.gsim.abrahamson_2014 import AbrahamsonEtAl2014
+from gmprocess.utils.constants import DATA_DIR
 ```
 
 This tutorial uses the [statsmodels](https://www.statsmodels.org/stable/install.html) package to create a mixed effects regression from spectral accelerations 
@@ -45,8 +46,7 @@ California Earthquake Sequence.
 ```{code-cell} ipython3
 :tags: [remove-stderr]
 # Path to example data
-rel_path = os.path.join('data', 'testdata', 'lme', 'SA_rotd50.0_2020.03.31.csv')
-data_path = pkg_resources.resource_filename('gmprocess', rel_path)
+data_path = DATA_DIR / "lme" / "SA_rotd50.0_2020.03.31.csv"
 df = pd.read_csv(data_path)
 ```
 

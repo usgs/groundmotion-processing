@@ -6,9 +6,9 @@ import numpy as np
 from gmprocess.metrics.rotation.rotation import Rotation
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
-datadir = DATA_DIR / "testdata" / "process"
+datadir = TEST_DATA_DIR / "process"
 
 
 def test_rotation():

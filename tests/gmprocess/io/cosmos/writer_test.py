@@ -8,7 +8,7 @@ import time
 from io import StringIO
 
 # local imports
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.cosmos.core import is_cosmos, read_cosmos
 from gmprocess.io.cosmos.cosmos_writer import (
@@ -90,7 +90,7 @@ SAMPLE_DATA_BLOCK = """
 
 
 def get_sample_data(volume):
-    datafile = DATA_DIR / "testdata" / "asdf" / "nc71126864" / "workspace.h5"
+    datafile = TEST_DATA_DIR / "asdf" / "nc71126864" / "workspace.h5"
     workspace = StreamWorkspace.open(datafile)
     t1 = time.time()
     eventid = workspace.getEventIds()[0]
@@ -120,7 +120,7 @@ def get_sample_data(volume):
 def test_text_header():
     # get some data
     volume = Volume.PROCESSED
-    trace, eventid, scalar_event, stream, gmprocess_version = get_sample_data(volume)
+    trace, _, scalar_event, stream, gmprocess_version = get_sample_data(volume)
     text_header = TextHeader(trace, scalar_event, stream, volume, gmprocess_version)
     cosmos_file = StringIO()
     text_header.write(cosmos_file)
@@ -133,7 +133,7 @@ def test_text_header():
 
 def test_int_header():
     volume = Volume.PROCESSED
-    trace, eventid, scalar_event, stream, gmprocess_version = get_sample_data(volume)
+    trace, _, scalar_event, stream, gmprocess_version = get_sample_data(volume)
     int_header = IntHeader(trace, scalar_event, stream, volume, gmprocess_version)
     cosmos_file = StringIO()
     int_header.write(cosmos_file)
@@ -146,7 +146,7 @@ def test_int_header():
 
 def test_float_header():
     volume = Volume.PROCESSED
-    trace, eventid, scalar_event, stream, gmprocess_version = get_sample_data(volume)
+    trace, _, scalar_event, _, _ = get_sample_data(volume)
     float_header = FloatHeader(trace, scalar_event, volume)
     cosmos_file = StringIO()
     float_header.write(cosmos_file)
@@ -160,7 +160,7 @@ def test_float_header():
 
 def test_data_block():
     volume = Volume.PROCESSED
-    trace, eventid, scalar_event, stream, gmprocess_version = get_sample_data(volume)
+    trace, eventid, _, _, gmprocess_version = get_sample_data(volume)
     data_block = DataBlock(trace, volume, eventid, gmprocess_version)
     cosmos_file = StringIO()
     data_block.write(cosmos_file)
@@ -174,7 +174,7 @@ def test_data_block():
 
 def test_cosmos_writer(datafile=None):
     if datafile is None:
-        datafile = DATA_DIR / "testdata" / "asdf" / "nc71126864" / "workspace.h5"
+        datafile = TEST_DATA_DIR / "asdf" / "nc71126864" / "workspace.h5"
     tempdir = None
     try:
         tempdir = tempfile.mkdtemp()
@@ -193,7 +193,7 @@ def test_cosmos_writer(datafile=None):
         for tfile in files:
             try:
                 assert is_cosmos(tfile)
-            except:
+            except BaseException:
                 x = 1
             streams = read_cosmos(tfile)
 

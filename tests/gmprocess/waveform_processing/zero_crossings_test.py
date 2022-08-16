@@ -10,11 +10,11 @@ from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.config import get_config, update_dict
 from gmprocess.utils.event import get_event_object
 from gmprocess.waveform_processing.processing import process_streams
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_zero_crossings():
-    datadir = DATA_DIR / "testdata" / "zero_crossings"
+    datadir = TEST_DATA_DIR / "zero_crossings"
     sc = StreamCollection.from_directory(datadir)
     sc.describe()
 

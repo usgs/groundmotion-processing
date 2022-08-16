@@ -9,7 +9,7 @@ import pandas as pd
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_fas():
@@ -17,10 +17,9 @@ def test_fas():
     Testing based upon the work provided in
     https://github.com/arkottke/notebooks/blob/master/effective_amp_spectrum.ipynb
     """
-    datadir = DATA_DIR / "testdata"
-    fas_file = datadir / "fas_geometric_mean.pkl"
-    p1 = datadir / "peer" / "RSN763_LOMAP_GIL067.AT2"
-    p2 = datadir / "peer" / "RSN763_LOMAP_GIL337.AT2"
+    fas_file = TEST_DATA_DIR / "fas_geometric_mean.pkl"
+    p1 = TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL067.AT2"
+    p2 = TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL337.AT2"
 
     stream = StationStream([])
     for idx, fpath in enumerate([p1, p2]):

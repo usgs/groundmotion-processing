@@ -11,7 +11,7 @@ def test_compute_waveform_metrics(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = constants.DATA_DIR / "testdata" / "demo_steps" / "compute_metrics"
+        ddir = constants.TEST_DATA_DIR / "demo_steps" / "compute_metrics"
 
         # Make a copy of the hdf files
         events = ["ci38038071", "ci38457511"]

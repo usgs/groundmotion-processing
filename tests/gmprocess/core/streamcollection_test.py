@@ -9,7 +9,7 @@ from obspy import UTCDateTime
 
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.logging import setup_logger
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 from gmprocess.core.streamcollection import StreamCollection
 
 
@@ -19,7 +19,7 @@ setup_logger()
 def test_StreamCollection():
 
     # read usc data
-    directory = DATA_DIR / "testdata" / "usc" / "ci3144585"
+    directory = TEST_DATA_DIR / "usc" / "ci3144585"
     usc_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         directory
     )
@@ -44,7 +44,7 @@ def test_StreamCollection():
     assert sort_lengths[2] == 3
 
     # read dmg data
-    directory = DATA_DIR / "testdata" / "dmg" / "ci3144585"
+    directory = TEST_DATA_DIR / "dmg" / "ci3144585"
     dmg_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
         directory
     )
@@ -100,7 +100,7 @@ def test_StreamCollection():
 
 
 def test_duplicates():
-    datadir = DATA_DIR / "testdata" / "duplicate" / "general"
+    datadir = TEST_DATA_DIR / "duplicate" / "general"
     streams = directory_to_streams(datadir)[0]
 
     sc_bad = StreamCollection(streams=streams, handle_duplicates=False)
@@ -210,13 +210,13 @@ def test_duplicates():
     assert sc.select(station="23837")[0][0].stats.network == "CE"
 
     # New test for some Hawaii data.
-    datadir = DATA_DIR / "testdata" / "duplicate" / "hawaii"
+    datadir = TEST_DATA_DIR / "duplicate" / "hawaii"
     streams = directory_to_streams(datadir)[0]
     sc = StreamCollection(streams=streams, handle_duplicates=True)
     assert len(sc) == 1
 
     # New test for some Alaska data.
-    datadir = DATA_DIR / "testdata" / "duplicate" / "alaska"
+    datadir = TEST_DATA_DIR / "duplicate" / "alaska"
     streams = directory_to_streams(datadir)[0]
     sc = StreamCollection(
         streams=streams, handle_duplicates=True, preference_order=["location_code"]
@@ -228,7 +228,7 @@ def test_duplicates():
 
 
 def test_get_status():
-    directory = DATA_DIR / "testdata" / "status"
+    directory = TEST_DATA_DIR / "status"
     sc = StreamCollection.from_directory(directory)
 
     # Manually fail some of the streams

@@ -9,11 +9,11 @@ import numpy as np
 
 from gmprocess.io.smc.core import is_smc, read_smc
 from gmprocess.core.streamcollection import StreamCollection
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_smc():
-    datadir = DATA_DIR / "testdata" / "smc" / "nc216859"
+    datadir = TEST_DATA_DIR / "smc" / "nc216859"
 
     files = OrderedDict(
         [
@@ -63,7 +63,7 @@ def test_smc():
 
 
 def test_bad():
-    datadir = DATA_DIR / "testdata" / "duplicate" / "general"
+    datadir = TEST_DATA_DIR / "duplicate" / "general"
     tfile = "np01002r_4225a_u.smc"
     dfile = datadir / tfile
     try:

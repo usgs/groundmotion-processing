@@ -14,7 +14,7 @@ from gmprocess.io.read import read_data
 from gmprocess.io.stream import streams_to_dataframe
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.test_utils import read_data_dir
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test():
@@ -64,7 +64,7 @@ def test_grouping():
         assert len(stream) == 3
 
     # dmg
-    dmg_path = DATA_DIR / "testdata" / "dmg"
+    dmg_path = TEST_DATA_DIR / "dmg"
     dmg_files = []
     for (path, dirs, files) in os.walk(dmg_path):
         for file in files:

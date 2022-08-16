@@ -11,7 +11,7 @@ from gmprocess.metrics.exception import PGMException
 from gmprocess.metrics.metrics_controller import MetricsController, _get_channel_dict
 from gmprocess.core.stationstream import StationStream
 from gmprocess.utils.config import get_config
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 config = get_config()
 
@@ -222,7 +222,7 @@ def test_controller():
 
 
 def _validate_steps(step_sets, data_type):
-    datafile_abspath = DATA_DIR / "testdata" / "metrics_controller" / "workflows.csv"
+    datafile_abspath = TEST_DATA_DIR / "metrics_controller" / "workflows.csv"
     df = pd.read_csv(datafile_abspath)
     wf_df = df.apply(lambda x: x.astype(str).str.lower())
     # test workflows
@@ -241,7 +241,7 @@ def _validate_steps(step_sets, data_type):
 
 
 def test_exceptions():
-    homedir = DATA_DIR / "testdata" / "geonet"
+    homedir = TEST_DATA_DIR / "geonet"
     datafile_v2 = homedir / "us1000778i" / "20161113_110259_WTMC_20.V2A"
     stream_v2 = read_geonet(datafile_v2)[0]
     # Check for origin Error

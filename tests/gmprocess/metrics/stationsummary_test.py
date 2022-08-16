@@ -12,7 +12,7 @@ from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.processing import process_streams
 from gmprocess.utils.base_utils import read_event_json_files
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def cmp_dicts(adict, bdict):
@@ -169,7 +169,7 @@ def test_stationsummary():
 
 
 def test_allow_nans():
-    datadir = DATA_DIR / "testdata" / "fdsn" / "uu60363602"
+    datadir = TEST_DATA_DIR / "fdsn" / "uu60363602"
     sc = StreamCollection.from_directory(datadir)
     origin = read_event_json_files([datadir / "event.json"])[0]
     psc = process_streams(sc, origin)

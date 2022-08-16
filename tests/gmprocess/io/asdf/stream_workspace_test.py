@@ -15,7 +15,7 @@ from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.rupture_utils import get_rupture_file
 from gmprocess.utils.config import update_config, get_config
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 from h5py.h5py_warnings import H5pyDeprecationWarning
 from ruamel.yaml.error import YAMLError
@@ -25,8 +25,6 @@ import pandas as pd
 import pytest
 
 CONFIG = get_config()
-
-datadir = DATA_DIR / "testdata"
 
 
 def _compare_streams(instream, outstream):
@@ -97,7 +95,7 @@ def _test_workspace():
             warnings.filterwarnings("ignore", category=YAMLError)
             warnings.filterwarnings("ignore", category=FutureWarning)
             config = update_config(
-                os.path.join(datadir, "config_min_freq_0p2.yml"), CONFIG
+                os.path.join(TEST_DATA_DIR, "config_min_freq_0p2.yml"), CONFIG
             )
             tfile = os.path.join(tdir, "test.hdf")
             raw_streams = []

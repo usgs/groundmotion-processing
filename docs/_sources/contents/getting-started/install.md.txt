@@ -15,13 +15,28 @@ is good option for accomplishing this.
 
 We hope to be able to provide pip installs via pypi wheels soon.
 
-## Installing from source (Mac and Linux)
+## Installing from source
 
-```{admonition} Prerequisites
+:::{admonition} Prerequisites
+:class: note
+
+```{tab} Mac and Linux
 - A C compiler. On a mac, this usually means installing XCode/Comomand Line tools. 
   For linux, it depends on the type of linux but is usually very stright forward.
 - Bash shell, curl, and git.
 ```
+
+```{tab} Windows
+- A C compiler. We have had success follwing 
+  [these instructions](https://github.com/cython/cython/wiki/CythonExtensionsOnWindows#using-windows-sdk-cc-compiler-works-for-all-python-versions)
+  from cython.
+- Git and some kind of console.
+
+Our development team is not proficient with Windows systems, so our ability to 
+support Windows installs is limited. But we know that the code compiles and 
+passes tests in Windows on our continuous integration systems.
+```
+:::
 
 First clone this repository and go into the root directory with
 
@@ -30,59 +45,36 @@ $ git clone https://github.com/usgs/groundmotion-processing.git
 $ cd groundmotion-processing
 ```
 
-Now install with pip:
+:::{admonition} Windows
+:class: important
+There is one depenency ([fiona](https://pypi.org/project/Fiona/)) that we have not been
+able to install with pip on Windows systems. So we rely on conda for this.
+```
+$ conda create --name gmprocess python=3.8 pip fiona 
+$ call activate gmprocess
+```
+:::
 
+Next, install the code with pip
 ```
 $ pip install .
 ```
 
 Note that this will install the minimum requirements to run the code. There are 
 additional optional packages that can be installed that support running the unit tests 
-(`test`), code development (`dev`), and building the documentation (`doc`). To install
-these, you need to add the relevant option in brackets:
+(`test`), code development (`dev`), buliding wheels (`build`), and building the 
+documentation (`doc`). To install these, you need to add the relevant option in 
+brackets:
 
 ```
-$ pip install .[test,dev,doc]
+$ pip install .[test,dev,doc,build]
 ```
 
-For development, it is also conveninet to install the code in "editable" mode by adding
+For developers, it is also conveninet to install the code in "editable" mode by adding
 the `-e` option:
 
 ```
 $ pip install -e .[test,dev,doc]
-```
-
-## Installing from source (Windows)
-
-Our development team is not proficient with Windows systems, so our ability to 
-support Windows installs is limited. But we know that the code compiles and 
-passes tests in Windows on our continuous integration systems. We have also 
-helped users install the code using the following steps.
-
-```{admonition} Prerequisites
-- A C compiler. We have had success follwing 
-  [these instructions](https://github.com/cython/cython/wiki/CythonExtensionsOnWindows#using-windows-sdk-cc-compiler-works-for-all-python-versions)
-  from cython.
-- Git and some kind of console.
-```
-
-First clone this repository and go into the root directory with
-
-```
-$ git clone https://github.com/usgs/groundmotion-processing.git
-$ cd groundmotion-processing
-```
-
-There is one depenency ([fiona](https://pypi.org/project/Fiona/)) that we have not been
-able to install with pip on Windows systems. So we rely on conda for this.
-
-Then install the ``gmprocess`` virtual environment and all of the dependencies
-and activate the environment
-
-```
-$ conda create --name gmprocess python=3.8 pip fiona 
-$ call activate gmprocess
-$ pip install -e .
 ```
 
 ## Tests

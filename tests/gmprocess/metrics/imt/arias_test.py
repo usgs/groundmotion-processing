@@ -10,11 +10,11 @@ from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.metrics.station_summary import StationSummary
 from gmprocess.core.stationstream import StationStream
 from gmprocess.core.stationtrace import StationTrace
-from gmprocess.utils.constants import DATA_DIR
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_arias():
-    data_file = DATA_DIR / "testdata" / "arias_data.json"
+    data_file = TEST_DATA_DIR / "arias_data.json"
     with open(data_file, "rt", encoding="utf-8") as f:
         jdict = json.load(f)
 
