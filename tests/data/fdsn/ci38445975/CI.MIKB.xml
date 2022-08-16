@@ -1,0 +1,2872 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+ <FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:iris="http://www.fdsn.org/xml/station/1/iris" xsi:schemaLocation="http://www.fdsn.org/xml/station/1 http://www.fdsn.org/xml/station/fdsn-station-1.1.xsd" schemaVersion="1.1">
+  <Source>IRIS-DMC</Source>
+  <Sender>IRIS-DMC</Sender>
+  <Module>IRIS WEB SERVICE: fdsnws-station | version: 1.1.45</Module>
+  <ModuleURI>http://service.iris.edu/fdsnws/station/1/query?net=CI&amp;sta=MIKB&amp;cha=?N?&amp;level=channel&amp;format=xml&amp;includecomments=true&amp;nodata=404</ModuleURI>
+  <Created>2020-07-15T20:05:33</Created>
+  <Network code="CI" startDate="1926-01-01T00:00:00" restrictedStatus="open">
+   <Description>Southern California Seismic Network (SCSN)</Description>
+   <TotalNumberStations>543</TotalNumberStations>
+   <SelectedNumberStations>1</SelectedNumberStations>
+   <Station code="MIKB" startDate="2008-08-25T21:30:00" restrictedStatus="open" iris:alternateNetworkCodes="_FDSN-ALL,.UNRESTRICTED,_US-REGIONAL">
+    <Latitude>34.13688</Latitude>
+    <Longitude>-118.12601</Longitude>
+    <Elevation>231.0</Elevation>
+    <Site>
+     <Name>Millikan Library Basement</Name>
+    </Site>
+    <CreationDate>2008-08-25T21:30:00</CreationDate>
+    <TotalNumberChannels>83</TotalNumberChannels>
+    <SelectedNumberChannels>48</SelectedNumberChannels>
+    <Channel code="BNE" locationCode="" startDate="2008-08-25T21:30:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNE" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNE" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>214150.4717225</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNE" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNE" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213593.5503171</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNN" locationCode="" startDate="2008-08-25T21:30:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNN" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNN" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>214321.5457533</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNN" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNN" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213721.8604195</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNZ" locationCode="" startDate="2008-08-25T21:30:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNZ" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNZ" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213842.5384671</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNZ" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="BNZ" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>4E01</SampleRate>
+     <ClockDrift>2E-03</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213550.780283</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNE" locationCode="" startDate="2008-08-25T21:30:00" endDate="2008-08-26T21:25:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNE" locationCode="" startDate="2008-08-26T21:25:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SAMPLERATE CHANGE</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNE" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNE" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>214150.4717225</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNE" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNE" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213593.5503171</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNN" locationCode="" startDate="2008-08-25T21:30:00" endDate="2008-08-26T21:25:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNN" locationCode="" startDate="2008-08-26T21:25:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SAMPLERATE CHANGE</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNN" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNN" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>214321.5457533</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNN" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNN" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213721.8604195</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNZ" locationCode="" startDate="2008-08-25T21:30:00" endDate="2008-08-26T21:25:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2008-08-26T21:25:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNZ" locationCode="" startDate="2008-08-26T21:25:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SAMPLERATE CHANGE</Value>
+      <BeginEffectiveTime>2008-08-26T21:25:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNZ" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNZ" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213842.5384671</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNZ" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="HNZ" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>2E02</SampleRate>
+     <ClockDrift>1E-02</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213550.780283</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNE" locationCode="" startDate="2008-08-25T21:30:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNE" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNE" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>214150.4717225</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNE" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNE" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>90</Azimuth>
+     <Dip>0</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213593.5503171</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNN" locationCode="" startDate="2008-08-25T21:30:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNN" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNN" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>214321.5457533</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNN" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNN" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>0</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213721.8604195</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNZ" locationCode="" startDate="2008-08-25T21:30:00" endDate="2010-01-01T00:00:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>NEW STATION</Value>
+      <BeginEffectiveTime>2008-08-25T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2010-01-01T00:00:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNZ" locationCode="" startDate="2010-01-01T00:00:00" endDate="2011-04-11T21:30:00" restrictedStatus="open">
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427684.3071276</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNZ" locationCode="" startDate="2011-04-11T21:30:00" endDate="2011-06-13T23:28:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-04-11T21:30:00</BeginEffectiveTime>
+      <EndEffectiveTime>2011-06-13T23:28:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>139-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213842.5384671</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNZ" locationCode="" startDate="2011-06-13T23:28:00" endDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Edit configuration (channel epoch) Geologic site class code changed. Old value: , new value: D.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Physical condition code changed. Old value: , new value: c.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) Station housing code changed. Old value: , new value: 5.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Edit configuration (channel epoch) VS 30 changed. Old value: , new value: 333.</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>SENSOR-TYPE SWAP</Value>
+      <BeginEffectiveTime>2011-06-13T23:28:00</BeginEffectiveTime>
+      <EndEffectiveTime>2020-01-17T17:30:00</EndEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>3147</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>427685.0769343</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+    <Channel code="LNZ" locationCode="" startDate="2020-01-17T17:30:00" restrictedStatus="open">
+     <Comment>
+      <Value>Reverse engineered to acomodate an Episensor swap</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Comment>
+      <Value>Swap [SENSOR::EPISENSOR ES-T::2648-IS]</Value>
+      <BeginEffectiveTime>2020-01-17T17:30:00</BeginEffectiveTime>
+     </Comment>
+     <Latitude>34.13688</Latitude>
+     <Longitude>-118.12601</Longitude>
+     <Elevation>231</Elevation>
+     <Depth>5</Depth>
+     <Azimuth>0</Azimuth>
+     <Dip>-90</Dip>
+     <Type>CONTINUOUS</Type>
+     <Type>GEOPHYSICAL</Type>
+     <SampleRate>1E00</SampleRate>
+     <ClockDrift>1E-04</ClockDrift>
+     <CalibrationUnits>
+      <Name>A</Name>
+      <Description>Electric Current in Amperes</Description>
+     </CalibrationUnits>
+     <Sensor>
+      <Type>KINEMETRICS</Type>
+      <Description>Accelerometer</Description>
+      <Manufacturer>KINEMETRICS</Manufacturer>
+      <Vendor>Kinemetrics</Vendor>
+      <Model>EPISENSOR ES-T</Model>
+      <SerialNumber>2648-IS</SerialNumber>
+     </Sensor>
+     <Equipment>
+      <Type>QUANTERRA</Type>
+      <Manufacturer>QUANTERRA</Manufacturer>
+      <Model>Q330</Model>
+      <SerialNumber>2710</SerialNumber>
+     </Equipment>
+     <Response>
+     <InstrumentSensitivity>
+       <Value>213550.780283</Value>
+       <Frequency>0.03</Frequency>
+       <InputUnits>
+         <Name>m/s**2</Name>
+         <Description>Acceleration in meters per second squared</Description>
+       </InputUnits>
+       <OutputUnits>
+         <Name>counts</Name>
+         <Description>Digital Count in Digital counts</Description>
+       </OutputUnits>
+     </InstrumentSensitivity>
+     </Response>
+    </Channel>
+   </Station>
+  </Network>
+ </FDSNStationXML>

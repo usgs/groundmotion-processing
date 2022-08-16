@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.0" xsi:schemaLocation="http://www.fdsn.org/xml/station/1 http://www.fdsn.org/xml/station/fdsn-station-1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:iris="http://www.fdsn.org/xml/station/1/iris">
+ <Source>IRIS-DMC</Source>
+ <Sender>IRIS-DMC</Sender>
+ <Module>IRIS WEB SERVICE: fdsnws-station | version: 1.1.36</Module>
+ <ModuleURI>http://service.iris.edu/fdsnws/station/1/query</ModuleURI>
+ <Created>2019-05-13T14:03:59</Created>
+ <Network code="AV" startDate="1971-01-01T00:00:00" endDate="2599-12-31T23:59:59" restrictedStatus="open">
+  <Description>Alaska Volcano Observatory</Description>
+  <TotalNumberStations>243</TotalNumberStations>
+  <SelectedNumberStations>1</SelectedNumberStations>
+  <Station code="CKT" startDate="2005-11-01T00:00:00" endDate="2599-12-31T23:59:59" restrictedStatus="open" iris:alternateNetworkCodes="_ARCTIC,_US-REGIONAL,.UNRESTRICTED,.VOLCANO">
+   <Latitude>61.2002</Latitude>
+   <Longitude>-152.2085</Longitude>
+   <Elevation>975.0</Elevation>
+   <Site>
+    <Name>Bend, Mt. Spurr, Alaska</Name>
+   </Site>
+   <CreationDate>2005-11-01T00:00:00</CreationDate>
+   <TotalNumberChannels>3</TotalNumberChannels>
+   <SelectedNumberChannels>1</SelectedNumberChannels>
+   <Channel code="EHZ" endDate="2599-12-31T23:59:59" locationCode="" restrictedStatus="open" startDate="2012-05-11T00:00:00">
+    <Latitude>61.200199</Latitude>
+    <Longitude>-152.208496</Longitude>
+    <Elevation>975</Elevation>
+    <Depth>0</Depth>
+    <Azimuth>0</Azimuth>
+    <Dip>-90</Dip>
+    <SampleRate>1E02</SampleRate>
+    <ClockDrift>1E-04</ClockDrift>
+    <CalibrationUnits>
+     <Name>A</Name>
+     <Description>Amperes</Description>
+    </CalibrationUnits>
+    <Sensor>
+     <Description>Mark L-4 1 Hz</Description>
+    </Sensor>
+    <Response>
+     <InstrumentSensitivity>
+      <Value>3.6127E8</Value>
+      <Frequency>5E0</Frequency>
+      <InputUnits>
+       <Name>M/S</Name>
+       <Description>Velocity in Meters/Second</Description>
+      </InputUnits>
+      <OutputUnits>
+       <Name>COUNTS</Name>
+       <Description>Digital Counts</Description>
+      </OutputUnits>
+     </InstrumentSensitivity>
+     <Stage number="1">
+      <PolesZeros>
+       <InputUnits>
+        <Name>M/S</Name>
+        <Description>Velocity in Meters/Second</Description>
+       </InputUnits>
+       <OutputUnits>
+        <Name>V</Name>
+        <Description>Volts</Description>
+       </OutputUnits>
+       <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+       <NormalizationFactor>1.2592E9</NormalizationFactor>
+       <NormalizationFrequency>5.00000</NormalizationFrequency>
+       <Zero number="0">
+        <Real minusError="0.00000" plusError="0.00000">0.00000</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">0.00000</Imaginary>
+       </Zero>
+       <Zero number="1">
+        <Real minusError="0.00000" plusError="0.00000">0.00000</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">0.00000</Imaginary>
+       </Zero>
+       <Pole number="0">
+        <Real minusError="0.00000" plusError="0.00000">-4.20973</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">4.66439</Imaginary>
+       </Pole>
+       <Pole number="1">
+        <Real minusError="0.00000" plusError="0.00000">-4.20973</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">-4.66439</Imaginary>
+       </Pole>
+       <Pole number="2">
+        <Real minusError="0.00000" plusError="0.00000">-133.286</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">133.286</Imaginary>
+       </Pole>
+       <Pole number="3">
+        <Real minusError="0.00000" plusError="0.00000">-133.286</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">-133.286</Imaginary>
+       </Pole>
+       <Pole number="4">
+        <Real minusError="0.00000" plusError="0.00000">-133.286</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">133.286</Imaginary>
+       </Pole>
+       <Pole number="5">
+        <Real minusError="0.00000" plusError="0.00000">-133.286</Real>
+        <Imaginary minusError="0.00000" plusError="0.00000">-133.286</Imaginary>
+       </Pole>
+      </PolesZeros>
+      <StageGain>
+       <Value>3.6127E8</Value>
+       <Frequency>5.0</Frequency>
+      </StageGain>
+     </Stage>
+     <Stage number="2">
+      <Coefficients>
+       <InputUnits>
+        <Name>V</Name>
+        <Description>Volts</Description>
+       </InputUnits>
+       <OutputUnits>
+        <Name>COUNTS</Name>
+        <Description>Digital Counts</Description>
+       </OutputUnits>
+       <CfTransferFunctionType>DIGITAL</CfTransferFunctionType>
+       <Numerator minusError="0.00000" plusError="0.00000">-0.00275000</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">-0.0472600</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">-0.0335500</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">0.276600</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">0.585430</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">0.276600</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">-0.0335500</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">-0.0472600</Numerator>
+       <Numerator minusError="0.00000" plusError="0.00000">-0.00275000</Numerator>
+      </Coefficients>
+      <Decimation>
+       <InputSampleRate>100.0</InputSampleRate>
+       <Factor>1</Factor>
+       <Offset>0</Offset>
+       <Delay>0.04</Delay>
+       <Correction>0.0</Correction>
+      </Decimation>
+      <StageGain>
+       <Value>1.0</Value>
+       <Frequency>5.0</Frequency>
+      </StageGain>
+     </Stage>
+    </Response>
+   </Channel>
+  </Station>
+ </Network>
+</FDSNStationXML>

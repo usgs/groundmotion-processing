@@ -1,0 +1,1303 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.0">
+  <Source>NCEDC</Source>
+  <Sender>NCEDC</Sender>
+  <Module>NCEDC WEB SERVICE: fdsnws-station | version: 1.1</Module>
+  <ModuleURI>http://service.ncedc.org/fdsnws/station/1/query?net=PG&amp;sta=PSD&amp;cha=BN? HN?&amp;loc=*&amp;start=2019-07-04T17:33:19.000-07:00&amp;end=2019-07-04T17:39:49.000-07:00&amp;level=resp</ModuleURI>
+  <Created>2019-08-01T16:36:04</Created>
+  <Network code="PG" endDate="3000-01-01T00:00:00" startDate="1986-06-12T00:00:00">
+    <Description>Pacific Gas and Electricity</Description>
+    <TotalNumberStations>40</TotalNumberStations>
+    <SelectedNumberStations>3</SelectedNumberStations>
+    <Station code="PSD" endDate="3000-01-01T00:00:00" startDate="2007-10-09T18:01:00">
+      <Latitude unit="DEGREES">34.902168</Latitude>
+      <Longitude unit="DEGREES">-120.621666</Longitude>
+      <Elevation>378.0</Elevation>
+      <Site>
+        <Name>Point Sal digital</Name>
+      </Site>
+      <CreationDate>2007-10-09T18:01:00</CreationDate>
+      <Channel code="HNE" endDate="3000-01-01T00:00:00" locationCode="" startDate="2007-10-09T18:01:00">
+        <Latitude unit="DEGREES">34.902168</Latitude>
+        <Longitude unit="DEGREES">-120.621666</Longitude>
+        <Elevation>378.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>CONTINUOUS</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.01</ClockDrift>
+        <CalibrationUnits>
+          <Name>A</Name>
+          <Description>Amperes</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>RT-131A-02</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>153511.38</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Acceleration in Meters Per Second Per Second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <PolesZeros>
+              <InputUnits>
+                <Name>M/S**2</Name>
+                <Description>Acceleration in Meters Per Second Per Second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>V</Name>
+                <Description>Volts</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+              <NormalizationFactor>31984002.0000244</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+              <Pole number="0">
+                <Real>-3999.0</Real>
+                <Imaginary>3999.0</Imaginary>
+              </Pole>
+              <Pole number="1">
+                <Real>-3999.0</Real>
+                <Imaginary>-3999.0</Imaginary>
+              </Pole>
+            </PolesZeros>
+            <StageGain>
+              <Value>0.244</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="2">
+            <Coefficients>
+              <InputUnits>
+                <Name>V</Name>
+                <Description>Volts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <CfTransferFunctionType>DIGITAL</CfTransferFunctionType>
+            </Coefficients>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">102400.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>629145.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="3">
+            <FIR name="FIR_RT130_CS1">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">0.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">0.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">1.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">4.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">10.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">20.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">35.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">56.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">84.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">120.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">161.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">204.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">246.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">284.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">315.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">336.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">344.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">102400.0</InputSampleRate>
+              <Factor>8</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="4">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">12800.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="5">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">6400.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="6">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">3200.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="7">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1600.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="8">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">800.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="9">
+            <FIR name="FIR_RT130_CS3">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">-26.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">-247.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">-822.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">-1362.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">-839.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">1012.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">2197.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">212.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">-3443.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">-3077.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">3156.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">7168.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">-256.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">-10709.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">-7644.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">10713.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">18055.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="17">-3873.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="18">-28007.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="19">-11826.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="20">31641.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="21">35194.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="22">-22177.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="23">-60427.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="24">-5404.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="25">77065.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="26">51056.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="27">-71982.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="28">-106905.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="29">33416.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="30">156296.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="31">43678.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="32">-175718.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="33">-152409.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="34">139856.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="35">270573.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="36">-29083.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="37">-360427.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="38">-162173.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="39">371807.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="40">417807.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="41">-246840.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="42">-693181.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="43">-78388.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="44">902497.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="45">685231.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="46">-865217.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="47">-1713558.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="48">-262.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="49">3276208.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="50">4950471.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">400.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="10">
+            <FIR name="FIR_RT130_F2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">-4.7e-05</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">-0.000186</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">-0.000292</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">-0.000145</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">0.000212</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">0.00031</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">-0.000124</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">-0.000523</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">-0.000114</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">0.000692</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">0.000534</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">-0.000695</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">-0.001099</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">0.000406</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">0.001697</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">0.000273</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">-0.002138</NumeratorCoefficient>
+              <NumeratorCoefficient i="17">-0.001364</NumeratorCoefficient>
+              <NumeratorCoefficient i="18">0.002179</NumeratorCoefficient>
+              <NumeratorCoefficient i="19">0.002776</NumeratorCoefficient>
+              <NumeratorCoefficient i="20">-0.001567</NumeratorCoefficient>
+              <NumeratorCoefficient i="21">-0.004275</NumeratorCoefficient>
+              <NumeratorCoefficient i="22">0.000108</NumeratorCoefficient>
+              <NumeratorCoefficient i="23">0.00549</NumeratorCoefficient>
+              <NumeratorCoefficient i="24">0.002261</NumeratorCoefficient>
+              <NumeratorCoefficient i="25">-0.005945</NumeratorCoefficient>
+              <NumeratorCoefficient i="26">-0.005406</NumeratorCoefficient>
+              <NumeratorCoefficient i="27">0.005131</NumeratorCoefficient>
+              <NumeratorCoefficient i="28">0.008947</NumeratorCoefficient>
+              <NumeratorCoefficient i="29">-0.002599</NumeratorCoefficient>
+              <NumeratorCoefficient i="30">-0.012254</NumeratorCoefficient>
+              <NumeratorCoefficient i="31">-0.001938</NumeratorCoefficient>
+              <NumeratorCoefficient i="32">0.014465</NumeratorCoefficient>
+              <NumeratorCoefficient i="33">0.008512</NumeratorCoefficient>
+              <NumeratorCoefficient i="34">-0.014547</NumeratorCoefficient>
+              <NumeratorCoefficient i="35">-0.01685</NumeratorCoefficient>
+              <NumeratorCoefficient i="36">0.01133</NumeratorCoefficient>
+              <NumeratorCoefficient i="37">0.02636</NumeratorCoefficient>
+              <NumeratorCoefficient i="38">-0.003443</NumeratorCoefficient>
+              <NumeratorCoefficient i="39">-0.036191</NumeratorCoefficient>
+              <NumeratorCoefficient i="40">-0.011093</NumeratorCoefficient>
+              <NumeratorCoefficient i="41">0.045337</NumeratorCoefficient>
+              <NumeratorCoefficient i="42">0.036607</NumeratorCoefficient>
+              <NumeratorCoefficient i="43">-0.052776</NumeratorCoefficient>
+              <NumeratorCoefficient i="44">-0.088792</NumeratorCoefficient>
+              <NumeratorCoefficient i="45">0.057636</NumeratorCoefficient>
+              <NumeratorCoefficient i="46">0.312352</NumeratorCoefficient>
+              <NumeratorCoefficient i="47">0.440675</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">200.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="HNN" endDate="3000-01-01T00:00:00" locationCode="" startDate="2007-10-09T18:01:00">
+        <Latitude unit="DEGREES">34.902168</Latitude>
+        <Longitude unit="DEGREES">-120.621666</Longitude>
+        <Elevation>378.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <Type>CONTINUOUS</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.01</ClockDrift>
+        <CalibrationUnits>
+          <Name>A</Name>
+          <Description>Amperes</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>RT-131A-02</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>153511.38</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Acceleration in Meters Per Second Per Second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <PolesZeros>
+              <InputUnits>
+                <Name>M/S**2</Name>
+                <Description>Acceleration in Meters Per Second Per Second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>V</Name>
+                <Description>Volts</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+              <NormalizationFactor>31984002.0000244</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+              <Pole number="0">
+                <Real>-3999.0</Real>
+                <Imaginary>3999.0</Imaginary>
+              </Pole>
+              <Pole number="1">
+                <Real>-3999.0</Real>
+                <Imaginary>-3999.0</Imaginary>
+              </Pole>
+            </PolesZeros>
+            <StageGain>
+              <Value>0.244</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="2">
+            <Coefficients>
+              <InputUnits>
+                <Name>V</Name>
+                <Description>Volts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <CfTransferFunctionType>DIGITAL</CfTransferFunctionType>
+            </Coefficients>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">102400.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>629145.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="3">
+            <FIR name="FIR_RT130_CS1">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">0.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">0.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">1.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">4.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">10.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">20.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">35.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">56.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">84.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">120.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">161.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">204.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">246.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">284.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">315.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">336.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">344.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">102400.0</InputSampleRate>
+              <Factor>8</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="4">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">12800.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="5">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">6400.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="6">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">3200.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="7">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1600.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="8">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">800.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="9">
+            <FIR name="FIR_RT130_CS3">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">-26.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">-247.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">-822.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">-1362.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">-839.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">1012.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">2197.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">212.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">-3443.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">-3077.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">3156.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">7168.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">-256.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">-10709.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">-7644.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">10713.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">18055.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="17">-3873.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="18">-28007.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="19">-11826.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="20">31641.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="21">35194.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="22">-22177.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="23">-60427.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="24">-5404.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="25">77065.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="26">51056.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="27">-71982.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="28">-106905.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="29">33416.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="30">156296.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="31">43678.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="32">-175718.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="33">-152409.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="34">139856.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="35">270573.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="36">-29083.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="37">-360427.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="38">-162173.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="39">371807.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="40">417807.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="41">-246840.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="42">-693181.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="43">-78388.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="44">902497.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="45">685231.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="46">-865217.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="47">-1713558.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="48">-262.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="49">3276208.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="50">4950471.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">400.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="10">
+            <FIR name="FIR_RT130_F2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">-4.7e-05</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">-0.000186</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">-0.000292</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">-0.000145</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">0.000212</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">0.00031</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">-0.000124</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">-0.000523</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">-0.000114</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">0.000692</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">0.000534</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">-0.000695</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">-0.001099</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">0.000406</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">0.001697</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">0.000273</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">-0.002138</NumeratorCoefficient>
+              <NumeratorCoefficient i="17">-0.001364</NumeratorCoefficient>
+              <NumeratorCoefficient i="18">0.002179</NumeratorCoefficient>
+              <NumeratorCoefficient i="19">0.002776</NumeratorCoefficient>
+              <NumeratorCoefficient i="20">-0.001567</NumeratorCoefficient>
+              <NumeratorCoefficient i="21">-0.004275</NumeratorCoefficient>
+              <NumeratorCoefficient i="22">0.000108</NumeratorCoefficient>
+              <NumeratorCoefficient i="23">0.00549</NumeratorCoefficient>
+              <NumeratorCoefficient i="24">0.002261</NumeratorCoefficient>
+              <NumeratorCoefficient i="25">-0.005945</NumeratorCoefficient>
+              <NumeratorCoefficient i="26">-0.005406</NumeratorCoefficient>
+              <NumeratorCoefficient i="27">0.005131</NumeratorCoefficient>
+              <NumeratorCoefficient i="28">0.008947</NumeratorCoefficient>
+              <NumeratorCoefficient i="29">-0.002599</NumeratorCoefficient>
+              <NumeratorCoefficient i="30">-0.012254</NumeratorCoefficient>
+              <NumeratorCoefficient i="31">-0.001938</NumeratorCoefficient>
+              <NumeratorCoefficient i="32">0.014465</NumeratorCoefficient>
+              <NumeratorCoefficient i="33">0.008512</NumeratorCoefficient>
+              <NumeratorCoefficient i="34">-0.014547</NumeratorCoefficient>
+              <NumeratorCoefficient i="35">-0.01685</NumeratorCoefficient>
+              <NumeratorCoefficient i="36">0.01133</NumeratorCoefficient>
+              <NumeratorCoefficient i="37">0.02636</NumeratorCoefficient>
+              <NumeratorCoefficient i="38">-0.003443</NumeratorCoefficient>
+              <NumeratorCoefficient i="39">-0.036191</NumeratorCoefficient>
+              <NumeratorCoefficient i="40">-0.011093</NumeratorCoefficient>
+              <NumeratorCoefficient i="41">0.045337</NumeratorCoefficient>
+              <NumeratorCoefficient i="42">0.036607</NumeratorCoefficient>
+              <NumeratorCoefficient i="43">-0.052776</NumeratorCoefficient>
+              <NumeratorCoefficient i="44">-0.088792</NumeratorCoefficient>
+              <NumeratorCoefficient i="45">0.057636</NumeratorCoefficient>
+              <NumeratorCoefficient i="46">0.312352</NumeratorCoefficient>
+              <NumeratorCoefficient i="47">0.440675</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">200.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="HNZ" endDate="3000-01-01T00:00:00" locationCode="" startDate="2007-10-09T18:01:00">
+        <Latitude unit="DEGREES">34.902168</Latitude>
+        <Longitude unit="DEGREES">-120.621666</Longitude>
+        <Elevation>378.0</Elevation>
+        <Depth>0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <Type>CONTINUOUS</Type>
+        <Type>GEOPHYSICAL</Type>
+        <SampleRate unit="SAMPLES/S">100.0</SampleRate>
+        <ClockDrift unit="SECONDS/SAMPLE">0.01</ClockDrift>
+        <CalibrationUnits>
+          <Name>A</Name>
+          <Description>Amperes</Description>
+        </CalibrationUnits>
+        <Sensor>
+          <Description>RT-131A-02</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>153511.38</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S**2</Name>
+              <Description>Acceleration in Meters Per Second Per Second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>COUNTS</Name>
+              <Description>Digital Counts</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1">
+            <PolesZeros>
+              <InputUnits>
+                <Name>M/S**2</Name>
+                <Description>Acceleration in Meters Per Second Per Second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>V</Name>
+                <Description>Volts</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>LAPLACE (RADIANS/SECOND)</PzTransferFunctionType>
+              <NormalizationFactor>31984002.0000244</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+              <Pole number="0">
+                <Real>-3999.0</Real>
+                <Imaginary>3999.0</Imaginary>
+              </Pole>
+              <Pole number="1">
+                <Real>-3999.0</Real>
+                <Imaginary>-3999.0</Imaginary>
+              </Pole>
+            </PolesZeros>
+            <StageGain>
+              <Value>0.244</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="2">
+            <Coefficients>
+              <InputUnits>
+                <Name>V</Name>
+                <Description>Volts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <CfTransferFunctionType>DIGITAL</CfTransferFunctionType>
+            </Coefficients>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">102400.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>629145.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="3">
+            <FIR name="FIR_RT130_CS1">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">0.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">0.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">1.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">4.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">10.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">20.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">35.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">56.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">84.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">120.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">161.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">204.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">246.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">284.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">315.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">336.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">344.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">102400.0</InputSampleRate>
+              <Factor>8</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="4">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">12800.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="5">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">6400.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="6">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">3200.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="7">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1600.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="8">
+            <FIR name="FIR_RT130_CS2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">8192.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">98304.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">540672.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">1802240.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">4055040.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">6488064.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">7569408.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">800.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="9">
+            <FIR name="FIR_RT130_CS3">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">-26.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">-247.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">-822.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">-1362.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">-839.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">1012.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">2197.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">212.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">-3443.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">-3077.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">3156.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">7168.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">-256.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">-10709.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">-7644.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">10713.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">18055.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="17">-3873.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="18">-28007.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="19">-11826.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="20">31641.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="21">35194.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="22">-22177.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="23">-60427.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="24">-5404.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="25">77065.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="26">51056.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="27">-71982.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="28">-106905.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="29">33416.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="30">156296.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="31">43678.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="32">-175718.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="33">-152409.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="34">139856.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="35">270573.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="36">-29083.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="37">-360427.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="38">-162173.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="39">371807.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="40">417807.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="41">-246840.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="42">-693181.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="43">-78388.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="44">902497.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="45">685231.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="46">-865217.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="47">-1713558.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="48">-262.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="49">3276208.0</NumeratorCoefficient>
+              <NumeratorCoefficient i="50">4950471.0</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">400.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+          <Stage number="10">
+            <FIR name="FIR_RT130_F2">
+              <InputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>COUNTS</Name>
+                <Description>Digital Counts</Description>
+              </OutputUnits>
+              <Symmetry>ODD</Symmetry>
+              <NumeratorCoefficient i="0">-4.7e-05</NumeratorCoefficient>
+              <NumeratorCoefficient i="1">-0.000186</NumeratorCoefficient>
+              <NumeratorCoefficient i="2">-0.000292</NumeratorCoefficient>
+              <NumeratorCoefficient i="3">-0.000145</NumeratorCoefficient>
+              <NumeratorCoefficient i="4">0.000212</NumeratorCoefficient>
+              <NumeratorCoefficient i="5">0.00031</NumeratorCoefficient>
+              <NumeratorCoefficient i="6">-0.000124</NumeratorCoefficient>
+              <NumeratorCoefficient i="7">-0.000523</NumeratorCoefficient>
+              <NumeratorCoefficient i="8">-0.000114</NumeratorCoefficient>
+              <NumeratorCoefficient i="9">0.000692</NumeratorCoefficient>
+              <NumeratorCoefficient i="10">0.000534</NumeratorCoefficient>
+              <NumeratorCoefficient i="11">-0.000695</NumeratorCoefficient>
+              <NumeratorCoefficient i="12">-0.001099</NumeratorCoefficient>
+              <NumeratorCoefficient i="13">0.000406</NumeratorCoefficient>
+              <NumeratorCoefficient i="14">0.001697</NumeratorCoefficient>
+              <NumeratorCoefficient i="15">0.000273</NumeratorCoefficient>
+              <NumeratorCoefficient i="16">-0.002138</NumeratorCoefficient>
+              <NumeratorCoefficient i="17">-0.001364</NumeratorCoefficient>
+              <NumeratorCoefficient i="18">0.002179</NumeratorCoefficient>
+              <NumeratorCoefficient i="19">0.002776</NumeratorCoefficient>
+              <NumeratorCoefficient i="20">-0.001567</NumeratorCoefficient>
+              <NumeratorCoefficient i="21">-0.004275</NumeratorCoefficient>
+              <NumeratorCoefficient i="22">0.000108</NumeratorCoefficient>
+              <NumeratorCoefficient i="23">0.00549</NumeratorCoefficient>
+              <NumeratorCoefficient i="24">0.002261</NumeratorCoefficient>
+              <NumeratorCoefficient i="25">-0.005945</NumeratorCoefficient>
+              <NumeratorCoefficient i="26">-0.005406</NumeratorCoefficient>
+              <NumeratorCoefficient i="27">0.005131</NumeratorCoefficient>
+              <NumeratorCoefficient i="28">0.008947</NumeratorCoefficient>
+              <NumeratorCoefficient i="29">-0.002599</NumeratorCoefficient>
+              <NumeratorCoefficient i="30">-0.012254</NumeratorCoefficient>
+              <NumeratorCoefficient i="31">-0.001938</NumeratorCoefficient>
+              <NumeratorCoefficient i="32">0.014465</NumeratorCoefficient>
+              <NumeratorCoefficient i="33">0.008512</NumeratorCoefficient>
+              <NumeratorCoefficient i="34">-0.014547</NumeratorCoefficient>
+              <NumeratorCoefficient i="35">-0.01685</NumeratorCoefficient>
+              <NumeratorCoefficient i="36">0.01133</NumeratorCoefficient>
+              <NumeratorCoefficient i="37">0.02636</NumeratorCoefficient>
+              <NumeratorCoefficient i="38">-0.003443</NumeratorCoefficient>
+              <NumeratorCoefficient i="39">-0.036191</NumeratorCoefficient>
+              <NumeratorCoefficient i="40">-0.011093</NumeratorCoefficient>
+              <NumeratorCoefficient i="41">0.045337</NumeratorCoefficient>
+              <NumeratorCoefficient i="42">0.036607</NumeratorCoefficient>
+              <NumeratorCoefficient i="43">-0.052776</NumeratorCoefficient>
+              <NumeratorCoefficient i="44">-0.088792</NumeratorCoefficient>
+              <NumeratorCoefficient i="45">0.057636</NumeratorCoefficient>
+              <NumeratorCoefficient i="46">0.312352</NumeratorCoefficient>
+              <NumeratorCoefficient i="47">0.440675</NumeratorCoefficient>
+            </FIR>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">200.0</InputSampleRate>
+              <Factor>2</Factor>
+              <Offset>0</Offset>
+              <Delay>0.0</Delay>
+              <Correction>0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>0.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+    </Station>
+  </Network>
+</FDSNStationXML>

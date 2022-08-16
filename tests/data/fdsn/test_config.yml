@@ -1,0 +1,514 @@
+# -----------------------------------------------------------------------------
+# This section is for configuring data fetching routines.
+fetchers:
+    KNETFetcher:
+        # NIED requires a username and a password, obtain these by
+        # visiting this page:
+        # https://hinetwww11.bosai.go.jp/nied/registration/
+        user: USERNAME
+        password: PASSWORD
+        # define the distance search radius (km)
+        radius : 100
+        # define the time search threshold (sec)
+        dt : 60
+        # define the depth search threshold (km)
+        ddepth : 30
+        # define the magnitude search threshold (km)
+        dmag : 0.3
+    GeoNetFetcher:
+        # define the distance search radius (km)
+        radius : 100
+        # define the time search threshold (sec)
+        dt : 16
+        # define the depth search threshold (km)
+        ddepth : 30
+        # define the magnitude search threshold (km)
+        dmag : 0.3
+    TurkeyFetcher:
+        # define the distance search radius (km)
+        radius : 100
+        # define the time search threshold (sec)
+        dt : 16
+        # define the depth search threshold (km)
+        ddepth : 30
+        # define the magnitude search threshold (km)
+        dmag : 0.3
+    CosmosFetcher:
+        # define the distance search radius (km)
+        radius : 10
+
+    FDSNFetcher:
+        # search radius in dd
+        radius : 4
+        # seconds before arrival time
+        time_before : 30
+        # seconds after arrival time
+        time_after : 420
+        channels : ["BH?", "HH?", "BN?", "HN?"] # only get strong motion and high-gain channels
+
+        network : "*"
+
+        # SY is a network for synthetic data
+        exclude_networks :
+            - SY
+
+        # uncomment this section to add stations that should be avoided
+        # exclude_stations:
+        #    - ABC*
+
+        # If True (default), MiniSEED files with gaps and/or overlaps will be rejected.
+        reject_channels_with_gaps : True
+
+        # The minimum length of the data as a fraction of the requested time frame.
+        # After a channel has been downloaded it will be checked that its total
+        # length is at least that fraction of the requested time span.
+        # Will be rejected otherwise. Must be between 0.0 and 1.0.
+        minimum_length : 0.1
+
+        # Only download data that has accompanying StationXML metadata.
+        sanitize : True
+
+        # The minimum inter-station distance.
+        # Data from any new station closer to any
+        # existing station will not be downloaded.
+        minimum_interstation_distance_in_m: 0.0
+
+        # For each of the FDSN providers, a username and password
+        # can be provided. This section does not need to contain all of the
+        # providers, just the ones you want to give a username and password.
+
+        # Example:
+        # IRIS:
+        #     user: USERNAME
+        #     password: PASSWORD
+
+
+# -----------------------------------------------------------------------------
+# Options for readers
+read:
+    # Resampling rate if times are unevenly spaced
+    resample_rate: 200
+
+# -----------------------------------------------------------------------------
+# Options for separating noise/signal windows
+#
+#    |<---Noise Window--->|<-----Signal Window----->|
+#    |                    |                         |
+#    |                    |  /\          /\/\       |
+#    |____________________|_/  \  /\    /    \/\____|
+#    |                    |     \/  \  /            |
+#    |                    |          \/             |
+#
+#    record_start       split              signal_end
+
+windows:
+
+    signal_end:
+        # The end of the signal can be set using a phase velocity.
+        # Alternatively, it can be set with duration model, where the mean
+        # 5-95% significant duration (Ds) is added to the split time. The mean
+        # Ds can also be extended by a number of standard deviations (epsilon).
+
+        # Valid options for "method" are "velocity" and "model"
+        method: model
+        vmin: 1.0
+        # Minimum duration in sec for use with 'vmin' option.
+        floor: 120
+        # Duration model
+        model: AS16
+        # Number of standard deviations; if epsilon is 1.0, then the signal
+        # window duration is the mean Ds + 1 standard deviation.
+        epsilon: 2.0
+
+    window_checks:
+        # Minimum noise duration; can be zero but this will allow for errors
+        # to occur if requesting signal-to-noise ratios.
+        do_check: True
+        min_noise_duration: 1.0
+
+        min_signal_duration: 5.0
+
+
+# -----------------------------------------------------------------------------
+# This section is for processing steps that will affect the waveform and get
+# recorded as seismological provenance data.
+processing:
+
+    # Check to keep or ignore non-free-field sensors. Typically, these include
+    # sensors attached to a large structure (buildings, dams, bridges, etc.)
+    - check_free_field:
+        reject_non_free_field: True
+
+    # Amplitude check to avoid clipping. Units are usually counts (e.g., with
+    # data from IRIS) but some sources will convert to physical units so it
+    # is important to be careful with this step.
+    # - check_max_amplitude:
+    #     min: 5
+    #     max: 2e6
+
+    # Apply a maximum number of traces per stream. This can occur with downhole
+    # or structural arrays since our code currently is not able to reliably
+    # group by location within an array.
+    - max_traces:
+        n_max: 3
+
+    # Require a minimum sample rate
+    - min_sample_rate:
+        min_sps: 20.0
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: demean
+
+    # - check_zero_crossings:
+    #     # Require a minimum number of zero crossings per second.
+    #     min_crossings: 1.0
+
+    # STA/LTA is computed for record and the max value must exceed the threshold
+    # below. Units are sec for window lenghts.
+    - check_sta_lta:
+        sta_length: 1.0
+        lta_length: 20.0
+        threshold: 3.0
+
+    - remove_response:
+        # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
+        output: 'ACC'
+
+        # Pre-filtering frequencies. See obspy.core.trace.Trace.remove_response
+        # for details. Note: if f3 is Null it will be set to 0.9*fn, if f4 is
+        # Null it will be set to fn.
+        f1: 0.001
+        f2: 0.005
+        f3: Null
+        f4: Null
+
+        # Water level (dB) for deconvolution
+        water_level: 60
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: linear
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: demean
+
+    - compute_snr:
+        # Presense of this check says to do the signa-to-noise ratio check. Requires
+        # minimum SNR of `threshold` between `min_freq` and `max_freq` using
+        # Konno-Omachi smoothed spectra with `bandwidth` parameter.
+        bandwidth: 20.0
+        check:
+            threshold: 3.0
+            min_freq: 1.5
+            max_freq: 5.0
+
+    # - NNet_QA:
+    #     # Neural network quality assurance method by Bellagamba et al. (2019)
+    #     acceptance_threshold: 0.5
+    #     model_name: CantWell
+
+    - get_corner_frequencies:
+        # Corner frequency selection can use constant values, or selected
+        # dynamically from the signal-to-noise-ratio.
+
+        # Valid options for "method" are "constant" and "snr".
+        method: constant
+
+        constant:
+            highpass: 0.08
+            lowpass: 20.0
+
+        snr:
+            # For dynamic filtering, we require a minimum SNR threshold between
+            # as configured in the snr_check step.
+            same_horiz: True
+
+    # Apply a cap to the lowpass corner frequency so that it is guaranteed to be
+    # less than or equal to fn_fac * fn, where fn is the Nyquist frequency
+    - lowpass_max_frequency:
+        fn_fac: 0.9
+
+    # - adjust_highpass_corner:
+    #     # Options for further refinement of the highpass corner. Currently, this
+    #     # includes criteria employed by:
+    #     #
+    #     #     Dawood, H.M., Rodriguez-Marek, A., Bayless, J., Goulet, C. and
+    #     #     Thompson, E. (2016). A flatfile for the KiK-net database processed
+    #     #     using an automated protocol. Earthquake Spectra, 32(2), pp.1281-1302.
+    #
+    #     # This algorithm begins with an initial corner frequency that was selected
+    #     # as configured in the `get_corner_frequencies` step. It then chcks the
+    #     # criteria descibed below; if the criteria are not met then the high pass
+    #     # corner is increased the multiplicative step factor until the criteria
+    #     # are met:
+    #     step_factor: 1.3
+    #
+    #     # If the criteria are not satisfied for a corner frequency below this
+    #     # threshold then the stream will be rejected/failed:
+    #     maximum_freq: 0.9
+    #
+    #     # Maximum value (in cm) for final displacement:
+    #     max_final_displacement: 0.025
+    #
+    #     # Maximum ratio of the final displacement to the maximum displacement:
+    #     max_displacment_ratio: 0.2
+
+    # - resample:
+    #
+    #       # The new sampling rate, in Hz.
+    #       new_sampling_rate: 200
+    #
+    #       # Currently only supporting Lanczos interpolation, which is
+    #       # generall the preferred method and offers the highest quality
+    #       # interpolation.
+    #       method: lanczos
+    #
+    #       # Width of the Lanczos window, in number of samples. Increasing "a"
+    #       # linearly increases run time, but also increases interpolation.
+    #       # quality.
+    #       a: 50
+
+    - cut:
+        # No required options; the presence of this key just indicates when to
+        # cut the time series using the record start and signal end that were
+        # configured in the windows section.
+
+        # Optionally, can specify how many seconds to include prior to the
+        # split between the noise and signal windows. If set to "Null" then
+        # the beginning of the record will be unchanged.
+        sec_before_split: 2.0
+
+    - taper:
+        # Taper to apply to trace.
+        type: hann
+        width: 0.05
+        side: both
+
+    - highpass_filter:
+        # Applies a Butterworth highpass filter using the highpass corner
+        # determined with 'corner_frequencies' section.
+        filter_order: 5
+        number_of_passes: 2
+
+    - lowpass_filter:
+        # Applies a Butterworth lowpass filter using the lowpass corner
+        # determined with 'corner_frequencies' section.
+        filter_order: 5
+        number_of_passes: 2
+
+#    - detrend:
+#        # The current baseline correction method fits a sixth-order polynomial
+#        # to the displacement time series, and sets the zeroth- and first-order
+#        # terms to be zero. The second derivative of the fit polynomial is then
+#        # removed from the acceleration time series.
+#        detrending_method: baseline_sixth_order
+
+    - fit_spectra:
+        # Fit a Brune spectra to the data by adjusting stress drop with an
+        # assumed kappa.
+        kappa: 0.035
+
+# -----------------------------------------------------------------------------
+# This section is for handling colocated instruments that have otherwise
+# passed tests. For reference:
+#
+#    B?? = Broad band
+#    H?? = High broad band
+#    ?N? = Accelerometer
+#    ?H? = High gain seismometer
+#
+# Note: for now, lets prefer accelerometers, but once we have a reliable
+# clipping detection algorithm, it probably makes sense to change the
+# preference to high gain seismometers.
+
+
+colocated:
+    preference: ["HN?", "BN?", "HH?", "BH?"]
+
+
+# -----------------------------------------------------------------------------
+# This section is for handling duplicate data when creating a StreamCollection
+duplicate:
+
+    # Maximum distance tolerance (in m) for duplicate data
+    max_dist_tolerance: 500
+
+    # Preference for selecting process level when faced with duplicate data
+    # but with different processing levels. Must be a list containing
+    # 'V0', 'V1', and 'V2'. The first item is the most preferred,
+    # and the last item is the least preferred.
+    process_level_preference: ['V1', 'V0', 'V2']
+
+    # Preference for selecting the format when faced with duplicate data
+    # but with different source formats. Must be a list containing the source
+    # format abbreviations found in gmprocess.io. Does not need to contain
+    # all possible formats.
+
+    # Example to always prefer COSMOS files over DMG files
+    format_preference: ['cosmos', 'dmg']
+
+
+# -----------------------------------------------------------------------------
+# This is for building a report, with a one-page summary of the data in each
+# StationStream per page. It will write out the latex file, and then look for
+# the `pdflatex` command and attempt to build the pdf. This requires
+# `summary_plots` to have been run.
+build_report:
+    format: latex
+
+# -----------------------------------------------------------------------------
+# This section is for calculating metrics
+metrics:
+  # Output IMCs
+  # Valid IMCs: channels, geometric_mean, gmrotd,
+  # greater_of_two_horizontals, rotd
+  output_imcs:
+      - ROTD50
+  # Output IMTs
+  # Valid IMTs: arias, fas, pga, pgv, sa
+  output_imts:
+      - PGA
+  # Periods defined for the SA and FAS imts
+  sa:
+      # damping used to calculate the spectral response
+      damping: 0.05
+      # periods for which the spectral response is calculated
+      periods:
+        # Parameters defining an array of periods
+        # syntax is the same as that used for numpy linspace and logspace
+        # start (first value), stop (last value), num (number of values)
+        start: 1.0
+        stop: 3.0
+        num: 3
+        # Valid spacing: linspace, logspace
+        spacing: linspace
+        # Defines whether the above array is used. If False, only the
+        # defined_periods are used
+        use_array: True
+        # Defines a list of user defined periods that are not
+        # predefined by the array of periods
+        defined_periods:
+          - 0.3
+  fas:
+      smoothing: konno_ohmachi
+      bandwidth: 20.0
+      periods:
+        # Parameters defining an array of periods
+        # syntax is the same as that used for numpy linspace and logspace
+        # start (first value), stop (last value), num (number of values)
+        start: 1.0
+        stop: 3.0
+        num: 3
+        # Valid spacing: linspace, logspace
+        spacing: linspace
+        # Defines whether the above array is used. If false, only the
+        # defined_periods are used
+        use_array: True
+        # A list of user defined periods that are not
+        # predefined by the array of periods.
+        defined_periods:
+          - 0.3
+
+# -----------------------------------------------------------------------------
+# This section is for options for phase pickers
+pickers:
+    # Options for obspy.signal.trigger.ar_pick()
+    ar:
+        # Frequency of the lower bandpass window (Hz)
+        f1: 1.0
+
+        # Frequency of the upper bandpass window (Hz)
+        f2: 20.0
+
+        # Length of LTA for the P arrival (seconds)
+        lta_p: 1.0
+
+        # Length of STA for the P arrival (seconds)
+        sta_p: 0.1
+
+        # Length of LTA for the S arrival (seconds)
+        lta_s: 4.0
+
+        # Length of STA for the S arrival (seconds)
+        sta_s: 1.0
+
+        # Number of AR coefficients for the P arrival
+        m_p: 2
+
+        # Number of AR coefficients for the S arrival
+        m_s: 8
+
+        # Length of variance window for the P arrival (seconds)
+        l_p: 0.1
+
+        # Length of variance window for the S arrival (seconds)
+        l_s: 0.2
+
+        # If True, also pick the S phase. Otherwise only the P phase.
+        s_pick: False
+
+
+    # Options for obspy.signal.trigger.pk_baer()
+    baer:
+        # If dtime exceeds tdownmax, the trigger is examined for validity
+        tdownmax: 20
+
+        # Minimum number of samples for itrm to be accepted as a pick
+        tupevent: 60
+
+        # Threshold to trigger for pick (c.f. paper)
+        thr1: 7.0
+
+        # Threshold for updating sigma
+        thr2: 12.0
+
+        # Number of points taken for the estimation of variance of SF(t) on preset()
+        preset_len: 100
+
+        # Time interval for which the maximum amplitude is evaluated
+        p_dur: 100
+
+    kalkan:
+        # undamped natural period in second (default is 0.01 for
+        # records sampled with 100 samples-per-second or larger; for
+        # records with lower than 100 samples-per-second default
+        # is 0.1 s)
+        period: None
+
+        # damping ratio
+        damping: 0.6
+
+        # histogram bin size (default is 2/dt for
+        # strong-motion acceleration and broadband velocity
+        # waveforms; regional or teleseismic records may need
+        # different values of bin size for better picking results)
+        nbins: None
+
+        # Take segment of waveform from beginning to
+        # absolute peak value (recommended for fast processing)
+        # False to take full waveform.
+        peak_selection: False
+
+    # TODO: Document these options
+    power:
+        highpass: 1.4
+        lowpass: 6
+        order: 3
+        sta: 3.0
+        sta2: 3.0
+        lta: 20.0
+        hanningWindow: 3.0
+        threshDetect: 2.5
+        threshDetect2: 2.5
+        threshRestart: 1.5
+
+    travel_time:
+        # this picker uses travel times using configured velocity model
+        # list of models can be found here:
+        # https://docs.obspy.org/packages/obspy.taup.html#basic-usage
+        model : iasp91

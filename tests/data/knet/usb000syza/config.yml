@@ -1,0 +1,297 @@
+# -----------------------------------------------------------------------------
+# This section is for processing steps that will affect the waveform and get
+# recorded as seismological provenance data.
+processing:
+
+    # Check to keep or ignore non-free-field sensors. Typically, these include
+    # sensors attached to a large structure (buildings, dams, bridges, etc.)
+    - check_free_field:
+        reject_non_free_field: True
+
+    # Amplitude check to avoid clipping. Units are usually counts (e.g., with
+    # data from IRIS) but some sources will convert to physical units so it
+    # is important to be careful with this step.
+    - check_max_amplitude:
+        min: 5
+        max: 2e6
+
+    # Apply a maximum number of traces per stream. This can occur with downhole
+    # or structural arrays since our code currently is not able to reliably
+    # group by location within an array.
+    - max_traces:
+        n_max: 3
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: demean
+
+    - remove_response:
+        # Outuput units. Must be 'ACC', 'VEL', or 'DISP'.
+        output: 'ACC'
+
+        # Pre-filtering frequencies. See obspy.core.trace.Trace.remove_response
+        # for details. Note: if f3 is Null it will be set to 0.9*fn, if f4 is
+        # Null it will be set to fn.
+        f1: 0.001
+        f2: 0.005
+        f3: Null
+        f4: Null
+
+        # Water level (dB) for deconvolution
+        water_level: 60
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: linear
+
+    - detrend:
+        # Supported obspy methods (besides the baseline described below):
+        #     constant, demean, linear, polynomial, simple, spline
+        detrending_method: demean
+
+    - get_corner_frequencies:
+        # Corner frequency selection can use constant values, or selected
+        # dynamically from the signal-to-noise-ratio.
+        
+        # Valid options for "method" are "constant" and "snr".
+        method: constant
+
+        constant:
+            highpass: 0.08
+            lowpass: 20.0
+
+        snr:
+            # For dynamic filtering, we require a minimum SNR threshold between
+            # as configured in the snr_check step.
+            same_horiz: True
+
+
+    # - resample:
+    #
+    #       # The new sampling rate, in Hz.
+    #       new_sampling_rate: 200
+    #
+    #       # Currently only supporting Lanczos interpolation, which is
+    #       # generall the preferred method and offers the highest quality
+    #       # interpolation.
+    #       method: lanczos
+    #
+    #       # Width of the Lanczos window, in number of samples. Increasing "a"
+    #       # linearly increases run time, but also increases interpolation.
+    #       # quality.
+    #       a: 50
+
+    - cut:
+        # No required options; the presence of this key just indicates when to
+        # cut the time series using the record start and signal end that were
+        # configured in the windows section.
+
+        # Optionally, can specify how many seconds to include prior to the
+        # split between the noise and signal windows. If set to "Null" then
+        # the beginning of the record will be unchanged.
+        sec_before_split: 2.0
+
+    - taper:
+        # Taper to apply to trace.
+        type: hann
+        width: 0.05
+        side: both
+
+    - highpass_filter:
+        # Applies a Butterworth highpass filter using the highpass corner
+        # determined with 'corner_frequencies' section.
+        filter_order: 5
+        number_of_passes: 2
+
+    - lowpass_filter:
+        # Applies a Butterworth lowpass filter using the lowpass corner
+        # determined with 'corner_frequencies' section.
+        filter_order: 5
+        number_of_passes: 2
+
+#    - detrend:
+#        # The current baseline correction method fits a sixth-order polynomial
+#        # to the displacement time series, and sets the zeroth- and first-order
+#        # terms to be zero. The second derivative of the fit polynomial is then
+#        # removed from the acceleration time series.
+#        detrending_method: baseline_sixth_order
+
+    - fit_spectra:
+        # Fit a Brune spectra to the data by adjusting stress drop with an
+        # assumed kappa.
+        kappa: 0.035
+
+    - summary_plots:
+        # Make summary plots.
+        directory: 'plotdir'
+
+# -----------------------------------------------------------------------------
+# This is for building a report, with a one-page summary of the data in each
+# StationStream per page. It will write out the latex file, and then look for
+# the `pdflatex` command and attempt to build the pdf. This requires
+# `summary_plots` to have been run.
+build_report:
+    run: True
+    directory: 'reportdir'
+
+# -----------------------------------------------------------------------------
+# This section is for calculating metrics
+metrics:
+  # Output IMCs
+  # Valid IMCs: channels, geometric_mean, gmrotd,
+  # greater_of_two_horizontals, rotd
+  output_imcs:
+      - greater_of_two_horizontals
+      - channels
+  # Output IMTs
+  # Valid IMTs: arias, fas, pga, pgv, sa
+  output_imts:
+      - PGA
+      - PGV
+      - SA
+  # Periods defined for the SA and FAS imts
+  sa:
+      # damping used to calculate the spectral response
+      damping: 0.05
+      # periods for which the spectral response is calculated
+      periods:
+        # Parameters defining an array of periods
+        # syntax is the same as that used for numpy linspace and logspace
+        # start (first value), stop (last value), num (number of values)
+        start: 1.0
+        stop: 3.0
+        num: 3
+        # Valid spacing: linspace, logspace
+        spacing: linspace
+        # Defines whether the above array is used. If False, only the
+        # defined_periods are used
+        use_array: True
+        # Defines a list of user defined periods that are not
+        # predefined by the array of periods
+        defined_periods:
+          - 0.3
+  fas:
+      smoothing: konno_ohmachi
+      bandwidth: 20.0
+      periods:
+        # Parameters defining an array of periods
+        # syntax is the same as that used for numpy linspace and logspace
+        # start (first value), stop (last value), num (number of values)
+        start: 1.0
+        stop: 3.0
+        num: 3
+        # Valid spacing: linspace, logspace
+        spacing: linspace
+        # Defines whether the above array is used. If false, only the
+        # defined_periods are used
+        use_array: True
+        # A list of user defined periods that are not
+        # predefined by the array of periods.
+        defined_periods:
+          - 0.3
+
+# -----------------------------------------------------------------------------
+# This section is for options for phase pickers
+pickers:
+    # Options for obspy.signal.trigger.ar_pick()
+    ar:
+        # Frequency of the lower bandpass window (Hz)
+        f1: 1.0
+
+        # Frequency of the upper bandpass window (Hz)
+        f2: 20.0
+
+        # Length of LTA for the P arrival (seconds)
+        lta_p: 1.0
+
+        # Length of STA for the P arrival (seconds)
+        sta_p: 0.1
+
+        # Length of LTA for the S arrival (seconds)
+        lta_s: 4.0
+
+        # Length of STA for the S arrival (seconds)
+        sta_s: 1.0
+
+        # Number of AR coefficients for the P arrival
+        m_p: 2
+
+        # Number of AR coefficients for the S arrival
+        m_s: 8
+
+        # Length of variance window for the P arrival (seconds)
+        l_p: 0.1
+
+        # Length of variance window for the S arrival (seconds)
+        l_s: 0.2
+
+        # If True, also pick the S phase. Otherwise only the P phase.
+        s_pick: False
+
+
+    # Options for obspy.signal.trigger.pk_baer()
+    baer:
+        # If dtime exceeds tdownmax, the trigger is examined for validity
+        tdownmax: 20
+
+        # Minimum number of samples for itrm to be accepted as a pick
+        tupevent: 60
+
+        # Threshold to trigger for pick (c.f. paper)
+        thr1: 7.0
+
+        # Threshold for updating sigma
+        thr2: 12.0
+
+        # Number of points taken for the estimation of variance of SF(t) on preset()
+        preset_len: 100
+
+        # Time interval for which the maximum amplitude is evaluated
+        p_dur: 100
+
+    kalkan:
+        # undamped natural period in second (default is 0.01 for
+        # records sampled with 100 samples-per-second or larger; for
+        # records with lower than 100 samples-per-second default
+        # is 0.1 s)
+        period: None
+
+        # damping ratio
+        damping: 0.6
+
+        # histogram bin size (default is 2/dt for
+        # strong-motion acceleration and broadband velocity
+        # waveforms; regional or teleseismic records may need
+        # different values of bin size for better picking results)
+        nbins: None
+
+        # Take segment of waveform from beginning to
+        # absolute peak value (recommended for fast processing)
+        # False to take full waveform.
+        peak_selection: False
+
+    # TODO: Document these options
+    power:
+        highpass: 1.4
+        lowpass: 6
+        order: 3
+        sta: 3.0
+        sta2: 3.0
+        lta: 20.0
+        hanningWindow: 3.0
+        threshDetect: 2.5
+        threshDetect2: 2.5
+        threshRestart: 1.5
+    
+    travel_time:
+        # this picker uses travel times using configured velocity model
+        # list of models can be found here:
+        # https://docs.obspy.org/packages/obspy.taup.html#basic-usage
+        model : iasp91
+
+
+
+        
+
