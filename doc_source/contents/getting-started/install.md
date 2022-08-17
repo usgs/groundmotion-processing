@@ -3,15 +3,19 @@
 Note that we used to use conda to manage dependencies but that was creating some
 difficulties and so we are now relying on pip as much as possible. 
 
+However, we do recommend installing gmprocess into a virtual environment to isolate
+your code from other projects that might create conflicts and 
+[conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
+is good option for accomplishing this.
+
 ```{caution}
 There is an old gmprocess package available via conda. Please do not install this!
 It is very out of date and won't work.
 ```
 
-However, we do recommend installing gmprocess into a virtual environment to isolate
-your code from other projects that might create conflicts and 
-[conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)
-is good option for accomplishing this.
+Please note that our development team is not proficient with Windows systems, so our 
+ability to support Windows installs is limited. We have done our best to provide
+instructions to support Windows build.
 
 We hope to be able to provide pip installs via pypi wheels soon.
 
@@ -27,14 +31,11 @@ We hope to be able to provide pip installs via pypi wheels soon.
 ```
 
 ```{tab} Windows
-- A C compiler. We have had success follwing 
-  [these instructions](https://github.com/cython/cython/wiki/CythonExtensionsOnWindows#using-windows-sdk-cc-compiler-works-for-all-python-versions)
-  from cython.
+- [Miniconda](https://docs.conda.io/en/latest/miniconda.html#windows-installers) 
+  (recommended) or [anaconda](https://www.anaconda.com/products/distribution).
+- A C compiler. We have had success following 
+  [these instructions](https://wiki.python.org/moin/WindowsCompilers).
 - Git and some kind of console.
-
-Our development team is not proficient with Windows systems, so our ability to 
-support Windows installs is limited. But we know that the code compiles and 
-passes tests in Windows on our continuous integration systems.
 ```
 :::
 
@@ -48,10 +49,15 @@ $ cd groundmotion-processing
 :::{admonition} Windows
 :class: important
 There is one depenency ([fiona](https://pypi.org/project/Fiona/)) that we have not been
-able to install with pip on Windows systems. So we rely on conda for this.
+able to install with pip on Windows systems. So we rely on conda for this. Start in an
+anaconda prompt, and run
+```
+$ conda init powershell
+```
+Then open a new powershell terminal and run
 ```
 $ conda create --name gmprocess python=3.8 pip fiona 
-$ call activate gmprocess
+$ conda activate gmprocess
 ```
 :::
 
