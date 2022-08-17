@@ -106,7 +106,6 @@ jobs:
       echo $output
       echo pip list:
       pip list
-      ./check_site-packages.py
     displayName: Install gmprocess (mac/linux)
     condition: ne( variables['Agent.OS'], 'Windows_NT' )
 
