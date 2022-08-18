@@ -221,9 +221,11 @@ class SubcommandModule(ABC):
 
     def _get_config(self):
         if hasattr(self, "workspace") and hasattr(self.workspace, "config"):
+            logging.info('Loading config from workspace.')
             config = self.workspace.config
         else:
-            config = confmod.get_config()
+            logging.info('Loading config from file.')
+            config = confmod.get_config(config_path=self.gmrecords.conf_path)
             # Update the config in the workspace
             self.workspace.addConfig(config=config)
 
