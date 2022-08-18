@@ -224,4 +224,7 @@ class SubcommandModule(ABC):
             config = self.workspace.config
         else:
             config = confmod.get_config()
+            # Update the config in the workspace
+            self.workspace.setConfig(config)
+
         return config
