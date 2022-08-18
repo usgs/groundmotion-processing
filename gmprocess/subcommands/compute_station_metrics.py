@@ -277,6 +277,11 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             kind="linear",
             copy=False,
             assume_sorted=True,
+            bounds_error=False,
+            fill_value=(
+                (Rjb_hat[0], Rjb_var[0]),
+                (Rjb_hat[-1], Rjb_var[-1])
+                )
         )
         self.rrup_spline = spint.interp1d(
             repi,
@@ -284,4 +289,9 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             kind="linear",
             copy=False,
             assume_sorted=True,
+            bounds_error=False,
+            fill_value=(
+                (Rrup_hat[0], Rrup_var[0]),
+                (Rrup_hat[-1], Rrup_var[-1])
+                )
         )
