@@ -137,7 +137,7 @@ def find_fetchers(lat, lon):
     """
 
     fetchers = {}
-    root = pathlib.Path(__file__).parent / ".."
+    root = pathlib.Path(__file__).parent
     for (rootdir, dirs, files) in os.walk(root):
         if rootdir == root:
             continue
