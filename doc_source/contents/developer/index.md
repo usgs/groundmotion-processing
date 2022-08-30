@@ -4,6 +4,7 @@
 ---
 maxdepth: 1
 ---
+   Changelog <changelog>
    Contributing Guidelines <contributing>
    Adding New Data Readers <new_readers>
    Building the Documentation <build_docs>
