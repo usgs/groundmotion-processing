@@ -271,8 +271,8 @@ def get_config(config_path=None):
 
     # Read in default config from the repository
     data_dir = Path(__file__).parent / ".." / "data"
-    default_config_file = os.path.join(data_dir, constants.CONFIG_FILE_PRODUCTION)
-    if not os.path.isfile(default_config_file):
+    default_config_file = data_dir / constants.CONFIG_FILE_PRODUCTION
+    if not default_config_file.exists():
         fmt = "Missing config file: %s."
         raise OSError(fmt % default_config_file)
     else:

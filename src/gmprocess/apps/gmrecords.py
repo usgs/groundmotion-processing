@@ -347,9 +347,17 @@ class GMrecordsApp(object):
         parsers = []
         for cname, cdict in self.classes.items():
             command_description = inspect.getdoc(cdict["class"])
+            if hasattr(cdict["class"], "epilog"):
+                epilog = cdict["class"].epilog
+            else:
+                epilog = None
             parsers.append(
                 subparsers.add_parser(
-                    cname, help=command_description, aliases=cdict["class"].aliases
+                    cname,
+                    help=command_description,
+                    aliases=cdict["class"].aliases,
+                    epilog=epilog,
+                    formatter_class=argparse.RawDescriptionHelpFormatter,
                 )
             )
             arg_list = cdict["class"].arguments

@@ -5,6 +5,7 @@
 import os
 from shutil import which
 import glob
+import re
 
 # third party imports
 import numpy as np
@@ -313,7 +314,14 @@ def get_prov_latex(st):
         last_row = row
 
     newdf = pd.DataFrame(final_dict)
-    prov_string = newdf.to_latex(index=False)
+    # prov_string = newdf.to_latex(index=False)
+    newdf = newdf.applymap(str_for_latex)
+    prov_string = newdf.style.to_latex(hrules=True)
+    # Annoying hack because pandas removed the functionality to hide the index when
+    # writing to latex.
+    prov_string = prov_string.replace("{llll", "{lll")
+    prov_string = re.sub(r"\n\d* &", "\n", prov_string)
+
     prov_string = "\\tiny\n" + prov_string
     return prov_string
 

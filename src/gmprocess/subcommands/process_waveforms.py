@@ -46,6 +46,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
             "action": "store_true",
         },
         arg_dicts.ARG_DICTS["num_processes"],
+        arg_dicts.ARG_DICTS["overwrite"],
     ]
 
     def main(self, gmrecords):
@@ -72,6 +73,8 @@ class ProcessWaveformsModule(base.SubcommandModule):
 
     def _process_event(self, event):
         self.open_workspace(event.id)
+        if self.workspace is None:
+            return
         ds = self.workspace.dataset
         station_list = ds.waveforms.list()
 
@@ -136,11 +139,11 @@ class ProcessWaveformsModule(base.SubcommandModule):
             # Collect the processed streams
             processed_streams = [future.result() for future in futures]
 
-        # Cannot parallelize IO to ASDF file
+        # Note: cannot parallelize IO to ASDF file
+
+        overwrite = self.gmrecords.args.overwrite
         if self.gmrecords.args.reprocess:
             overwrite = True
-        else:
-            overwrite = False
 
         for processed_stream in processed_streams:
             self.workspace.addStreams(

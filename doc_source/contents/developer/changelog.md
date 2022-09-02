@@ -6,6 +6,8 @@
 - Data fetcher bugfix.
 - Improvement to Windows install instructions.
 - Add changelog.
+- Add "config" subcommand to gmrecords.
+- Fix pandas to_latex warning.
 
 ## 1.2.0 / 2022-08-15
 

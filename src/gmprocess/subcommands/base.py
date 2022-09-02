@@ -5,6 +5,7 @@ import os
 import sys
 from abc import ABC, abstractmethod
 import logging
+from pathlib import Path
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -35,17 +36,17 @@ class SubcommandModule(ABC):
 
     def open_workspace(self, eventid):
         """Open workspace, add as attribute."""
-        event_dir = os.path.join(self.gmrecords.data_path, eventid)
-        workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-        if not os.path.isfile(workname):
+        event_dir = Path(self.gmrecords.data_path) / eventid
+        workname = event_dir / const.WORKSPACE_NAME
+        if not workname.exists():
             logging.info(
                 "No workspace file found for event %s. Please run "
                 "subcommand 'assemble' to generate workspace file."
             )
             logging.info("Continuing to next event.")
-            return eventid
-
-        self.workspace = ws.StreamWorkspace.open(workname)
+            self.workspace = None
+        else:
+            self.workspace = ws.StreamWorkspace.open(workname)
 
     def close_workspace(self):
         """Close workspace."""
