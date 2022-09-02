@@ -184,8 +184,6 @@ class FDSNFetcher(DataFetcher):
 
         client_list = []
         for provider_str in providers.keys():
-            if provider_str == "NCEDC":
-                continue
             if provider_str == GEO_NET_ARCHIVE_KEY:
                 dt = UTCDateTime.utcnow() - UTCDateTime(self.time)
                 if dt < GEONET_ARCHIVE_DAYS:
