@@ -385,14 +385,15 @@ class StreamWorkspace(object):
             if overwrite:
                 net_sta = stream.get_net_sta()
                 if net_sta in self.dataset.waveforms:
-                    tmp_stream = self.dataset.waveforms[net_sta][tag]
-                    tmp_stats = tmp_stream[0].stats
-                    tmp_nsl = ".".join(
-                        [tmp_stats.network, tmp_stats.station, tmp_stats.location]
-                    )
-                    nsl = stream.get_net_sta_loc()
-                    if nsl == tmp_nsl:
-                        del self.dataset.waveforms[net_sta][tag]
+                    if tag in self.dataset.waveforms[net_sta]:
+                        tmp_stream = self.dataset.waveforms[net_sta][tag]
+                        tmp_stats = tmp_stream[0].stats
+                        tmp_nsl = ".".join(
+                            [tmp_stats.network, tmp_stats.station, tmp_stats.location]
+                        )
+                        nsl = stream.get_net_sta_loc()
+                        if nsl == tmp_nsl:
+                            del self.dataset.waveforms[net_sta][tag]
 
             self.dataset.add_waveforms(stream, tag=tag, event_id=event)
 
@@ -1336,14 +1337,10 @@ class StreamWorkspace(object):
             row["Software"] = software["name"]
             row["Version"] = software["version"]
             df = df.append(row, ignore_index=True)
-        breakpoint()
         return df
 
-    def getInventory(self, eventid):
+    def getInventory(self):
         """Get an Obspy Inventory object from the ASDF file.
-
-        Args:
-            eventid (str): ID of event to search for in ASDF file.
 
         Returns:
             Inventory: Obspy inventory object capturing all of the

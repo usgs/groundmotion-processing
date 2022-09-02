@@ -63,8 +63,8 @@ class ExportFailureTablesModule(base.SubcommandModule):
             workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
                 logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % self.eventid
+                    f"No workspace file found for event {self.eventid}. Please run "
+                    "subcommand 'assemble' to generate workspace file."
                 )
                 logging.info("Continuing to next event.")
                 continue
