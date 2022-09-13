@@ -68,7 +68,7 @@ class Differentiate(Transform):
         Returns:
             stream: StationStream with the differentiated data.
         """
-        stream = StationStream([])
+        stream = StationStream([], config=self.config)
         for trace in self.transform_data:
             diff_conf = self.config["differentiation"]
             differentiated_trace = trace.copy().differentiate(

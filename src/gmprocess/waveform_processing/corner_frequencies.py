@@ -62,23 +62,24 @@ def get_corner_frequencies(
     elif method == "snr":
         st = from_snr(st, **snr)
         if snr["same_horiz"] and st.passed and st.num_horizontal > 1:
-            lps = [tr.getParameter("corner_frequencies")["lowpass"] for tr in st]
-            hps = [tr.getParameter("corner_frequencies")["highpass"] for tr in st]
-            chs = [tr.stats.channel for tr in st]
-            hlps = []
-            hhps = []
-            for i in range(len(chs)):
-                if "z" not in chs[i].lower():
-                    hlps.append(lps[i])
-                    hhps.append(hps[i])
+            hlps = [
+                tr.getParameter("corner_frequencies")["lowpass"]
+                for tr in st
+                if "z" not in tr.stats.channel.lower()
+            ]
+            hhps = [
+                tr.getParameter("corner_frequencies")["highpass"]
+                for tr in st
+                if "z" not in tr.stats.channel.lower()
+            ]
             llp = np.min(hlps)
             hhp = np.max(hhps)
-            for i in range(len(chs)):
-                if "z" not in chs[i].lower():
-                    cfdict = st[i].getParameter("corner_frequencies")
+            for tr in st:
+                if "z" not in tr.stats.channel.lower():
+                    cfdict = tr.getParameter("corner_frequencies")
                     cfdict["lowpass"] = llp
                     cfdict["highpass"] = hhp
-                    st[i].setParameter("corner_frequencies", cfdict)
+                    tr.setParameter("corner_frequencies", cfdict)
     else:
         raise ValueError(
             "Corner frequency 'method' must be one of: 'constant', 'magnitude', or "
@@ -125,23 +126,24 @@ def lowpass_max_frequency(st, fn_fac=0.75, config=None):
         return st
 
     for tr in st:
-        if tr.hasParameter("review"):
-            rdict = tr.getParameter("review")
-            if "corner_frequencies" in rdict:
-                rev_fc_dict = rdict["corner_frequencies"]
-                if "lowpass" in rev_fc_dict:
-                    logging.warning(
-                        f"Not applying lowpass_max_frequency for {tr} because the "
-                        "lowpass filter corner was set by manual review."
-                    )
-                    continue
+        if tr.passed:
+            if tr.hasParameter("review"):
+                rdict = tr.getParameter("review")
+                if "corner_frequencies" in rdict:
+                    rev_fc_dict = rdict["corner_frequencies"]
+                    if "lowpass" in rev_fc_dict:
+                        logging.warning(
+                            f"Not applying lowpass_max_frequency for {tr} because the "
+                            "lowpass filter corner was set by manual review."
+                        )
+                        continue
 
-        fn = 0.5 * tr.stats.sampling_rate
-        max_flp = fn * fn_fac
-        freq_dict = tr.getParameter("corner_frequencies")
-        if freq_dict["lowpass"] > max_flp:
-            freq_dict["lowpass"] = max_flp
-            tr.setParameter("corner_frequencies", freq_dict)
+            fn = 0.5 * tr.stats.sampling_rate
+            max_flp = fn * fn_fac
+            freq_dict = tr.getParameter("corner_frequencies")
+            if freq_dict["lowpass"] > max_flp:
+                freq_dict["lowpass"] = max_flp
+                tr.setParameter("corner_frequencies", freq_dict)
 
     return st
 
@@ -224,7 +226,7 @@ def from_snr(st, same_horiz=True, bandwidth=20):
 
         # If the SNR doesn't exist then it must have failed because it didn't
         # have nough points in the noise or signal windows
-        if not tr.hasParameter("failure"):
+        if tr.passed:
             snr_conf = tr.getParameter("snr_conf")
             threshold = snr_conf["threshold"]
             min_freq = snr_conf["min_freq"]

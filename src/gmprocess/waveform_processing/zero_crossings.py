@@ -35,7 +35,7 @@ def check_zero_crossings(st, min_crossings=0.1, config=None):
         # not want to modify the trace but we only want to count the crossings
         # within the trimmed window
 
-        if tr.hasParameter("signal_end") and (not tr.hasParameter("failure")):
+        if tr.hasParameter("signal_end") and tr.passed:
             etime = tr.getParameter("signal_end")["end_time"]
             split_time = tr.getParameter("signal_split")["split_time"]
 

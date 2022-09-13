@@ -143,19 +143,23 @@ def read_usc(filename, config=None, **kwargs):
             f.close()
 
     if first_line.find("OF UNCORRECTED ACCELEROGRAM DATA OF") >= 0:
-        stream = read_volume_one(filename, location=location, alternate=alternate)
+        stream = read_volume_one(
+            filename, location=location, alternate=alternate, config=config
+        )
     else:
         raise ValueError("USC: Not a supported volume.")
 
     return stream
 
 
-def read_volume_one(filename, location="", alternate=False):
+def read_volume_one(filename, location="", alternate=False, config=None):
     """Read channel data from USC volume 1 text file.
 
     Args:
         filename (str):
             Input DMG V1 filename.
+        config (dict):
+            Config options.
 
     Returns:
         tuple: (list of obspy Trace, int line offset)
@@ -166,7 +170,7 @@ def read_volume_one(filename, location="", alternate=False):
         line_count = sum(1 for _ in f)
     # read as many channels as are present in the file
     line_offset = 0
-    stream = StationStream([])
+    stream = StationStream([], config=config)
     while line_offset < line_count:
         trace, line_offset = _read_channel(
             filename, line_offset, volume, location=location, alternate=alternate

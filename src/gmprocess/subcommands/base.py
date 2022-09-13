@@ -40,8 +40,8 @@ class SubcommandModule(ABC):
         workname = event_dir / const.WORKSPACE_NAME
         if not workname.exists():
             logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file."
+                f"No workspace file found for event {eventid}. Please run subcommand "
+                "'assemble' to generate workspace file."
             )
             logging.info("Continuing to next event.")
             self.workspace = None

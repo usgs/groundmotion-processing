@@ -196,6 +196,9 @@ windows:
 
         min_signal_duration: 5.0
 
+check_stream: 
+    # Fail a stream if any of the constituent traces failed?
+    any_trace_failures: True
 
 # -----------------------------------------------------------------------------
 # This section is for processing steps that will affect the waveform and get

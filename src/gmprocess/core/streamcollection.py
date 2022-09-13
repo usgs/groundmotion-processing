@@ -287,7 +287,7 @@ class StreamCollection(StreamArray):
         return cls(streams, config=config)
 
     @classmethod
-    def from_traces(cls, traces):
+    def from_traces(cls, traces, config=None):
         """Create a StreamCollection instance from a list of traces.
 
         Args:
@@ -298,8 +298,8 @@ class StreamCollection(StreamArray):
             StreamCollection instance.
         """
 
-        streams = [StationStream([tr]) for tr in traces]
-        return cls(streams)
+        streams = [StationStream([tr], config=config) for tr in traces]
+        return cls(streams, config=config)
 
     def to_dataframe(self, origin, imcs=None, imts=None):
         """Get a summary dataframe of streams.
@@ -395,8 +395,8 @@ class StreamCollection(StreamArray):
         for stream in streams:
             if not stream.passed:
                 continue
-            if len(stream) < 3:
-                continue
+            # if len(stream) < 3:
+            #     continue
             stream_summary = StationSummary.from_stream(
                 stream, station_summary_imcs, station_summary_imts, origin
             )
@@ -474,7 +474,7 @@ class StreamCollection(StreamArray):
             # (roughly) the same location. If we know this (as in the case of
             # BOR), we can use this to trim the stations into 3-channel
             # streams.
-            streams = split_station(grouped_trace_list)
+            streams = split_station(grouped_trace_list, config=self.config)
             streams = insert_stream_parameters(streams, stream_params)
 
             for st in streams:
@@ -572,7 +572,7 @@ class StreamCollection(StreamArray):
             else:
                 preferred_traces.append(tr_to_add)
 
-        streams = [StationStream([tr]) for tr in preferred_traces]
+        streams = [StationStream([tr], config=self.config) for tr in preferred_traces]
         streams = insert_stream_parameters(streams, stream_params)
         self.streams = streams
 
@@ -600,9 +600,9 @@ class StreamCollection(StreamArray):
         if status == "short":
             failure_reasons = pd.Series(
                 [
-                    next(tr for tr in st if tr.hasParameter("failure")).getParameter(
-                        "failure"
-                    )["reason"]
+                    next(tr for tr in st if not tr.passed).getParameter("failure")[
+                        "reason"
+                    ]
                     for st in self.streams
                     if not st.passed
                 ],
@@ -629,7 +629,7 @@ class StreamCollection(StreamArray):
             failure_reasons = []
             for st in self.streams:
                 if not st.passed:
-                    first_failure = next(tr for tr in st if tr.hasParameter("failure"))
+                    first_failure = next(tr for tr in st if not tr.passed)
                     failure_reasons.append(
                         first_failure.getParameter("failure")["reason"]
                     )
@@ -709,17 +709,19 @@ def insert_stream_parameters(streams, stream_params):
     return streams
 
 
-def split_station(grouped_trace_list):
+def split_station(grouped_trace_list, config):
     if grouped_trace_list[0].stats.network in NETWORKS_USING_LOCATION:
         streams_dict = {}
         for trace in grouped_trace_list:
             if trace.stats.location in streams_dict:
                 streams_dict[trace.stats.location] += trace
             else:
-                streams_dict[trace.stats.location] = StationStream(traces=[trace])
+                streams_dict[trace.stats.location] = StationStream(
+                    traces=[trace], config=config
+                )
         streams = list(streams_dict.values())
     else:
-        streams = [StationStream(traces=grouped_trace_list)]
+        streams = [StationStream(traces=grouped_trace_list, config=config)]
     return streams
 
 

@@ -44,7 +44,9 @@ def test_stream():
     # test the streamparam functionality
     statsdict = {"name": "Fred", "age": 34}
     invstream.setStreamParam("stats", statsdict)
-    assert invstream.getStreamParamKeys() == ["stats"]
+    stream_params = invstream.getStreamParamKeys()
+    stream_params.sort()
+    assert stream_params == ["any_trace_failures", "stats"]
     cmpdict = invstream.getStreamParam("stats")
     assert statsdict == cmpdict
 

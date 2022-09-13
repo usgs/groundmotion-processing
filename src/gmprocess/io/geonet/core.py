@@ -113,7 +113,7 @@ def read_geonet(filename, config=None, **kwargs):
             )
 
     traces = [trace1, trace2, trace3]
-    stream = StationStream(traces)
+    stream = StationStream(traces, config=config)
 
     return [stream]
 

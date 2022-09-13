@@ -192,7 +192,14 @@ def build_report_latex(
         SB = SB.replace("[STATION]", st.get_id())
         report += SB
 
-        prov_latex = get_prov_latex(st)
+        try:
+            prov_latex = get_prov_latex(st)
+        except ValueError:
+            prov_latex = str_for_latex(
+                "Provenance could not be tabulated; this should only happen when "
+                "the ``any_trace_failures'' option is False because this allows the traces to "
+                "have a different number of entries, preventing table construction."
+            )
 
         report += prov_latex
         report += "\n"
@@ -206,7 +213,7 @@ def build_report_latex(
             report += f"Neural Network HQ score: {str_for_latex(str(score_hq))}\n\n"
         if not st.passed:
             for tr in st:
-                if tr.hasParameter("failure"):
+                if not tr.passed:
                     report += "Failure reason: %s\n\n" % str_for_latex(
                         tr.getParameter("failure")["reason"]
                     )

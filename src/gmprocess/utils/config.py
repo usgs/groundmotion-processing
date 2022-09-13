@@ -109,6 +109,9 @@ CONF_SCHEMA = Schema(
                 "min_signal_duration": float,
             },
         },
+        "check_stream": {
+            "any_trace_failures": bool,
+        },
         "processing": list,
         "colocated": {
             "enabled": bool,

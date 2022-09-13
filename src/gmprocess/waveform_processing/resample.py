@@ -31,7 +31,8 @@ def resample(st, new_sampling_rate=None, method=None, a=None, config=None):
         raise ValueError("Only lanczos interpolation method is supported.")
 
     for tr in st:
-        tr.interpolate(sampling_rate=new_sampling_rate, method=method, a=a)
-        tr.setProvenance("resample", {"new_sampling_rate": new_sampling_rate})
+        if tr.passed:
+            tr.interpolate(sampling_rate=new_sampling_rate, method=method, a=a)
+            tr.setProvenance("resample", {"new_sampling_rate": new_sampling_rate})
 
     return st

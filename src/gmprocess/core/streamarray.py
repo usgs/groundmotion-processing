@@ -40,7 +40,7 @@ class StreamArray(object):
                     stream_tag = None
                 stream_params_keys = st.getStreamParamKeys()
                 for tr in st:
-                    new_st = StationStream(traces=[tr])
+                    new_st = StationStream(traces=[tr], config=config)
                     new_st.id = ".".join(
                         [
                             tr.stats.network,
@@ -69,7 +69,7 @@ class StreamArray(object):
 
     def describe(self):
         """Thin wrapper of describe_string() for printing to stdout"""
-        stream_descript  = self.describe_string()
+        stream_descript = self.describe_string()
         print(stream_descript)
 
     def __len__(self):

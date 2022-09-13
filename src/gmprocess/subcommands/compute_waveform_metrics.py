@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import logging
 from concurrent.futures import ThreadPoolExecutor
 
@@ -56,8 +57,8 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
         if not os.path.isfile(workname):
             logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file." % self.eventid
+                "No workspace file found for event {self.eventid}. Please run "
+                "subcommand 'assemble' to generate workspace file."
             )
             logging.info("Continuing to next event.")
             return event.id
@@ -82,48 +83,48 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                 config=config,
             )
             if not len(streams):
-                raise ValueError("No matching streams found.")
+                logging.info("No matching streams found. Exiting.")
+                sys.exit()
 
             for stream in streams:
-                if stream.passed:
-                    if config["read"]["use_streamcollection"]:
-                        chancode = stream.get_inst()
-                    else:
-                        chancode = stream[0].stats.channel
-                    metricpaths.append(
-                        "/".join(
-                            [
-                                ws.format_netsta(stream[0].stats),
-                                ws.format_nslit(stream[0].stats, chancode, stream.tag),
-                            ]
+                if not stream.passed:
+                    continue
+                if config["read"]["use_streamcollection"]:
+                    chancode = stream.get_inst()
+                else:
+                    chancode = stream[0].stats.channel
+                metricpaths.append(
+                    "/".join(
+                        [
+                            ws.format_netsta(stream[0].stats),
+                            ws.format_nslit(stream[0].stats, chancode, stream.tag),
+                        ]
+                    )
+                )
+                logging.info(f"Calculating waveform metrics for {stream.get_id()}...")
+                if self.gmrecords.args.num_processes > 0:
+                    with ThreadPoolExecutor(
+                        max_workers=self.gmrecords.args.num_processes
+                    ) as executor:
+                        future = executor.submit(
+                            station_summary.StationSummary.from_config,
+                            stream=stream,
+                            config=config,
+                            event=event,
+                            calc_waveform_metrics=True,
+                            calc_station_metrics=False,
+                        )
+                        futures.append(future)
+                else:
+                    summaries.append(
+                        station_summary.StationSummary.from_config(
+                            stream,
+                            event=event,
+                            config=config,
+                            calc_waveform_metrics=True,
+                            calc_station_metrics=False,
                         )
                     )
-                    logging.info(
-                        f"Calculating waveform metrics for {stream.get_id()}..."
-                    )
-                    if self.gmrecords.args.num_processes > 0:
-                        with ThreadPoolExecutor(
-                            max_workers=self.gmrecords.args.num_processes
-                        ) as executor:
-                            future = executor.submit(
-                                station_summary.StationSummary.from_config,
-                                stream=stream,
-                                config=config,
-                                event=event,
-                                calc_waveform_metrics=True,
-                                calc_station_metrics=False,
-                            )
-                            futures.append(future)
-                    else:
-                        summaries.append(
-                            station_summary.StationSummary.from_config(
-                                stream,
-                                event=event,
-                                config=config,
-                                calc_waveform_metrics=True,
-                                calc_station_metrics=False,
-                            )
-                        )
 
         if self.gmrecords.args.num_processes > 0:
             # Collect the processed streams

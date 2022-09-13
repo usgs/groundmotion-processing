@@ -31,9 +31,10 @@ def min_sample_rate(st, min_sps=20.0, config=None):
         return st
 
     for tr in st:
-        actual_sps = tr.stats.sampling_rate
-        if actual_sps < min_sps:
-            tr.fail(f"Minimum sample rate of {min_sps} not exceeded.")
+        if tr.passed:
+            actual_sps = tr.stats.sampling_rate
+            if actual_sps < min_sps:
+                tr.fail(f"Minimum sample rate of {min_sps} not exceeded.")
 
     return st
 
@@ -112,7 +113,7 @@ def check_free_field(st, reject_non_free_field=True, config=None):
         return st
 
     for trace in st:
-        if not trace.free_field and reject_non_free_field:
+        if trace.passed and not trace.free_field and reject_non_free_field:
             trace.fail("Failed free field sensor check.")
 
     return st
@@ -143,19 +144,21 @@ def check_sta_lta(st, sta_length=1.0, lta_length=20.0, threshold=5.0, config=Non
         return st
 
     for tr in st:
-        sr = tr.stats.sampling_rate
-        nlta = lta_length * sr + 1
-        if len(tr) >= nlta:
-            sta_lta = classic_sta_lta(tr.data, sta_length * sr + 1, nlta)
-            if sta_lta.max() < threshold:
+        if tr.passed:
+            sr = tr.stats.sampling_rate
+            nlta = lta_length * sr + 1
+            if len(tr) >= nlta:
+                sta_lta = classic_sta_lta(tr.data, sta_length * sr + 1, nlta)
+                if sta_lta.max() < threshold:
+                    tr.fail(
+                        "Failed sta/lta check because threshold sta/lta is not "
+                        "exceeded."
+                    )
+            else:
                 tr.fail(
-                    "Failed sta/lta check because threshold sta/lta is not exceeded."
+                    "Failed sta/lta check because record length is shorter "
+                    "than lta length."
                 )
-        else:
-            tr.fail(
-                "Failed sta/lta check because record length is shorter "
-                "than lta length."
-            )
 
     return st
 
@@ -185,9 +188,10 @@ def check_max_amplitude(st, min=5, max=2e6, config=None):
     for tr in st:
         # Only perform amplitude/clipping check if data has not been converted
         # to physical units
-        if "remove_response" not in tr.getProvenanceKeys():
-            if abs(tr.max()) < float(min) or abs(tr.max()) > float(max):
-                tr.fail("Failed max amplitude check.")
+        if tr.passed:
+            if "remove_response" not in tr.getProvenanceKeys():
+                if abs(tr.max()) < float(min) or abs(tr.max()) > float(max):
+                    tr.fail("Failed max amplitude check.")
 
     return st
 

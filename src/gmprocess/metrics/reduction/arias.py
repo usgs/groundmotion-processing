@@ -53,17 +53,21 @@ class Arias(Reduction):
             config=config,
         )
         self.arias_stream = None
-        self.result = self.get_arias()
+        self.result = self.get_arias(config=config)
 
-    def get_arias(self):
+    def get_arias(self, config=None):
         """
         Performs calculation of arias intensity.
+
+        Args:
+            config (dict):
+                Config options.
 
         Returns:
             arias_intensities: Dictionary of arias intensity for each channel.
         """
         arias_intensities = {}
-        arias_stream = StationStream([])
+        arias_stream = StationStream([], config=config)
         for trace in self.reduction_data:
             tr = trace.copy()
             # convert from cm/s/s to m/s/s

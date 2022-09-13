@@ -120,7 +120,7 @@ def read_cwb(filename, config=None, **kwargs):
     trace_h2 = StationTrace(data=data[:, 3], header=stats_h2)
     trace_h2.setProvenance("remove_response", response)
 
-    stream = StationStream([trace_z, trace_h1, trace_h2])
+    stream = StationStream([trace_z, trace_h1, trace_h2], config=config)
     return [stream]
 
 

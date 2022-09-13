@@ -676,7 +676,7 @@ def summary_plots(st, directory, origin, config=None):
         else:
             tail_conf = None
 
-        trace_failed = tr.hasParameter("failure")
+        trace_failed = not tr.passed
 
         # Note that the theoretical spectra will only be available for
         # horizontal channels

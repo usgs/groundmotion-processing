@@ -180,5 +180,5 @@ def read_esm(filename, config=None, **kwargs):
     detrend_att = {"detrend": {"detrending_method": "baseline"}}
     if "NOT REMOVED" not in header["BASELINE_CORRECTION"]:
         trace.setProvenance("detrend", detrend_att)
-    stream = StationStream(traces=[trace])
+    stream = StationStream(traces=[trace], config=config)
     return [stream]

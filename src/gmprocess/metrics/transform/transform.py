@@ -56,7 +56,7 @@ class Transform(object):
         for trace in self.transform_data:
             # Group all of the max values from traces without
             # Z in the channel name
-            if "Z" not in trace.stats["channel"].upper():
+            if "Z" not in trace.stats["channel"].upper() and trace.passed:
                 horizontal_channels += [trace]
         # Test the horizontals
         if len(horizontal_channels) > 2:
