@@ -77,12 +77,14 @@ Attributes
    :rtype: Stream
 
 
-.. py:function:: read_volume_one(filename, location='', alternate=False)
+.. py:function:: read_volume_one(filename, location='', alternate=False, config=None)
 
    Read channel data from USC volume 1 text file.
 
    :param filename: Input DMG V1 filename.
    :type filename: str
+   :param config: Config options.
+   :type config: dict
 
    :returns: (list of obspy Trace, int line offset)
    :rtype: tuple

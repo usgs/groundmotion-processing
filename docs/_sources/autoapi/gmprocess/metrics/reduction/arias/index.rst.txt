@@ -23,9 +23,12 @@ Classes
 
    Class for calculation of arias intensity.
 
-   .. py:method:: get_arias()
+   .. py:method:: get_arias(config=None)
 
       Performs calculation of arias intensity.
+
+      :param config: Config options.
+      :type config: dict
 
       :returns: Dictionary of arias intensity for each channel.
       :rtype: arias_intensities

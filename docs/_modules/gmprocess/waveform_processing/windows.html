@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.waveform_processing.windows - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.waveform_processing.windows - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -375,6 +375,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -538,25 +539,31 @@
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+        <span class="c1"># Note that for consistency, we should clip all stream traces to the same</span>
+        <span class="c1"># window and so, unlike other similar processing step loops, there should NOT</span>
+        <span class="c1"># be an `if tr.passed` here.</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">etime</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_end&quot;</span><span class="p">)[</span><span class="s2">&quot;end_time&quot;</span><span class="p">]</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">endtime</span><span class="o">=</span><span class="n">etime</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After cut end time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">sec_before_split</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">split_time</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
             <span class="n">stime</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">-</span> <span class="n">sec_before_split</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Before cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">stime</span> <span class="o">&lt;</span> <span class="n">etime</span><span class="p">:</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">trim</span><span class="p">(</span><span class="n">starttime</span><span class="o">=</span><span class="n">stime</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                    <span class="s2">&quot;The &#39;cut&#39; processing step resulting in &quot;</span>
-                    <span class="s2">&quot;incompatible start and end times.&quot;</span>
+                    <span class="s2">&quot;The &#39;cut&#39; processing step resulting in incompatible start &quot;</span>
+                    <span class="s2">&quot;and end times.&quot;</span>
                 <span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After cut start time: </span><span class="si">{</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">tr</span><span class="o">.</span><span class="n">setProvenance</span><span class="p">(</span>
             <span class="s2">&quot;cut&quot;</span><span class="p">,</span>
-            <span class="p">{</span><span class="s2">&quot;new_start_time&quot;</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span> <span class="s2">&quot;new_end_time&quot;</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="p">},</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;new_start_time&quot;</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span><span class="p">,</span>
+                <span class="s2">&quot;new_end_time&quot;</span><span class="p">:</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span><span class="p">,</span>
+            <span class="p">},</span>
         <span class="p">)</span>
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -577,21 +584,22 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Cannot check window because no split time available.&quot;</span><span class="p">)</span>
-            <span class="k">continue</span>
-        <span class="c1"># Split the noise and signal into two separate traces</span>
-        <span class="n">split_prov</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_prov</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">split_prov</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
-        <span class="n">noise_duration</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
-        <span class="n">signal_duration</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">split_time</span>
-        <span class="k">if</span> <span class="n">noise_duration</span> <span class="o">&lt;</span> <span class="n">min_noise_duration</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed noise window duration check.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">signal_duration</span> <span class="o">&lt;</span> <span class="n">min_signal_duration</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed signal window duration check.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Cannot check window because no split time available.&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="c1"># Split the noise and signal into two separate traces</span>
+            <span class="n">split_prov</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">split_prov</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">split_prov</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">split_time</span> <span class="o">=</span> <span class="n">split_prov</span><span class="p">[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
+            <span class="n">noise_duration</span> <span class="o">=</span> <span class="n">split_time</span> <span class="o">-</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">starttime</span>
+            <span class="n">signal_duration</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">endtime</span> <span class="o">-</span> <span class="n">split_time</span>
+            <span class="k">if</span> <span class="n">noise_duration</span> <span class="o">&lt;</span> <span class="n">min_noise_duration</span><span class="p">:</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed noise window duration check.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">signal_duration</span> <span class="o">&lt;</span> <span class="n">min_signal_duration</span><span class="p">:</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed signal window duration check.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -903,8 +911,9 @@
 
     <span class="c1"># Check that we know the signal split for each trace in the stream</span>
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">st</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">st</span>
 
     <span class="n">signal_window_starttime</span> <span class="o">=</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;signal_split&quot;</span><span class="p">)[</span><span class="s2">&quot;split_time&quot;</span><span class="p">]</span>
 

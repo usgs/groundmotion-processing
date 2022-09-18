@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.metrics.rotation.rotd" href="../rotd/index.html" /><link rel="prev" title="gmprocess.metrics.rotation.radial_transverse" href="../radial_transverse/index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.metrics.rotation.rotation - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.metrics.rotation.rotation - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -376,6 +376,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -491,7 +492,7 @@
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.metrics.rotation.rotation.Rotation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.rotation.rotation.</span></span><span class="sig-name descname"><span class="pre">Rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/metrics/rotation/rotation.html#Rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.rotation.rotation.Rotation" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.rotation.rotation.</span></span><span class="sig-name descname"><span class="pre">Rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">event</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/metrics/rotation/rotation.html#Rotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.rotation.rotation.Rotation" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for rotation calculations.</p>
 <dl class="py method">
@@ -611,10 +612,10 @@ Default is 1.0</p></li>
                 </div>
                 <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.rotation.rotd</span></code></div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../radial_transverse/index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -650,7 +651,7 @@ Default is 1.0</p></li>
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">

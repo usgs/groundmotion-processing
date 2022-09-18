@@ -140,7 +140,7 @@ Attributes
       :returns: StreamCollection instance.
 
 
-   .. py:method:: from_traces(traces)
+   .. py:method:: from_traces(traces, config=None)
       :classmethod:
 
       Create a StreamCollection instance from a list of traces.
@@ -302,7 +302,7 @@ Attributes
    :returns: list of StationStream objects with stream parameters.
 
 
-.. py:function:: split_station(grouped_trace_list)
+.. py:function:: split_station(grouped_trace_list, config)
 
 
 .. py:function:: are_duplicates(tr1, tr2, max_dist_tolerance)

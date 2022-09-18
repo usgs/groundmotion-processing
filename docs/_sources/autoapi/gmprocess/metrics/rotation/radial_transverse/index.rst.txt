@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: Radial_Transverse(rotation_data, event)
+.. py:class:: Radial_Transverse(rotation_data, event, config=None)
 
    Bases: :py:obj:`gmprocess.metrics.rotation.rotation.Rotation`
 

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.utils.report_utils - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.utils.report_utils - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -375,6 +375,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -487,7 +488,7 @@
 <span class="n">LAND_COLOR</span> <span class="o">=</span> <span class="s2">&quot;#ededaf&quot;</span>
 <span class="n">PASSED_COLOR</span> <span class="o">=</span> <span class="s2">&quot;#00ac00&quot;</span>
 <span class="n">FAILED_COLOR</span> <span class="o">=</span> <span class="s2">&quot;#ff2222&quot;</span>
-<span class="n">EVENT_COLOR</span> <span class="o">=</span> <span class="s2">&quot;#FFFF00&quot;</span> <span class="c1">#&quot;#FF0000&quot;</span>
+<span class="n">EVENT_COLOR</span> <span class="o">=</span> <span class="s2">&quot;#FFFF00&quot;</span>  <span class="c1"># &quot;#FF0000&quot;</span>
 <span class="n">MAP_PADDING</span> <span class="o">=</span> <span class="mf">1.1</span>  <span class="c1"># Station map padding value</span>
 
 
@@ -500,18 +501,13 @@
     <span class="n">networks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
 
     <span class="n">failed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">trace</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">])</span>
-            <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span>
-        <span class="p">]</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="ow">not</span> <span class="n">trace</span><span class="o">.</span><span class="n">passed</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">])</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">]</span>
     <span class="p">)</span>
 
     <span class="n">failure_reasons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
         <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
             <span class="p">[</span>
-                <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span>
-                    <span class="s2">&quot;failure&quot;</span>
-                <span class="p">)[</span><span class="s2">&quot;reason&quot;</span><span class="p">]</span>
+                <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">)</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">)[</span><span class="s2">&quot;reason&quot;</span><span class="p">]</span>
                 <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span>
             <span class="p">],</span>
@@ -550,27 +546,26 @@
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">failed_station_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">station_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;NETWORK:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&lt;br&gt; &lt;b&gt;FAILURE MSG:&lt;/b&gt;&lt;br&gt; &lt;i&gt;&#39;</span><span class="si">{}</span><span class="s2">&#39;&lt;/i&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">r</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;reason&quot;</span><span class="p">]</span>
-        <span class="p">)</span> 
-        <span class="n">failed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span>
-            <span class="n">min_width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span>
-             <span class="n">max_width</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
-
-        <span class="n">failed_tooltip</span><span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">])</span>
         <span class="p">)</span>
+        <span class="n">failed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
 
-        <span class="n">failed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
+        <span class="n">failed_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">]))</span>
+
+        <span class="n">failed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span>
+            <span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
 <span class="s2">            &lt;div&gt;</span>
 <span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=&quot;#ff2222&quot; class=&quot;bi bi-triangle-fill&quot; transform=&#39;rotate(180)&#39; viewBox=&quot;0 0 16 16&quot;&gt;</span>
 <span class="s2">                    &lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;</span>
 <span class="s2">                &lt;/svg&gt;</span>
-<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span>
+        <span class="p">)</span>
 
         <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
             <span class="n">location</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span>
             <span class="n">tooltip</span><span class="o">=</span><span class="n">failed_tooltip</span><span class="p">,</span>
             <span class="n">popup</span><span class="o">=</span><span class="n">failed_popup</span><span class="p">,</span>
-            <span class="n">icon</span><span class="o">=</span><span class="n">failed_icon</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
+            <span class="n">icon</span><span class="o">=</span><span class="n">failed_icon</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
 
     <span class="c1"># Then the passed stations</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">passed_station_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
@@ -578,52 +573,58 @@
             <span class="n">r</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="n">passed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span>
-            <span class="n">min_width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
-            <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+        <span class="n">passed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
 
-        <span class="n">passed_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">])</span>
-        <span class="p">)</span>
+        <span class="n">passed_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;stnames&quot;</span><span class="p">]))</span>
 
-        <span class="n">passed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
+        <span class="n">passed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span>
+            <span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
 <span class="s2">            &lt;div&gt;</span>
-<span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">PASSED_COLOR</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-triangle-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
+<span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="o">+</span> <span class="n">PASSED_COLOR</span>
+            <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-triangle-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
 <span class="s2">                    &lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;</span>
 <span class="s2">                &lt;/svg&gt;</span>
-<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span>
+        <span class="p">)</span>
 
         <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
             <span class="n">location</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span>
             <span class="n">tooltip</span><span class="o">=</span><span class="n">passed_tooltip</span><span class="p">,</span>
             <span class="n">popup</span><span class="o">=</span><span class="n">passed_popup</span><span class="p">,</span>
-            <span class="n">icon</span><span class="o">=</span><span class="n">passed_icon</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
+            <span class="n">icon</span><span class="o">=</span><span class="n">passed_icon</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
 
     <span class="c1"># And finally the event itself</span>
     <span class="n">event_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;EVENT ID:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;MAG:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&lt;br&gt; &lt;b&gt;DEPTH:&lt;/b&gt; </span><span class="si">{:.2f}</span><span class="s2"> km&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>  <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">depth</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">depth</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">),</span>
     <span class="p">)</span>
-    <span class="n">event_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">event_info</span><span class="p">,</span>
-            <span class="n">min_width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span>
-            <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+    <span class="n">event_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">event_info</span><span class="p">,</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
 
-    <span class="n">event_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;EVENT ID:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">event_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
+    <span class="n">event_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="s2">&quot;&lt;b&gt;EVENT ID:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="n">event_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span>
+        <span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
 <span class="s2">            &lt;div&gt;</span>
-<span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">EVENT_COLOR</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-star-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
+<span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span>
+        <span class="o">+</span> <span class="n">EVENT_COLOR</span>
+        <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-star-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
 <span class="s2">                    &lt;path d=&quot;M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z&quot;/&gt;</span>
 <span class="s2">                &lt;/svg&gt;</span>
-<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span>
+    <span class="p">)</span>
 
     <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
         <span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">],</span>
         <span class="n">tooltip</span><span class="o">=</span><span class="n">event_tooltip</span><span class="p">,</span>
         <span class="n">popup</span><span class="o">=</span><span class="n">event_popup</span><span class="p">,</span>
         <span class="n">fill_color</span><span class="o">=</span><span class="n">EVENT_COLOR</span><span class="p">,</span>
-        <span class="n">icon</span><span class="o">=</span><span class="n">event_icon</span><span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
-    
+        <span class="n">icon</span><span class="o">=</span><span class="n">event_icon</span><span class="p">,</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
+
     <span class="n">station_map</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span><span class="o">.</span><span class="n">html</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span>
         <span class="n">folium</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span>
             <span class="sd">&quot;&quot;&quot;</span>
@@ -632,35 +633,41 @@
 <span class="sd">                background-color:white; border:2px solid grey;z-index: 900;&quot;&gt;</span>
 
 <span class="sd">                &lt;div style=&quot;padding:5px;&quot;&gt;</span>
-<span class="sd">                    &lt;svg style=&quot;vertical-align:center&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=\&quot;&quot;&quot;</span><span class="s2">&quot; + FAILED_COLOR + &quot;&quot;&quot;</span>\<span class="s2">&quot; class=&quot;</span><span class="n">bi</span> <span class="n">bi</span><span class="o">-</span><span class="n">triangle</span><span class="o">-</span><span class="n">fill</span><span class="s2">&quot; transform=&#39;rotate(180)&#39; viewBox=&quot;</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">16</span> <span class="mi">16</span><span class="s2">&quot;&gt;</span>
-                        <span class="o">&lt;</span><span class="n">path</span> <span class="n">fill</span><span class="o">-</span><span class="n">rule</span><span class="o">=</span><span class="s2">&quot;evenodd&quot;</span> <span class="n">d</span><span class="o">=</span><span class="s2">&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;</span><span class="o">/&gt;</span>
-                    <span class="o">&lt;/</span><span class="n">svg</span><span class="o">&gt;</span>
-                    <span class="o">&lt;</span><span class="n">text</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;padding:5px&quot;</span><span class="o">&gt;</span><span class="n">Passed</span> <span class="n">Station</span><span class="o">&lt;/</span><span class="n">text</span><span class="o">&gt;</span>
-                <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-                
-                <span class="o">&lt;</span><span class="n">div</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;padding:5px;&quot;</span><span class="o">&gt;</span>
-                    <span class="o">&lt;</span><span class="n">svg</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;vertical-align:center&quot;</span> <span class="n">xmlns</span><span class="o">=</span><span class="s2">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;16&quot;</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;16&quot;</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span> <span class="n">stroke</span><span class="o">-</span><span class="n">linecap</span><span class="o">=</span><span class="s2">&quot;square&quot;</span> <span class="n">fill</span><span class="o">=</span>\<span class="s2">&quot;&quot;&quot;&quot; + PASSED_COLOR + &quot;&quot;&quot;</span>\<span class="s2">&quot; class=&quot;</span><span class="n">bi</span> <span class="n">bi</span><span class="o">-</span><span class="n">triangle</span><span class="o">-</span><span class="n">fill</span><span class="s2">&quot; viewBox=&quot;</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">16</span> <span class="mi">16</span><span class="s2">&quot;&gt;</span>
-                        <span class="o">&lt;</span><span class="n">path</span> <span class="n">fill</span><span class="o">-</span><span class="n">rule</span><span class="o">=</span><span class="s2">&quot;evenodd&quot;</span> <span class="n">d</span><span class="o">=</span><span class="s2">&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;</span><span class="o">/&gt;</span>
-                    <span class="o">&lt;/</span><span class="n">svg</span><span class="o">&gt;</span>
-                    <span class="o">&lt;</span><span class="n">text</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;padding:5px&quot;</span><span class="o">&gt;</span><span class="n">Failed</span> <span class="n">Station</span><span class="o">&lt;/</span><span class="n">text</span><span class="o">&gt;</span>
-                <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="sd">                    &lt;svg style=&quot;vertical-align:center&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=\&quot;&quot;&quot;</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="n">FAILED_COLOR</span>
+            <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-triangle-fill&quot; transform=&#39;rotate(180)&#39; viewBox=&quot;0 0 16 16&quot;&gt;</span>
+<span class="s2">                        &lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;</span>
+<span class="s2">                    &lt;/svg&gt;</span>
+<span class="s2">                    &lt;text style=&quot;padding:5px&quot;&gt;Passed Station&lt;/text&gt;</span>
+<span class="s2">                &lt;/div&gt;</span>
+<span class="s2">                </span>
+<span class="s2">                &lt;div style=&quot;padding:5px;&quot;&gt;</span>
+<span class="s2">                    &lt;svg style=&quot;vertical-align:center&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="o">+</span> <span class="n">PASSED_COLOR</span>
+            <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-triangle-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
+<span class="s2">                        &lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;</span>
+<span class="s2">                    &lt;/svg&gt;</span>
+<span class="s2">                    &lt;text style=&quot;padding:5px&quot;&gt;Failed Station&lt;/text&gt;</span>
+<span class="s2">                &lt;/div&gt;</span>
 
-                <span class="o">&lt;</span><span class="n">div</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;padding:5px;&quot;</span><span class="o">&gt;</span>
-                    <span class="o">&lt;</span><span class="n">svg</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;vertical-align:center&quot;</span> <span class="n">xmlns</span><span class="o">=</span><span class="s2">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;16&quot;</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;16&quot;</span> <span class="n">stroke</span><span class="o">=</span><span class="s2">&quot;black&quot;</span> <span class="n">stroke</span><span class="o">-</span><span class="n">linecap</span><span class="o">=</span><span class="s2">&quot;square&quot;</span> <span class="n">fill</span><span class="o">=</span>\<span class="s2">&quot;&quot;&quot;&quot; + EVENT_COLOR + &quot;&quot;&quot;</span>\<span class="s2">&quot; class=&quot;</span><span class="n">bi</span> <span class="n">bi</span><span class="o">-</span><span class="n">star</span><span class="o">-</span><span class="n">fill</span><span class="s2">&quot; viewBox=&quot;</span><span class="mi">0</span> <span class="mi">0</span> <span class="mi">16</span> <span class="mi">16</span><span class="s2">&quot;&gt;</span>
-                        <span class="o">&lt;</span><span class="n">path</span> <span class="n">d</span><span class="o">=</span><span class="s2">&quot;M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z&quot;</span><span class="o">/&gt;</span>
-                    <span class="o">&lt;/</span><span class="n">svg</span><span class="o">&gt;</span>
-                    <span class="o">&lt;</span><span class="n">text</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;padding:5px&quot;</span><span class="o">&gt;</span><span class="n">Earthquake</span> <span class="n">Epicenter</span><span class="o">&lt;/</span><span class="n">text</span><span class="o">&gt;</span>
-                <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="s2">                &lt;div style=&quot;padding:5px;&quot;&gt;</span>
+<span class="s2">                    &lt;svg style=&quot;vertical-align:center&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span>
+            <span class="o">+</span> <span class="n">EVENT_COLOR</span>
+            <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-star-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
+<span class="s2">                        &lt;path d=&quot;M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z&quot;/&gt;</span>
+<span class="s2">                    &lt;/svg&gt;</span>
+<span class="s2">                    &lt;text style=&quot;padding:5px&quot;&gt;Earthquake Epicenter&lt;/text&gt;</span>
+<span class="s2">                &lt;/div&gt;</span>
 
-            <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-            <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">        )</span>
-<span class="s2">    )</span>
+<span class="s2">            &lt;/div&gt;</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
-<span class="s2">    html_mapfile = os.path.join(event_dir, &quot;stations_map.html&quot;)</span>
-<span class="s2">    station_map.save(html_mapfile)</span>
+    <span class="n">html_mapfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s2">&quot;stations_map.html&quot;</span><span class="p">)</span>
+    <span class="n">station_map</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">html_mapfile</span><span class="p">)</span>
 
-<span class="s2">    return (html_mapfile)</span></div>
+    <span class="k">return</span> <span class="n">html_mapfile</span></div>
 </pre></div>
         </article>
       </div>

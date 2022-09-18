@@ -188,6 +188,12 @@ Attributes
       :type reason: str
 
 
+   .. py:method:: passed()
+      :property:
+
+      Has this trace passed checks?
+
+
    .. py:method:: validate()
 
       Ensure that all required metadata fields have been set.

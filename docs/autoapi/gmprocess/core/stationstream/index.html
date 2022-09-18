@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.core.stationtrace" href="../stationtrace/index.html" /><link rel="prev" title="gmprocess.core" href="../index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.core.stationstream - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.core.stationstream - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -376,6 +376,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -544,7 +545,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.core.stationstream.StationStream">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationstream.</span></span><span class="sig-name descname"><span class="pre">StationStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationstream.html#StationStream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationstream.StationStream" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.core.stationstream.</span></span><span class="sig-name descname"><span class="pre">StationStream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">traces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inventory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationstream.html#StationStream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationstream.StationStream" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">obspy.core.stream.Stream</span></code></p>
 <p>The gmprocess subclass of ObsPy’s Stream object.</p>
 <p>ObsPy provides a Stream object that serves as a container for zero-to-many
@@ -620,10 +621,11 @@ of the channel (to indicate instrument type).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.core.stationstream.StationStream.passed">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">passed</span></span><a class="headerlink" href="#gmprocess.core.stationstream.StationStream.passed" title="Permalink to this definition">#</a></dt>
-<dd><p>Check the traces to see if any have failed any processing steps.</p>
+<dd><p>Attribute indicating if the stream passed QA checks.</p>
+<p>See <cite>StationStream.check_stream</cite> for more details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>True if no failures in Traces, False if there are.</p>
+<dd class="field-odd"><p>Stream has passed QA checks.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>bool</p>
@@ -720,10 +722,24 @@ of the channel (to indicate instrument type).</p>
 <dt class="sig sig-object py" id="gmprocess.core.stationstream.StationStream.check_stream">
 <span class="sig-name descname"><span class="pre">check_stream</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/core/stationstream.html#StationStream.check_stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.core.stationstream.StationStream.check_stream" title="Permalink to this definition">#</a></dt>
 <dd><p>Check StationStream for being flagged as failed.</p>
-<p>Processing checks get regorded as a ‘failure’ parameter in
-StationTraces. Streams also need to be classified as passed/faild,
-where if any of the checks have failed for consistent traces then the
-stream has failed.</p>
+<p>The logic of this method is controlled by the “any_trace_failures” config
+parameter in the “check_stream” section:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>If “any_trace_failures” is True, then the stream is treated as failed if
+ANY of the constituent traces failed.</p></li>
+<li><p>If “any_trace_failures” is False, then the tstream is treated as failed
+if ALL of the constituent traces failed.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the stream has passed checks</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -749,10 +765,10 @@ stream has failed.</p>
                 </div>
                 <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.core.stationtrace</span></code></div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -788,7 +804,7 @@ stream has failed.</p>
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
