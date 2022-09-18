@@ -137,8 +137,7 @@ def read_obspy(filename, config=None, **kwargs):
         filename (str):
             Path to data file.
         config (dict):
-            Dictionary containing configuration. If None, retrieve global
-            config.
+            Dictionary containing configuration. If None, retrieve global config.
         kwargs (ref):
             Other arguments will be ignored.
 
@@ -233,7 +232,7 @@ def read_obspy(filename, config=None, **kwargs):
 
         traces.append(trace)
     if no_match:
-        stream = StationStream(traces=traces)
+        stream = StationStream(traces=traces, config=config)
         streams.append(stream)
 
         return streams

@@ -97,7 +97,7 @@ def read_unam(filename, config=None, **kwargs):
     trace2.setProvenance("remove_response", response)
     trace3.setProvenance("remove_response", response)
 
-    stream = StationStream(traces=[trace1, trace2, trace3])
+    stream = StationStream(traces=[trace1, trace2, trace3], config=config)
     return [stream]
 
 

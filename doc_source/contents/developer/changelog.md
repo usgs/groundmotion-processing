@@ -8,6 +8,9 @@
 - Add changelog.
 - Add "config" subcommand to gmrecords.
 - Fix pandas to_latex warning.
+- Add check_stream config section with any_trace_failures key. 
+- Modify StationID column in metric tables to include full channel code when available. 
+
 
 ## 1.2.0 / 2022-08-15
 

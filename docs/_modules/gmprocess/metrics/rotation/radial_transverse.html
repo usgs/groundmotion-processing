@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.metrics.rotation.radial_transverse - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.metrics.rotation.radial_transverse - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -375,6 +375,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -490,7 +491,7 @@
 <div class="viewcode-block" id="Radial_Transverse"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/radial_transverse/index.html#gmprocess.metrics.rotation.radial_transverse.Radial_Transverse">[docs]</a><span class="k">class</span> <span class="nc">Radial_Transverse</span><span class="p">(</span><span class="n">Rotation</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for computing the Radial Transverse rotation.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Args:</span>
 <span class="sd">            rotation_data (obspy.core.stream.Stream or numpy.ndarray):</span>
@@ -498,8 +499,10 @@
 <span class="sd">            event (ScalarEvent):</span>
 <span class="sd">                Defines the focal time, geographical location and</span>
 <span class="sd">                magnitude of an earthquake hypocenter. Default is None.</span>
+<span class="sd">            config (dict):</span>
+<span class="sd">                Configuration options.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rotation_data</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="n">event</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_radial_transverse</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Radial_Transverse.get_radial_transverse"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/rotation/radial_transverse/index.html#gmprocess.metrics.rotation.radial_transverse.Radial_Transverse.get_radial_transverse">[docs]</a>    <span class="k">def</span> <span class="nf">get_radial_transverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -562,7 +565,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
         <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">ne_stream</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;NE-&gt;RT&quot;</span><span class="p">,</span> <span class="n">back_azimuth</span><span class="o">=</span><span class="n">baz</span><span class="p">)</span>
-        <span class="n">radial_transverse</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">([</span><span class="n">ne_stream</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ne_stream</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">radial_transverse</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">ne_stream</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ne_stream</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">radial_transverse</span></div></div>
 </pre></div>
         </article>

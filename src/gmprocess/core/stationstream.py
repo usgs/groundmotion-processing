@@ -22,6 +22,7 @@ from obspy.core.inventory import (
 )
 
 # local imports
+from gmprocess.utils.config import get_config
 from .stationtrace import StationTrace
 
 UNITS = {"acc": "cm/s/s", "vel": "cm/s"}
@@ -65,8 +66,14 @@ class StationStream(Stream):
     the StationStream object.
     """
 
-    def __init__(self, traces=None, inventory=None):
+    def __init__(self, traces=None, inventory=None, config=None):
         super(StationStream, self).__init__()
+        self.parameters = {}
+        if config is None:
+            config = get_config()
+        self.setStreamParam(
+            "any_trace_failures", config["check_stream"]["any_trace_failures"]
+        )
 
         if len(traces):
             # sometimes traces have different start/end times
@@ -85,9 +92,8 @@ class StationStream(Stream):
                 if newstart >= newend:
                     for trace in traces:
                         trace.fail(
-                            "Trimming start/end times across traces for "
-                            "this stream resulting in a start time after "
-                            "the end time."
+                            "Trimming start/end times across traces for this stream "
+                            "resulting in a start time after the end time."
                         )
                         self.append(trace)
                 else:
@@ -97,9 +103,8 @@ class StationStream(Stream):
                         if inventory is None:
                             if not isinstance(trace, StationTrace):
                                 raise ValueError(
-                                    "Input Traces to StationStream must be of "
-                                    "subtype StationTrace unless an invenotry "
-                                    "is also provided."
+                                    "Input Traces to StationStream must be of subtype "
+                                    "StationTrace unless an invenotry is also provided."
                                 )
                         else:
                             if not isinstance(trace, StationTrace):
@@ -154,9 +159,8 @@ class StationStream(Stream):
                     if inventory is None:
                         if not isinstance(trace, StationTrace):
                             raise ValueError(
-                                "Input Traces to StationStream must be of "
-                                "subtype StationTrace unless an invenotry "
-                                "is also provided."
+                                "Input Traces to StationStream must be of subtype "
+                                "StationTrace unless an invenotry is also provided."
                             )
                     else:
                         if not isinstance(trace, StationTrace):
@@ -166,7 +170,6 @@ class StationStream(Stream):
                     self.append(trace)
 
         self.validate()
-        self.parameters = {}
 
     def validate(self):
         """Validation checks for Traces within a StationStream."""
@@ -274,17 +277,21 @@ class StationStream(Stream):
 
     @property
     def passed(self):
-        """Check the traces to see if any have failed any processing steps.
+        """Attribute indicating if the stream passed QA checks.
+
+        See `StationStream.check_stream` for more details.
 
         Returns:
-            bool: True if no failures in Traces, False if there are.
+            bool: Stream has passed QA checks.
         """
         return self.check_stream()
 
     @property
     def num_horizontal(self):
         """Get the number of horizontal components in the StationStream."""
-        return len([tr for tr in self if tr.stats.channel[2].upper() != "Z"])
+        return len(
+            [tr for tr in self if tr.passed and tr.stats.channel[2].upper() != "Z"]
+        )
 
     def __str__(self, extended=False, indent=0):
         """String summary of the StationStream.
@@ -429,18 +436,32 @@ class StationStream(Stream):
     def check_stream(self):
         """Check StationStream for being flagged as failed.
 
-        Processing checks get regorded as a 'failure' parameter in
-        StationTraces. Streams also need to be classified as passed/faild,
-        where if any of the checks have failed for consistent traces then the
-        stream has failed.
+        The logic of this method is controlled by the "any_trace_failures" config
+        parameter in the "check_stream" section:
+            - If "any_trace_failures" is True, then the stream is treated as failed if
+              ANY of the constituent traces failed.
+            - If "any_trace_failures" is False, then the tstream is treated as failed
+              if ALL of the constituent traces failed.
+
+        Returns:
+            bool: True if the stream has passed checks
+
         """
-        stream_checks = []
+        any_trace_failures = self.getStreamParam("any_trace_failures")
+        failed_traces = []
         for tr in self:
-            stream_checks.append(tr.hasParameter("failure"))
-        if any(stream_checks):
-            return False
+            failed_traces.append(not tr.passed)
+
+        if any_trace_failures:
+            if any(failed_traces):
+                return False
+            else:
+                return True
         else:
-            return True
+            if all(failed_traces):
+                return False
+            else:
+                return True
 
 
 def _channel_from_stats(stats):

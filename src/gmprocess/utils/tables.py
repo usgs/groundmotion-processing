@@ -35,10 +35,14 @@ def set_precisions(df):
 
 
 def _get_table_row(stream, summary, event, imc):
+    station_id = stream.get_id()
     if imc.lower() == "channels":
         if len(stream) > 1:
             raise ValueError("Stream must be length 1 to get row for imc=='channels'.")
         chan = stream[0]
+        if not chan.passed:
+            return {}
+        station_id = chan.get_id()
         chan_lowfilt = chan.getProvenance("lowpass_filter")
         chan_highfilt = chan.getProvenance("highpass_filter")
         chan_lowpass = np.nan
@@ -53,6 +57,9 @@ def _get_table_row(stream, summary, event, imc):
         if not len(z):
             return {}
         z = z[0]
+        if not z.passed:
+            return {}
+        station_id = z.get_id()
         z_lowfilt = z.getProvenance("lowpass_filter")
         z_highfilt = z.getProvenance("highpass_filter")
         z_lowpass = np.nan
@@ -69,10 +76,22 @@ def _get_table_row(stream, summary, event, imc):
             h1 = stream.select(channel="*N")
             h2 = stream.select(channel="*E")
 
+        # Return empty dict if no horizontal channels are found
         if not len(h1) or not len(h2):
             return {}
+
         h1 = h1[0]
         h2 = h2[0]
+
+        # Return empty dict if the stream has not passed for the IMC requested
+        if imc == "H1":
+            if not h1.passed:
+                return {}
+            station_id = h1.get_id()
+        if imc == "H2":
+            if not h2.passed:
+                return {}
+            station_id = h2.get_id()
 
         h1_lowfilt = h1.getProvenance("lowpass_filter")
         h1_highfilt = h1.getProvenance("highpass_filter")
@@ -111,7 +130,7 @@ def _get_table_row(stream, summary, event, imc):
         "Network": stream[0].stats.network,
         "DataProvider": stream[0].stats.standard.source,
         "StationCode": stream[0].stats.station,
-        "StationID": stream.get_id(),
+        "StationID": station_id,
         "StationDescription": stream[0].stats.standard.station_name,
         "StationLatitude": stream[0].stats.coordinates.latitude,
         "StationLongitude": stream[0].stats.coordinates.longitude,

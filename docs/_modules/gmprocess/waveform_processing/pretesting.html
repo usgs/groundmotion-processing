@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.waveform_processing.pretesting - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.waveform_processing.pretesting - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -375,6 +375,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -507,9 +508,10 @@
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="n">actual_sps</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
-        <span class="k">if</span> <span class="n">actual_sps</span> <span class="o">&lt;</span> <span class="n">min_sps</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum sample rate of </span><span class="si">{</span><span class="n">min_sps</span><span class="si">}</span><span class="s2"> not exceeded.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="n">actual_sps</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
+            <span class="k">if</span> <span class="n">actual_sps</span> <span class="o">&lt;</span> <span class="n">min_sps</span><span class="p">:</span>
+                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum sample rate of </span><span class="si">{</span><span class="n">min_sps</span><span class="si">}</span><span class="s2"> not exceeded.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -588,7 +590,7 @@
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">trace</span><span class="o">.</span><span class="n">free_field</span> <span class="ow">and</span> <span class="n">reject_non_free_field</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">passed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trace</span><span class="o">.</span><span class="n">free_field</span> <span class="ow">and</span> <span class="n">reject_non_free_field</span><span class="p">:</span>
             <span class="n">trace</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed free field sensor check.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
@@ -619,19 +621,21 @@
         <span class="k">return</span> <span class="n">st</span>
 
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
-        <span class="n">sr</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
-        <span class="n">nlta</span> <span class="o">=</span> <span class="n">lta_length</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">nlta</span><span class="p">:</span>
-            <span class="n">sta_lta</span> <span class="o">=</span> <span class="n">classic_sta_lta</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">sta_length</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nlta</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">sta_lta</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="n">sr</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
+            <span class="n">nlta</span> <span class="o">=</span> <span class="n">lta_length</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tr</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">nlta</span><span class="p">:</span>
+                <span class="n">sta_lta</span> <span class="o">=</span> <span class="n">classic_sta_lta</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">sta_length</span> <span class="o">*</span> <span class="n">sr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nlta</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">sta_lta</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
+                        <span class="s2">&quot;Failed sta/lta check because threshold sta/lta is not &quot;</span>
+                        <span class="s2">&quot;exceeded.&quot;</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
                 <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                    <span class="s2">&quot;Failed sta/lta check because threshold sta/lta is not exceeded.&quot;</span>
+                    <span class="s2">&quot;Failed sta/lta check because record length is shorter &quot;</span>
+                    <span class="s2">&quot;than lta length.&quot;</span>
                 <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span>
-                <span class="s2">&quot;Failed sta/lta check because record length is shorter &quot;</span>
-                <span class="s2">&quot;than lta length.&quot;</span>
-            <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 
@@ -661,9 +665,10 @@
     <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">:</span>
         <span class="c1"># Only perform amplitude/clipping check if data has not been converted</span>
         <span class="c1"># to physical units</span>
-        <span class="k">if</span> <span class="s2">&quot;remove_response&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">):</span>
-                <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed max amplitude check.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;remove_response&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tr</span><span class="o">.</span><span class="n">getProvenanceKeys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">min</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">abs</span><span class="p">(</span><span class="n">tr</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">):</span>
+                    <span class="n">tr</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s2">&quot;Failed max amplitude check.&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">st</span></div>
 

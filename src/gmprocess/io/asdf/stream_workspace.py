@@ -5,6 +5,7 @@ import copy
 import warnings
 import logging
 import os
+import sys
 
 # third party imports
 import pyasdf
@@ -650,7 +651,7 @@ class StreamWorkspace(object):
                                         ] = fc_dict["lowpass"].data[0]
                                 trace.setParameter("review", review_dict)
 
-                    stream = StationStream(traces=[trace])
+                    stream = StationStream(traces=[trace], config=config)
                     stream.tag = tag
 
                     # get the stream processing parameters
@@ -907,7 +908,8 @@ class StreamWorkspace(object):
                     config=config,
                 )
                 if not len(streams):
-                    raise ValueError("No matching streams found.")
+                    logging.info("No matching streams found. Exiting.")
+                    sys.exit()
 
                 for stream in streams:
                     if not stream.passed:
@@ -1211,7 +1213,6 @@ class StreamWorkspace(object):
 
         # ----------------------------------------------------------- #
         # Waveform Metrics
-
         if "WaveFormMetrics" not in self.dataset.auxiliary_data:
             msg = "Waveform metrics not found in workspace, cannot get stream metrics."
             logging.warning(msg)
@@ -1257,9 +1258,7 @@ class StreamWorkspace(object):
         if top in auxholder:
             tauxholder = auxholder[top]
             if metricpath not in tauxholder:
-                fmt = (
-                    "Stream metrics path (%s) not in WaveFormMetrics " "auxiliary_data."
-                )
+                fmt = "Stream metrics path (%s) not in WaveFormMetrics auxiliary_data."
                 logging.warning(fmt % metricpath)
                 return None
 

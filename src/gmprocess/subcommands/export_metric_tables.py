@@ -48,8 +48,8 @@ class ExportMetricTablesModule(base.SubcommandModule):
             workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
                 logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % self.eventid
+                    f"No workspace file found for event {self.eventid}. Please run "
+                    "subcommand 'assemble' to generate workspace file."
                 )
                 logging.info("Continuing to next event.")
                 continue
@@ -57,6 +57,13 @@ class ExportMetricTablesModule(base.SubcommandModule):
             self.workspace = ws.StreamWorkspace.open(workname)
             self._get_labels()
             config = self._get_config()
+
+            if "StationMetrics" not in self.workspace.dataset.auxiliary_data:
+                logging.info(
+                    f"Station metrics not found in workspace for event {self.eventid}."
+                )
+                logging.info("Continuing to next event.")
+                continue
 
             event_table, imc_tables, readmes = self.workspace.getTables(
                 self.gmrecords.args.label, config

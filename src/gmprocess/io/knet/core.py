@@ -203,5 +203,5 @@ def read_knet(filename, config=None, **kwargs):
     response = {"input_units": "counts", "output_units": "cm/s^2"}
     trace.setProvenance("remove_response", response)
 
-    stream = StationStream(traces=[trace])
+    stream = StationStream(traces=[trace], config=config)
     return [stream]

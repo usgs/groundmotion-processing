@@ -72,7 +72,7 @@ def test_free_field():
         is_free = pstream[0].free_field
         reason = ""
         for trace in pstream:
-            if trace.hasParameter("failure"):
+            if not trace.passed:
                 reason = trace.getParameter("failure")["reason"]
                 break
         if is_free:

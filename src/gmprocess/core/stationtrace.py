@@ -313,6 +313,11 @@ class StationTrace(Trace):
         trace_id = f"{self.id}"
         logging.info(f"{calling_module} - {trace_id} - {reason}")
 
+    @property
+    def passed(self):
+        """Has this trace passed checks?"""
+        return not self.hasParameter("failure")
+
     def validate(self):
         """Ensure that all required metadata fields have been set.
 
@@ -974,7 +979,7 @@ class StationTrace(Trace):
         # check for masked array
         if np.ma.count_masked(self.data):
             out += " (masked)"
-        if self.hasParameter("failure"):
+        if not self.passed:
             out += " (failed)"
         else:
             out += " (passed)"

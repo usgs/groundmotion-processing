@@ -17,6 +17,7 @@ Submodules
    clean/index.rst
    compute_station_metrics/index.rst
    compute_waveform_metrics/index.rst
+   config/index.rst
    download/index.rst
    export_failure_tables/index.rst
    export_metric_tables/index.rst

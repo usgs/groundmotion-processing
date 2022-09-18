@@ -68,7 +68,6 @@ class FFT(Transform):
         """
         fft_dict = {}
         for trace in self.transform_data:
-
             nfft = self.get_nfft(trace)
 
             # Check if we already have computed the FFT for this trace

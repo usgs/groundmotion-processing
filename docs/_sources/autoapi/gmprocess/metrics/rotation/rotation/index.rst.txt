@@ -17,7 +17,7 @@ Classes
 
 
 
-.. py:class:: Rotation(rotation_data, event=None)
+.. py:class:: Rotation(rotation_data, event=None, config=None)
 
    Bases: :py:obj:`object`
 

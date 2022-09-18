@@ -14,7 +14,7 @@ from gmprocess.core.stationstream import StationStream
 class Radial_Transverse(Rotation):
     """Class for computing the Radial Transverse rotation."""
 
-    def __init__(self, rotation_data, event):
+    def __init__(self, rotation_data, event, config=None):
         """
         Args:
             rotation_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -22,8 +22,10 @@ class Radial_Transverse(Rotation):
             event (ScalarEvent):
                 Defines the focal time, geographical location and
                 magnitude of an earthquake hypocenter. Default is None.
+            config (dict):
+                Configuration options.
         """
-        super().__init__(rotation_data, event=event)
+        super().__init__(rotation_data, event=event, config=config)
         self.result = self.get_radial_transverse()
 
     def get_radial_transverse(self):
@@ -86,5 +88,7 @@ class Radial_Transverse(Rotation):
             self.event.longitude,
         )[1]
         ne_stream.rotate(method="NE->RT", back_azimuth=baz)
-        radial_transverse = StationStream([ne_stream[0], ne_stream[1]])
+        radial_transverse = StationStream(
+            [ne_stream[0], ne_stream[1]], config=self.config
+        )
         return radial_transverse

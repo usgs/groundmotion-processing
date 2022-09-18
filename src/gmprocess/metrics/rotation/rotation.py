@@ -11,7 +11,7 @@ from gmprocess.metrics.exception import PGMException
 class Rotation(object):
     """Base class for rotation calculations."""
 
-    def __init__(self, rotation_data, event=None):
+    def __init__(self, rotation_data, event=None, config=None):
         """
         Args:
             rotation_data (obspy.core.stream.Stream or numpy.ndarray):
@@ -19,9 +19,12 @@ class Rotation(object):
             event (ScalarEvent):
                 Defines the focal time, geographical location and magnitude of
                 an earthquake hypocenter. Default is None.
+            config (dict):
+                Configuration options.
         """
         self.rotation_data = rotation_data
         self.event = event
+        self.config = config
 
     def _get_horizontals(self):
         """
@@ -39,7 +42,7 @@ class Rotation(object):
         for trace in self.rotation_data:
             # Group all of the max values from traces without
             # Z in the channel name
-            if "Z" not in trace.stats["channel"].upper():
+            if "Z" not in trace.stats["channel"].upper() and trace.passed:
                 horizontal_channels += [trace]
         # Test the horizontals
         if len(horizontal_channels) > 2:

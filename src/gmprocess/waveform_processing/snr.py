@@ -137,7 +137,7 @@ def compute_snr_trace(tr, bandwidth=20.0):
             # ** only fail here if it hasn't already failed; we do not yet
             # ** support tracking multiple fail reasons and I think it is
             # ** better to know the FIRST reason if I have to pick one.
-            if not tr.hasParameter("failure"):
+            if tr.passed:
                 tr.fail("Failed SNR check; Not enough points in noise window.")
             compute_and_smooth_spectrum(tr, bandwidth, "signal")
             return tr
@@ -145,7 +145,7 @@ def compute_snr_trace(tr, bandwidth=20.0):
         # Check that there are a minimum number of points in the noise window
         if signal.stats.npts < MIN_POINTS_IN_WINDOW:
             # Fail the trace, but still compute the signal spectra
-            if not tr.hasParameter("failure"):
+            if tr.passed:
                 tr.fail("Failed SNR check; Not enough points in signal window.")
             compute_and_smooth_spectrum(tr, bandwidth, "signal")
             return tr

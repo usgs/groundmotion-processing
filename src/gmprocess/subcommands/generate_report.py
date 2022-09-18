@@ -81,8 +81,8 @@ class GenerateReportModule(base.SubcommandModule):
         workname = os.path.join(event_dir, const.WORKSPACE_NAME)
         if not os.path.isfile(workname):
             logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file." % event.id
+                f"No workspace file found for event {event.id}. Please run "
+                "subcommand 'assemble' to generate workspace file."
             )
             logging.info("Continuing to next event.")
             return False

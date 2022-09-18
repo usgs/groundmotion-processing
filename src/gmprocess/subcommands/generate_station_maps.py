@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -45,8 +46,8 @@ class GenerateHTMLMapModule(base.SubcommandModule):
             workname = os.path.join(event_dir, const.WORKSPACE_NAME)
             if not os.path.isfile(workname):
                 logging.info(
-                    "No workspace file found for event %s. Please run "
-                    "subcommand 'assemble' to generate workspace file." % event.id
+                    f"No workspace file found for event {event.id}. Please run "
+                    "subcommand 'assemble' to generate workspace file."
                 )
                 logging.info("Continuing to next event.")
                 return False
@@ -71,7 +72,8 @@ class GenerateHTMLMapModule(base.SubcommandModule):
                     config=config,
                 )
                 if not len(streams):
-                    raise ValueError("No matching streams found.")
+                    logging.info("No matching streams found. Exiting.")
+                    sys.exit()
 
                 for stream in streams:
                     pstreams.append(stream)

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -66,8 +67,8 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         )
         if not os.path.isfile(workname):
             logging.info(
-                "No workspace file found for event %s. Please run "
-                "subcommand 'assemble' to generate workspace file." % self.eventid
+                f"No workspace file found for event {self.eventid}. Please run "
+                "subcommand 'assemble' to generate workspace file."
             )
             logging.info("Continuing to next event.")
             return event.id
@@ -110,7 +111,8 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 config=config,
             )
             if not len(streams):
-                raise ValueError("No matching streams found.")
+                logging.info("No matching streams found. Exiting.")
+                sys.exit()
 
             for st in streams:
                 geo_tuple = ob.gps2dist_azimuth(

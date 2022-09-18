@@ -155,8 +155,8 @@ def streams_to_dataframe(streams, imcs=None, imts=None, event=None):
     for stream in streams:
         if not stream.passed:
             continue
-        if len(stream) < 3:
-            continue
+        # if len(stream) < 3:
+        #     continue
         stream_summary = StationSummary.from_stream(
             stream, station_summary_imcs, station_summary_imts, event
         )

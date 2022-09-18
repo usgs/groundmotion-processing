@@ -80,8 +80,7 @@ Attributes
 
    :param filename: Path to data file.
    :type filename: str
-   :param config: Dictionary containing configuration. If None, retrieve global
-                  config.
+   :param config: Dictionary containing configuration. If None, retrieve global config.
    :type config: dict
    :param kwargs: Other arguments will be ignored.
    :type kwargs: ref

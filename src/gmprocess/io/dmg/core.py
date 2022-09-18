@@ -196,7 +196,7 @@ def read_dmg(filename, config=None, **kwargs):
         else:
             raise ValueError("DMG: Not a supported volume.")
 
-    stream = StationStream([])
+    stream = StationStream([], config=config)
     for trace in trace_list:
         # For our purposes, we only want acceleration, so lets only return
         # that; we may need to change this later if others start using this
@@ -524,7 +524,7 @@ def _get_header_info_v1(int_data, flt_data, lines, level, location="", config=No
 
     if config is not None:
         if "use_streamcollection" in config["read"]:
-            if config["read"]["use_streamcollection"] == False:
+            if config["read"]["use_streamcollection"] is False:
                 location = f"{int(lines[6][5:7]):02d}"
 
     if location == "":

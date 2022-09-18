@@ -84,7 +84,7 @@ def read_bhrc(filename, config=None, **kwargs):
     trace1 = StationTrace(data1, header1)
     trace2 = StationTrace(data2, header2)
     trace3 = StationTrace(data3, header3)
-    stream = StationStream([trace1, trace2, trace3])
+    stream = StationStream([trace1, trace2, trace3], config=config)
 
     for tr in stream:
         if tr.stats.standard.process_level != PROCESS_LEVELS["V0"]:

@@ -56,7 +56,7 @@ Attributes
 
    
 
-.. py:class:: StationStream(traces=None, inventory=None)
+.. py:class:: StationStream(traces=None, inventory=None, config=None)
 
    Bases: :py:obj:`obspy.core.stream.Stream`
 
@@ -124,9 +124,11 @@ Attributes
    .. py:method:: passed()
       :property:
 
-      Check the traces to see if any have failed any processing steps.
+      Attribute indicating if the stream passed QA checks.
 
-      :returns: True if no failures in Traces, False if there are.
+      See `StationStream.check_stream` for more details.
+
+      :returns: Stream has passed QA checks.
       :rtype: bool
 
 
@@ -193,10 +195,15 @@ Attributes
 
       Check StationStream for being flagged as failed.
 
-      Processing checks get regorded as a 'failure' parameter in
-      StationTraces. Streams also need to be classified as passed/faild,
-      where if any of the checks have failed for consistent traces then the
-      stream has failed.
+      The logic of this method is controlled by the "any_trace_failures" config
+      parameter in the "check_stream" section:
+          - If "any_trace_failures" is True, then the stream is treated as failed if
+            ANY of the constituent traces failed.
+          - If "any_trace_failures" is False, then the tstream is treated as failed
+            if ALL of the constituent traces failed.
+
+      :returns: True if the stream has passed checks
+      :rtype: bool
 
 
 

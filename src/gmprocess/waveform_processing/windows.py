@@ -62,25 +62,31 @@ def cut(st, sec_before_split=2.0, config=None):
         return st
 
     for tr in st:
-        logging.debug(f"Before cut end time: {tr.stats.endtime} ")
+        # Note that for consistency, we should clip all stream traces to the same
+        # window and so, unlike other similar processing step loops, there should NOT
+        # be an `if tr.passed` here.
+        logging.debug(f"Before cut end time: {tr.stats.endtime}")
         etime = tr.getParameter("signal_end")["end_time"]
         tr.trim(endtime=etime)
-        logging.debug(f"After cut end time: {tr.stats.endtime} ")
+        logging.debug(f"After cut end time: {tr.stats.endtime}")
         if sec_before_split is not None:
             split_time = tr.getParameter("signal_split")["split_time"]
             stime = split_time - sec_before_split
-            logging.debug(f"Before cut start time: {tr.stats.starttime} ")
+            logging.debug(f"Before cut start time: {tr.stats.starttime}")
             if stime < etime:
                 tr.trim(starttime=stime)
             else:
                 tr.fail(
-                    "The 'cut' processing step resulting in "
-                    "incompatible start and end times."
+                    "The 'cut' processing step resulting in incompatible start "
+                    "and end times."
                 )
-            logging.debug(f"After cut start time: {tr.stats.starttime} ")
+            logging.debug(f"After cut start time: {tr.stats.starttime}")
         tr.setProvenance(
             "cut",
-            {"new_start_time": tr.stats.starttime, "new_end_time": tr.stats.endtime},
+            {
+                "new_start_time": tr.stats.starttime,
+                "new_end_time": tr.stats.endtime,
+            },
         )
     return st
 
@@ -101,21 +107,22 @@ def window_checks(st, min_noise_duration=0.5, min_signal_duration=5.0):
 
     """
     for tr in st:
-        if not tr.hasParameter("signal_split"):
-            if st.passed:
-                tr.fail("Cannot check window because no split time available.")
-            continue
-        # Split the noise and signal into two separate traces
-        split_prov = tr.getParameter("signal_split")
-        if isinstance(split_prov, list):
-            split_prov = split_prov[0]
-        split_time = split_prov["split_time"]
-        noise_duration = split_time - tr.stats.starttime
-        signal_duration = tr.stats.endtime - split_time
-        if noise_duration < min_noise_duration:
-            tr.fail("Failed noise window duration check.")
-        if signal_duration < min_signal_duration:
-            tr.fail("Failed signal window duration check.")
+        if tr.passed:
+            if not tr.hasParameter("signal_split"):
+                if st.passed:
+                    tr.fail("Cannot check window because no split time available.")
+                continue
+            # Split the noise and signal into two separate traces
+            split_prov = tr.getParameter("signal_split")
+            if isinstance(split_prov, list):
+                split_prov = split_prov[0]
+            split_time = split_prov["split_time"]
+            noise_duration = split_time - tr.stats.starttime
+            signal_duration = tr.stats.endtime - split_time
+            if noise_duration < min_noise_duration:
+                tr.fail("Failed noise window duration check.")
+            if signal_duration < min_signal_duration:
+                tr.fail("Failed signal window duration check.")
 
     return st
 
@@ -427,8 +434,9 @@ def trim_multiple_events(
 
     # Check that we know the signal split for each trace in the stream
     for tr in st:
-        if not tr.hasParameter("signal_split"):
-            return st
+        if tr.passed:
+            if not tr.hasParameter("signal_split"):
+                return st
 
     signal_window_starttime = st[0].getParameter("signal_split")["split_time"]
 

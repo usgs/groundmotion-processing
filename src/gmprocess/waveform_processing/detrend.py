@@ -36,14 +36,15 @@ def detrend(st, detrending_method=None, config=None):
         return st
 
     for tr in st:
-        if detrending_method == "baseline_sixth_order":
-            tr = correct_baseline(tr, config)
-        elif detrending_method == "pre":
-            tr = _detrend_pre_event_mean(tr, config)
-        else:
-            tr = tr.detrend(detrending_method)
+        if tr.passed:
+            if detrending_method == "baseline_sixth_order":
+                tr = correct_baseline(tr, config)
+            elif detrending_method == "pre":
+                tr = _detrend_pre_event_mean(tr, config)
+            else:
+                tr = tr.detrend(detrending_method)
 
-        tr.setProvenance("detrend", {"detrending_method": detrending_method})
+            tr.setProvenance("detrend", {"detrending_method": detrending_method})
 
     return st
 

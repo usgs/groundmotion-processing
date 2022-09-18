@@ -283,7 +283,7 @@ def read_cosmos(filename, config=None, **kwargs):
 
     # read as many channels as are present in the file
     line_offset = 0
-    stream = StationStream([])
+    stream = StationStream([], config=config)
     while line_offset < line_count:
         trace, line_offset = _read_channel(filename, line_offset, location=location)
         # store the trace if the station type is in the valid_station_types

@@ -51,10 +51,11 @@ def check_tail(st, duration=5.0, max_vel_ratio=0.3, max_dis_ratio=0.9, config=No
     new_start_time = end_time - duration
     if new_start_time < start_time:
         for tr in st:
-            tr.fail(
-                "Cannot apply tail check because tail duration exceeds"
-                "record duration."
-            )
+            if tr.passed:
+                tr.fail(
+                    "Cannot apply tail check because tail duration exceeds record "
+                    "duration."
+                )
         return st
 
     if config is None:

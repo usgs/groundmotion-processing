@@ -56,7 +56,7 @@ class Integrate(Transform):
         Returns:
             stream: StationStream with the integrated data.
         """
-        stream = StationStream([])
+        stream = StationStream([], config=self.config)
         for trace in self.transform_data:
             integrated_trace = trace.copy().integrate(config=config)
             stream.append(integrated_trace)

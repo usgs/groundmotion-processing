@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.core.streamcollection - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.core.streamcollection - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -375,6 +375,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -763,7 +764,7 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamCollection.from_traces"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.from_traces">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_traces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">traces</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_traces</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">traces</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a StreamCollection instance from a list of traces.</span>
 
 <span class="sd">        Args:</span>
@@ -774,8 +775,8 @@
 <span class="sd">            StreamCollection instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">StationStream</span><span class="p">([</span><span class="n">tr</span><span class="p">])</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">streams</span><span class="p">)</span></div>
+        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">StationStream</span><span class="p">([</span><span class="n">tr</span><span class="p">],</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">traces</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="StreamCollection.to_dataframe"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.StreamCollection.to_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">imcs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">imts</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a summary dataframe of streams.</span>
@@ -871,8 +872,8 @@
         <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">stream</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="k">continue</span>
+            <span class="c1"># if len(stream) &lt; 3:</span>
+            <span class="c1">#     continue</span>
             <span class="n">stream_summary</span> <span class="o">=</span> <span class="n">StationSummary</span><span class="o">.</span><span class="n">from_stream</span><span class="p">(</span>
                 <span class="n">stream</span><span class="p">,</span> <span class="n">station_summary_imcs</span><span class="p">,</span> <span class="n">station_summary_imts</span><span class="p">,</span> <span class="n">origin</span>
             <span class="p">)</span>
@@ -950,7 +951,7 @@
             <span class="c1"># (roughly) the same location. If we know this (as in the case of</span>
             <span class="c1"># BOR), we can use this to trim the stations into 3-channel</span>
             <span class="c1"># streams.</span>
-            <span class="n">streams</span> <span class="o">=</span> <span class="n">split_station</span><span class="p">(</span><span class="n">grouped_trace_list</span><span class="p">)</span>
+            <span class="n">streams</span> <span class="o">=</span> <span class="n">split_station</span><span class="p">(</span><span class="n">grouped_trace_list</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
             <span class="n">streams</span> <span class="o">=</span> <span class="n">insert_stream_parameters</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">stream_params</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">streams</span><span class="p">:</span>
@@ -1048,7 +1049,7 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">preferred_traces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tr_to_add</span><span class="p">)</span>
 
-        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">StationStream</span><span class="p">([</span><span class="n">tr</span><span class="p">])</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">preferred_traces</span><span class="p">]</span>
+        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">StationStream</span><span class="p">([</span><span class="n">tr</span><span class="p">],</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">preferred_traces</span><span class="p">]</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="n">insert_stream_parameters</span><span class="p">(</span><span class="n">streams</span><span class="p">,</span> <span class="n">stream_params</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">streams</span> <span class="o">=</span> <span class="n">streams</span>
 
@@ -1076,9 +1077,9 @@
         <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="s2">&quot;short&quot;</span><span class="p">:</span>
             <span class="n">failure_reasons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
                 <span class="p">[</span>
-                    <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span>
-                        <span class="s2">&quot;failure&quot;</span>
-                    <span class="p">)[</span><span class="s2">&quot;reason&quot;</span><span class="p">]</span>
+                    <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">)</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">)[</span>
+                        <span class="s2">&quot;reason&quot;</span>
+                    <span class="p">]</span>
                     <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span>
                 <span class="p">],</span>
@@ -1105,7 +1106,7 @@
             <span class="n">failure_reasons</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">streams</span><span class="p">:</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">st</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
-                    <span class="n">first_failure</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">))</span>
+                    <span class="n">first_failure</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">tr</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">tr</span><span class="o">.</span><span class="n">passed</span><span class="p">)</span>
                     <span class="n">failure_reasons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="n">first_failure</span><span class="o">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">)[</span><span class="s2">&quot;reason&quot;</span><span class="p">]</span>
                     <span class="p">)</span>
@@ -1185,17 +1186,19 @@
     <span class="k">return</span> <span class="n">streams</span></div>
 
 
-<div class="viewcode-block" id="split_station"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.split_station">[docs]</a><span class="k">def</span> <span class="nf">split_station</span><span class="p">(</span><span class="n">grouped_trace_list</span><span class="p">):</span>
+<div class="viewcode-block" id="split_station"><a class="viewcode-back" href="../../../autoapi/gmprocess/core/streamcollection/index.html#gmprocess.core.streamcollection.split_station">[docs]</a><span class="k">def</span> <span class="nf">split_station</span><span class="p">(</span><span class="n">grouped_trace_list</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">grouped_trace_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="ow">in</span> <span class="n">NETWORKS_USING_LOCATION</span><span class="p">:</span>
         <span class="n">streams_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">grouped_trace_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="ow">in</span> <span class="n">streams_dict</span><span class="p">:</span>
                 <span class="n">streams_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">]</span> <span class="o">+=</span> <span class="n">trace</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">streams_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="n">trace</span><span class="p">])</span>
+                <span class="n">streams_dict</span><span class="p">[</span><span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span>
+                    <span class="n">traces</span><span class="o">=</span><span class="p">[</span><span class="n">trace</span><span class="p">],</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+                <span class="p">)</span>
         <span class="n">streams</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">streams_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="n">grouped_trace_list</span><span class="p">)]</span>
+        <span class="n">streams</span> <span class="o">=</span> <span class="p">[</span><span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="o">=</span><span class="n">grouped_trace_list</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">streams</span></div>
 
 

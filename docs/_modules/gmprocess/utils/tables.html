@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.utils.tables - gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.utils.tables - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev4+g8d12ee36.d20220830 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -375,6 +375,7 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_waveform_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_waveform_metrics</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/config/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.config</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/download/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.download</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_failure_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_failure_tables</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/export_metric_tables/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.export_metric_tables</span></code></a></li>
@@ -511,10 +512,14 @@
 
 
 <div class="viewcode-block" id="_get_table_row"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/tables/index.html#gmprocess.utils.tables._get_table_row">[docs]</a><span class="k">def</span> <span class="nf">_get_table_row</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">summary</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">imc</span><span class="p">):</span>
+    <span class="n">station_id</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">imc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;channels&quot;</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Stream must be length 1 to get row for imc==&#39;channels&#39;.&quot;</span><span class="p">)</span>
         <span class="n">chan</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">chan</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="n">station_id</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
         <span class="n">chan_lowfilt</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;lowpass_filter&quot;</span><span class="p">)</span>
         <span class="n">chan_highfilt</span> <span class="o">=</span> <span class="n">chan</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">)</span>
         <span class="n">chan_lowpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -529,6 +534,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{}</span>
         <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">z</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+        <span class="n">station_id</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
         <span class="n">z_lowfilt</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;lowpass_filter&quot;</span><span class="p">)</span>
         <span class="n">z_highfilt</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">)</span>
         <span class="n">z_lowpass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
@@ -545,10 +553,22 @@
             <span class="n">h1</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;*N&quot;</span><span class="p">)</span>
             <span class="n">h2</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s2">&quot;*E&quot;</span><span class="p">)</span>
 
+        <span class="c1"># Return empty dict if no horizontal channels are found</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">h1</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">h2</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{}</span>
+
         <span class="n">h1</span> <span class="o">=</span> <span class="n">h1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">h2</span> <span class="o">=</span> <span class="n">h2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Return empty dict if the stream has not passed for the IMC requested</span>
+        <span class="k">if</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">&quot;H1&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">h1</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{}</span>
+            <span class="n">station_id</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">imc</span> <span class="o">==</span> <span class="s2">&quot;H2&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">h2</span><span class="o">.</span><span class="n">passed</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{}</span>
+            <span class="n">station_id</span> <span class="o">=</span> <span class="n">h2</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
 
         <span class="n">h1_lowfilt</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;lowpass_filter&quot;</span><span class="p">)</span>
         <span class="n">h1_highfilt</span> <span class="o">=</span> <span class="n">h1</span><span class="o">.</span><span class="n">getProvenance</span><span class="p">(</span><span class="s2">&quot;highpass_filter&quot;</span><span class="p">)</span>
@@ -587,7 +607,7 @@
         <span class="s2">&quot;Network&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span><span class="p">,</span>
         <span class="s2">&quot;DataProvider&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
         <span class="s2">&quot;StationCode&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span><span class="p">,</span>
-        <span class="s2">&quot;StationID&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
+        <span class="s2">&quot;StationID&quot;</span><span class="p">:</span> <span class="n">station_id</span><span class="p">,</span>
         <span class="s2">&quot;StationDescription&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="n">station_name</span><span class="p">,</span>
         <span class="s2">&quot;StationLatitude&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
         <span class="s2">&quot;StationLongitude&quot;</span><span class="p">:</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>

@@ -417,12 +417,9 @@ Attributes
       :rtype: DataFrame
 
 
-   .. py:method:: getInventory(eventid)
+   .. py:method:: getInventory()
 
       Get an Obspy Inventory object from the ASDF file.
-
-      :param eventid: ID of event to search for in ASDF file.
-      :type eventid: str
 
       :returns:
 
