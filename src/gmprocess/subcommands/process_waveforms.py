@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -117,7 +117,7 @@ class ProcessWaveformsModule(base.SubcommandModule):
                     f"{process_type} '{plabel}' streams for event {event.id}..."
                 )
                 if self.gmrecords.args.num_processes:
-                    with ThreadPoolExecutor(
+                    with ProcessPoolExecutor(
                         max_workers=self.gmrecords.args.num_processes
                     ) as executor:
                         future = executor.submit(

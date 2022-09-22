@@ -4,7 +4,7 @@
 import os
 import sys
 import logging
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -103,7 +103,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                 )
                 logging.info(f"Calculating waveform metrics for {stream.get_id()}...")
                 if self.gmrecords.args.num_processes > 0:
-                    with ThreadPoolExecutor(
+                    with ProcessPoolExecutor(
                         max_workers=self.gmrecords.args.num_processes
                     ) as executor:
                         future = executor.submit(

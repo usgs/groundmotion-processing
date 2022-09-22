@@ -3,7 +3,7 @@
 
 import os
 import logging
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -120,7 +120,7 @@ class GenerateReportModule(base.SubcommandModule):
             for stream in streams:
                 pstreams.append(stream)
                 if self.gmrecords.args.num_processes > 0:
-                    with ThreadPoolExecutor(
+                    with ProcessPoolExecutor(
                         max_workers=self.gmrecords.args.num_processes
                     ) as executor:
                         future = executor.submit(

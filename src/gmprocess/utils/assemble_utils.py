@@ -11,6 +11,7 @@ from pathlib import Path
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.core.streamarray import StreamArray
 from gmprocess.utils.constants import WORKSPACE_NAME
+from gmprocess.utils.event import get_event_object
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.misc import get_rawdir
@@ -47,7 +48,7 @@ def assemble(event, config, directory, gmprocess_version):
     """
 
     # Make raw directory
-    in_event_dir = os.path.join(directory, event.id)
+    in_event_dir = os.path.join(directory, event)
     in_raw_dir = get_rawdir(in_event_dir)
     logging.debug(f"in_raw_dir: {in_raw_dir}")
     streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
@@ -81,13 +82,17 @@ def assemble(event, config, directory, gmprocess_version):
         os.remove(workname)
 
     workspace = StreamWorkspace(workname)
-    workspace.addEvent(event)
+    event_obj = get_event_object(event)
+    workspace.addEvent(event_obj)
     logging.debug("workspace.dataset.events:")
     logging.debug(workspace.dataset.events)
     workspace.addGmprocessVersion(gmprocess_version)
     workspace.addConfig(config=config)
     workspace.addStreams(
-        event, stream_array, label="unprocessed", gmprocess_version=gmprocess_version
+        event_obj,
+        stream_array,
+        label="unprocessed",
+        gmprocess_version=gmprocess_version,
     )
     logging.debug("workspace.dataset.waveforms.list():")
     logging.debug(workspace.dataset.waveforms.list())
