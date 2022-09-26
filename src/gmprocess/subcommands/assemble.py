@@ -4,7 +4,8 @@
 import os
 import sys
 import logging
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
+from itertools import repeat
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -44,48 +45,70 @@ class AssembleModule(base.SubcommandModule):
 
         logging.info(f"Number of events to assemble: {len(self.events)}")
 
+        events = [e.id for e in self.events]
+        data_path = self.gmrecords.data_path
+        overwrite = self.gmrecords.args.overwrite
+        conf = self.gmrecords.conf
+        version = self.gmrecords.gmprocess_version
+        results = []
+
         if gmrecords.args.num_processes:
             # parallelize processing on events
             try:
-                with ThreadPoolExecutor(
+                with ProcessPoolExecutor(
                     max_workers=gmrecords.args.num_processes
                 ) as executor:
-                    executor.map(self._assemble_event, self.events)
+                    results = executor.map(
+                        self._assemble_event,
+                        events,
+                        repeat(data_path),
+                        repeat(overwrite),
+                        repeat(conf),
+                        repeat(version),
+                    )
+                    results = list(results)
             except BaseException as ex:
                 print(ex)
-                print("Could not create ThreadPoolExecutor.")
+                print("Could not create ProcessPoolExecutor.")
                 print("To turn off paralleization, use '--num-processes 0'.")
                 sys.exit(1)
         else:
-            for event in self.events:
-                self._assemble_event(event)
+            for event in events:
+                results.append(
+                    self._assemble_event(event, data_path, overwrite, conf, version)
+                )
+
+        for res in results:
+            print(res)
+            self.append_file("Workspace", res)
 
         self._summarize_files_created()
 
-    def _assemble_event(self, event):
-        logging.info(f"Starting event: {event.id}")
-        event_dir = os.path.normpath(os.path.join(self.gmrecords.data_path, event.id))
+    # Note: need to make this a static method in order to be able to call it with
+    # ProcessPoolExecutor.
+    @staticmethod
+    def _assemble_event(event, data_path, overwrite, conf, version):
+        logging.info(f"Starting event: {event}")
+        event_dir = os.path.normpath(os.path.join(data_path, event))
         if not os.path.exists(event_dir):
             os.makedirs(event_dir)
         workname = os.path.normpath(os.path.join(event_dir, constants.WORKSPACE_NAME))
         workspace_exists = os.path.isfile(workname)
         if workspace_exists:
             logging.info(f"ASDF exists: {workname}")
-            if not self.gmrecords.args.overwrite:
+            if not overwrite:
                 logging.info("The --overwrite argument not selected.")
-                logging.info(f"No action taken for {event.id}.")
-                return event.id
+                logging.info(f"No action taken for {event}.")
+                return event
             else:
                 logging.info(f"Removing existing ASDF file: {workname}")
                 os.remove(workname)
 
         workspace = assemble_utils.assemble(
             event=event,
-            config=self.gmrecords.conf,
-            directory=self.gmrecords.data_path,
-            gmprocess_version=self.gmrecords.gmprocess_version,
+            config=conf,
+            directory=data_path,
+            gmprocess_version=version,
         )
-        workspace.getGmprocessVersion()
         workspace.close()
-        self.append_file("Workspace", workname)
-        return event.id
+        return workname
