@@ -3,7 +3,7 @@
 
 # local imports
 from gmprocess.io.read import read_data
-from gmprocess.metrics.oscillator import get_spectral
+from gmprocess.metrics.transform.oscillator import get_spectral
 from gmprocess.utils.test_utils import read_data_dir
 
 

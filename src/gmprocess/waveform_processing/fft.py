@@ -4,7 +4,9 @@
 import numpy as np
 from obspy.signal.util import next_pow_2
 
-from gmprocess.waveform_processing.smoothing.konno_ohmachi import konno_ohmachi_smooth
+from esi_core.gmprocess.waveform_processing.smoothing.konno_ohmachi import (
+    konno_ohmachi_smooth,
+)
 
 
 def compute_and_smooth_spectrum(tr, bandwidth, section, window=None, nfft=None):

@@ -6,7 +6,7 @@ from obspy.core.trace import Trace
 # Local import
 from gmprocess.core.stationtrace import StationTrace
 from gmprocess.core.stationstream import StationStream
-from gmprocess.metrics.oscillators import calculate_spectrals
+from esi_core.gmprocess.metrics.oscillators import calculate_spectrals
 from gmprocess.metrics.transform.transform import Transform
 from gmprocess.utils.constants import GAL_TO_PCTG
 
