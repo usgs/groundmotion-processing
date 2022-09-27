@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Processed Waveforms from ASDF File" href="asdf_to_waveforms.html" /><link rel="prev" title="Response Spectra Calculation and Comparison" href="response_spectra.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Linear Mixed Effects Regressions - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Linear Mixed Effects Regressions - gmprocess 1.2.1.dev9+g0cb612e7.d20220927 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev9+g0cb612e7.d20220927 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripting.html">Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -477,11 +478,8 @@
         <article role="main">
           <section id="linear-mixed-effects-regressions">
 <h1>Linear Mixed Effects Regressions<a class="headerlink" href="#linear-mixed-effects-regressions" title="Permalink to this heading">#</a></h1>
-<p>After assembling a ground motion database with gmprocess, linear mixed effects
-models can be used to analyze trends in the data. In this tutorial, we will
-read in some sample ground motion data, compute residuals relative to a ground
-motion model, and perform a linear, mixed effects regression to estimate the
-between- and within-event terms.</p>
+<p>After assembling a ground motion database with gmprocess, linear mixed effects models can be used to analyze trends in the data.
+In this tutorial, we will read in some sample ground motion data, compute residuals relative to a ground motion model, and perform a linear, mixed effects regression to estimate the between- and within-event terms.</p>
 <p>First, we import the necessary packages:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -503,10 +501,8 @@ between- and within-event terms.</p>
 </div>
 </div>
 </div>
-<p>This tutorial uses the <a class="reference external" href="https://www.statsmodels.org/stable/install.html">statsmodels</a> package to create a mixed effects regression from spectral accelerations
-output from <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code>.</p>
-<p>We are using a ground motion dataset of earthquakes from the 2019 Ridgecrest,
-California Earthquake Sequence.</p>
+<p>This tutorial uses the <a class="reference external" href="https://www.statsmodels.org/stable/install.html">statsmodels</a> package to create a mixed effects regression from spectral accelerations output from <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code>.</p>
+<p>We are using a ground motion dataset of earthquakes from the 2019 Ridgecrest, California Earthquake Sequence.</p>
 <div class="cell tag_remove-stderr docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Path to example data</span>
@@ -516,8 +512,7 @@ California Earthquake Sequence.</p>
 </div>
 </div>
 </div>
-<p>We will use the ASK14 ground motion model (GMM) and spectral acceleration for
-an ossilator period of 1.0 seconds.</p>
+<p>We will use the ASK14 ground motion model (GMM) and spectral acceleration for an oscillator period of 1.0 seconds.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gmm</span> <span class="o">=</span> <span class="n">AbrahamsonEtAl2014</span><span class="p">()</span>
@@ -526,8 +521,7 @@ an ossilator period of 1.0 seconds.</p>
 </div>
 </div>
 </div>
-<p>To evaluate the GMM, we must make some simple assumptions regarding the rupture
-properties (dip, rake, width, ztor) and site properties (Vs30, Z1).</p>
+<p>To evaluate the GMM, we must make some simple assumptions regarding the rupture properties (dip, rake, width, ztor) and site properties (Vs30, Z1).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predicted_data</span> <span class="o">=</span> <span class="p">[]</span>
@@ -573,8 +567,7 @@ properties (dip, rake, width, ztor) and site properties (Vs30, Z1).</p>
 </div>
 </div>
 </div>
-<p>For the linear mixed effects regression, we use the ‘EarthquakeId’ column to
-group the data by event to compute the between-event and within-event terms.</p>
+<p>For the linear mixed effects regression, we use the ‘EarthquakeId’ column to group the data by event to compute the between-event and within-event terms.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mdf</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">mixedlm</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> ~ 1&#39;</span> <span class="o">%</span> <span class="n">resid_col</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;EarthquakeId&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
@@ -601,9 +594,7 @@ Group Var    0.245       0.045
 </div>
 </div>
 </div>
-<p>The model yields a bias (intercept) of 0.828. We can also look at
-the between-event terms with in the <code class="docutils literal notranslate"><span class="pre">randome_effects</span></code> attribute, which is
-a dictionary with keys corresponding to the random effect grouping.</p>
+<p>The model yields a bias (intercept) of 0.828. We can also look at the between-event terms with in the <code class="docutils literal notranslate"><span class="pre">random_effects</span></code> attribute, which is a dictionary with keys corresponding to the random effect grouping.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">re_array</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="p">)</span> <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">re</span> <span class="ow">in</span> <span class="n">mdf</span><span class="o">.</span><span class="n">random_effects</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
@@ -620,7 +611,7 @@ a dictionary with keys corresponding to the random effect grouping.</p>
 <img alt="../../_images/1dd32d30af0e2fb21426fda6c232e5cc687e4f6ef5e62d783580e8bd77bf0b83.png" src="../../_images/1dd32d30af0e2fb21426fda6c232e5cc687e4f6ef5e62d783580e8bd77bf0b83.png" />
 </div>
 </div>
-<p>and the within-event resudials</p>
+<p>and the within-event residuals</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;EpicentralDistance&#39;</span><span class="p">],</span> <span class="n">mdf</span><span class="o">.</span><span class="n">resid</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
@@ -636,9 +627,7 @@ a dictionary with keys corresponding to the random effect grouping.</p>
 <img alt="../../_images/54b48e4b41ecbea16c1d7991d463788caffc56931cfccf82ea014583f04d9019.png" src="../../_images/54b48e4b41ecbea16c1d7991d463788caffc56931cfccf82ea014583f04d9019.png" />
 </div>
 </div>
-<p>It is useful to merge the random effect terms with the original dataframe to
-look at the between-event terms as a function of other parameters, such
-as hypocentral depth.</p>
+<p>It is useful to merge the random effect terms with the original dataframe to look at the between-event terms as a function of other parameters, such as hypocentral depth.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">btw_event_terms</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mdf</span><span class="o">.</span><span class="n">random_effects</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
@@ -717,6 +706,7 @@ as hypocentral depth.</p>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
