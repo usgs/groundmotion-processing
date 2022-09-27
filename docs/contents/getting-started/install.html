@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Initial Setup" href="initial_setup.html" /><link rel="prev" title="Getting Started" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Installation - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Installation - gmprocess 1.2.1.dev10+g79b4340f.d20220927 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev10+g79b4340f.d20220927 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -477,34 +477,46 @@
         <article role="main">
           <section id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
-<p>Note that we used to use conda to manage dependencies but that was creating some
-difficulties and so we are now relying on pip as much as possible.</p>
-<p>However, we do recommend installing gmprocess into a virtual environment to isolate
-your code from other projects that might create conflicts and
-<a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda</a>
-is good option for accomplishing this.</p>
-<div class="admonition caution">
-<p class="admonition-title">Caution</p>
-<p>There is an old gmprocess package available via conda. Please do not install this!
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Previously we used <code class="docutils literal notranslate"><span class="pre">conda</span></code> to manage dependencies but that was creating some difficulties, so we are now relying on <code class="docutils literal notranslate"><span class="pre">pip</span></code> as much as possible.
+We hope to be able to provide <code class="docutils literal notranslate"><span class="pre">pip</span></code> installs via pypi wheels soon.</p>
+<p>Our development team is not proficient with Windows systems, so our ability to support Windows installs is limited.
+We have done our best to provide instructions to support Windows build.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>There is an old gmprocess package available via conda.
+Please do not install it!
 It is very out of date and won’t work.</p>
 </div>
-<p>Please note that our development team is not proficient with Windows systems, so our
-ability to support Windows installs is limited. We have done our best to provide
-instructions to support Windows build.</p>
-<p>We hope to be able to provide pip installs via pypi wheels soon.</p>
+<p>We recommend installing gmprocess into a virtual environment to isolate your code from other projects that might create conflicts.
+You can use the Python3 <a class="reference external" href="https://docs.python.org/3/library/venv.html"><code class="docutils literal notranslate"><span class="pre">venv</span></code></a> module or <a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda</a> to create and manage virtual environments.
+Conda generally uses more space on your filesystem, but it can install more dependencies.</p>
 <section id="installing-from-source">
 <h2>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this heading">#</a></h2>
 <div class="note admonition">
 <p class="admonition-title">Prerequisites</p>
 <div class="tab-set docutils container">
-<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Mac and Linux</label><div class="tab-content docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Linux</label><div class="tab-content docutils container">
 <ul class="simple">
-<li><p>A C compiler. On a mac, this usually means installing XCode/Comomand Line tools.
-For linux, it depends on the type of linux but is usually very stright forward.</p></li>
+<li><p>A C compiler (typically gcc).</p></li>
 <li><p>Bash shell, curl, and git.</p></li>
 </ul>
+<p>Most Linux distributions include these tools in the default installation.</p>
 </div>
-<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">Windows</label><div class="tab-content docutils container">
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">macOS</label><div class="tab-content docutils container">
+<ul class="simple">
+<li><p>A C compiler.</p></li>
+<li><p>Bash shell, curl, and git.</p></li>
+</ul>
+<p>The easiest way to install these tools is to install the XCode Command Line Tools.
+Simply run <code class="docutils literal notranslate"><span class="pre">git</span></code>, and instructions for installing the Command Line Tools will be displayed if it is not installed.</p>
+<p>Some pypi wheels are not yet available for the macOS arm64 architecture.
+As a result, some dependencies will be built from source when installing via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
+Building the <code class="docutils literal notranslate"><span class="pre">fiona</span></code> package from source requires <code class="docutils literal notranslate"><span class="pre">GDAL</span></code>, which is a C++ library that must be installed manually or using conda.</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--3" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--3">Windows</label><div class="tab-content docutils container">
 <ul class="simple">
 <li><p><a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html#windows-installers">Miniconda</a>
 (recommended) or <a class="reference external" href="https://www.anaconda.com/products/distribution">anaconda</a>.</p></li>
@@ -512,57 +524,42 @@ For linux, it depends on the type of linux but is usually very stright forward.<
 <a class="reference external" href="https://wiki.python.org/moin/WindowsCompilers">these instructions</a>.</p></li>
 <li><p>Git and some kind of console.</p></li>
 </ul>
+<p>There is one dependency (<a class="reference external" href="https://pypi.org/project/Fiona/">fiona</a>) that we have not been able to install with pip on Windows systems. So we rely on conda for this.
+Start a conda session and run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">init</span> <span class="pre">powershell</span></code>.
+Then open a new powershell terminal and run <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">--name</span> <span class="pre">gmprocess</span> <span class="pre">python=3.8</span> <span class="pre">pip</span> <span class="pre">fiona</span></code> and <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">gmprocess</span></code>.</p>
 </div>
 </div>
 </div>
 <p>First clone this repository and go into the root directory with</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/usgs/groundmotion-processing.git
-$ cd groundmotion-processing
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/usgs/groundmotion-processing.git
+<span class="gp">$ </span><span class="nb">cd</span> groundmotion-processing
 </pre></div>
-</div>
-<div class="important admonition">
-<p class="admonition-title">Windows</p>
-<p>There is one depenency (<a class="reference external" href="https://pypi.org/project/Fiona/">fiona</a>) that we have not been
-able to install with pip on Windows systems. So we rely on conda for this. Start in an
-anaconda prompt, and run</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda init powershell
-</pre></div>
-</div>
-<p>Then open a new powershell terminal and run</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ conda create --name gmprocess python=3.8 pip fiona 
-$ conda activate gmprocess
-</pre></div>
-</div>
 </div>
 <p>Next, install the code with pip</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install .
 </pre></div>
 </div>
-<p>Note that this will install the minimum requirements to run the code. There are
-additional optional packages that can be installed that support running the unit tests
-(<code class="docutils literal notranslate"><span class="pre">test</span></code>), code development (<code class="docutils literal notranslate"><span class="pre">dev</span></code>), buliding wheels (<code class="docutils literal notranslate"><span class="pre">build</span></code>), and building the
-documentation (<code class="docutils literal notranslate"><span class="pre">doc</span></code>). To install these, you need to add the relevant option in
-brackets:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install .[test,dev,doc,build]
+<p>Note that this will install the minimum requirements to run the code.
+There are additional optional packages that can be installed that support running the unit tests (<code class="docutils literal notranslate"><span class="pre">test</span></code>), code development (<code class="docutils literal notranslate"><span class="pre">dev</span></code>), building wheels (<code class="docutils literal notranslate"><span class="pre">build</span></code>), and building the documentation (<code class="docutils literal notranslate"><span class="pre">doc</span></code>).
+To install these, you need to add the relevant option in brackets:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install .<span class="o">[</span>test,dev,doc,build<span class="o">]</span>
 </pre></div>
 </div>
-<p>For developers, it is also conveninet to install the code in “editable” mode by adding
-the <code class="docutils literal notranslate"><span class="pre">-e</span></code> option:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -e .[test,dev,doc]
+<p>For developers, it is also convenient to install the code in “editable” mode by adding the <code class="docutils literal notranslate"><span class="pre">-e</span></code> option:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip install -e .<span class="o">[</span>test,dev,doc<span class="o">]</span>
 </pre></div>
 </div>
 </section>
 <section id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">#</a></h2>
-<p>If you included the optional <code class="docutils literal notranslate"><span class="pre">test</span></code> dependencies in the install step, then you can run
-the unit tests  in the root directory of this repositry:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ py.test .
+<p>If you included the optional <code class="docutils literal notranslate"><span class="pre">test</span></code> dependencies in the install step, then you can run the unit tests in the root directory of the repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pytest .
 </pre></div>
 </div>
-<p>This will be followed by a lot of terminal output. Warnings are expected to occur and
-do not indicate a problem. Errors indicate that something has gone wrong and you will
-want to troubleshoot. You can create an issue in github if you are not able to resolve
-the problem.</p>
+<p>This will be followed by a lot of terminal output.
+Warnings are expected to occur and do not indicate a problem.
+Errors indicate that something has gone wrong and you will want to troubleshoot.
+You can create an issue in <a class="reference external" href="https://github.com/usgs/groundmotion-processing/issues">GitHub</a> if you are not able to resolve the problem.</p>
 </section>
 </section>
 
@@ -642,6 +639,7 @@ the problem.</p>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
