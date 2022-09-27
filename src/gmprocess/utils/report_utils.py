@@ -72,7 +72,7 @@ def draw_stations_map(pstreams, event, event_dir):
         )
         failed_popup = folium.Popup(station_info, min_width=250, max_width=250)
 
-        failed_tooltip = folium.Tooltip("<b>Station:</b> {}".format(r["stnames"]))
+        failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
 
         failed_icon = folium.DivIcon(
             html=f""" 
@@ -98,7 +98,7 @@ def draw_stations_map(pstreams, event, event_dir):
 
         passed_popup = folium.Popup(station_info, min_width=180, max_width=180)
 
-        passed_tooltip = folium.Tooltip("<b>Station:</b> {}".format(r["stnames"]))
+        passed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
 
         passed_icon = folium.DivIcon(
             html=f""" 
@@ -157,8 +157,8 @@ def draw_stations_map(pstreams, event, event_dir):
 
                 <div style="padding:5px;">
                     <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\""""
-            + FAILED_COLOR
-            + """\" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
+            + PASSED_COLOR
+            + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
                     </svg>
                     <text style="padding:5px">Passed Station</text>
@@ -166,8 +166,8 @@ def draw_stations_map(pstreams, event, event_dir):
                 
                 <div style="padding:5px;">
                     <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\""""
-            + PASSED_COLOR
-            + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16">
+            + FAILED_COLOR
+            + """\" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
                     </svg>
                     <text style="padding:5px">Failed Station</text>
