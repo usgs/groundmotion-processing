@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Tutorials" href="../tutorials/index.html" /><link rel="prev" title="Installation" href="install.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Initial Setup - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Initial Setup - gmprocess 1.2.1.dev10+g79b4340f.d20220927 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev10+g79b4340f.d20220927 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -477,36 +477,26 @@
         <article role="main">
           <section id="initial-setup">
 <h1>Initial Setup<a class="headerlink" href="#initial-setup" title="Permalink to this heading">#</a></h1>
-<p>In order to simplify the command line interface, the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> command
-makes use “projects.” You can have many projects configured on your system, and
-a project can have data from many events. A project is essentially a way to
-encapsulate the confiration and data directories so that they do not need to be
-specified as command line arguments.</p>
+<p>In order to simplify the command line interface, the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> command makes use of “projects”.
+You can have many projects configured on your system, and a project can have data from many events.
+A project is essentially a way to encapsulate the configuration and data directories so that they do not need to be specified as command line arguments.</p>
 <p>There are two different types of projects:</p>
-<dl class="simple">
-<dt><strong>directory projects</strong></dt><dd><p>A directory project works by checking the current working directory for a
-project config file that holds the data and config info. Thus, in order to
-activate the project, you have to be in that specific directory.</p>
-</dd>
-<dt><strong>system-level projects</strong></dt><dd><p>A system-level project works by checking the users home directory for a
-project config file that can hold many different configured projects. Thus,
-when you use a system-level project you can switch between different projects
-easily from any directory on your system.</p>
-</dd>
-</dl>
+<p><strong>directory projects</strong>
+A directory project works by checking the current working directory for a project config file that holds the data and config info.
+Thus, in order to activate the project, you have to be in that specific directory.</p>
+<p><strong>system-level projects</strong>
+A system-level project works by checking the user’s home directory for a project config file that can hold many different configured projects.
+Thus, when you use a system-level project you can switch between different projects easily from any directory on your system.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>See the <a class="reference internal" href="../manual/config_file.html"><span class="doc">Configuration File</span></a> section of the Manual for
-more information on how configuration options work.</p>
+<p>See the <a class="reference internal" href="../manual/config_file.html"><span class="doc std std-doc">Configuration File</span></a> section for more information on how configuration options work.</p>
 </div>
-<p>When you create either type of project, you will be prompted to include your
-name and email. This information is used for the data provenance. It is often
-important to be able to track where data originated. If you do not wish to
-share your personal information, we recommend using you institution/project
-name if possible.</p>
-<p>To create a directory project, use the <code class="docutils literal notranslate"><span class="pre">init</span></code> gmrecords subcommand in the
-where you would like to activate the project</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords init
+<p>When you create either type of project, you will be prompted to include your name and email.
+This information is used for the data provenance.
+It is often important to be able to track where data originated.
+If you do not wish to share your personal information, we recommend using an institution or project name.</p>
+<p>To create a directory project, use the gmrecords <code class="docutils literal notranslate"><span class="pre">init</span></code> subcommand in the directory where you would like to activate the project.</p>
+<div class="highlight-code-block} notranslate"><div class="highlight"><pre><span></span>$ gmrecords init
 INFO 2021-11-12 20:00:32 | gmrecords.__init__: Logging level includes INFO.
 INFO 2021-11-12 20:00:32 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
 INFO 2021-11-12 20:00:32 | init.main: Running subcommand &#39;init&#39;
@@ -522,12 +512,11 @@ Created project: Project: local
   Data Path: /Users/emthompson/test_gmrecords/data
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand is used for managing system-level projects. The
-arguments are</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords projects -h
-usage: gmrecords projects [-h] [-l] [-s PROJECT] [-c] [-d PROJECT]
+<p>The <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand is used for managing system-level projects.
+The arguments are</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: gmrecords projects [-h] [-l] [-s PROJECT] [-c] [-d PROJECT]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -l, --list            List all configured gmrecords projects.
   -s PROJECT, --switch PROJECT
@@ -537,13 +526,11 @@ optional arguments:
                         Delete existing project PROJECT.
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="../tutorials/cli.html"><span class="doc">Command Line Interface</span></a> tutorial provides an
-example of how to create a system-level project.</p>
+<p>The <a class="reference internal" href="../tutorials/cli.html"><span class="doc std std-doc">Command Line Interface</span></a> tutorial provides an example of how to create a system-level project.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>When creating a new project, please review the config file that is installed
-and adjust the options as necessary. Some fields have place holders (e.g.,
-<code class="docutils literal notranslate"><span class="pre">EMAIL</span></code> for the CESMD fetcher) that must be filled in by each individual.</p>
+<p>When creating a new project, please review the config file that is installed and adjust the options as necessary.
+Some fields have place holders (e.g., <code class="docutils literal notranslate"><span class="pre">EMAIL</span></code> for the CESMD fetcher) that must be filled in by each individual.</p>
 </div>
 </section>
 
@@ -603,6 +590,7 @@ and adjust the options as necessary. Some fields have place holders (e.g.,
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
