@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.cosmos.cesmd_search" href="../cesmd_search/index.html" /><link rel="prev" title="gmprocess.io.cosmos" href="../index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>gmprocess.io.cosmos.cesmd_fetcher - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>gmprocess.io.cosmos.cesmd_fetcher - gmprocess 1.2.1.dev15+g775d9ee6.d20220928 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev15+g775d9ee6.d20220928 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -414,7 +415,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -619,7 +619,7 @@ should return a list with a maximum of one event.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher.retrieveData">
 <span class="sig-name descname"><span class="pre">retrieveData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/io/cosmos/cesmd_fetcher.html#CESMDFetcher.retrieveData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher.retrieveData" title="Permalink to this definition">#</a></dt>
-<dd><p>Retrieve data from NIED, turn into StreamCollection.</p>
+<dd><p>Retrieve data from CESMD, turn into StreamCollection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>event</strong> (<em>dict</em>) – Best dictionary matching input event, fields as above
@@ -701,6 +701,22 @@ in return of getMatchingEvents().</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.STATION_RADIUS"><code class="docutils literal notranslate"><span class="pre">STATION_RADIUS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.EQ_RADIUS"><code class="docutils literal notranslate"><span class="pre">EQ_RADIUS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.EQ_DT"><code class="docutils literal notranslate"><span class="pre">EQ_DT</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.DDEPTH"><code class="docutils literal notranslate"><span class="pre">DDEPTH</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.DMAG"><code class="docutils literal notranslate"><span class="pre">DMAG</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.MAX_STATIONS"><code class="docutils literal notranslate"><span class="pre">MAX_STATIONS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.STATION_TYPE"><code class="docutils literal notranslate"><span class="pre">STATION_TYPE</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.PROCESS_TYPE"><code class="docutils literal notranslate"><span class="pre">PROCESS_TYPE</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.URL_ERROR_CODE"><code class="docutils literal notranslate"><span class="pre">URL_ERROR_CODE</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.TIMEFMT"><code class="docutils literal notranslate"><span class="pre">TIMEFMT</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher"><code class="docutils literal notranslate"><span class="pre">CESMDFetcher</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher.BOUNDS"><code class="docutils literal notranslate"><span class="pre">CESMDFetcher.BOUNDS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher.getMatchingEvents"><code class="docutils literal notranslate"><span class="pre">CESMDFetcher.getMatchingEvents()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.CESMDFetcher.retrieveData"><code class="docutils literal notranslate"><span class="pre">CESMDFetcher.retrieveData()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.STATION_RADIUS">STATION_RADIUS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.EQ_RADIUS">EQ_RADIUS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.cosmos.cesmd_fetcher.EQ_DT">EQ_DT</a></li>
@@ -737,6 +753,7 @@ in return of getMatchingEvents().</p>
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/scripts/furo.js"></script>
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>

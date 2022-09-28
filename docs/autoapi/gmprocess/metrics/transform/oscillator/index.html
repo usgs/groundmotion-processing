@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.metrics.transform.transform" href="../transform/index.html" /><link rel="prev" title="gmprocess.metrics.transform.null_transform" href="../null_transform/index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>gmprocess.metrics.transform.oscillator - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>gmprocess.metrics.transform.oscillator - gmprocess 1.2.1.dev15+g775d9ee6.d20220928 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev15+g775d9ee6.d20220928 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -414,7 +415,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -490,6 +490,21 @@
 </tbody>
 </table>
 </div>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.get_spectral" title="gmprocess.metrics.transform.oscillator.get_spectral"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_spectral</span></code></a>(period, stream[, damping, times, config])</p></td>
+<td><p>Returns a stream of spectral response with units of %%g.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.new_and_improved_calculate_spectrals" title="gmprocess.metrics.transform.oscillator.new_and_improved_calculate_spectrals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">new_and_improved_calculate_spectrals</span></code></a>(trace, period, ...)</p></td>
+<td><p>Pull some stuff out of cython that shouldn't be there.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.metrics.transform.oscillator.oscillator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.transform.oscillator.</span></span><span class="sig-name descname"><span class="pre">oscillator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_nans</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bandwidth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/metrics/transform/oscillator.html#oscillator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.transform.oscillator.oscillator" title="Permalink to this definition">#</a></dt>
@@ -512,6 +527,32 @@
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gmprocess.metrics.transform.oscillator.get_spectral">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.transform.oscillator.</span></span><span class="sig-name descname"><span class="pre">get_spectral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/metrics/transform/oscillator.html#get_spectral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.transform.oscillator.get_spectral" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a stream of spectral response with units of %%g.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>period</strong> (<em>float</em>) – Period for spectral response.</p></li>
+<li><p><strong>stream</strong> (<a class="reference internal" href="../../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Strong motion timeseries for one station.</p></li>
+<li><p><strong>damping</strong> (<em>float</em>) – Damping of oscillator.</p></li>
+<li><p><strong>times</strong> (<em>np.ndarray</em>) – Array of times for the horizontal channels. Default is None.</p></li>
+<li><p><strong>config</strong> (<em>dict</em>) – StationStream.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>StationStream.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gmprocess.metrics.transform.oscillator.new_and_improved_calculate_spectrals">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.transform.oscillator.</span></span><span class="sig-name descname"><span class="pre">new_and_improved_calculate_spectrals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trace</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/gmprocess/metrics/transform/oscillator.html#new_and_improved_calculate_spectrals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.transform.oscillator.new_and_improved_calculate_spectrals" title="Permalink to this definition">#</a></dt>
+<dd><p>Pull some stuff out of cython that shouldn’t be there.</p>
 </dd></dl>
 
 </section>
@@ -577,11 +618,20 @@
             <ul>
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.metrics.transform.oscillator</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
-<li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.oscillator"><code class="docutils literal notranslate"><span class="pre">oscillator</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.oscillator.get_oscillator"><code class="docutils literal notranslate"><span class="pre">oscillator.get_oscillator()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.get_spectral"><code class="docutils literal notranslate"><span class="pre">get_spectral()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.new_and_improved_calculate_spectrals"><code class="docutils literal notranslate"><span class="pre">new_and_improved_calculate_spectrals()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.oscillator">oscillator</a><ul>
 <li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.oscillator.get_oscillator">get_oscillator</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.get_spectral">get_spectral</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.transform.oscillator.new_and_improved_calculate_spectrals">new_and_improved_calculate_spectrals</a></li>
 </ul>
 </li>
 </ul>
@@ -602,6 +652,7 @@
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/scripts/furo.js"></script>
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>

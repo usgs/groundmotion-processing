@@ -12,11 +12,8 @@ kernelspec:
 ---
 # Linear Mixed Effects Regressions
 
-After assembling a ground motion database with gmprocess, linear mixed effects
-models can be used to analyze trends in the data. In this tutorial, we will 
-read in some sample ground motion data, compute residuals relative to a ground 
-motion model, and perform a linear, mixed effects regression to estimate the 
-between- and within-event terms.
+After assembling a ground motion database with gmprocess, linear mixed effects models can be used to analyze trends in the data.
+In this tutorial, we will read in some sample ground motion data, compute residuals relative to a ground motion model, and perform a linear, mixed effects regression to estimate the between- and within-event terms.
 
 First, we import the necessary packages:
 
@@ -37,11 +34,9 @@ from openquake.hazardlib.gsim.abrahamson_2014 import AbrahamsonEtAl2014
 from gmprocess.utils.constants import DATA_DIR
 ```
 
-This tutorial uses the [statsmodels](https://www.statsmodels.org/stable/install.html) package to create a mixed effects regression from spectral accelerations 
-output from `gmprocess`.
+This tutorial uses the [statsmodels](https://www.statsmodels.org/stable/install.html) package to create a mixed effects regression from spectral accelerations output from `gmprocess`.
 
-We are using a ground motion dataset of earthquakes from the 2019 Ridgecrest,
-California Earthquake Sequence. 
+We are using a ground motion dataset of earthquakes from the 2019 Ridgecrest, California Earthquake Sequence.
 
 ```{code-cell} ipython3
 :tags: [remove-stderr]
@@ -50,16 +45,14 @@ data_path = DATA_DIR / "lme" / "SA_rotd50.0_2020.03.31.csv"
 df = pd.read_csv(data_path)
 ```
 
-We will use the ASK14 ground motion model (GMM) and spectral acceleration for 
-an ossilator period of 1.0 seconds. 
+We will use the ASK14 ground motion model (GMM) and spectral acceleration for an oscillator period of 1.0 seconds.
 
 ```{code-cell} ipython3
 gmm = AbrahamsonEtAl2014()
 imt = SA(1.0)
 ```
 
-To evaluate the GMM, we must make some simple assumptions regarding the rupture
-properties (dip, rake, width, ztor) and site properties (Vs30, Z1).
+To evaluate the GMM, we must make some simple assumptions regarding the rupture properties (dip, rake, width, ztor) and site properties (Vs30, Z1).
 
 ```{code-cell} ipython3
 predicted_data = []
@@ -101,17 +94,14 @@ resid_col = 'SA_1_ASK14_residuals'
 df[resid_col] = np.log(df['SA(1.000)']) - np.log(predicted_data)
 ```
 
-For the linear mixed effects regression, we use the 'EarthquakeId' column to 
-group the data by event to compute the between-event and within-event terms. 
+For the linear mixed effects regression, we use the 'EarthquakeId' column to group the data by event to compute the between-event and within-event terms.
 
 ```{code-cell} ipython3
 mdf = smf.mixedlm('%s ~ 1' % resid_col, df, groups=df['EarthquakeId']).fit()
 print(mdf.summary())
 ```
 
-The model yields a bias (intercept) of 0.828. We can also look at
-the between-event terms with in the `randome_effects` attribute, which is
-a dictionary with keys corresponding to the random effect grouping.
+The model yields a bias (intercept) of 0.828. We can also look at the between-event terms with in the `random_effects` attribute, which is a dictionary with keys corresponding to the random effect grouping.
 
 ```{code-cell} ipython3
 re_array = [float(re) for group, re in mdf.random_effects.items()]
@@ -120,7 +110,7 @@ plt.xlabel('Index')
 plt.ylabel('Random effect')
 ```
 
-and the within-event resudials
+and the within-event residuals
 
 ```{code-cell} ipython3
 plt.plot(df['EpicentralDistance'], mdf.resid, 'o')
@@ -128,9 +118,7 @@ plt.xlabel('Epicentral Distance, km')
 plt.ylabel('Within-event residual')
 ```
 
-It is useful to merge the random effect terms with the original dataframe to
-look at the between-event terms as a function of other parameters, such
-as hypocentral depth.
+It is useful to merge the random effect terms with the original dataframe to look at the between-event terms as a function of other parameters, such as hypocentral depth.
 
 ```{code-cell} ipython3
 btw_event_terms = pd.DataFrame(mdf.random_effects).T
@@ -145,4 +133,3 @@ axes.set_ylabel('Event term (T = 1 s)')
 axes.axhline(0, ls='--', c='k')
 axes.set_ylim(-2.5, 2.5);
 ```
-
