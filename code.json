@@ -2,6 +2,47 @@
     {
         "name": "groundmotion-processing",
         "description": "Read and process ground motion waveform data",
+        "version": "v1.2.1",
+        "status": "Development",
+        "organization": "U.S. Geological Survey",
+        "vcs": "git",
+        "repositoryUrl": "https://github.com/usgs/groundmotion-processing.git",
+        "homepageURL": "https://usgs.github.io/groundmotion-processing",
+        "downloadURL": "https://github.com/usgs/groundmotion-processing/archive/refs/tags/v1.2.1.zip",
+        "disclaimerURL": "https://raw.githubusercontent.com/usgs/groundmotion-processing/v1.2.1/DISCLAIMER.md",
+        "permissions": {
+            "licenses": [
+                {
+                    "name": "Public Domain, CC0-1.0",
+                    "URL": "https://raw.githubusercontent.com/usgs/groundmotion-processing/v1.2.1/LICENSE.md"
+                }
+            ],
+            "usageType": "openSource",
+            "exemptionText": null
+        },
+        "laborHours": null,
+        "languages": [
+            "python",
+            "c"
+        ],
+        "tags": [
+            "earthquake",
+            "impact",
+            "strong motion",
+            "amplitudes",
+            "ground motion"
+        ],
+        "contact": {
+            "name": "Eric Thompson",
+            "email": "emthompson@usgs.gov"
+        },
+        "date": {
+            "metadataLastUpdated": "2022-09-28"
+        }
+    },
+    {
+        "name": "groundmotion-processing",
+        "description": "Read and process ground motion waveform data",
         "version": "v1.2.0",
         "status": "Development",
         "organization": "U.S. Geological Survey",
