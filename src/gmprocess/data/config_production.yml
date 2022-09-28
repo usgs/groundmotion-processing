@@ -31,7 +31,7 @@ fetchers:
         station_type: Ground
         # define the distance search radius (km)
         eq_radius: 10.0
-        # define the time search threshokd (sec)
+        # define the time search threshold (sec)
         eq_dt: 10.0
         # station search radius (km)
         station_radius: 100.0
