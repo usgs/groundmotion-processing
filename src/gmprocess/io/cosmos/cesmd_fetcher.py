@@ -237,7 +237,7 @@ class CESMDFetcher(DataFetcher):
         return events
 
     def retrieveData(self, event_dict):
-        """Retrieve data from NIED, turn into StreamCollection.
+        """Retrieve data from CESMD, turn into StreamCollection.
 
         Args:
             event (dict):
