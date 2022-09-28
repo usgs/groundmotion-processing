@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import inspect
-from gmprocess.waveform_processing.auto_fchp import get_fchp
+from esi_core.gmprocess.waveform_processing.auto_fchp import get_fchp
 from gmprocess.waveform_processing.taper import taper
 from gmprocess.waveform_processing.filtering import highpass_filter
 from gmprocess.waveform_processing.processing_step import ProcessingStep

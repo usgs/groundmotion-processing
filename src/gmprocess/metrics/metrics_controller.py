@@ -782,7 +782,7 @@ class MetricsController(object):
         # The first item in the list is the string representation of the class
         # the second item is the class itself
         for cls_tupple in classes:
-            if cls_tupple[0] != base_class and cls_tupple[0] != "PGMException":
+            if cls_tupple[1].__bases__[0].__name__ == base_class:
                 return cls_tupple[1]
 
     @staticmethod

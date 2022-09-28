@@ -19,7 +19,7 @@ from matplotlib.dates import num2date
 
 from gmprocess.metrics.reduction.arias import Arias
 from gmprocess.waveform_processing import spectrum
-from gmprocess.metrics.oscillators import get_spectral
+from gmprocess.metrics.transform.oscillator import get_spectral
 from gmprocess.utils.constants import UNIT_CONVERSIONS
 from gmprocess.utils.config import get_config
 
