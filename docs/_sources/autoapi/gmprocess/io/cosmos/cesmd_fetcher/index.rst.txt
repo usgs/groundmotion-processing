@@ -114,7 +114,7 @@ Attributes
 
    .. py:method:: retrieveData(event_dict)
 
-      Retrieve data from NIED, turn into StreamCollection.
+      Retrieve data from CESMD, turn into StreamCollection.
 
       :param event: Best dictionary matching input event, fields as above
                     in return of getMatchingEvents().
