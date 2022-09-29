@@ -98,6 +98,9 @@ class GenerateReportModule(base.SubcommandModule):
         self._get_labels()
         if self.gmrecords.args.num_processes:
             futures = []
+            executor = ProcessPoolExecutor(
+                max_workers=self.gmrecords.args.num_processes
+            )
 
         logging.info(f"Creating diagnostic plots for event {event.id}...")
         plot_dir = os.path.join(event_dir, "plots")
@@ -120,25 +123,23 @@ class GenerateReportModule(base.SubcommandModule):
             for stream in streams:
                 pstreams.append(stream)
                 if self.gmrecords.args.num_processes > 0:
-                    with ProcessPoolExecutor(
-                        max_workers=self.gmrecords.args.num_processes
-                    ) as executor:
-                        future = executor.submit(
-                            plot.summary_plots,
-                            stream,
-                            plot_dir,
-                            event,
-                            config=config,
-                        )
-                        futures.append(future)
+                    future = executor.submit(
+                        plot.summary_plots,
+                        stream,
+                        plot_dir,
+                        event,
+                        config=config,
+                    )
+                    futures.append(future)
                 else:
                     results.append(
                         plot.summary_plots(stream, plot_dir, event, config=config)
                     )
 
-        if self.gmrecords.args.num_processes > 0:
+        if self.gmrecords.args.num_processes:
             # Collect the results??
             results = [future.result() for future in futures]
+            executor.shutdown()
 
         moveoutfile = os.path.join(event_dir, "moveout_plot.png")
         plot.plot_moveout(pstreams, event.latitude, event.longitude, file=moveoutfile)
