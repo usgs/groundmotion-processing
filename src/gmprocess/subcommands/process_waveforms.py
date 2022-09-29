@@ -85,6 +85,14 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 max_workers=self.gmrecords.args.num_processes
             )
 
+        if self.gmrecords.args.reprocess:
+            process_type = "Reprocessing"
+            plabel = self.process_tag
+        else:
+            process_type = "Processing"
+            plabel = "unprocessed"
+        logging.info(f"{process_type} '{plabel}' streams for event {event.id}...")
+
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
             config = self._get_config()
@@ -110,18 +118,6 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 old_streams = None
 
             if len(raw_streams):
-                if self.gmrecords.args.reprocess:
-                    process_type = "Reprocessing"
-                    plabel = self.process_tag
-                else:
-                    process_type = "Processing"
-                    plabel = "unprocessed"
-                # TODO: @emthompson-usgs
-                # This logging should be moved to a higher level as the
-                # output is independent of the station.
-                logging.info(
-                    f"{process_type} '{plabel}' streams for event {event.id}..."
-                )
                 if self.gmrecords.args.num_processes:
                     future = executor.submit(
                         processing.process_streams,
