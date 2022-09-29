@@ -116,6 +116,9 @@ class ProcessWaveformsModule(base.SubcommandModule):
                 else:
                     process_type = "Processing"
                     plabel = "unprocessed"
+                # TODO: @emthompson-usgs
+                # This logging should be moved to a higher level as the
+                # output is independent of the station.
                 logging.info(
                     f"{process_type} '{plabel}' streams for event {event.id}..."
                 )

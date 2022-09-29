@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Workspace" href="workspace.html" /><link rel="prev" title="Manual" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Data Structures - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Data Structures - gmprocess 1.2.1.dev20+g8f162f73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev20+g8f162f73 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -193,6 +194,7 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="workspace.html">   Workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gmrecords.html">   `gmrecords` Program</a></li>
 <li class="toctree-l2"><a class="reference internal" href="processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">   Utilities</a></li>
 </ul>
@@ -414,7 +416,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -572,14 +573,14 @@ StationXML file, suitable for passing to other packages.</p>
 <span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">inventory</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">getInventory</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;example.mseed&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;MSEED&quot;</span><span class="p">)</span>
 
-<span class="nn">File ~/src/python/groundmotion-processing/src/gmprocess/io/read.py:39,</span> in <span class="ni">read_data</span><span class="nt">(filename, config, read_format, **kwargs)</span>
+<span class="nn">File ~/src/usgs/gmprocess/src/gmprocess/io/read.py:39,</span> in <span class="ni">read_data</span><span class="nt">(filename, config, read_format, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">37</span> <span class="c1"># Check if file exists</span>
 <span class="g g-Whitespace">     </span><span class="mi">38</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">39</span>     <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not a file </span><span class="si">{</span><span class="n">filename</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="c1"># Get and validate format</span>
 <span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="ne">OSError</span>: Not a file &#39;/Users/emthompson/src/python/groundmotion-processing/src/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat&#39;
+<span class="ne">OSError</span>: Not a file &#39;/Users/baagaard/src/usgs/gmprocess/src/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat&#39;
 </pre></div>
 </div>
 </div>
@@ -730,6 +731,7 @@ separate stream.</p>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
