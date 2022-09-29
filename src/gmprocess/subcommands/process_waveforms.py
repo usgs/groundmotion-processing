@@ -79,8 +79,11 @@ class ProcessWaveformsModule(base.SubcommandModule):
         station_list = ds.waveforms.list()
 
         processed_streams = []
-        if self.gmrecords.args.num_processes > 0:
+        if self.gmrecords.args.num_processes:
             futures = []
+            executor = ProcessPoolExecutor(
+                max_workers=self.gmrecords.args.num_processes
+            )
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
@@ -117,17 +120,14 @@ class ProcessWaveformsModule(base.SubcommandModule):
                     f"{process_type} '{plabel}' streams for event {event.id}..."
                 )
                 if self.gmrecords.args.num_processes:
-                    with ProcessPoolExecutor(
-                        max_workers=self.gmrecords.args.num_processes
-                    ) as executor:
-                        future = executor.submit(
-                            processing.process_streams,
-                            raw_streams,
-                            event,
-                            config,
-                            old_streams,
-                        )
-                        futures.append(future)
+                    future = executor.submit(
+                        processing.process_streams,
+                        raw_streams,
+                        event,
+                        config,
+                        old_streams,
+                    )
+                    futures.append(future)
                 else:
                     processed_streams.append(
                         processing.process_streams(
@@ -135,9 +135,10 @@ class ProcessWaveformsModule(base.SubcommandModule):
                         )
                     )
 
-        if self.gmrecords.args.num_processes > 0:
+        if self.gmrecords.args.num_processes:
             # Collect the processed streams
             processed_streams = [future.result() for future in futures]
+            executor.shutdown()
 
         # Note: cannot parallelize IO to ASDF file
 

@@ -73,6 +73,9 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         metricpaths = []
         if self.gmrecords.args.num_processes:
             futures = []
+            executor = ProcessPoolExecutor(
+                max_workers=self.gmrecords.args.num_processes
+            )
 
         for station_id in station_list:
             # Cannot parallelize IO to ASDF file
@@ -103,18 +106,15 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                 )
                 logging.info(f"Calculating waveform metrics for {stream.get_id()}...")
                 if self.gmrecords.args.num_processes > 0:
-                    with ProcessPoolExecutor(
-                        max_workers=self.gmrecords.args.num_processes
-                    ) as executor:
-                        future = executor.submit(
-                            station_summary.StationSummary.from_config,
-                            stream=stream,
-                            config=config,
-                            event=event,
-                            calc_waveform_metrics=True,
-                            calc_station_metrics=False,
-                        )
-                        futures.append(future)
+                    future = executor.submit(
+                        station_summary.StationSummary.from_config,
+                        stream=stream,
+                        config=config,
+                        event=event,
+                        calc_waveform_metrics=True,
+                        calc_station_metrics=False,
+                    )
+                    futures.append(future)
                 else:
                     summaries.append(
                         station_summary.StationSummary.from_config(
@@ -126,9 +126,10 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                         )
                     )
 
-        if self.gmrecords.args.num_processes > 0:
+        if self.gmrecords.args.num_processes:
             # Collect the processed streams
             summaries = [future.result() for future in futures]
+            executor.shutdown()
 
         # Cannot parallelize IO to ASDF file
         logging.info(

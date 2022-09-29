@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import logging
 from concurrent.futures import ProcessPoolExecutor
-from itertools import repeat
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -52,26 +50,23 @@ class AssembleModule(base.SubcommandModule):
         version = self.gmrecords.gmprocess_version
         results = []
 
-        if gmrecords.args.num_processes:
-            # parallelize processing on events
-            try:
-                with ProcessPoolExecutor(
-                    max_workers=gmrecords.args.num_processes
-                ) as executor:
-                    results = executor.map(
-                        self._assemble_event,
-                        events,
-                        repeat(data_path),
-                        repeat(overwrite),
-                        repeat(conf),
-                        repeat(version),
-                    )
-                    results = list(results)
-            except BaseException as ex:
-                print(ex)
-                print("Could not create ProcessPoolExecutor.")
-                print("To turn off paralleization, use '--num-processes 0'.")
-                sys.exit(1)
+        if self.gmrecords.args.num_processes:
+            futures = []
+            executor = ProcessPoolExecutor(
+                max_workers=self.gmrecords.args.num_processes
+            )
+            for event in events:
+                future = executor.submit(
+                    self._assemble_event,
+                    event,
+                    data_path,
+                    overwrite,
+                    conf,
+                    version,
+                )
+                futures.append(future)
+            results = [future.result() for future in futures]
+            executor.shutdown()
         else:
             for event in events:
                 results.append(
@@ -84,8 +79,8 @@ class AssembleModule(base.SubcommandModule):
 
         self._summarize_files_created()
 
-    # Note: need to make this a static method in order to be able to call it with
-    # ProcessPoolExecutor.
+    # Note: I think that we need to make this a static method in order to be able to
+    # call it with ProcessPoolExecutor.
     @staticmethod
     def _assemble_event(event, data_path, overwrite, conf, version):
         logging.info(f"Starting event: {event}")
