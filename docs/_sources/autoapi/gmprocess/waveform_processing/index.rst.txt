@@ -4,15 +4,6 @@
 .. py:module:: gmprocess.waveform_processing
 
 
-Subpackages
------------
-.. toctree::
-   :titlesonly:
-   :maxdepth: 3
-
-   smoothing/index.rst
-
-
 Submodules
 ----------
 .. toctree::

@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.asdf.utils" href="../utils/index.html" /><link rel="prev" title="gmprocess.io.asdf.core" href="../core/index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.2.1.dev20+g8f162f73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.1.dev20+g8f162f73 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -193,6 +194,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/manual/data_structures.html">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/manual/workspace.html">   Workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../contents/manual/gmrecords.html">   `gmrecords` Program</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/manual/processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../../contents/manual/utilities.html">   Utilities</a></li>
 </ul>
@@ -414,7 +416,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -1218,6 +1219,54 @@ plain .sort() will put SA(10.0) before SA(2.0), for example.</p>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.TIMEPAT"><code class="docutils literal notranslate"><span class="pre">TIMEPAT</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.EVENT_TABLE_COLUMNS"><code class="docutils literal notranslate"><span class="pre">EVENT_TABLE_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FLATFILE_COLUMNS"><code class="docutils literal notranslate"><span class="pre">FLATFILE_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FLATFILE_IMT_COLUMNS"><code class="docutils literal notranslate"><span class="pre">FLATFILE_IMT_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FIT_SPECTRA_COLUMNS"><code class="docutils literal notranslate"><span class="pre">FIT_SPECTRA_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.SNR_COLUMNS"><code class="docutils literal notranslate"><span class="pre">SNR_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.SNR_FREQ_COLUMNS"><code class="docutils literal notranslate"><span class="pre">SNR_FREQ_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.M_PER_KM"><code class="docutils literal notranslate"><span class="pre">M_PER_KM</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FORMAT_VERSION"><code class="docutils literal notranslate"><span class="pre">FORMAT_VERSION</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_netsta"><code class="docutils literal notranslate"><span class="pre">format_netsta()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_nslc"><code class="docutils literal notranslate"><span class="pre">format_nslc()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_nslct"><code class="docutils literal notranslate"><span class="pre">format_nslct()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_nslit"><code class="docutils literal notranslate"><span class="pre">format_nslit()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.create"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.create()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.open"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.open()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.close"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.close()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.__repr__"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.__repr__()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addEvent"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addEvent()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addConfig()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.setConfig"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.setConfig()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addGmprocessVersion"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addGmprocessVersion()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getGmprocessVersion"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getGmprocessVersion()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addStreams"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addStreams()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getEventIds"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getEventIds()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getLabels"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getLabels()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getStreams"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getStreams()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getStations"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getStations()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.insert_aux"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.insert_aux()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.calcMetrics"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.calcMetrics()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getTables"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getTables()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getFitSpectraTable"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getFitSpectraTable()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getSNRTable"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getSNRTable()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.__flatten_snr_dict"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.__flatten_snr_dict()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getStreamMetrics"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getStreamMetrics()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.summarizeLabels"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.summarizeLabels()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getInventory"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getInventory()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.hasEvent"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.hasEvent()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getEvent"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getEvent()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getProvenance"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getProvenance()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._stringify_dict"><code class="docutils literal notranslate"><span class="pre">_stringify_dict()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._get_id"><code class="docutils literal notranslate"><span class="pre">_get_id()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._get_agents"><code class="docutils literal notranslate"><span class="pre">_get_agents()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._natural_keys"><code class="docutils literal notranslate"><span class="pre">_natural_keys()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._atof"><code class="docutils literal notranslate"><span class="pre">_atof()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.camel_case_split"><code class="docutils literal notranslate"><span class="pre">camel_case_split()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.TIMEPAT">TIMEPAT</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.EVENT_TABLE_COLUMNS">EVENT_TABLE_COLUMNS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FLATFILE_COLUMNS">FLATFILE_COLUMNS</a></li>
@@ -1286,6 +1335,7 @@ plain .sort() will put SA(10.0) before SA(2.0), for example.</p>
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/scripts/furo.js"></script>
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>

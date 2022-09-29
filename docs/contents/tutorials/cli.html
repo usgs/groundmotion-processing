@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Response Spectra Calculation and Comparison" href="response_spectra.html" /><link rel="prev" title="Tutorials" href="index.html" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Scripting" href="scripting.html" /><link rel="prev" title="Tutorials" href="index.html" />
 
     <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Command Line Interface - gmprocess 1.2.1.dev16+g355909a7.d20220928 documentation</title>
+        <title>Command Line Interface - gmprocess 1.2.1.dev20+g8f162f73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev16+g355909a7.d20220928 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev20+g8f162f73 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -193,6 +194,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../manual/data_structures.html">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/workspace.html">   Workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/gmrecords.html">   `gmrecords` Program</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/utilities.html">   Utilities</a></li>
 </ul>
@@ -414,7 +416,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -477,172 +478,115 @@
         <article role="main">
           <section id="command-line-interface">
 <h1>Command Line Interface<a class="headerlink" href="#command-line-interface" title="Permalink to this heading">#</a></h1>
+<p>This example covers using the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> command line program in a typical workflow for downloading, processing, and generating products for ground-motion records from an earthquake.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Be sure to review the discussion of how the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> command line
-interface makes use of “projects” in the
-<a class="reference internal" href="../getting-started/initial_setup.html#initial-setup"><span class="std std-ref">Initial Setup</span></a> section.</p>
+<p>Be sure to review the discussion of all of the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> subcommands in section <a class="reference internal" href="../manual/gmrecords.html#gmrecords"><span class="std std-ref">gmrecords</span></a> and configuring projects in section <a class="reference internal" href="../getting-started/initial_setup.html#initial-setup"><span class="std std-ref">Initial Setup</span></a>.</p>
 </div>
-<section id="the-gmrecords-command">
-<h2>The <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> Command<a class="headerlink" href="#the-gmrecords-command" title="Permalink to this heading">#</a></h2>
-<p>The primary command line program is called <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code>. This includes a
-number of subcommands, which are described by printing the help message:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords -h
-usage: gmrecords [-h] [-d | -q] [-v] [-l LOG] &lt;command&gt; &lt;aliases&gt; ...
-
-gmrecords is a program for retrieving and processing ground motion records, as
-well as exporting commonly used station and waveform parameters for earthquake
-hazard analysis.
-
-options:
-  -h, --help            show this help message and exit
-  -d, --debug           Print all informational messages.
-  -q, --quiet           Print only errors.
-  -v, --version         Print program version.
-  -l LOG, --log LOG     Path to log file; if provided, loging is directed to
-                        this file.
-
-Subcommands:
-  &lt;command&gt; (&lt;aliases&gt;)
-    assemble            Assemble raw data and organize it into an ASDF file.
-    auto_shakemap       Chain together subcommands to get shakemap ground
-                        motion file.
-    clean               Clean (i.e., remove) project data.
-    compute_station_metrics (sm)
-                        Compute station metrics.
-    compute_waveform_metrics (wm)
-                        Compute waveform metrics.
-    config              Utilities to deal with config option issues.
-    download            Download data and organize it in the project data
-                        directory.
-    export_failure_tables (ftables)
-                        Export failure tables.
-    export_metric_tables (mtables)
-                        Export metric tables.
-    export_provenance_tables (ptables)
-                        Export provenance tables.
-    export_shakemap (shakemap)
-                        Export files for ShakeMap input.
-    generate_regression_plot (regression)
-                        Generate multi-event &quot;regression&quot; plot.
-    generate_report (report)
-                        Generate summary report (latex required).
-    generate_station_maps (maps)
-                        Generate interactive station maps.
-    import              Import data for an event into the project data
-                        directory.
-    init                Initialize the current directory as a gmprocess
-                        project directory.
-    process_waveforms (process)
-                        Process waveform data.
-    projects (proj)     Manage gmrecords projects.
+<section id="local-gmprocess-configuration">
+<h2>Local <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> configuration<a class="headerlink" href="#local-gmprocess-configuration" title="Permalink to this heading">#</a></h2>
+<p>In this example we specify parameters in the project configuration to produce a small dataset.
+We use only the FDSN fetcher and limit the station distance to 0.1 degrees.
+The configuration files are in the <code class="docutils literal notranslate"><span class="pre">conf/cli</span></code> directory.
+First, we first create the project <code class="docutils literal notranslate"><span class="pre">data</span></code> directory, and then we use the <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand to select the project configuration <code class="docutils literal notranslate"><span class="pre">cli-tutorial</span></code> from the tutorial projects listed in the <code class="docutils literal notranslate"><span class="pre">.gmprocess/projects.conf</span></code> file.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ mkdir -p data/cli data/scripting
 </pre></div>
 </div>
-<p>Note that some of the subcommands with longer names have short aliases to make
-the command line calls more concise.</p>
-</section>
-<section id="project-configuration">
-<h2>Project Configuration<a class="headerlink" href="#project-configuration" title="Permalink to this heading">#</a></h2>
-<p>For this tutorial, we will create a system-level project.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>gmrecords projects -c
-<span class="go">No project config file detected.</span>
-<span class="go">Please select a project setup option:</span>
-<span class="gp gp-VirtualEnv">(1)</span> <span class="go">Initialize the current directory as a gmrecords</span>
-<span class="go">    project, which will contain data and conf</span>
-<span class="go">    subdirectories.</span>
-<span class="gp gp-VirtualEnv">(2)</span> <span class="go">Setup a project with data and conf locations that</span>
-<span class="go">    are independent of the current directory.</span>
-<span class="go">&gt; 2</span>
-<span class="go">Please enter a project title: [default] tutorial</span>
-<span class="go">You will be prompted to supply two directories for this project:</span>
-<span class="go">- A *config* path, which will store the gmprocess config files.</span>
-<span class="go">- A *data* path, under which will be created directories for each</span>
-<span class="go">   event processed.</span>
-<span class="go">Please enter the conf path: [/Users/emthompson/gmprocess_projects/tutorial/conf]</span>
-<span class="go">Please enter the data path: [/Users/emthompson/gmprocess_projects/tutorial/data]</span>
-<span class="go">Please enter your name and email. This information will be added</span>
-<span class="go">to the config file and reported in the provenance of the data</span>
-<span class="go">processed in this project.</span>
-<span class="go">   Name: Eric Thompson</span>
-<span class="go">   Email: myemail@email.com</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords projects --switch cli-tutorial
+INFO 2022-09-29 12:14:45 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:14:45 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:14:45 | projects.main: Running subcommand &#39;projects&#39;
 
-<span class="go">Created project: Project: tutorial</span>
-<span class="go">   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf</span>
-<span class="go">   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data</span>
+Switched to project: 
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 </pre></div>
 </div>
-<p>At this point an empty <code class="docutils literal notranslate"><span class="pre">data</span></code> directory has been created. The <code class="docutils literal notranslate"><span class="pre">conf</span></code> directory has
-one file in it: <code class="docutils literal notranslate"><span class="pre">user.yml</span></code>. This configuration file holds parameters that override
-default values provided with the source code. See
-<a class="reference internal" href="../manual/config_file.html"><span class="doc std std-doc">Configuration File</span></a> for more information.</p>
+<p>At this point we have an empty <code class="docutils literal notranslate"><span class="pre">data/cli</span></code> directory.
+The <code class="docutils literal notranslate"><span class="pre">conf/cli</span></code> directory has two files: <code class="docutils literal notranslate"><span class="pre">fetchers/yml</span></code> and <code class="docutils literal notranslate"><span class="pre">user.yml</span></code>.
+These configuration files hold parameters that override default values provided with the source code.
+See <a class="reference internal" href="../manual/config_file.html"><span class="doc std std-doc">Configuration File</span></a> for more information.</p>
 </section>
 <section id="download-data">
 <h2>Download Data<a class="headerlink" href="#download-data" title="Permalink to this heading">#</a></h2>
-<p>To limit the number of stations in this example, please add a <code class="docutils literal notranslate"><span class="pre">fetchers.yml</span></code>
-file (located in the project conf path) to restrict the search radius:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">fetchers</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">FDSNFetcher</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">domain</span><span class="p">:</span><span class="w"></span>
-<span class="w">         </span><span class="nt">circular</span><span class="p">:</span><span class="w"></span>
-<span class="w">            </span><span class="nt">maxradius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"></span>
-<span class="w">   </span><span class="nt">CESMDFetcher</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"></span>
+<p>In this example we will consider ground motions recorded for a <a class="reference external" href="https://earthquake.usgs.gov/earthquakes/eventpage/nc73291880/executive">magnitude 4.5 earthquake</a> east of San Francisco, California.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Download</label><div class="tab-content docutils container">
+<p>We download data from FDSN data centers using the USGS ComCat event ID nc73291880.</p>
+<p><code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">gmrecords</span> <span class="pre">download</span> <span class="pre">--eventid</span> <span class="pre">nc73291880</span></code></p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">Use cached data</label><div class="tab-content docutils container">
+<p>We have cached the results of running <code class="docutils literal notranslate"><span class="pre">gmrecords</span> <span class="pre">download</span> <span class="pre">--eventid</span> <span class="pre">nc73291880</span></code> in the <code class="docutils literal notranslate"><span class="pre">tests/data/tutorials</span></code> directory.
+Consequently, we simply copy the data from <code class="docutils literal notranslate"><span class="pre">tests/data/tutorials/nc73291880</span></code> to <code class="docutils literal notranslate"><span class="pre">data/cli/nc73291880</span></code>.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ cp -r ../../../tests/data/tutorials/nc73291880 data/cli/
 </pre></div>
 </div>
-<p>Now we will download data by specifying an event ID.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>The easiest way to get data for events is by specifying USGS event IDs.
-These event IDs can be found by searching for events on the
-<a class="reference external" href="https://earthquake.usgs.gov/earthquakes/search/">Search Earthquake Catalog</a>
-page at the USGS. With <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code>, you can specify a single event ID or a
-list of event IDs in a text file. Also, you can run customized searches of
-the earthquake catalog in python with
-<a class="reference external" href="https://github.com/usgs/libcomcat">libcomcat</a>.</p>
 </div>
-<p>We will search for records from the 2014 South Napa Earthquake
-(event ID
-<a class="reference external" href="https://earthquake.usgs.gov/earthquakes/eventpage/nc72282711/executive">nc72282711</a>).
-Note that we have clipped out a bunch of terminal messages regarding the fetcher
-connections because those are not important for this tutorial.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords download -e nc72282711
-INFO 2021-11-12 18:44:19 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 18:44:19 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
---------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
---------------------------------------------------------------------------------
-INFO 2021-11-12 18:44:19 | download.main: Running subcommand &#39;download&#39;
-INFO 2021-11-12 18:44:20 | download.main: Number of events to download: 1
-INFO 2021-11-12 18:44:20 | download.main: Starting event: nc72282711
-...
-INFO 2021-11-12 18:45:54 | mass_downloader.download: Downloaded 0.5 MB in total.
+</div>
+<section id="list-data">
+<h3>List Data<a class="headerlink" href="#list-data" title="Permalink to this heading">#</a></h3>
+<p>We now have earthquake rupture information and raw waveforms in the <code class="docutils literal notranslate"><span class="pre">data/cli</span></code> directory.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tree data/cli
+data/cli
+└── nc73291880
+    ├── event.json
+    └── raw
+        ├── BK.BRIB.01.BHE__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.BHN__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.BHZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.HHE__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.HHN__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.HHZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── BK.BRIB.xml
+        ├── CE.58360..HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58360..HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58360..HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58360.xml
+        ├── CE.58369..HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58369..HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58369..HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58369.xml
+        ├── CE.58442..HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58442..HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58442..HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── CE.58442.xml
+        ├── NC.C010.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.C010.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.C010.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.C010.xml
+        ├── NC.C018.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.C018.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.C018.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.C018.xml
+        ├── NC.CRH..HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.CRH..HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.CRH..HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.CRH.xml
+        ├── NC.CTA..HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.CTA..HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.CTA..HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── NC.CTA.xml
+        ├── NP.1691..HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1691..HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1691..HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1691.xml
+        ├── NP.1844..HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1844..HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1844..HNZ__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1844.xml
+        ├── NP.1847.10.HNE__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1847.10.HNN__20191015T053312Z__20191015T054042Z.mseed
+        ├── NP.1847.10.HNZ__20191015T053312Z__20191015T054042Z.mseed
+        └── NP.1847.xml
+
+2 directories, 51 files
 </pre></div>
 </div>
-<p>The downloaded data can be seen in the project data directory</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ tree .
-.
-└── nc72282711
-   ├── event.json
-   ├── raw
-   │   ├── CE.68150..HNE__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── CE.68150..HNN__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── CE.68150..HNZ__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── CE.68150.xml
-   │   ├── NC.N016.01.HNE__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── NC.N016.01.HNN__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── NC.N016.01.HNZ__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── NC.N016.xml
-   │   ├── NC.NHC..HNE__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── NC.NHC..HNN__20140824T102014Z__20140824T102744Z.mseed
-   │   ├── NC.NHC..HNZ__20140824T102014Z__20140824T102744Z.mseed
-   │   └── NC.NHC.xml
-   └── rupture.json
-</pre></div>
-</div>
-<p>From the directory tree above, you can see how <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> organizes the data
-directory:</p>
+<p>From the directory tree above, you can see how <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> organizes the data directory:</p>
 <ul class="simple">
 <li><p>within the root data directory there are subdirectories for each event named
 by the event ID,</p></li>
@@ -662,204 +606,279 @@ consists of miniseed and StationXML files,</p>
 </li>
 </ul>
 </section>
+</section>
 <section id="assemble-data">
 <h2>Assemble Data<a class="headerlink" href="#assemble-data" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">assemble</span></code> subcommand collects the data in the raw directory and
-organizes it into an ASDF file. We can specify the event ID, but if we
-do not then all of the events in the data directory will be assembled.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords assemble
-INFO 2021-11-12 18:52:58 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 18:52:58 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>The <code class="docutils literal notranslate"><span class="pre">assemble</span></code> subcommand collects the data in the raw directory and organizes it into an ASDF file.
+If we do not specify the event ID, then all of the events in the data directory will be assembled.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords assemble
+INFO 2022-09-29 12:14:45 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:14:45 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:14:45 | assemble.main: Running subcommand &#39;assemble&#39;
+INFO 2022-09-29 12:14:46 | assemble.main: Number of events to assemble: 1
+INFO 2022-09-29 12:14:46 | assemble._assemble_event: Starting event: nc73291880
+INFO 2022-09-29 12:14:48 | assemble_utils.assemble: 
+13 StationStreams(s) in StreamCollection:
+  3 StationTrace(s) in StationStream (passed):
+    CE.58369..HNZ | 2019-10-15T05:33:17.000000Z - 2019-10-15T05:34:27.995000Z | 200.0 Hz, 14200 samples (passed)
+    CE.58369..HNN | 2019-10-15T05:33:17.000000Z - 2019-10-15T05:34:27.995000Z | 200.0 Hz, 14200 samples (passed)
+    CE.58369..HNE | 2019-10-15T05:33:17.000000Z - 2019-10-15T05:34:27.995000Z | 200.0 Hz, 14200 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.C010.01.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:50.125000Z | 200.0 Hz, 43464 samples (passed)
+    NC.C010.01.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:50.125000Z | 200.0 Hz, 43464 samples (passed)
+    NC.C010.01.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:50.125000Z | 200.0 Hz, 43464 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NP.1847.10.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NP.1847.10.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NP.1847.10.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.CTA..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CTA..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CTA..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BK.BRIB.01.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NP.1691..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:03.995000Z | 200.0 Hz, 34238 samples (passed)
+    NP.1691..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:03.995000Z | 200.0 Hz, 34238 samples (passed)
+    NP.1691..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:03.995000Z | 200.0 Hz, 34238 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    CE.58442..HNN | 2019-10-15T05:33:19.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12800 samples (passed)
+    CE.58442..HNZ | 2019-10-15T05:33:19.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12800 samples (passed)
+    CE.58442..HNE | 2019-10-15T05:33:19.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12800 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.CRH..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CRH..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CRH..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BK.BRIB.01.HHE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HHN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HHZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NP.1844..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:48.995000Z | 200.0 Hz, 43238 samples (passed)
+    NP.1844..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:48.995000Z | 200.0 Hz, 43238 samples (passed)
+    NP.1844..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:48.995000Z | 200.0 Hz, 43238 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    CE.58360..HNE | 2019-10-15T05:33:21.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12400 samples (passed)
+    CE.58360..HNN | 2019-10-15T05:33:21.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12400 samples (passed)
+    CE.58360..HNZ | 2019-10-15T05:33:21.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12400 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.C018.01.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:51.390000Z | 200.0 Hz, 43717 samples (passed)
+    NC.C018.01.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:51.390000Z | 200.0 Hz, 43717 samples (passed)
+    NC.C018.01.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:51.390000Z | 200.0 Hz, 43717 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BK.BRIB.01.BHE | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
+    BK.BRIB.01.BHN | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
+    BK.BRIB.01.BHZ | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
+INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
+INFO 2022-09-29 12:14:50 | base._summarize_files_created: The following files have been created:
+INFO 2022-09-29 12:14:50 | base._summarize_files_created: File type: Workspace
+INFO 2022-09-29 12:14:50 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/workspace.h5
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2021-11-12 18:52:58 | assemble.main: Running subcommand &#39;assemble&#39;
-INFO 2021-11-12 18:52:58 | assemble.main: Number of events to assemble: 1
-INFO 2021-11-12 18:52:58 | assemble._assemble_event: Starting event: nc72282711
-3 StationStreams(s) in StreamCollection:
-3 StationTrace(s) in StationStream (passed):
-   NC.N016.01.HNN | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-   NC.N016.01.HNZ | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-   NC.N016.01.HNE | 2014-08-24T10:24:08.345000Z - 2014-08-24T10:25:41.740000Z | 200.0 Hz, 18680 samples (passed)
-3 StationTrace(s) in StationStream (passed):
-   NC.NHC..HNE | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-   NC.NHC..HNZ | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-   NC.NHC..HNN | 2014-08-24T10:20:14.070000Z - 2014-08-24T10:27:44.060000Z | 100.0 Hz, 45000 samples (passed)
-3 StationTrace(s) in StationStream (passed):
-   CE.68150..HNE | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
-   CE.68150..HNN | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
-   CE.68150..HNZ | 2014-08-24T10:20:21.000000Z - 2014-08-24T10:22:19.995000Z | 200.0 Hz, 23800 samples (passed)
-
-INFO 2021-11-12 18:52:59 | stream_workspace.addStreams: Adding waveforms for station N016
-INFO 2021-11-12 18:52:59 | stream_workspace.addStreams: Adding waveforms for station NHC
-INFO 2021-11-12 18:52:59 | stream_workspace.addStreams: Adding waveforms for station 68150
-
-The following files have been created:
-File type: Workspace
-   /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/workspace.h5
+/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/workspace.h5
 </pre></div>
 </div>
-<p>The console message indicates that the <code class="docutils literal notranslate"><span class="pre">workspace.h5</span></code> ASDF file has been
-created.</p>
+<p>The console message indicates that the <code class="docutils literal notranslate"><span class="pre">workspace.h5</span></code> ASDF file has been created.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <a class="reference external" href="https://seismic-data.org/">Seismic Data</a> folks have developed a
-graphical user interface to explore ASDF data sets called
-<a class="reference external" href="https://github.com/SeismicData/asdf_sextant">ASDF Sextant</a>
-and this may be useful for browsing the contents of the ASDF file.
-Since ASDF is an HDF5 specification, it can also be loaded in most
-programming languages using
-<a class="reference external" href="https://www.hdfgroup.org/solutions/hdf5/">HDF5</a> libraries.</p>
+<p>The <a class="reference external" href="https://seismic-data.org/">Seismic Data</a> folks have developed a graphical user interface to explore ASDF data sets called <a class="reference external" href="https://github.com/SeismicData/asdf_sextant">ASDF Sextant</a> and this may be useful for browsing the contents of the ASDF file.
+Since ASDF is an HDF5 specification, it can also be loaded in most programming languages using [HDF5](https://www.hdfgroup.org/solutions/hdf5/ libraries.</p>
 </div>
 </section>
 <section id="process-waveforms">
 <h2>Process Waveforms<a class="headerlink" href="#process-waveforms" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">process_waveforms</span></code> (or just <code class="docutils literal notranslate"><span class="pre">process</span></code> for short) subcommand reads in
-the raw data from the ASDF workspace files that were created by the assemble
-subcommand, and then applies the waveform processing steps that are specified
-the config file (in the processing section). The processed waveforms are then
-added to the ASDF workspace file.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords process
-INFO 2021-11-12 18:54:40 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 18:54:40 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>The <code class="docutils literal notranslate"><span class="pre">process_waveforms</span></code> (or just <code class="docutils literal notranslate"><span class="pre">process</span></code> for short) subcommand reads in the raw data from the ASDF workspace files that were created by the assemble subcommand, and then applies the waveform processing steps that are specified the config file (in the processing section).
+The processed waveforms are then added to the ASDF workspace file.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords process_waveforms
+INFO 2022-09-29 12:14:50 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:14:50 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:14:50 | process_waveforms.main: Running subcommand &#39;process_waveforms&#39;
+INFO 2022-09-29 12:14:51 | process_waveforms.main: Processing tag: default
+INFO 2022-09-29 12:14:51 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:51 | processing.process_streams: Stream: BK.BRIB.BH
+INFO 2022-09-29 12:14:51 | stationtrace.fail: check_clipping - BK.BRIB.01.BHE - Failed clipping check: prob_clip = 0.61.
+INFO 2022-09-29 12:14:51 | stationtrace.fail: check_clipping - BK.BRIB.01.BHN - Failed clipping check: prob_clip = 0.61.
+INFO 2022-09-29 12:14:51 | stationtrace.fail: check_clipping - BK.BRIB.01.BHZ - Failed clipping check: prob_clip = 0.61.
+INFO 2022-09-29 12:14:51 | processing.process_streams: Stream: BK.BRIB.HH
+INFO 2022-09-29 12:14:52 | stationtrace.fail: check_clipping - BK.BRIB.01.HHE - Failed clipping check: prob_clip = 0.61.
+INFO 2022-09-29 12:14:52 | stationtrace.fail: check_clipping - BK.BRIB.01.HHN - Failed clipping check: prob_clip = 0.61.
+INFO 2022-09-29 12:14:52 | stationtrace.fail: check_clipping - BK.BRIB.01.HHZ - Failed clipping check: prob_clip = 0.61.
+INFO 2022-09-29 12:14:53 | processing.process_streams: Stream: BK.BRIB.HN
+INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: CE.58360.HN
+INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: CE.58369.HN
+INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: CE.58442.HN
+INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: NC.C010.HN
+INFO 2022-09-29 12:14:56 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:56 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:56 | processing.process_streams: Stream: NC.C018.HN
+INFO 2022-09-29 12:14:56 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:56 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:56 | processing.process_streams: Stream: NC.CRH.HN
+INFO 2022-09-29 12:14:56 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:56 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:56 | processing.process_streams: Stream: NC.CTA.HN
+INFO 2022-09-29 12:14:57 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:57 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:57 | processing.process_streams: Stream: NP.1691.HN
+INFO 2022-09-29 12:14:57 | stationtrace.fail: check_tail - NP.1691..HNZ - Velocity ratio is greater than 0.3
+INFO 2022-09-29 12:14:57 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:57 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:57 | processing.process_streams: Stream: NP.1844.HN
+INFO 2022-09-29 12:14:57 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:57 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-09-29 12:14:57 | processing.process_streams: Stream: NP.1847.HN
+INFO 2022-09-29 12:14:58 | processing.process_streams: Finished processing streams.
+INFO 2022-09-29 12:14:58 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
+INFO 2022-09-29 12:14:58 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
+INFO 2022-09-29 12:14:58 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
+INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
+INFO 2022-09-29 12:15:00 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
+INFO 2022-09-29 12:15:00 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
+INFO 2022-09-29 12:15:00 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2022-09-27 20:35:39 | process_waveforms.main: Running subcommand &#39;process_waveforms&#39;
-INFO 2022-09-27 20:35:40 | process_waveforms.main: Processing tag: default
-INFO 2022-09-27 20:35:40 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc72282711...
-INFO 2022-09-27 20:35:40 | processing.process_streams: Stream: CE.68150.HN
-INFO 2022-09-27 20:35:40 | processing.process_streams: Finished processing streams.
-INFO 2022-09-27 20:35:40 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc72282711...
-INFO 2022-09-27 20:35:40 | processing.process_streams: Stream: NC.N016.HN
-INFO 2022-09-27 20:35:41 | processing.process_streams: Finished processing streams.
-INFO 2022-09-27 20:35:41 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc72282711...
-INFO 2022-09-27 20:35:41 | processing.process_streams: Stream: NC.NHC.HN
-INFO 2022-09-27 20:35:41 | processing.process_streams: Finished processing streams.
-INFO 2022-09-27 20:35:41 | stream_workspace.addStreams: Adding waveforms for station CE.68150.HN
-INFO 2022-09-27 20:35:41 | stream_workspace.addStreams: Adding waveforms for station NC.N016.HN
-INFO 2022-09-27 20:35:41 | stream_workspace.addStreams: Adding waveforms for station NC.NHC.HN
-INFO 2022-09-27 20:35:42 | base._summarize_files_created: No new files created.
 </pre></div>
 </div>
-<p>Note that the console messages indicate that some of the traces failed the
-signal-to-noise requirements.</p>
+<p>Note that the console messages indicate that some of the traces failed due to clipping or signal-to-noise requirements.</p>
 </section>
 <section id="generate-report">
 <h2>Generate Report<a class="headerlink" href="#generate-report" title="Permalink to this heading">#</a></h2>
-<p>For each event, the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> command can generate a PDF report. The report
-is useful to review which streams failed and why. The report gives a 1-page per
-station summary that includes:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">generate_report</span></code> subcommand will generate a PDF report for each earthquake.
+The report is useful to review which streams failed and why.
+The report gives a 1-page summary per station that includes:</p>
 <ul class="simple">
 <li><p>the acceleration, velocity, and displacement plots,</p></li>
 <li><p>the location where the signal and noise windows were split,</p></li>
 <li><p>the signal and noise spectra (raw and smoothed), and</p></li>
 <li><p>a table of the processing steps applied to the record.</p></li>
 <li><p>the failure reason for stations that have failed.</p></li>
-<li><p>shaded green regions that show range in acceptable amplitudes in the tail
-of the trace for a “sanity” check; this check is designed to remove records
-with unnatural drifts in the waveform.</p></li>
+<li><p>shaded green regions that show range in acceptable amplitudes in the tail of the trace for a “sanity” check; this check is designed to remove records with unnatural drifts in the waveform.</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords report
-INFO 2021-11-12 18:57:54 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 18:57:54 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
---------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
---------------------------------------------------------------------------------
-INFO 2021-11-12 18:57:54 | generate_report.main: Running subcommand &#39;generate_report&#39;
-INFO 2021-11-12 18:57:54 | generate_report.generate_diagnostic_plots: Creating diagnostic plots for event nc72282711...
-INFO 2021-11-12 18:58:00 | generate_report.main: Generating summary report for event nc72282711...
-
-The following files have been created:
-File type: Moveout plot
-   /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/moveout_plot.png
-File type: Summary report
-   /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/tutorial_default_report_nc72282711.pdf
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords gnerate_report
+usage: gmrecords [-h] [-d | -q] [-v] [-l LOG] &lt;command&gt; &lt;aliases&gt; ...
+gmrecords: error: argument &lt;command&gt; (&lt;aliases&gt;): invalid choice: &#39;gnerate_report&#39; (choose from &#39;assemble&#39;, &#39;auto_shakemap&#39;, &#39;clean&#39;, &#39;compute_station_metrics&#39;, &#39;sm&#39;, &#39;compute_waveform_metrics&#39;, &#39;wm&#39;, &#39;config&#39;, &#39;download&#39;, &#39;export_failure_tables&#39;, &#39;ftables&#39;, &#39;export_metric_tables&#39;, &#39;mtables&#39;, &#39;export_provenance_tables&#39;, &#39;ptables&#39;, &#39;export_shakemap&#39;, &#39;shakemap&#39;, &#39;generate_regression_plot&#39;, &#39;regression&#39;, &#39;generate_report&#39;, &#39;report&#39;, &#39;generate_station_maps&#39;, &#39;maps&#39;, &#39;import&#39;, &#39;init&#39;, &#39;process_waveforms&#39;, &#39;process&#39;, &#39;projects&#39;, &#39;proj&#39;)
 </pre></div>
 </div>
-<p>From the report plots (see below), you can see that all three stations passed the
-quality control checks.</p>
+<p>We show plots from the summaries for 5 stations.</p>
 <div class="tab-set docutils container">
-<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">NC.NHC</label><div class="tab-content docutils container">
-<img src="../../_static/nc72282711_NC.NHC.HN.png" alt="NC.NHC.HN">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">BK.BRIB</label><div class="tab-content docutils container">
+<img src="../../_static/nc73291880_BK.BRIB.HN.png" alt="BK.BRIB.HN">
 </div>
-<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">NC.N016</label><div class="tab-content docutils container">
-<img src="../../_static/nc72282711_NC.N016.HN.png" alt="NC.N016.HN">
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">CE.58360</label><div class="tab-content docutils container">
+<img src="../../_static/nc73291880_CE.58360.HN.png" alt="CE.58360.HN">
 </div>
-<input class="tab-input" id="tab-set--0-input--3" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--3">CE.68150</label><div class="tab-content docutils container">
-<img src="../../_static/nc72282711_CE.68150.HN.png" alt="CE.68150.HN">
+<input class="tab-input" id="tab-set--1-input--3" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--3">NC.C010</label><div class="tab-content docutils container">
+<img src="../../_static/nc73291880_NC.C010.HN.png" alt="NC.C010.HN">
+</div>
+<input class="tab-input" id="tab-set--1-input--4" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--4">NC.CRH</label><div class="tab-content docutils container">
+<img src="../../_static/nc73291880_NC.CRH.HN.png" alt="NC.CRH.HN">
+</div>
+<input class="tab-input" id="tab-set--1-input--5" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--5">NP.1844</label><div class="tab-content docutils container">
+<img src="../../_static/nc73291880_NP.1844.HN.png" alt="NP.1844.HN">
 </div>
 </div>
-<div class="note admonition">
-<p class="admonition-title">Report Explanation</p>
-<p>The full report for each station also includes the provenance table and
-failure reason (not shown here). The <strong>first row</strong> of plots is the
-acceleration time series, the <strong>second row</strong> of plots is the velocity time
-series, and the <strong>third row</strong> of plots is the displacement time series.
-The vertical dashed red line indicates the boundary between the
-signal and noise windows. The <strong>fourth row</strong> of plots gives the raw and
-smoothed Fourier amplitude spectra, where the dashed black curve is a Brune
-spectra fit to the data, and the vertical dashed line is the corner
-frequency. The <strong>fifth row</strong> of plots is the signal-to-noise ratio (SNR),
-where the vertical grey lines indicate the band where the SNR criteria
-are required, the horizontal grey line is the minimum SNR, and the vertical
-black dashed lines are the selected bandpass filter corners.</p>
-</div>
+<section id="report-explanation">
+<h3>Report Explanation<a class="headerlink" href="#report-explanation" title="Permalink to this heading">#</a></h3>
+<p>The full report for each station also includes the provenance table and failure reason (not shown here).
+The <strong>first row</strong> of plots is the acceleration time series, the <strong>second row</strong> of plots is the velocity time series, and the <strong>third row</strong> of plots is the displacement time series.
+The vertical dashed red line indicates the boundary between the signal and noise windows.
+The <strong>fourth row</strong> of plots gives the raw and smoothed Fourier amplitude spectra, where the dashed black curve is a Brune spectra fit to the data, and the vertical dashed line is the corner frequency.
+The <strong>fifth row</strong> of plots is the signal-to-noise ratio (SNR), where the vertical grey lines indicate the band where the SNR criteria are required, the horizontal grey line is the minimum SNR, and the vertical black dashed lines are the selected bandpass filter corners.</p>
+</section>
 </section>
 <section id="compute-station-metrics">
 <h2>Compute Station Metrics<a class="headerlink" href="#compute-station-metrics" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">compute_station_metrics</span></code> subcommand computes station metrics (like
-epicentral distance) and add them to the ASDF workspace file.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_station_metrics
-INFO 2021-11-12 19:07:18 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 19:07:18 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>The <code class="docutils literal notranslate"><span class="pre">compute_station_metrics</span></code> subcommand computes station metrics (like epicentral distance) and add them to the ASDF workspace file.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_station_metrics
+INFO 2022-09-29 12:15:00 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:15:00 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:15:00 | compute_station_metrics.main: Running subcommand &#39;compute_station_metrics&#39;
+INFO 2022-09-29 12:15:01 | compute_station_metrics._event_station_metrics: Computing station metrics for event nc73291880...
+INFO 2022-09-29 12:15:03 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.BH...
+INFO 2022-09-29 12:15:04 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.HH...
+INFO 2022-09-29 12:15:06 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.HN...
+INFO 2022-09-29 12:15:07 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58360.HN...
+INFO 2022-09-29 12:15:09 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58369.HN...
+INFO 2022-09-29 12:15:10 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58442.HN...
+INFO 2022-09-29 12:15:12 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.C010.HN...
+INFO 2022-09-29 12:15:14 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.C018.HN...
+INFO 2022-09-29 12:15:15 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.CRH.HN...
+INFO 2022-09-29 12:15:17 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.CTA.HN...
+INFO 2022-09-29 12:15:18 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1691.HN...
+INFO 2022-09-29 12:15:20 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1844.HN...
+INFO 2022-09-29 12:15:21 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1847.HN...
+INFO 2022-09-29 12:15:21 | compute_station_metrics._event_station_metrics: Added station metrics to workspace files with tag &#39;default&#39;.
+INFO 2022-09-29 12:15:21 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2022-09-27 20:36:59 | compute_station_metrics.main: Running subcommand &#39;compute_station_metrics&#39;
-INFO 2022-09-27 20:36:59 | compute_station_metrics._event_station_metrics: Computing station metrics for event nc72282711...
-INFO 2022-09-27 20:36:59 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.68150.HN...
-INFO 2022-09-27 20:36:59 | compute_station_metrics._event_station_metrics: Added station metrics to workspace files with tag &#39;default&#39;.
-INFO 2022-09-27 20:36:59 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.N016.HN...
-INFO 2022-09-27 20:36:59 | compute_station_metrics._event_station_metrics: Added station metrics to workspace files with tag &#39;default&#39;.
-INFO 2022-09-27 20:37:00 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.NHC.HN...
-INFO 2022-09-27 20:37:00 | compute_station_metrics._event_station_metrics: Added station metrics to workspace files with tag &#39;default&#39;.
-INFO 2022-09-27 20:37:00 | base._summarize_files_created: No new files created.
 </pre></div>
 </div>
 </section>
 <section id="compute-waveform-metrics">
 <h2>Compute Waveform Metrics<a class="headerlink" href="#compute-waveform-metrics" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">compute_waveform_metrics</span></code> subcommand computes waveform metrics (such as
-spectral accelerations) and adds them to the ASDF workspace file. The waveform
-metrics that are computed are defined in the metrics section of the conf file.
-The metrics are defined by intensity metric types (e.g., spectral acceleration
-vs duration) and intensity measure component (how the instrument components are
-combined).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_waveform_metrics
-INFO 2021-11-12 19:09:10 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 19:09:10 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>The <code class="docutils literal notranslate"><span class="pre">compute_waveform_metrics</span></code> subcommand computes waveform metrics (such as spectral accelerations) and adds them to the ASDF workspace file.
+The waveform metrics that are computed are defined in the metrics section of the conf file.
+The metrics are defined by intensity metric types (for example, spectral acceleration vs duration) and intensity measure component (how the instrument components are combined).</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_waveform_metrics
+INFO 2022-09-29 12:15:22 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:15:22 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:15:22 | compute_waveform_metrics.main: Running subcommand &#39;compute_waveform_metrics&#39;
+INFO 2022-09-29 12:15:22 | compute_waveform_metrics._compute_event_waveform_metrics: Computing waveform metrics for event nc73291880...
+INFO 2022-09-29 12:15:23 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for BK.BRIB.HN...
+INFO 2022-09-29 12:15:28 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58360.HN...
+INFO 2022-09-29 12:15:32 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58369.HN...
+INFO 2022-09-29 12:15:36 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58442.HN...
+INFO 2022-09-29 12:15:40 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.C010.HN...
+INFO 2022-09-29 12:15:43 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.C018.HN...
+INFO 2022-09-29 12:15:47 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.CRH.HN...
+INFO 2022-09-29 12:15:51 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.CTA.HN...
+INFO 2022-09-29 12:15:55 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NP.1844.HN...
+INFO 2022-09-29 12:15:59 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NP.1847.HN...
+INFO 2022-09-29 12:16:03 | compute_waveform_metrics._compute_event_waveform_metrics: Adding waveform metrics to workspace files with tag &#39;default&#39;.
+INFO 2022-09-29 12:16:03 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2022-09-27 20:37:29 | compute_waveform_metrics.main: Running subcommand &#39;compute_waveform_metrics&#39;
-INFO 2022-09-27 20:37:30 | compute_waveform_metrics._compute_event_waveform_metrics: Computing waveform metrics for event nc72282711...
-INFO 2022-09-27 20:37:30 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.68150.HN...
-INFO 2022-09-27 20:37:34 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.N016.HN...
-INFO 2022-09-27 20:37:38 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.NHC.HN...
-INFO 2022-09-27 20:37:42 | compute_waveform_metrics._compute_event_waveform_metrics: Adding waveform metrics to workspace files with tag &#39;default&#39;.
-INFO 2022-09-27 20:37:42 | base._summarize_files_created: No new files created.
-
 </pre></div>
 </div>
 <div class="admonition note">
@@ -869,135 +888,123 @@ INFO 2022-09-27 20:37:42 | base._summarize_files_created: No new files created.
 </section>
 <section id="export-failure-tables">
 <h2>Export Failure Tables<a class="headerlink" href="#export-failure-tables" title="Permalink to this heading">#</a></h2>
-<p>It is useful to summarize the reasons that records have failed the QA checks,
-and this information can be output in a spreadsheet using the
-<code class="docutils literal notranslate"><span class="pre">export_failure_tables</span></code> subcommand. Unlike many of the other
-subcommands, the output combines the results in all project events and puts
-the result into the base project directory.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_failure_tables
-INFO 2021-11-12 19:10:43 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 19:10:43 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>It is useful to summarize the reasons that records have failed the QA checks, and this information can be output in a spreadsheet using the <code class="docutils literal notranslate"><span class="pre">export_failure_tables</span></code> subcommand.
+Unlike many of the other subcommands, the output combines the results in all project events and puts the result into the base project directory.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_failure_tables
+INFO 2022-09-29 12:16:04 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:16:04 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:16:04 | export_failure_tables.main: Running subcommand &#39;export_failure_tables&#39;
+INFO 2022-09-29 12:16:04 | export_failure_tables.main: Creating failure tables for event nc73291880...
+INFO 2022-09-29 12:16:05 | base._summarize_files_created: The following files have been created:
+INFO 2022-09-29 12:16:05 | base._summarize_files_created: File type: Failure table
+INFO 2022-09-29 12:16:05 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_failure_reasons_short.csv
+INFO 2022-09-29 12:16:05 | base._summarize_files_created: File type: Complete failures
+INFO 2022-09-29 12:16:05 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_complete_failures.csv
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2021-11-12 19:10:43 | export_failure_tables.main: Running subcommand &#39;export_failure_tables&#39;
-INFO 2021-11-12 19:10:43 | export_failure_tables.main: Creating failure tables for event nc72282711...
-
-The following files have been created:
-File type: Failure table
-   /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/tutorial_default_failure_reasons_short.csv
-File type: Complete failures
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_complete_failures.csv
 </pre></div>
 </div>
 </section>
 <section id="export-metric-tables">
 <h2>Export Metric Tables<a class="headerlink" href="#export-metric-tables" title="Permalink to this heading">#</a></h2>
-<p>Although the metrics can be accessed directly from the ASDF file, it is often
-convenient to save the metrics (both station and waveform) into a “flatfile”
-where each row corresponds to a single record.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_metric_tables
-INFO 2021-11-12 19:11:38 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 19:11:38 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>Although the metrics can be accessed directly from the ASDF file, it is often convenient to save the metrics (both station and waveform) into a “flatfile” where each row corresponds to a single record.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_metric_tables
+INFO 2022-09-29 12:16:06 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:16:06 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:16:06 | export_metric_tables.main: Running subcommand &#39;export_metric_tables&#39;
+INFO 2022-09-29 12:16:06 | export_metric_tables.main: Creating tables for event nc73291880...
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: The following files have been created:
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: File type: Metric tables
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_events.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z_README.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1_README.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0_README.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2_README.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters_README.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr.csv
+INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr_README.csv
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2021-11-12 19:11:38 | export_metric_tables.main: Running subcommand &#39;export_metric_tables&#39;
-INFO 2021-11-12 19:11:38 | export_metric_tables.main: Creating tables for event nc72282711...
-
-The following files have been created:
-File type: Metric tables
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_events.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_rotd50.0.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_h2.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_z.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_h1.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_rotd50.0_README.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_h2_README.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_z_README.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_metrics_h1_README.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_fit_spectra_parameters.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_fit_spectra_parameters_README.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_snr.csv
-   /Users/emthompson/gmprocess_projects/tutorial/data/tutorial_default_snr_README.csv
 </pre></div>
 </div>
-<p>Note that the metric tables are organized into separate files for each intensity
-measure component (i.e., “IMT”).</p>
+<p>Note that the metric tables are organized into separate files for each intensity measure component (i.e., “IMT”).</p>
 </section>
 <section id="export-provenance-tables">
 <h2>Export Provenance Tables<a class="headerlink" href="#export-provenance-tables" title="Permalink to this heading">#</a></h2>
-<p>As with the metric and failure tables, you can also output tables summarzing
-the provenance information.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_provenance_tables
-INFO 2021-11-12 19:13:00 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 19:13:00 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>As with the metric and failure tables, you can also output tables summarizing the provenance information.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_provenance_tables
+INFO 2022-09-29 12:16:13 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:16:13 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:16:13 | export_provenance_tables.main: Running subcommand &#39;export_provenance_tables&#39;
+INFO 2022-09-29 12:16:14 | export_provenance_tables.main: Creating provenance tables for event nc73291880...
+INFO 2022-09-29 12:16:15 | base._summarize_files_created: The following files have been created:
+INFO 2022-09-29 12:16:15 | base._summarize_files_created: File type: Provenance
+INFO 2022-09-29 12:16:15 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_provenance.csv
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2021-11-12 19:13:00 | export_provenance_tables.main: Running subcommand &#39;export_provenance_tables&#39;
-INFO 2021-11-12 19:13:00 | export_provenance_tables.main: Creating provenance tables for event nc72282711...
-
-The following files have been created:
-File type: Provenance
-   /Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/tutorial_default_provenance.csv
 </pre></div>
 </div>
 </section>
 <section id="generate-regression-plot">
 <h2>Generate Regression Plot<a class="headerlink" href="#generate-regression-plot" title="Permalink to this heading">#</a></h2>
-<p>Although the report created by the <code class="docutils literal notranslate"><span class="pre">generate_report</span></code> subcommand is helpful
-for checking for some possible processing problems, it cannot identify
-outliers that may be due to incorrect metadata (such as the gain). This type
-of issue is relatively common, and can sometimes be identified by plotting
-the peak ground acceleration as a function of distance.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_regression_plot
-INFO 2021-11-12 19:14:01 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 19:14:01 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<p>Although the report created by the <code class="docutils literal notranslate"><span class="pre">generate_report</span></code> subcommand is helpful for checking for some possible processing problems, it cannot identify outliers that may be due to incorrect metadata (such as the gain).
+This type of issue is relatively common, and can sometimes be identified by plotting the peak ground acceleration as a function of distance.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You must run the <code class="docutils literal notranslate"><span class="pre">export_metric_tables</span></code> before running <code class="docutils literal notranslate"><span class="pre">generate_regression_plot</span></code>.</p>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_regression_plot
+INFO 2022-09-29 12:16:15 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:16:15 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:16:15 | generate_regression_plot.main: Running subcommand &#39;generate_regression_plot&#39;
+INFO 2022-09-29 12:16:16 | base._summarize_files_created: The following files have been created:
+INFO 2022-09-29 12:16:16 | base._summarize_files_created: File type: Multi-event regression plot
+INFO 2022-09-29 12:16:16 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/regression_rotd50.0_PGA.png
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2021-11-12 19:14:01 | generate_regression_plot.main: Running subcommand &#39;generate_regression_plot&#39;
-
-The following files have been created:
-File type: Multi-event regression plot
-   /Users/emthompson/gmprocess_projects/tutorial/data/regression_rotd50.0_PGA.png
 </pre></div>
 </div>
-<p>An example is given below, but for this plot we’ve re-run the above commands
-with a larger search radius to make the plot look a little bit more interesting
-than it would have looked with the smaller search radius.</p>
+<p>An example is given below, but for this plot we re-ran the above commands with a larger maximum station radius (0.8 degrees) to make the plot look a little bit more interesting than it looks for a small dataset.</p>
 <figure class="align-default" id="id1">
 <img alt="../../_images/regression_rotd50.0_PGA.png" src="../../_images/regression_rotd50.0_PGA.png" />
 <figcaption>
-<p><span class="caption-text">Example “regression” plot.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Peak ground acceleration versus epicentral distance for expanded dataset (max station distance of 0.8 degrees).</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="station-map">
 <h2>Station Map<a class="headerlink" href="#station-map" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">generate_station_maps</span></code> command makes an interactive HTML map that can be opened in a browser.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_station_maps
-INFO 2021-11-12 19:45:55 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 19:45:55 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_station_maps
+INFO 2022-09-29 12:16:16 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:16:16 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:16:16 | generate_station_maps.main: Running subcommand &#39;generate_station_maps&#39;
+INFO 2022-09-29 12:16:17 | generate_station_maps.main: Generating station maps for event nc73291880...
+INFO 2022-09-29 12:16:18 | base._summarize_files_created: The following files have been created:
+INFO 2022-09-29 12:16:18 | base._summarize_files_created: File type: Station map
+INFO 2022-09-29 12:16:18 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/stations_map.html
 --------------------------------------------------------------------------------
-Project: tutorial
-   Conf Path: /Users/emthompson/gmprocess_projects/tutorial/conf
-   Data Path: /Users/emthompson/gmprocess_projects/tutorial/data
+Project: cli-tutorial 
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-INFO 2022-09-27 20:38:38 | generate_station_maps.main: Running subcommand &#39;generate_station_maps&#39;
-INFO 2022-09-27 20:38:38 | generate_station_maps.main: Generating station maps for event nc72282711...
-INFO 2022-09-27 20:38:39 | base._summarize_files_created: The following files have been created:
-INFO 2022-09-27 20:38:39 | base._summarize_files_created: File type: Station map
-INFO 2022-09-27 20:38:39 | base._summarize_files_created: 	/Users/emthompson/gmprocess_projects/tutorial/data/nc72282711/stations_map.html
 </pre></div>
 </div>
 <figure class="align-default" id="int_stn_map">
@@ -1021,12 +1028,12 @@ INFO 2022-09-27 20:38:39 | base._summarize_files_created: 	/Users/emthompson/gmp
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="response_spectra.html">
+          <a class="next-page" href="scripting.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Response Spectra Calculation and Comparison</div>
+                <div class="title">Scripting</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -1074,12 +1081,17 @@ INFO 2022-09-27 20:38:39 | base._summarize_files_created: 	/Users/emthompson/gmp
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Command Line Interface</a><ul>
-<li><a class="reference internal" href="#the-gmrecords-command">The <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> Command</a></li>
-<li><a class="reference internal" href="#project-configuration">Project Configuration</a></li>
-<li><a class="reference internal" href="#download-data">Download Data</a></li>
+<li><a class="reference internal" href="#local-gmprocess-configuration">Local <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> configuration</a></li>
+<li><a class="reference internal" href="#download-data">Download Data</a><ul>
+<li><a class="reference internal" href="#list-data">List Data</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#assemble-data">Assemble Data</a></li>
 <li><a class="reference internal" href="#process-waveforms">Process Waveforms</a></li>
-<li><a class="reference internal" href="#generate-report">Generate Report</a></li>
+<li><a class="reference internal" href="#generate-report">Generate Report</a><ul>
+<li><a class="reference internal" href="#report-explanation">Report Explanation</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#compute-station-metrics">Compute Station Metrics</a></li>
 <li><a class="reference internal" href="#compute-waveform-metrics">Compute Waveform Metrics</a></li>
 <li><a class="reference internal" href="#export-failure-tables">Export Failure Tables</a></li>

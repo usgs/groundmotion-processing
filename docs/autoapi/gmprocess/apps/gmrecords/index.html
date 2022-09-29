@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.bin" href="../../bin/index.html" /><link rel="prev" title="gmprocess.apps" href="../index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>gmprocess.apps.gmrecords - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>gmprocess.apps.gmrecords - gmprocess 1.2.1.dev20+g8f162f73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev20+g8f162f73 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -193,6 +194,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/data_structures.html">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/workspace.html">   Workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/gmrecords.html">   `gmrecords` Program</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/manual/utilities.html">   Utilities</a></li>
 </ul>
@@ -414,7 +416,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -715,6 +716,26 @@ easier to deal with.</p></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.VERSION"><code class="docutils literal notranslate"><span class="pre">VERSION</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.configobj"><code class="docutils literal notranslate"><span class="pre">configobj</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.setuptools_scm"><code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.base"><code class="docutils literal notranslate"><span class="pre">base</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.configmod"><code class="docutils literal notranslate"><span class="pre">configmod</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.const"><code class="docutils literal notranslate"><span class="pre">const</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.log_utils"><code class="docutils literal notranslate"><span class="pre">log_utils</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.projmod"><code class="docutils literal notranslate"><span class="pre">projmod</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.init"><code class="docutils literal notranslate"><span class="pre">init</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.prompt"><code class="docutils literal notranslate"><span class="pre">prompt</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp.main"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp.main()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp.load_subcommands"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp.load_subcommands()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp._initialize"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp._initialize()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp._load_config"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp._load_config()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp._validate_projects_config"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp._validate_projects_config()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp._initial_setup"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp._initial_setup()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.apps.gmrecords.GMrecordsApp._parse_command_line"><code class="docutils literal notranslate"><span class="pre">GMrecordsApp._parse_command_line()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.VERSION">VERSION</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.configobj">configobj</a></li>
 <li><a class="reference internal" href="#gmprocess.apps.gmrecords.setuptools_scm">setuptools_scm</a></li>
@@ -755,6 +776,7 @@ easier to deal with.</p></li>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>

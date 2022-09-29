@@ -2,11 +2,11 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Contributing Guidelines" href="contributing.html" /><link rel="prev" title="Developer Resources" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
-        <title>Changelog - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Changelog - gmprocess 1.2.1.dev20+g8f162f73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev20+g8f162f73 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -183,6 +183,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/cli.html">Command Line Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -193,6 +194,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../manual/data_structures.html">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/workspace.html">   Workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/gmrecords.html">   `gmrecords` Program</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/utilities.html">   Utilities</a></li>
 </ul>
@@ -414,7 +416,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -477,8 +478,8 @@
         <article role="main">
           <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this heading">#</a></h1>
-<section id="updates-since-last-release">
-<h2>Updates since last release<a class="headerlink" href="#updates-since-last-release" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h2>1.2.1 / 2022-09-28<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Data fetcher bugfix.</p></li>
 <li><p>Improvement to Windows install instructions.</p></li>
@@ -487,10 +488,11 @@
 <li><p>Fix pandas to_latex warning.</p></li>
 <li><p>Add check_stream config section with any_trace_failures key.</p></li>
 <li><p>Modify StationID column in metric tables to include full channel code when available.</p></li>
+<li><p>Move C code to esi-core repository.</p></li>
 </ul>
 </section>
-<section id="id1">
-<h2>1.2.0 / 2022-08-15<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<section id="id2">
+<h2>1.2.0 / 2022-08-15<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>First release with wheels uploaded to pypi.</p></li>
 <li><p>Major reorganization of code, putting the base package inside src/.</p></li>
@@ -537,14 +539,14 @@ allows persistent comments.</p></li>
 <li><p>Store noise time series in output ASDF file.</p></li>
 </ul>
 </section>
-<section id="id2">
-<h2>1.1.10 / 2021-09-21<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<section id="id3">
+<h2>1.1.10 / 2021-09-21<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Add ANN clipping code and test.</p></li>
 </ul>
 </section>
-<section id="id3">
-<h2>1.1.9 / 2021-09-20<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h2>
+<section id="id4">
+<h2>1.1.9 / 2021-09-20<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Fix ExponentialSmoothing future warning</p></li>
 <li><p>Remove legacy “gmprocess2” command.</p></li>
@@ -552,8 +554,8 @@ allows persistent comments.</p></li>
 <li><p>Fix jerk unit tests.</p></li>
 </ul>
 </section>
-<section id="id4">
-<h2>1.1.8 / 2021-07-19<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h2>
+<section id="id5">
+<h2>1.1.8 / 2021-07-19<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Added the auto_shakemap subcommand</p></li>
 <li><p>Bugfix to CESMD fetcher</p></li>
@@ -572,34 +574,34 @@ for cross referencing event IDs.</p></li>
 <li><p>Changed location of temp directory used for reading in data.</p></li>
 </ul>
 </section>
-<section id="id5">
-<h2>1.1.7 / 2020-12-20<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h2>
+<section id="id6">
+<h2>1.1.7 / 2020-12-20<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>More updates to try to support Windows OS and build with conda.</p></li>
 </ul>
 </section>
-<section id="id6">
-<h2>1.1.6 / 2020-12-17<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h2>
+<section id="id7">
+<h2>1.1.6 / 2020-12-17<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>More updates to try to support Windows OS.</p></li>
 </ul>
 </section>
-<section id="id7">
-<h2>1.1.3 / 2020-12-11<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h2>
+<section id="id8">
+<h2>1.1.3 / 2020-12-11<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Fixed precision of SA strings in shakemap output json.</p></li>
 <li><p>Add Windows install script and some refactoring to try to support Windows OS.</p></li>
 <li><p>Renamed io/fdsn to io/obspy.</p></li>
 </ul>
 </section>
-<section id="id8">
-<h2>1.1.2 / 2020-08-31<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h2>
+<section id="id9">
+<h2>1.1.2 / 2020-08-31<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Fixes to c compiler issues.</p></li>
 </ul>
 </section>
-<section id="id9">
-<h2>1.1.0 / 2020-08-30<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h2>
+<section id="id10">
+<h2>1.1.0 / 2020-08-30<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Instrument response correction will now always try to use poles/zeros to remove
 response, and only use the simpler sensitivity method if no poles/zeros are available.</p></li>
@@ -623,8 +625,8 @@ records against the high-frequency response spectra reported by NGA East for the
 record.</p></li>
 </ul>
 </section>
-<section id="id10">
-<h2>1.0.4 / 2020-03-25<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h2>
+<section id="id11">
+<h2>1.0.4 / 2020-03-25<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Fix handling sensitivity units other than meters.</p></li>
 <li><p>Added optional p_arrival_shift parameter to allow users to shift signal split time
@@ -632,8 +634,8 @@ left or right as needed.</p></li>
 <li><p>General optimization.</p></li>
 </ul>
 </section>
-<section id="id11">
-<h2>1.0.3 / 2020-01-13<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h2>
+<section id="id12">
+<h2>1.0.3 / 2020-01-13<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Minor config tweaks.</p></li>
 <li><p>Modified Turkey/KNET fetchers to handle cases where no earthquakes are found.</p></li>
@@ -645,8 +647,8 @@ days old.</p></li>
 <li><p>Allow for setting the precision of data tables.</p></li>
 </ul>
 </section>
-<section id="id12">
-<h2>1.0.2 / 2019-10-17<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h2>
+<section id="id13">
+<h2>1.0.2 / 2019-10-17<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Now using ASDF dataset ifilter() method to speed up search times for waveforms in
 HDF files.</p></li>
@@ -656,15 +658,15 @@ HDF files.</p></li>
 <li><p>Add QA checks for multiple events.</p></li>
 </ul>
 </section>
-<section id="id13">
-<h2>1.0.1 / 2019-09-30<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h2>
+<section id="id14">
+<h2>1.0.1 / 2019-09-30<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Adding reader/tests for Chilean (Renadic network) format.</p></li>
 <li><p>Documentation fixes.</p></li>
 </ul>
 </section>
-<section id="id14">
-<h2>1.0.0 / 2019-09-25<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h2>
+<section id="id15">
+<h2>1.0.0 / 2019-09-25<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Initial release.</p></li>
 </ul>
@@ -729,21 +731,21 @@ HDF files.</p></li>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Changelog</a><ul>
-<li><a class="reference internal" href="#updates-since-last-release">Updates since last release</a></li>
-<li><a class="reference internal" href="#id1">1.2.0 / 2022-08-15</a></li>
-<li><a class="reference internal" href="#id2">1.1.10 / 2021-09-21</a></li>
-<li><a class="reference internal" href="#id3">1.1.9 / 2021-09-20</a></li>
-<li><a class="reference internal" href="#id4">1.1.8 / 2021-07-19</a></li>
-<li><a class="reference internal" href="#id5">1.1.7 / 2020-12-20</a></li>
-<li><a class="reference internal" href="#id6">1.1.6 / 2020-12-17</a></li>
-<li><a class="reference internal" href="#id7">1.1.3 / 2020-12-11</a></li>
-<li><a class="reference internal" href="#id8">1.1.2 / 2020-08-31</a></li>
-<li><a class="reference internal" href="#id9">1.1.0 / 2020-08-30</a></li>
-<li><a class="reference internal" href="#id10">1.0.4 / 2020-03-25</a></li>
-<li><a class="reference internal" href="#id11">1.0.3 / 2020-01-13</a></li>
-<li><a class="reference internal" href="#id12">1.0.2 / 2019-10-17</a></li>
-<li><a class="reference internal" href="#id13">1.0.1 / 2019-09-30</a></li>
-<li><a class="reference internal" href="#id14">1.0.0 / 2019-09-25</a></li>
+<li><a class="reference internal" href="#id1">1.2.1 / 2022-09-28</a></li>
+<li><a class="reference internal" href="#id2">1.2.0 / 2022-08-15</a></li>
+<li><a class="reference internal" href="#id3">1.1.10 / 2021-09-21</a></li>
+<li><a class="reference internal" href="#id4">1.1.9 / 2021-09-20</a></li>
+<li><a class="reference internal" href="#id5">1.1.8 / 2021-07-19</a></li>
+<li><a class="reference internal" href="#id6">1.1.7 / 2020-12-20</a></li>
+<li><a class="reference internal" href="#id7">1.1.6 / 2020-12-17</a></li>
+<li><a class="reference internal" href="#id8">1.1.3 / 2020-12-11</a></li>
+<li><a class="reference internal" href="#id9">1.1.2 / 2020-08-31</a></li>
+<li><a class="reference internal" href="#id10">1.1.0 / 2020-08-30</a></li>
+<li><a class="reference internal" href="#id11">1.0.4 / 2020-03-25</a></li>
+<li><a class="reference internal" href="#id12">1.0.3 / 2020-01-13</a></li>
+<li><a class="reference internal" href="#id13">1.0.2 / 2019-10-17</a></li>
+<li><a class="reference internal" href="#id14">1.0.1 / 2019-09-30</a></li>
+<li><a class="reference internal" href="#id15">1.0.0 / 2019-09-25</a></li>
 </ul>
 </li>
 </ul>
@@ -760,6 +762,7 @@ HDF files.</p></li>
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>

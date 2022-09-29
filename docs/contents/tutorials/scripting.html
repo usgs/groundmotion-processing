@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Response Spectra Calculation and Comparison" href="response_spectra.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
     <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Scripting - gmprocess 1.2.1.dev11+gdfbe295a.d20220928 documentation</title>
+        <title>Scripting - gmprocess 1.2.1.dev20+g8f162f73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev11+gdfbe295a.d20220928 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev20+g8f162f73 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -194,6 +194,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../manual/data_structures.html">   Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/workspace.html">   Workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/config_file.html">   Configuration File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../manual/gmrecords.html">   `gmrecords` Program</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/processing.html">   Processing Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../manual/utilities.html">   Utilities</a></li>
 </ul>
@@ -415,7 +416,6 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -479,44 +479,153 @@
           <section id="scripting">
 <h1>Scripting<a class="headerlink" href="#scripting" title="Permalink to this heading">#</a></h1>
 <p>You can write Python scripts that call the <code class="docutils literal notranslate"><span class="pre">GMrecordsApp</span></code> application to create high-level workflows.
-In the example below we create a Python script to run several subcommands to download and process ground motions recorded close to the epicenter of the 2004 South Napa earthquake, and then export the results to CSV files and generate a report summarizing the results.</p>
+In the example below we create a Python script to run several subcommands to download and process ground motions recorded close to the epicenter of a magnitude 4.5 earthquake, and then export the results to CSV files and generate a report summarizing the results.</p>
 <section id="local-gmprocess-configuration">
 <h2>Local <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> configuration<a class="headerlink" href="#local-gmprocess-configuration" title="Permalink to this heading">#</a></h2>
-<p>For this example we use a project configuration that provides a small dataset.
-We use only the FDSN fetcher and limit the station distance to 0.2 degrees.
+<p>In this example we specify parameters in the project configuration to produce a small dataset.
+We use only the FDSN fetcher and limit the station distance to 0.1 degrees.
 The configuration files are in the <code class="docutils literal notranslate"><span class="pre">conf/scripting</span></code> directory.
-First, we first create the project <code class="docutils literal notranslate"><span class="pre">data</span></code> directory, and then we use the <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand to select the project configuration <code class="docutils literal notranslate"><span class="pre">tutorials-scripting</span></code> from the tutorial projects listed in the <code class="docutils literal notranslate"><span class="pre">.gmprocess/projects.conf</span></code> file.</p>
+First, we first create the project <code class="docutils literal notranslate"><span class="pre">data</span></code> directory, and then we use the <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand to select the project configuration <code class="docutils literal notranslate"><span class="pre">cli-tutorial</span></code> from the tutorial projects listed in the <code class="docutils literal notranslate"><span class="pre">.gmprocess/projects.conf</span></code> file.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>mkdir -p data/scripting
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>mkdir -p data/cli data/scripting
 <span class="o">!</span>gmrecords projects --switch scripting-tutorial
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-09-28 12:52:54 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-28 12:52:54 | gmrecords._initialize: PROJECTS_PATH: tutorials/.gmprocess
-INFO 2022-09-28 12:52:54 | projects.main: Running subcommand &#39;projects&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-09-29 12:27:38 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-09-29 12:27:38 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-09-29 12:27:38 | projects.main: Running subcommand &#39;projects&#39;
 
 Switched to project: 
 Project: scripting-tutorial **Current Project**
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
+</pre></div>
+</div>
+</div>
+</div>
+<p>At this point we have an empty <code class="docutils literal notranslate"><span class="pre">data/scripting</span></code> directory.
+The <code class="docutils literal notranslate"><span class="pre">conf/scripting</span></code> directory has two files: <code class="docutils literal notranslate"><span class="pre">fetchers/yml</span></code> and <code class="docutils literal notranslate"><span class="pre">user.yml</span></code>.
+These configuration files hold parameters that override default values provided with the source code.
+See <a class="reference internal" href="../manual/config_file.html"><span class="doc std std-doc">Configuration File</span></a> for more information.</p>
+</section>
+<section id="download-data">
+<h2>Download Data<a class="headerlink" href="#download-data" title="Permalink to this heading">#</a></h2>
+<p>In this example we will consider ground motions recorded for a <a class="reference external" href="https://earthquake.usgs.gov/earthquakes/eventpage/nc73291880/executive">magnitude 4.5 earthquake</a> east of San Francisco, California.
+We have cached the results of running <code class="docutils literal notranslate"><span class="pre">gmrecords</span> <span class="pre">download</span> <span class="pre">--eventid</span> <span class="pre">nc73291880</span></code> in the <code class="docutils literal notranslate"><span class="pre">tests/data/tutorials</span></code> directory.
+Consequently, we simply copy the data from <code class="docutils literal notranslate"><span class="pre">tests/data/tutorials/nc73291880</span></code> to <code class="docutils literal notranslate"><span class="pre">data/scripting/nc73291880</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>cp -r ../../../tests/data/tutorials/nc73291880 data/scripting/
+</pre></div>
+</div>
+</div>
+</div>
+<section id="list-data">
+<h3>List Data<a class="headerlink" href="#list-data" title="Permalink to this heading">#</a></h3>
+<p>We now have earthquake rupture information and raw waveforms in the <code class="docutils literal notranslate"><span class="pre">data/scripting</span></code> directory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>tree data/scripting
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">data/scripting</span>
+├── <span class=" -Color -Color-Bold -Color-Bold-Blue">nc73291880</span>
+│   ├── event.json
+│   ├── moveout_plot.png
+│   ├── <span class=" -Color -Color-Bold -Color-Bold-Blue">plots</span>
+│   │   ├── nc73291880_BK.BRIB.BH.png
+│   │   ├── nc73291880_BK.BRIB.HH.png
+│   │   ├── nc73291880_BK.BRIB.HN.png
+│   │   ├── nc73291880_CE.58360.HN.png
+│   │   ├── nc73291880_CE.58369.HN.png
+│   │   ├── nc73291880_CE.58442.HN.png
+│   │   ├── nc73291880_NC.C010.HN.png
+│   │   ├── nc73291880_NC.C018.HN.png
+│   │   ├── nc73291880_NC.CRH.HN.png
+│   │   ├── nc73291880_NC.CTA.HN.png
+│   │   ├── nc73291880_NP.1691.HN.png
+│   │   ├── nc73291880_NP.1844.HN.png
+│   │   └── nc73291880_NP.1847.HN.png
+│   ├── <span class=" -Color -Color-Bold -Color-Bold-Blue">raw</span>
+│   │   ├── BK.BRIB.01.BHE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.BHN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.BHZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.HHE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.HHN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.HHZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── BK.BRIB.xml
+│   │   ├── CE.58360..HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58360..HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58360..HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58360.xml
+│   │   ├── CE.58369..HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58369..HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58369..HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58369.xml
+│   │   ├── CE.58442..HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58442..HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58442..HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── CE.58442.xml
+│   │   ├── NC.C010.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.C010.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.C010.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.C010.xml
+│   │   ├── NC.C018.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.C018.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.C018.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.C018.xml
+│   │   ├── NC.CRH..HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.CRH..HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.CRH..HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.CRH.xml
+│   │   ├── NC.CTA..HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.CTA..HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.CTA..HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NC.CTA.xml
+│   │   ├── NP.1691..HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1691..HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1691..HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1691.xml
+│   │   ├── NP.1844..HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1844..HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1844..HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1844.xml
+│   │   ├── NP.1847.10.HNE__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1847.10.HNN__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1847.10.HNZ__20191015T053312Z__20191015T054042Z.mseed
+│   │   ├── NP.1847.xml
+│   │   └── read_failures.csv
+│   ├── scripting-tutorial_default_report_nc73291880.pdf
+│   ├── stations_map.html
+│   └── workspace.h5
+├── scripting-tutorial_default_events.csv
+├── scripting-tutorial_default_fit_spectra_parameters.csv
+├── scripting-tutorial_default_fit_spectra_parameters_README.csv
+├── scripting-tutorial_default_metrics_h1.csv
+├── scripting-tutorial_default_metrics_h1_README.csv
+├── scripting-tutorial_default_metrics_h2.csv
+├── scripting-tutorial_default_metrics_h2_README.csv
+├── scripting-tutorial_default_metrics_rotd50.0.csv
+├── scripting-tutorial_default_metrics_rotd50.0_README.csv
+├── scripting-tutorial_default_metrics_z.csv
+├── scripting-tutorial_default_metrics_z_README.csv
+├── scripting-tutorial_default_snr.csv
+└── scripting-tutorial_default_snr_README.csv
+
+3 directories, 82 files
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="download-data">
-<h2>Download data<a class="headerlink" href="#download-data" title="Permalink to this heading">#</a></h2>
-<p>For robust results when generating the documentation, we download the data using the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> command rather than including this step in our Python script.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>gmrecords --quiet download --eventid nc72282711
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 <section id="python-script">
 <h2>Python Script<a class="headerlink" href="#python-script" title="Permalink to this heading">#</a></h2>
@@ -571,23 +680,21 @@ Project: scripting-tutorial **Current Project**
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;assemble&#39;...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Logging output sent to: assemble.log
+Logging output sent to: assemble.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial 
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tutorials/data/scripting/nc72282711/workspace.h5
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nc73291880
 Running &#39;process_waveforms&#39;...
 Logging output sent to: process_waveforms.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial 
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -595,15 +702,17 @@ Project: scripting-tutorial
 Logging output sent to: compute_station_metrics.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial 
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
-Running &#39;compute_waveform_metrics&#39;...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;compute_waveform_metrics&#39;...
 Logging output sent to: compute_waveform_metrics.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial 
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -611,8 +720,8 @@ Project: scripting-tutorial
 Logging output sent to: export_metric_tables.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial 
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -620,8 +729,8 @@ Project: scripting-tutorial
 Logging output sent to: generate_report.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial 
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -629,15 +738,15 @@ Project: scripting-tutorial
 Logging output sent to: generate_station_maps.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial 
-	Conf Path: tutorials/conf/scripting
-	Data Path: tutorials/data/scripting
+	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
-<img alt="../../_images/33ea224bf9680bf511f38745f7abd0659b442d874103a8a24592e9a5f874650d.png" src="../../_images/33ea224bf9680bf511f38745f7abd0659b442d874103a8a24592e9a5f874650d.png" />
+<img alt="../../_images/562a53b7c9f34f9e37469087aeca12be3c3eae9b2b8001a90afa849f8a6ed41c.png" src="../../_images/562a53b7c9f34f9e37469087aeca12be3c3eae9b2b8001a90afa849f8a6ed41c.png" />
 </div>
 </div>
-<p>The output will be CSV files with the waveform metrics in the <code class="docutils literal notranslate"><span class="pre">data/scripting</span></code> directory and reports in the <code class="docutils literal notranslate"><span class="pre">data/scripting/nc72282711</span></code> directory.</p>
+<p>Running the script will produce CSV files with the waveform metrics in the <code class="docutils literal notranslate"><span class="pre">data/scripting</span></code> directory and reports in the <code class="docutils literal notranslate"><span class="pre">data/scripting/nc73291880</span></code> directory.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls -1 data/scripting/*.csv
 
 <span class="go">data/scripting/scripting-tutorial_default_events.csv</span>
@@ -655,10 +764,10 @@ Project: scripting-tutorial
 <span class="go">data/scripting/scripting-tutorial_default_snr_README.csv</span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls -1 data/scripting/nc72282711/*.pdf data/scripting/nc72282711/*.html
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ls -1 data/scripting/nc73291880/*.pdf data/scripting/nc73291880/*.html
 
-<span class="go">data/scripting/nc72282711/scripting-tutorial_default_report_nc72282711.pdf</span>
-<span class="go">data/scripting/nc72282711/stations_map.html</span>
+<span class="go">data/scripting/nc73291880/scripting-tutorial_default_report_nc73291880.pdf</span>
+<span class="go">data/scripting/nc73291880/stations_map.html</span>
 </pre></div>
 </div>
 </section>
@@ -723,7 +832,10 @@ Project: scripting-tutorial
             <ul>
 <li><a class="reference internal" href="#">Scripting</a><ul>
 <li><a class="reference internal" href="#local-gmprocess-configuration">Local <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> configuration</a></li>
-<li><a class="reference internal" href="#download-data">Download data</a></li>
+<li><a class="reference internal" href="#download-data">Download Data</a><ul>
+<li><a class="reference internal" href="#list-data">List Data</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#python-script">Python Script</a></li>
 </ul>
 </li>
