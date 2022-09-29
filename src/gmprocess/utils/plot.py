@@ -121,7 +121,7 @@ def plot_regression(
     )
 
     plt.sca(ax)
-    plt.suptitle("%s vs %s (#eqks=%i)" % (distance_metric, imt, len(eventids)))
+    plt.suptitle("%s vs %s (#eqks=%i)" % (imt, distance_metric, len(eventids)))
     plt.title(f"for component {imc}")
 
     plt.savefig(filename)
