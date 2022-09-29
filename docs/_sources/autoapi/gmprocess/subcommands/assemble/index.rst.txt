@@ -71,8 +71,7 @@ Attributes
       :param gmrecords: GMrecordsApp instance.
 
 
-   .. py:method:: _assemble_event(event, data_path, overwrite, conf, version)
-      :staticmethod:
+   .. py:method:: _assemble_event(event)
 
 
 
