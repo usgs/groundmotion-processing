@@ -15,6 +15,7 @@ docs/_site
 docs/Gemfile.lock
 docs/figs/*.aux
 docs/figs/*.log
+doc_source/_build
 .vscode/
 dask-worker-space/
 MANIFEST.in
