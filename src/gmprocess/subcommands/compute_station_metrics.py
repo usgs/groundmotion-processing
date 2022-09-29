@@ -229,9 +229,9 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                     metricpath,
                     overwrite=self.gmrecords.args.overwrite,
                 )
-                logging.info(
-                    "Added station metrics to workspace files "
-                    "with tag '%s'." % self.gmrecords.args.label
+        logging.info(
+            "Added station metrics to workspace files with tag "
+            f"'{self.gmrecords.args.label}'."
                 )
 
         self.workspace.close()
