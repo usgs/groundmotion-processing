@@ -122,7 +122,7 @@ Also, you can run customized searches of the earthquake catalog in Python with [
 ## `generate_regression_plot`
 
 :::{important}
-You must run the `export_metric_tables` before running `generate_regression_plot`.
+You must run the `export_metric_tables` subcommand before running the `generate_regression_plot` subcommand.
 :::
 
 :::{command-output} gmrecords generate_regression_plot -h
