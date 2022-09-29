@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.metrics.transform.oscillator - gmprocess 1.2.1.dev15+g775d9ee6.d20220928 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.09.15"/>
+        <title>gmprocess.metrics.transform.oscillator - gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev15+g775d9ee6.d20220928 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.1.dev8+g1cb0b333.d20220918 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,6 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../../contents/tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/cli.html">Command Line Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/scripting.html">Python Scripting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/response_spectra.html">Response Spectra Calculation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/lme.html">Linear Mixed Effects Regressions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../../contents/tutorials/asdf_to_waveforms.html">Processed Waveforms from ASDF File</a></li>
@@ -414,6 +413,7 @@
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" role="switch" type="checkbox"/><label for="toctree-checkbox-33"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/smoothing/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.smoothing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/adjust_highpass/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/adjust_highpass_ridder/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.adjust_highpass_ridder</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../autoapi/gmprocess/waveform_processing/baseline_correction/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.baseline_correction</span></code></a></li>
@@ -478,14 +478,9 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">from</span> <span class="nn">obspy.core.trace</span> <span class="kn">import</span> <span class="n">Trace</span>
-
 <span class="c1"># Local import</span>
-<span class="kn">from</span> <span class="nn">gmprocess.core.stationtrace</span> <span class="kn">import</span> <span class="n">StationTrace</span>
-<span class="kn">from</span> <span class="nn">gmprocess.core.stationstream</span> <span class="kn">import</span> <span class="n">StationStream</span>
-<span class="kn">from</span> <span class="nn">esi_core.gmprocess.metrics.oscillators</span> <span class="kn">import</span> <span class="n">calculate_spectrals</span>
+<span class="kn">from</span> <span class="nn">gmprocess.metrics.oscillators</span> <span class="kn">import</span> <span class="n">get_spectral</span>
 <span class="kn">from</span> <span class="nn">gmprocess.metrics.transform.transform</span> <span class="kn">import</span> <span class="n">Transform</span>
-<span class="kn">from</span> <span class="nn">gmprocess.utils.constants</span> <span class="kn">import</span> <span class="n">GAL_TO_PCTG</span>
 
 
 <div class="viewcode-block" id="oscillator"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/oscillator/index.html#gmprocess.metrics.transform.oscillator.oscillator">[docs]</a><span class="k">class</span> <span class="nc">oscillator</span><span class="p">(</span><span class="n">Transform</span><span class="p">):</span>
@@ -554,125 +549,6 @@
             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">spectrals</span></div></div>
-
-
-<div class="viewcode-block" id="get_spectral"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/oscillator/index.html#gmprocess.metrics.transform.oscillator.get_spectral">[docs]</a><span class="k">def</span> <span class="nf">get_spectral</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns a stream of spectral response with units of %%g.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        period (float):</span>
-<span class="sd">            Period for spectral response.</span>
-<span class="sd">        stream (StationStream):</span>
-<span class="sd">            Strong motion timeseries for one station.</span>
-<span class="sd">        damping (float):</span>
-<span class="sd">            Damping of oscillator.</span>
-<span class="sd">        times (np.ndarray):</span>
-<span class="sd">            Array of times for the horizontal channels. Default is None.</span>
-<span class="sd">        config (dict):</span>
-<span class="sd">            StationStream.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        StationStream.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Use as-recorded or upsampled record?</span>
-    <span class="n">use_upsampled</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">dt</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
-    <span class="n">ns</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">)(</span><span class="mf">10.0</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="n">period</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">ns</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">use_upsampled</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">dt</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;upsampled&quot;</span><span class="p">)[</span><span class="s2">&quot;dt&quot;</span><span class="p">]</span>
-
-    <span class="k">if</span> <span class="s2">&quot;rotated&quot;</span> <span class="ow">in</span> <span class="n">stream</span><span class="o">.</span><span class="n">getStreamParamKeys</span><span class="p">():</span>
-        <span class="c1"># For ROTD and GMROTD</span>
-        <span class="n">rotated</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">use_upsampled</span><span class="p">:</span>
-            <span class="n">rotated_data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">getStreamParam</span><span class="p">(</span><span class="s2">&quot;upsampled_rotated&quot;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">rotated_data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">getStreamParam</span><span class="p">(</span><span class="s2">&quot;rotated&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rotated_data</span><span class="p">)):</span>
-            <span class="n">rot_matrix</span> <span class="o">=</span> <span class="n">rotated_data</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="n">rotated_spectrals</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="c1"># This is the loop over rotation angles</span>
-            <span class="k">for</span> <span class="n">idy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rot_matrix</span><span class="p">)):</span>
-                <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;npts&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">rot_matrix</span><span class="p">[</span><span class="n">idy</span><span class="p">]),</span>
-                    <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="n">dt</span><span class="p">,</span>
-                    <span class="s2">&quot;sampling_rate&quot;</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">dt</span><span class="p">,</span>
-                <span class="p">}</span>
-                <span class="n">new_trace</span> <span class="o">=</span> <span class="n">Trace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">rot_matrix</span><span class="p">[</span><span class="n">idy</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">stats</span><span class="p">)</span>
-                <span class="n">sa_list</span> <span class="o">=</span> <span class="n">new_and_improved_calculate_spectrals</span><span class="p">(</span>
-                    <span class="n">new_trace</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">damping</span>
-                <span class="p">)</span>
-                <span class="n">acc_sa</span> <span class="o">=</span> <span class="n">sa_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">acc_sa</span> <span class="o">*=</span> <span class="n">GAL_TO_PCTG</span>
-                <span class="n">rotated_spectrals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc_sa</span><span class="p">)</span>
-            <span class="n">rotated</span> <span class="o">+=</span> <span class="p">[</span><span class="n">rotated_spectrals</span><span class="p">]</span>
-
-        <span class="c1"># Add rotated data to stream parameters</span>
-        <span class="n">stream</span><span class="o">.</span><span class="n">setStreamParam</span><span class="p">(</span><span class="s2">&quot;rotated_oscillator&quot;</span><span class="p">,</span> <span class="n">rotated</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">stream</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">traces</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c1"># For anything but ROTD and GMROTD</span>
-        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stream</span><span class="p">)):</span>
-            <span class="n">trace</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">use_upsampled</span><span class="p">:</span>
-                <span class="n">trace_dict</span> <span class="o">=</span> <span class="n">stream</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">getCached</span><span class="p">(</span><span class="s2">&quot;upsampled&quot;</span><span class="p">)</span>
-                <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s2">&quot;npts&quot;</span><span class="p">:</span> <span class="n">trace_dict</span><span class="p">[</span><span class="s2">&quot;np&quot;</span><span class="p">],</span>
-                    <span class="s2">&quot;delta&quot;</span><span class="p">:</span> <span class="n">dt</span><span class="p">,</span>
-                    <span class="s2">&quot;sampling_rate&quot;</span><span class="p">:</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">dt</span><span class="p">,</span>
-                <span class="p">}</span>
-                <span class="n">temp_trace</span> <span class="o">=</span> <span class="n">Trace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">trace_dict</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span> <span class="n">header</span><span class="o">=</span><span class="n">stats</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">temp_trace</span> <span class="o">=</span> <span class="n">trace</span>
-            <span class="n">sa_list</span> <span class="o">=</span> <span class="n">new_and_improved_calculate_spectrals</span><span class="p">(</span><span class="n">temp_trace</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
-            <span class="n">acc_sa</span> <span class="o">=</span> <span class="n">sa_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">acc_sa</span> <span class="o">*=</span> <span class="n">GAL_TO_PCTG</span>
-            <span class="n">stats</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">stats</span><span class="o">.</span><span class="n">npts</span> <span class="o">=</span> <span class="n">sa_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-            <span class="n">stats</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">sa_list</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
-            <span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span> <span class="o">=</span> <span class="n">sa_list</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
-            <span class="n">stats</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%%</span><span class="s2">g&quot;</span>
-            <span class="n">spect_trace</span> <span class="o">=</span> <span class="n">StationTrace</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">acc_sa</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">stats</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
-            <span class="n">traces</span> <span class="o">+=</span> <span class="p">[</span><span class="n">spect_trace</span><span class="p">]</span>
-        <span class="n">spect_stream</span> <span class="o">=</span> <span class="n">StationStream</span><span class="p">(</span><span class="n">traces</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">spect_stream</span></div>
-
-
-<div class="viewcode-block" id="new_and_improved_calculate_spectrals"><a class="viewcode-back" href="../../../../autoapi/gmprocess/metrics/transform/oscillator/index.html#gmprocess.metrics.transform.oscillator.new_and_improved_calculate_spectrals">[docs]</a><span class="k">def</span> <span class="nf">new_and_improved_calculate_spectrals</span><span class="p">(</span><span class="n">trace</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">damping</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Pull some stuff out of cython that shouldn&#39;t be there.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">new_dt</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">delta</span>
-    <span class="n">new_np</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">npts</span>
-    <span class="n">new_sample_rate</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">sampling_rate</span>
-    <span class="n">tlen</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_np</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">new_dt</span>
-    <span class="c1"># This is the resample factor for low-sample-rate/high-frequency</span>
-    <span class="n">ns</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">)(</span><span class="mf">10.0</span> <span class="o">*</span> <span class="n">new_dt</span> <span class="o">/</span> <span class="n">period</span> <span class="o">-</span> <span class="mf">0.01</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">ns</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="c1"># Increase the number of samples as necessary</span>
-        <span class="n">new_np</span> <span class="o">=</span> <span class="n">new_np</span> <span class="o">*</span> <span class="n">ns</span>
-        <span class="c1"># Make the new number of samples a power of two</span>
-        <span class="c1"># leaving this out for now; it slows things down but doesn&#39;t</span>
-        <span class="c1"># appear to affect the results. YMMV.</span>
-        <span class="c1"># new_np = 1 if new_np == 0 else 2**(new_np - 1).bit_length()</span>
-        <span class="c1"># The new sample interval</span>
-        <span class="n">new_dt</span> <span class="o">=</span> <span class="n">tlen</span> <span class="o">/</span> <span class="p">(</span><span class="n">new_np</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># The new sample rate</span>
-        <span class="n">new_sample_rate</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">new_dt</span>
-        <span class="c1"># Make a copy because resampling happens in place</span>
-        <span class="n">trace</span> <span class="o">=</span> <span class="n">trace</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="c1"># Resample the trace</span>
-        <span class="n">trace</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">new_sample_rate</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-
-    <span class="n">sa_list</span> <span class="o">=</span> <span class="n">calculate_spectrals</span><span class="p">(</span>
-        <span class="n">trace</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">new_np</span><span class="p">,</span> <span class="n">new_dt</span><span class="p">,</span> <span class="n">new_sample_rate</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">damping</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">sa_list</span></div>
 </pre></div>
         </article>
       </div>
@@ -712,7 +588,6 @@
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>

@@ -3,8 +3,9 @@
 The config file is the primary means by which users can adjust and customize
 *gmprocess*. 
 
-The [default config file]((https://github.com/usgs/groundmotion-processing/blob/main/src/gmprocess/data/config_production.yml)) in the source code includes comments to help explain the values
-and their units.
+The default config file in the source code includes comments to help explain the values
+and their units
+[here](https://github.com/usgs/groundmotion-processing/blob/master/gmprocess/data/config_production.yml).
 This is a useful reference because sections or comments can be removed from the
 config file for a given project. 
 

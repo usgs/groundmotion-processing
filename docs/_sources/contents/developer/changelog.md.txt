@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.1 / 2022-09-28
+## Updates since last release
 
 - Data fetcher bugfix.
 - Improvement to Windows install instructions.
@@ -10,7 +10,7 @@
 - Fix pandas to_latex warning.
 - Add check_stream config section with any_trace_failures key. 
 - Modify StationID column in metric tables to include full channel code when available. 
-- Move C code to esi-core repository.
+
 
 ## 1.2.0 / 2022-08-15
 
