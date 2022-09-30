@@ -30,6 +30,9 @@ def test_projects(script_runner):
         ret = script_runner.run("gmrecords", "projects", "-s", "test")
         assert ret.success
 
+        ret = script_runner.run("gmrecords", "projects", "--rename", "test", "tested")
+        assert ret.success
+
         setup_inputs = io.StringIO("y\n")
         ret = script_runner.run(
             "gmrecords", "projects", "-d", "test2", stdin=setup_inputs
