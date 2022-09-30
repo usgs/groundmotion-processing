@@ -3,6 +3,7 @@
 
 import os
 import sys
+import platform
 import re
 import logging
 import shutil
@@ -238,12 +239,15 @@ class Project(object):
 
     def __repr__(self):
         fmt = "Project: %s %s\n\tConf Path: %s\n\tData Path: %s"
-        tpl = (
-            self.name,
-            self.current_marker,
-            Path(Path(self.filename).parent / self.conf_path).resolve(),
-            Path(Path(self.filename).parent / self.data_path).resolve(),
-        )
+        if platform != "Windows":
+            tpl = (
+                self.name,
+                self.current_marker,
+                Path(Path(self.filename).parent / self.conf_path).resolve(),
+                Path(Path(self.filename).parent / self.data_path).resolve(),
+            )
+        else:
+            tpl = (self.name, self.current_marker, self.conf_path, self.data_path)
         return fmt % tpl
 
 
@@ -337,12 +341,16 @@ def create(config, cwd=False):
         print("Invalid Email. Exiting.")
         sys.exit(0)
 
-    new_conf_path = "../" + str(
-        Path(new_conf_path).relative_to(Path(config.filename).parents[1])
-    )
-    new_data_path = "../" + str(
-        Path(new_data_path).relative_to(Path(config.filename).parents[1])
-    )
+    # Apparently, relpath doesn't work for Windows, at least with the Azure
+    # CI builds
+    if platform != "Windows":
+        new_conf_path = "../" + str(
+            Path(new_conf_path).relative_to(Path(config.filename).parents[1])
+        )
+        new_data_path = "../" + str(
+            Path(new_data_path).relative_to(Path(config.filename).parents[1])
+        )
+
     if "projects" not in config:
         config["projects"] = {}
 
