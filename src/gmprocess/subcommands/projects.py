@@ -3,11 +3,11 @@
 
 import os
 import sys
-import platform
 import re
 import logging
 import shutil
 
+from pathlib import Path
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 ryaml = LazyLoader("yaml", globals(), "ruamel.yaml")
@@ -57,6 +57,14 @@ class ProjectsModule(base.SubcommandModule):
             "help": "Delete existing project PROJECT.",
             "type": str,
             "metavar": "PROJECT",
+            "default": None,
+        },
+        {
+            "long_flag": "--rename",
+            "help": "Rename project SOURCE to TARGET.",
+            "type": str,
+            "nargs": 2,
+            "metavar": ("SOURCE", "TARGET"),
             "default": None,
         },
     ]
@@ -120,17 +128,11 @@ class ProjectsModule(base.SubcommandModule):
                 print(msg % (project, configfile, self.command_name))
                 sys.exit(1)
 
-            conf_path = os.path.normpath(
-                os.path.join(
-                    os.path.abspath(os.path.join(config.filename, os.pardir)),
-                    config["projects"][project]["conf_path"],
-                )
+            conf_path = Path(
+                Path(config.filename).parent / config["projects"][project]["conf_path"]
             )
-            data_path = os.path.normpath(
-                os.path.join(
-                    os.path.abspath(os.path.join(config.filename, os.pardir)),
-                    config["projects"][project]["data_path"],
-                )
+            data_path = Path(
+                Path(config.filename).parent / config["projects"][project]["data_path"]
             )
 
             question = (
@@ -140,8 +142,7 @@ class ProjectsModule(base.SubcommandModule):
             if not prompt.query_yes_no(question, default="yes"):
                 sys.exit(0)
 
-            shutil.rmtree(conf_path, ignore_errors=True)
-            shutil.rmtree(data_path, ignore_errors=True)
+            shutil.rmtree(conf_path.parent, ignore_errors=True)
 
             del config["projects"][project]
 
@@ -164,6 +165,38 @@ class ProjectsModule(base.SubcommandModule):
 
             print("\nSet to new project:\n")
             print(newproject)
+            sys.exit(0)
+
+        if args.rename:
+            source, target = args.rename
+            if source not in config["projects"]:
+                msg = "Project %s not in %s.  Run %s -l to see available projects."
+                print(msg % (source, configfile, self.command_name))
+                sys.exit(1)
+
+            source_conf_path = Path(
+                Path(config.filename).parent / config["projects"][source]["conf_path"]
+            )
+            source_data_path = Path(
+                Path(config.filename).parent / config["projects"][source]["data_path"]
+            )
+            target_conf_path = Path(str(source_conf_path).replace(source, target))
+            target_dath_path = Path(str(source_data_path).replace(source, target))
+
+            shutil.move(
+                str(source_conf_path.parent),
+                str(target_conf_path.parent),
+            )
+
+            config["projects"][target] = {
+                "conf_path": target_conf_path,
+                "data_path": target_dath_path,
+            }
+            config["project"] = target
+            del config["projects"][source]
+            config.write()
+
+            print(f"\nRenamed {source} to {target}")
             sys.exit(0)
 
         project = config["project"]
@@ -205,16 +238,12 @@ class Project(object):
 
     def __repr__(self):
         fmt = "Project: %s %s\n\tConf Path: %s\n\tData Path: %s"
-        base_dir = os.path.join(os.path.abspath(os.path.join(self.filename, os.pardir)))
-        if platform.system() != "Windows":
-            tpl = (
-                self.name,
-                self.current_marker,
-                os.path.normpath(os.path.join(base_dir, self.conf_path)),
-                os.path.normpath(os.path.join(base_dir, self.data_path)),
-            )
-        else:
-            tpl = (self.name, self.current_marker, self.conf_path, self.data_path)
+        tpl = (
+            self.name,
+            self.current_marker,
+            Path(Path(self.filename).parent / self.conf_path).resolve(),
+            Path(Path(self.filename).parent / self.data_path).resolve(),
+        )
         return fmt % tpl
 
 
@@ -237,22 +266,17 @@ def check_project_config(config):
         sys.exit(1)
     # Check that the paths for each project exist
     for project in config["projects"].keys():
-        data_exists = os.path.isdir(
-            os.path.join(
-                os.path.abspath(os.path.join(config.filename, os.pardir)),
-                config["projects"][project]["data_path"],
-            )
-        )
+
+        data_exists = Path(
+            Path(config.filename).parent / config["projects"][project]["data_path"]
+        ).is_dir()
         delete_project = False
         if not data_exists:
             logging.warn(f"Data path for project {project} does not exist.")
             delete_project = True
-        conf_exists = os.path.isdir(
-            os.path.join(
-                os.path.abspath(os.path.join(config.filename, os.pardir)),
-                config["projects"][project]["conf_path"],
-            )
-        )
+        conf_exists = Path(
+            Path(config.filename).parent / config["projects"][project]["conf_path"]
+        ).is_dir()
         if not conf_exists:
             logging.warn(f"Install path for project {project} does not exist.")
             delete_project = True
@@ -292,13 +316,13 @@ def create(config, cwd=False):
             default_conf, default_data
         )
     else:
-        cwd = os.getcwd()
-        proj_dir = os.path.join(cwd, ".gmprocess")
-        new_conf_path = os.path.join(cwd, "conf")
-        new_data_path = os.path.join(cwd, "data")
+        cwd = Path.cwd()
+        proj_dir = Path(cwd / ".gmprocess")
+        new_conf_path = Path(cwd / "conf")
+        new_data_path = Path(cwd / "data")
         for p in [new_conf_path, new_data_path]:
-            if not os.path.isdir(p):
-                os.mkdir(p)
+            if not p.is_dir():
+                p.mkdir()
 
     print("Please enter your name and email. This information will be added")
     print("to the config file and reported in the provenance of the data")
@@ -313,16 +337,12 @@ def create(config, cwd=False):
         print("Invalid Email. Exiting.")
         sys.exit(0)
 
-    # Apparently, relpath doesn't work for Windows, at least with the Azure
-    # CI builds
-    if platform.system() != "Windows":
-        new_conf_path = os.path.relpath(
-            new_conf_path, os.path.join(config.filename, os.pardir)
-        )
-        new_data_path = os.path.relpath(
-            new_data_path, os.path.join(config.filename, os.pardir)
-        )
-
+    new_conf_path = "../" + str(
+        Path(new_conf_path).relative_to(Path(config.filename).parents[1])
+    )
+    new_data_path = "../" + str(
+        Path(new_data_path).relative_to(Path(config.filename).parents[1])
+    )
     if "projects" not in config:
         config["projects"] = {}
 
@@ -342,9 +362,9 @@ def create(config, cwd=False):
     user_conf = {}
     user_conf["user"] = user_info
     if os.getenv("CALLED_FROM_PYTEST") is None:
-        proj_conf_file = os.path.join(proj_dir, new_conf_path, "user.yml")
+        proj_conf_file = Path(Path(proj_dir) / new_conf_path / "user.yml")
     else:
         proj_dir = constants.CONFIG_PATH_TEST
-        proj_conf_file = os.path.join(proj_dir, "user.yml")
+        proj_conf_file = Path(proj_dir, "user.yml")
     with open(proj_conf_file, "w", encoding="utf-8") as yf:
         yaml.dump(user_conf, yf)

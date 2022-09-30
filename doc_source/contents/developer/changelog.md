@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.1 / 2022-09-28
+## 1.2.1 / 2022-09-30
 
 - Data fetcher bugfix.
 - Improvement to Windows install instructions.
@@ -11,6 +11,8 @@
 - Add check_stream config section with any_trace_failures key. 
 - Modify StationID column in metric tables to include full channel code when available. 
 - Move C code to esi-core repository.
+- Added rename project flag for gmrecords proj
+- Switched from os.path to Pathlib in projects.py and gmrecords.py
 
 ## 1.2.0 / 2022-08-15
 
