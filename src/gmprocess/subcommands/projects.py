@@ -143,7 +143,8 @@ class ProjectsModule(base.SubcommandModule):
             if not prompt.query_yes_no(question, default="yes"):
                 sys.exit(0)
 
-            shutil.rmtree(conf_path.parent, ignore_errors=True)
+            shutil.rmtree(data_path, ignore_errors=True)
+            shutil.rmtree(conf_path, ignore_errors=True)
 
             del config["projects"][project]
 
@@ -343,13 +344,10 @@ def create(config, cwd=False):
 
     # Apparently, relpath doesn't work for Windows, at least with the Azure
     # CI builds
+    rel_path_loc = Path(config.filename).parents[1]
     if platform != "Windows":
-        new_conf_path = "../" + str(
-            Path(new_conf_path).relative_to(Path(config.filename).parents[1])
-        )
-        new_data_path = "../" + str(
-            Path(new_data_path).relative_to(Path(config.filename).parents[1])
-        )
+        new_conf_path = str(".." / Path(new_conf_path).relative_to(rel_path_loc))
+        new_data_path = str(".." / Path(new_data_path).relative_to(rel_path_loc))
 
     if "projects" not in config:
         config["projects"] = {}
