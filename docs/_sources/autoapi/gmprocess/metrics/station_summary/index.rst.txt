@@ -48,53 +48,42 @@ Attributes
 
    Class for returning pgm values for specific components.
 
-   .. py:method:: available_imcs()
-      :property:
+   .. py:property:: available_imcs
 
       Helper method for getting a list of components.
 
       :returns: List of available components (str).
       :rtype: list
 
-
-   .. py:method:: available_imts()
-      :property:
+   .. py:property:: available_imts
 
       Helper method for getting a list of measurement types.
 
       :returns: List of available measurement types (str).
       :rtype: list
 
-
-   .. py:method:: bandwidth()
-      :property:
+   .. py:property:: bandwidth
 
       Helper method for getting the defined bandwidth.
 
       :returns: Bandwidth used in smoothing.
       :rtype: float
 
-
-   .. py:method:: components()
-      :property:
+   .. py:property:: components
 
       Helper method returning a list of requested/calculated components.
 
       :returns: List of requested/calculated components (str).
       :rtype: list
 
-
-   .. py:method:: coordinates()
-      :property:
+   .. py:property:: coordinates
 
       Helper method returning the coordinates of the station.
 
       :returns: List of coordinates (str).
       :rtype: list
 
-
-   .. py:method:: damping()
-      :property:
+   .. py:property:: damping
 
       Helper method for getting the damping used in the spectral amplitude
       calculation.
@@ -102,24 +91,70 @@ Attributes
       :returns: Damping used in SA calculation.
       :rtype: float
 
-
-   .. py:method:: elevation()
-      :property:
+   .. py:property:: elevation
 
       Helper method for getting the station elevation.
 
       :returns: Station elevation
       :rtype: float
 
-
-   .. py:method:: distances()
-      :property:
+   .. py:property:: distances
 
       Helper method for getting the distances.
 
       :returns: Dictionary of distance measurements.
       :rtype: dict
 
+   .. py:property:: imts
+
+      Helper method returning a list of requested/calculated measurement
+      types.
+
+      :returns: List of requested/calculated measurement types (str).
+      :rtype: list
+
+   .. py:property:: pgms
+
+      Helper method returning a station's pgms.
+
+      :returns: Pgms for each imt and imc.
+      :rtype: dictionary
+
+   .. py:property:: smoothing
+
+      Helper method for getting the defined smoothing used for the
+      calculation FAS.
+
+      :returns: Smoothing method used.
+      :rtype: string
+
+   .. py:property:: starttime
+
+      Helper method returning a station's starttime.
+
+      :returns: Start time for one station.
+      :rtype: str
+
+   .. py:property:: station_code
+
+      Helper method returning a station's station code.
+
+      :returns: Station code for one station.
+      :rtype: str
+
+   .. py:property:: stream
+
+      Helper method returning a station's stream.
+
+      :returns: Stream for one station.
+      :rtype: obspy.core.stream.Stream
+
+   .. py:property:: summary
+
+      Helper method returning a station's summary.
+
+      :returns: Summary for one station.
+      :rtype: pandas.Dataframe
 
    .. py:method:: from_config(stream, config=None, event=None, calc_waveform_metrics=True, calc_station_metrics=True, rupture=None)
       :classmethod:
@@ -231,74 +266,9 @@ Attributes
    .. py:method:: get_summary()
 
 
-   .. py:method:: imts()
-      :property:
-
-      Helper method returning a list of requested/calculated measurement
-      types.
-
-      :returns: List of requested/calculated measurement types (str).
-      :rtype: list
-
-
-   .. py:method:: pgms()
-      :property:
-
-      Helper method returning a station's pgms.
-
-      :returns: Pgms for each imt and imc.
-      :rtype: dictionary
-
-
    .. py:method:: set_metadata()
 
       Set the metadata for the station
-
-
-   .. py:method:: smoothing()
-      :property:
-
-      Helper method for getting the defined smoothing used for the
-      calculation FAS.
-
-      :returns: Smoothing method used.
-      :rtype: string
-
-
-   .. py:method:: starttime()
-      :property:
-
-      Helper method returning a station's starttime.
-
-      :returns: Start time for one station.
-      :rtype: str
-
-
-   .. py:method:: station_code()
-      :property:
-
-      Helper method returning a station's station code.
-
-      :returns: Station code for one station.
-      :rtype: str
-
-
-   .. py:method:: stream()
-      :property:
-
-      Helper method returning a station's stream.
-
-      :returns: Stream for one station.
-      :rtype: obspy.core.stream.Stream
-
-
-   .. py:method:: summary()
-      :property:
-
-      Helper method returning a station's summary.
-
-      :returns: Summary for one station.
-      :rtype: pandas.Dataframe
 
 
    .. py:method:: from_xml(xml_stream, xml_station)

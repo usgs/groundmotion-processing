@@ -1,0 +1,37 @@
+Column header,Description
+EarthquakeId,Event ID from Comcat
+EarthquakeTime,Earthquake origin time (UTC)
+EarthquakeLatitude,Earthquake latitude (decimal degrees)
+EarthquakeLongitude,Earthquake longitude (decimal degrees)
+EarthquakeDepth,Earthquake depth (km)
+EarthquakeMagnitude,Earthquake magnitude
+EarthquakeMagnitudeType,Earthquake magnitude type
+Network,Network code
+DataProvider,Data source provider
+StationCode,Station code
+StationID,"Concatenated network, station, and instrument codes"
+StationDescription,Station description
+StationLatitude,Station latitude (decimal degrees)
+StationLongitude,Station longitude (decimal degrees)
+StationElevation,Station elevation (m)
+SamplingRate,Record sampling rate (Hz)
+BackAzimuth,Site-to-source azimuth (decimal degrees)
+EpicentralDistance,Epicentral distance (km)
+HypocentralDistance,Hypocentral distance (km)
+SourceFile,Source file
+RuptureDistance,Closest distance to the rupture plane (km)
+RuptureDistanceVar,Variance of rupture distance estimate (km^2)
+JoynerBooreDistance,Joyner-Boore distance (km)
+JoynerBooreDistanceVar,Variance of Joyner-Boore distance estimate (km^2)
+GC2_rx,Distance measured perpendicular to the fault strike from the surface projection of the up-dip edge of the fault plane (km)
+GC2_ry,Distance measured parallel to the fault strike from the midpoint of the surface projection of the fault plane (km)
+GC2_ry0,Horizontal distance off the end of the rupture measured parallel to strike (km)
+GC2_U,"Strike-normal (U) coordinate, defined by Spudich and Chiou (2015; https://doi.org/10.3133/ofr20151028) (km)"
+GC2_T,"Strike-parallel (T) coordinate, defined by Spudich and Chiou (2015; https://doi.org/10.3133/ofr20151028) (km)"
+ZLowpass,Vertical channel lowpass frequency (Hz)
+ZHighpass,Vertical channel highpass frequency (Hz)
+DURATIONp-q,p-q percent significant duration (s)
+PGA,Peak ground acceleration (%g)
+PGV,Peak ground velocity (cm/s)
+SA(X),Pseudo-spectral acceleration (%g) at X seconds
+SORTED_DURATION,Sorted significant duration (s)

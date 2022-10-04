@@ -157,7 +157,7 @@ jobs:
       python -m build
       python3 -m twine upload dist/*
     displayName: Build (mac/linux)
-    condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT' ), contains(variables['Build.SourceBranch'], 'refs/tags/release-'))
+    condition: and(succeeded(), ne( variables['Agent.OS'], 'Windows_NT' ), contains(variables['Build.SourceBranch'], 'refs/tags/v'))
 
   # - script: |
   #     call activate gmprocess

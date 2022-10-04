@@ -1,0 +1,13 @@
+Column header,Description
+EarthquakeId,Event ID from Comcat
+EarthquakeTime,Earthquake origin time (UTC)
+EarthquakeLatitude,Earthquake latitude (decimal degrees)
+EarthquakeLongitude,Earthquake longitude (decimal degrees)
+EarthquakeDepth,Earthquake depth (km)
+EarthquakeMagnitude,Earthquake magnitude
+EarthquakeMagnitudeType,Earthquake magnitude type
+TraceID,NET.STA.LOC.CHA
+StationLatitude,Station latitude (decimal degrees)
+StationLongitude,Station longitude (decimal degrees)
+StationElevation,Station elevation (m)
+SNR(X),Signa-to-noise ratio at frequency X.

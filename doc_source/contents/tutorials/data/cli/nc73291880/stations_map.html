@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_2cd5f75bb51ef68b312c1c565336a806 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div style="position:absolute; font-family:Noto Sans UI Regular;
+                top: 50px; left: 50px; width: 165px; height: 100px; 
+                background-color:white; border:2px solid grey;z-index: 900;">
+
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#00ac00" class="bi bi-triangle-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                    </svg>
+                    <text style="padding:5px">Passed Station</text>
+                </div>
+                
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
+                    </svg>
+                    <text style="padding:5px">Failed Station</text>
+                </div>
+
+                <div style="padding:5px;">
+                    <svg style="vertical-align:center" xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#FFFF00" class="bi bi-star-fill" viewBox="0 0 16 16">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                    <text style="padding:5px">Earthquake Epicenter</text>
+                </div>
+
+            </div>
+            
+    
+            <div class="folium-map" id="map_2cd5f75bb51ef68b312c1c565336a806" ></div>
+        
+</body>
+<script>    
+    
+            var map_2cd5f75bb51ef68b312c1c565336a806 = L.map(
+                "map_2cd5f75bb51ef68b312c1c565336a806",
+                {
+                    center: [37.938, -122.057],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 7,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+            L.control.scale().addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+
+            
+
+        
+    
+            var tile_layer_5fcd19c0c6679fea25138e15a79d8428 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var marker_d4e772a9bfc21c3e7cdb61b897e3beb4 = L.marker(
+                [37.91932, -122.15269],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_0f784a83f910ad4407e9ada4d1ea81b4 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#ff2222\" class=\"bi bi-triangle-fill\" transform=\u0027rotate(180)\u0027 viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_d4e772a9bfc21c3e7cdb61b897e3beb4.setIcon(div_icon_0f784a83f910ad4407e9ada4d1ea81b4);
+        
+    
+        var popup_f8b752b8af70b50cd62bd4b801887d44 = L.popup({"maxWidth": 250, "minWidth": 250});
+
+        
+            var html_a1c36a64b0e70af0c30d5f289165fa0e = $(`<div id="html_a1c36a64b0e70af0c30d5f289165fa0e" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> BK<br> <b>LAT:</b> 37.9193&deg; <b>LON:</b> -122.1527&deg;<br> <b>FAILURE MSG:</b><br> <i>'Failed clipping check: prob_clip = 0.61.'</i></div>`)[0];
+            popup_f8b752b8af70b50cd62bd4b801887d44.setContent(html_a1c36a64b0e70af0c30d5f289165fa0e);
+        
+
+        marker_d4e772a9bfc21c3e7cdb61b897e3beb4.bindPopup(popup_f8b752b8af70b50cd62bd4b801887d44)
+        ;
+
+        
+    
+    
+            marker_d4e772a9bfc21c3e7cdb61b897e3beb4.bindTooltip(
+                `<div>
+                     <b>Station:</b> BK.BRIB
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_48a60208c74a3e35a6bded7316b96fab = L.marker(
+                [37.91932, -122.15269],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_b5c947f26473b9e7e35b8ebacbfc5209 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#ff2222\" class=\"bi bi-triangle-fill\" transform=\u0027rotate(180)\u0027 viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_48a60208c74a3e35a6bded7316b96fab.setIcon(div_icon_b5c947f26473b9e7e35b8ebacbfc5209);
+        
+    
+        var popup_3ef3af9172c0bb8f5c1380c2ba9d6cb6 = L.popup({"maxWidth": 250, "minWidth": 250});
+
+        
+            var html_dbfa0cee8ac77090136899abaeec4fce = $(`<div id="html_dbfa0cee8ac77090136899abaeec4fce" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> BK<br> <b>LAT:</b> 37.9193&deg; <b>LON:</b> -122.1527&deg;<br> <b>FAILURE MSG:</b><br> <i>'Failed clipping check: prob_clip = 0.61.'</i></div>`)[0];
+            popup_3ef3af9172c0bb8f5c1380c2ba9d6cb6.setContent(html_dbfa0cee8ac77090136899abaeec4fce);
+        
+
+        marker_48a60208c74a3e35a6bded7316b96fab.bindPopup(popup_3ef3af9172c0bb8f5c1380c2ba9d6cb6)
+        ;
+
+        
+    
+    
+            marker_48a60208c74a3e35a6bded7316b96fab.bindTooltip(
+                `<div>
+                     <b>Station:</b> BK.BRIB
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1d2bf73f35be9c6eb3fc1e5cd44a318b = L.marker(
+                [37.92657, -122.07853],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_14763e932e0169b982a17b07ab4421fb = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#ff2222\" class=\"bi bi-triangle-fill\" transform=\u0027rotate(180)\u0027 viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_1d2bf73f35be9c6eb3fc1e5cd44a318b.setIcon(div_icon_14763e932e0169b982a17b07ab4421fb);
+        
+    
+        var popup_845527511b370306152d8ff8d58031ee = L.popup({"maxWidth": 250, "minWidth": 250});
+
+        
+            var html_d161fcb9ddbfe7fe25ded020049be8f2 = $(`<div id="html_d161fcb9ddbfe7fe25ded020049be8f2" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NP<br> <b>LAT:</b> 37.9266&deg; <b>LON:</b> -122.0785&deg;<br> <b>FAILURE MSG:</b><br> <i>'Velocity ratio is greater than 0.3'</i></div>`)[0];
+            popup_845527511b370306152d8ff8d58031ee.setContent(html_d161fcb9ddbfe7fe25ded020049be8f2);
+        
+
+        marker_1d2bf73f35be9c6eb3fc1e5cd44a318b.bindPopup(popup_845527511b370306152d8ff8d58031ee)
+        ;
+
+        
+    
+    
+            marker_1d2bf73f35be9c6eb3fc1e5cd44a318b.bindTooltip(
+                `<div>
+                     <b>Station:</b> NP.1691
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4c2ab39306210d229c5ce18a1a9d66d1 = L.marker(
+                [37.91932, -122.15269],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_0b521d27dac4ba598db3bbedd0b62376 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_4c2ab39306210d229c5ce18a1a9d66d1.setIcon(div_icon_0b521d27dac4ba598db3bbedd0b62376);
+        
+    
+        var popup_f904eecf6634bdb20c472eec6d0c25b2 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_0da12b59ba49e77da046a1f1b92546b6 = $(`<div id="html_0da12b59ba49e77da046a1f1b92546b6" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> BK<br> <b>LAT:</b> 37.9193&deg; <b>LON:</b> -122.1527&deg;</div>`)[0];
+            popup_f904eecf6634bdb20c472eec6d0c25b2.setContent(html_0da12b59ba49e77da046a1f1b92546b6);
+        
+
+        marker_4c2ab39306210d229c5ce18a1a9d66d1.bindPopup(popup_f904eecf6634bdb20c472eec6d0c25b2)
+        ;
+
+        
+    
+    
+            marker_4c2ab39306210d229c5ce18a1a9d66d1.bindTooltip(
+                `<div>
+                     <b>Station:</b> BK.BRIB
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_22cbb5851babacb3457fe3f8ffbfd3ef = L.marker(
+                [37.9036, -122.0603],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_c95da2514f957404034ce29e072e44ba = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_22cbb5851babacb3457fe3f8ffbfd3ef.setIcon(div_icon_c95da2514f957404034ce29e072e44ba);
+        
+    
+        var popup_40581e4a0a0564146d2965a649eb998f = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_4964efd807f2d35e2bba80836085cc8c = $(`<div id="html_4964efd807f2d35e2bba80836085cc8c" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> CE<br> <b>LAT:</b> 37.9036&deg; <b>LON:</b> -122.0603&deg;</div>`)[0];
+            popup_40581e4a0a0564146d2965a649eb998f.setContent(html_4964efd807f2d35e2bba80836085cc8c);
+        
+
+        marker_22cbb5851babacb3457fe3f8ffbfd3ef.bindPopup(popup_40581e4a0a0564146d2965a649eb998f)
+        ;
+
+        
+    
+    
+            marker_22cbb5851babacb3457fe3f8ffbfd3ef.bindTooltip(
+                `<div>
+                     <b>Station:</b> CE.58360
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9a555afac1e497f106a1fab944fef9a9 = L.marker(
+                [37.9147, -122.0168],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_58d93666d5aaa83aa532f058e1ffcaeb = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_9a555afac1e497f106a1fab944fef9a9.setIcon(div_icon_58d93666d5aaa83aa532f058e1ffcaeb);
+        
+    
+        var popup_a78802332de1ed0c99c15da31a182ab2 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_58d705cfd811eee4eb3d2c336d10691f = $(`<div id="html_58d705cfd811eee4eb3d2c336d10691f" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> CE<br> <b>LAT:</b> 37.9147&deg; <b>LON:</b> -122.0168&deg;</div>`)[0];
+            popup_a78802332de1ed0c99c15da31a182ab2.setContent(html_58d705cfd811eee4eb3d2c336d10691f);
+        
+
+        marker_9a555afac1e497f106a1fab944fef9a9.bindPopup(popup_a78802332de1ed0c99c15da31a182ab2)
+        ;
+
+        
+    
+    
+            marker_9a555afac1e497f106a1fab944fef9a9.bindTooltip(
+                `<div>
+                     <b>Station:</b> CE.58369
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3b79ed99180d3c62a755aff03123166f = L.marker(
+                [37.8563, -122.1241],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_d4af464e44cbe6d3eaf49b204756bd6b = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_3b79ed99180d3c62a755aff03123166f.setIcon(div_icon_d4af464e44cbe6d3eaf49b204756bd6b);
+        
+    
+        var popup_b48da5cb3e6bbdbf5581e13feafc80ed = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_3469d6907b753196587824fb215d066e = $(`<div id="html_3469d6907b753196587824fb215d066e" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> CE<br> <b>LAT:</b> 37.8563&deg; <b>LON:</b> -122.1241&deg;</div>`)[0];
+            popup_b48da5cb3e6bbdbf5581e13feafc80ed.setContent(html_3469d6907b753196587824fb215d066e);
+        
+
+        marker_3b79ed99180d3c62a755aff03123166f.bindPopup(popup_b48da5cb3e6bbdbf5581e13feafc80ed)
+        ;
+
+        
+    
+    
+            marker_3b79ed99180d3c62a755aff03123166f.bindTooltip(
+                `<div>
+                     <b>Station:</b> CE.58442
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1e0b2fe9b04185e0a2ceaaea95baae7d = L.marker(
+                [37.944004, -122.009933],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_dafce8d8135271d022a62a400bd4af30 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_1e0b2fe9b04185e0a2ceaaea95baae7d.setIcon(div_icon_dafce8d8135271d022a62a400bd4af30);
+        
+    
+        var popup_b7f7189c037ccf958958e867a6a82162 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_7fbf237d37f40a4bbf52c71a2f61de42 = $(`<div id="html_7fbf237d37f40a4bbf52c71a2f61de42" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NC<br> <b>LAT:</b> 37.9440&deg; <b>LON:</b> -122.0099&deg;</div>`)[0];
+            popup_b7f7189c037ccf958958e867a6a82162.setContent(html_7fbf237d37f40a4bbf52c71a2f61de42);
+        
+
+        marker_1e0b2fe9b04185e0a2ceaaea95baae7d.bindPopup(popup_b7f7189c037ccf958958e867a6a82162)
+        ;
+
+        
+    
+    
+            marker_1e0b2fe9b04185e0a2ceaaea95baae7d.bindTooltip(
+                `<div>
+                     <b>Station:</b> NC.C010
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f1d8f1d35f100995e088997ad978bafe = L.marker(
+                [37.979298, -122.117378],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_21f4c75bf06f686775a7af8f7caafa20 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_f1d8f1d35f100995e088997ad978bafe.setIcon(div_icon_21f4c75bf06f686775a7af8f7caafa20);
+        
+    
+        var popup_f473c2d671b9a370d56881580c14dbdf = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_14071b7927feb587a00f38f7e9fd899d = $(`<div id="html_14071b7927feb587a00f38f7e9fd899d" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NC<br> <b>LAT:</b> 37.9793&deg; <b>LON:</b> -122.1174&deg;</div>`)[0];
+            popup_f473c2d671b9a370d56881580c14dbdf.setContent(html_14071b7927feb587a00f38f7e9fd899d);
+        
+
+        marker_f1d8f1d35f100995e088997ad978bafe.bindPopup(popup_f473c2d671b9a370d56881580c14dbdf)
+        ;
+
+        
+    
+    
+            marker_f1d8f1d35f100995e088997ad978bafe.bindTooltip(
+                `<div>
+                     <b>Station:</b> NC.C018
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9d2908f1f69a914791958fd7888dd3f9 = L.marker(
+                [37.858841, -121.992638],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_f89a9d7f01dee8ea93b9b9fe1dc2de27 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_9d2908f1f69a914791958fd7888dd3f9.setIcon(div_icon_f89a9d7f01dee8ea93b9b9fe1dc2de27);
+        
+    
+        var popup_b8e158d1ece1600c0b927b7dda0ca864 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_06e3efe8802f8cc81aad3b6fda8d49e1 = $(`<div id="html_06e3efe8802f8cc81aad3b6fda8d49e1" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NC<br> <b>LAT:</b> 37.8588&deg; <b>LON:</b> -121.9926&deg;</div>`)[0];
+            popup_b8e158d1ece1600c0b927b7dda0ca864.setContent(html_06e3efe8802f8cc81aad3b6fda8d49e1);
+        
+
+        marker_9d2908f1f69a914791958fd7888dd3f9.bindPopup(popup_b8e158d1ece1600c0b927b7dda0ca864)
+        ;
+
+        
+    
+    
+            marker_9d2908f1f69a914791958fd7888dd3f9.bindTooltip(
+                `<div>
+                     <b>Station:</b> NC.CRH
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_eea66accbe012bce263ec6a38234b941 = L.marker(
+                [38.026909, -122.015991],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_145782724f0d063ebf3fd177682c09c7 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_eea66accbe012bce263ec6a38234b941.setIcon(div_icon_145782724f0d063ebf3fd177682c09c7);
+        
+    
+        var popup_2f0e813488063822316fbf58b76b0d4a = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_ace1745e901516e4456d85e15e9d3026 = $(`<div id="html_ace1745e901516e4456d85e15e9d3026" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NC<br> <b>LAT:</b> 38.0269&deg; <b>LON:</b> -122.0160&deg;</div>`)[0];
+            popup_2f0e813488063822316fbf58b76b0d4a.setContent(html_ace1745e901516e4456d85e15e9d3026);
+        
+
+        marker_eea66accbe012bce263ec6a38234b941.bindPopup(popup_2f0e813488063822316fbf58b76b0d4a)
+        ;
+
+        
+    
+    
+            marker_eea66accbe012bce263ec6a38234b941.bindTooltip(
+                `<div>
+                     <b>Station:</b> NC.CTA
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ec6557eddb7d1b9997a50d4c696edeec = L.marker(
+                [37.885201, -122.032166],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_462ace78b8fdb85f3b5d8e47bce4fb3c = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_ec6557eddb7d1b9997a50d4c696edeec.setIcon(div_icon_462ace78b8fdb85f3b5d8e47bce4fb3c);
+        
+    
+        var popup_7596ee585c3e15138ab54bd49f09f3d8 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_d55d5a1d5fb017eef10bcded23c54268 = $(`<div id="html_d55d5a1d5fb017eef10bcded23c54268" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NP<br> <b>LAT:</b> 37.8852&deg; <b>LON:</b> -122.0322&deg;</div>`)[0];
+            popup_7596ee585c3e15138ab54bd49f09f3d8.setContent(html_d55d5a1d5fb017eef10bcded23c54268);
+        
+
+        marker_ec6557eddb7d1b9997a50d4c696edeec.bindPopup(popup_7596ee585c3e15138ab54bd49f09f3d8)
+        ;
+
+        
+    
+    
+            marker_ec6557eddb7d1b9997a50d4c696edeec.bindTooltip(
+                `<div>
+                     <b>Station:</b> NP.1844
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7da826d4c2d1a068750cee8d5c59973b = L.marker(
+                [38.012856, -122.134583],
+                {}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_d5951de1b10687d90d05ee403bca9ac1 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#00ac00\" class=\"bi bi-triangle-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath fill-rule=\"evenodd\" d=\"M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_7da826d4c2d1a068750cee8d5c59973b.setIcon(div_icon_d5951de1b10687d90d05ee403bca9ac1);
+        
+    
+        var popup_12be1575526fd5764522d71155fc7bcd = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_73cec7fd1d7bc6ea9ba43b88848e77e4 = $(`<div id="html_73cec7fd1d7bc6ea9ba43b88848e77e4" style="width: 100.0%; height: 100.0%;"><b>NETWORK:</b> NP<br> <b>LAT:</b> 38.0129&deg; <b>LON:</b> -122.1346&deg;</div>`)[0];
+            popup_12be1575526fd5764522d71155fc7bcd.setContent(html_73cec7fd1d7bc6ea9ba43b88848e77e4);
+        
+
+        marker_7da826d4c2d1a068750cee8d5c59973b.bindPopup(popup_12be1575526fd5764522d71155fc7bcd)
+        ;
+
+        
+    
+    
+            marker_7da826d4c2d1a068750cee8d5c59973b.bindTooltip(
+                `<div>
+                     <b>Station:</b> NP.1847
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4e6505e41d7edcee60a85a536259c73f = L.marker(
+                [37.938, -122.057],
+                {"fillColor": "#FFFF00"}
+            ).addTo(map_2cd5f75bb51ef68b312c1c565336a806);
+        
+    
+            var div_icon_9945833b00154df85772535ab2e8d7f9 = L.divIcon({"className": "empty", "html": " \n            \u003cdiv\u003e\n                \u003csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" stroke=\"black\" stroke-linecap=\"square\" fill=\"#FFFF00\" class=\"bi bi-star-fill\" viewBox=\"0 0 16 16\"\u003e\n                    \u003cpath d=\"M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z\"/\u003e\n                \u003c/svg\u003e\n            \u003c/div\u003e"});
+            marker_4e6505e41d7edcee60a85a536259c73f.setIcon(div_icon_9945833b00154df85772535ab2e8d7f9);
+        
+    
+        var popup_cd8705e37695c821f55540b2c0e81a66 = L.popup({"maxWidth": 180, "minWidth": 180});
+
+        
+            var html_3fe4e231c7c83bd40234693b2fa4f341 = $(`<div id="html_3fe4e231c7c83bd40234693b2fa4f341" style="width: 100.0%; height: 100.0%;"><b>EVENT ID:</b> nc73291880<br> <b>MAG:</b> 4.46<br> <b>LAT:</b> 37.9380&deg; <b>LON:</b> -122.0570&deg;<br> <b>DEPTH:</b> 13.97 km</div>`)[0];
+            popup_cd8705e37695c821f55540b2c0e81a66.setContent(html_3fe4e231c7c83bd40234693b2fa4f341);
+        
+
+        marker_4e6505e41d7edcee60a85a536259c73f.bindPopup(popup_cd8705e37695c821f55540b2c0e81a66)
+        ;
+
+        
+    
+    
+            marker_4e6505e41d7edcee60a85a536259c73f.bindTooltip(
+                `<div>
+                     <b>EVENT ID:</b> nc73291880
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>

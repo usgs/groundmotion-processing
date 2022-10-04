@@ -4,13 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.subcommands.projects - gmprocess 1.2.1.dev21+gf990c20f.d20220929 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>gmprocess.subcommands.projects - gmprocess 1.2.1.dev20+g4c710777.d20221004 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -139,7 +138,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev21+gf990c20f.d20220929 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev20+g4c710777.d20221004 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -486,6 +485,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
 <span class="n">ryaml</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;yaml&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;ruamel.yaml&quot;</span><span class="p">)</span>
@@ -535,6 +535,14 @@
             <span class="s2">&quot;help&quot;</span><span class="p">:</span> <span class="s2">&quot;Delete existing project PROJECT.&quot;</span><span class="p">,</span>
             <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
             <span class="s2">&quot;metavar&quot;</span><span class="p">:</span> <span class="s2">&quot;PROJECT&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;long_flag&quot;</span><span class="p">:</span> <span class="s2">&quot;--rename&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;help&quot;</span><span class="p">:</span> <span class="s2">&quot;Rename project SOURCE to TARGET.&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="s2">&quot;nargs&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&quot;metavar&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;SOURCE&quot;</span><span class="p">,</span> <span class="s2">&quot;TARGET&quot;</span><span class="p">),</span>
             <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">]</span>
@@ -598,17 +606,11 @@
                 <span class="nb">print</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">project</span><span class="p">,</span> <span class="n">configfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">))</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)),</span>
-                    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;conf_path&quot;</span><span class="p">],</span>
-                <span class="p">)</span>
+            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;conf_path&quot;</span><span class="p">]</span>
             <span class="p">)</span>
-            <span class="n">data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)),</span>
-                    <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;data_path&quot;</span><span class="p">],</span>
-                <span class="p">)</span>
+            <span class="n">data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;data_path&quot;</span><span class="p">]</span>
             <span class="p">)</span>
 
             <span class="n">question</span> <span class="o">=</span> <span class="p">(</span>
@@ -618,8 +620,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">prompt</span><span class="o">.</span><span class="n">query_yes_no</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">):</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">conf_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
             <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">]</span>
 
@@ -642,6 +644,38 @@
 
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Set to new project:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">newproject</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">rename</span><span class="p">:</span>
+            <span class="n">source</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">rename</span>
+            <span class="k">if</span> <span class="n">source</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Project </span><span class="si">%s</span><span class="s2"> not in </span><span class="si">%s</span><span class="s2">.  Run </span><span class="si">%s</span><span class="s2"> -l to see available projects.&quot;</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">configfile</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_name</span><span class="p">))</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="n">source_conf_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">source</span><span class="p">][</span><span class="s2">&quot;conf_path&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">source_data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">source</span><span class="p">][</span><span class="s2">&quot;data_path&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">target_conf_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">source_conf_path</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+            <span class="n">target_dath_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">source_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">source_conf_path</span><span class="o">.</span><span class="n">parent</span><span class="p">),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">target_conf_path</span><span class="o">.</span><span class="n">parent</span><span class="p">),</span>
+            <span class="p">)</span>
+
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;conf_path&quot;</span><span class="p">:</span> <span class="n">target_conf_path</span><span class="p">,</span>
+                <span class="s2">&quot;data_path&quot;</span><span class="p">:</span> <span class="n">target_dath_path</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span>
+            <span class="k">del</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">source</span><span class="p">]</span>
+            <span class="n">config</span><span class="o">.</span><span class="n">write</span><span class="p">()</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Renamed </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="n">project</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>
@@ -683,13 +717,12 @@
 
 <div class="viewcode-block" id="Project.__repr__"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/projects/index.html#gmprocess.subcommands.projects.Project.__repr__">[docs]</a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;Project: </span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="se">\n\t</span><span class="s2">Conf Path: </span><span class="si">%s</span><span class="se">\n\t</span><span class="s2">Data Path: </span><span class="si">%s</span><span class="s2">&quot;</span>
-        <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)))</span>
         <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
             <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">current_marker</span><span class="p">,</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">)),</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)),</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">tpl</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_marker</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
@@ -715,22 +748,17 @@
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># Check that the paths for each project exist</span>
     <span class="k">for</span> <span class="n">project</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">data_exists</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)),</span>
-                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;data_path&quot;</span><span class="p">],</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
+
+        <span class="n">data_exists</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;data_path&quot;</span><span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
         <span class="n">delete_project</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">data_exists</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data path for project </span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
             <span class="n">delete_project</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">conf_exists</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)),</span>
-                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;conf_path&quot;</span><span class="p">],</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">conf_exists</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+            <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">][</span><span class="n">project</span><span class="p">][</span><span class="s2">&quot;conf_path&quot;</span><span class="p">]</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">conf_exists</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Install path for project </span><span class="si">{</span><span class="n">project</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
             <span class="n">delete_project</span> <span class="o">=</span> <span class="kc">True</span>
@@ -770,13 +798,13 @@
             <span class="n">default_conf</span><span class="p">,</span> <span class="n">default_data</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-        <span class="n">proj_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">&quot;.gmprocess&quot;</span><span class="p">)</span>
-        <span class="n">new_conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">&quot;conf&quot;</span><span class="p">)</span>
-        <span class="n">new_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
+        <span class="n">cwd</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
+        <span class="n">proj_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cwd</span> <span class="o">/</span> <span class="s2">&quot;.gmprocess&quot;</span><span class="p">)</span>
+        <span class="n">new_conf_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cwd</span> <span class="o">/</span> <span class="s2">&quot;conf&quot;</span><span class="p">)</span>
+        <span class="n">new_data_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cwd</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">new_conf_path</span><span class="p">,</span> <span class="n">new_data_path</span><span class="p">]:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+                <span class="n">p</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter your name and email. This information will be added&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;to the config file and reported in the provenance of the data&quot;</span><span class="p">)</span>
@@ -794,12 +822,9 @@
     <span class="c1"># Apparently, relpath doesn&#39;t work for Windows, at least with the Azure</span>
     <span class="c1"># CI builds</span>
     <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
-        <span class="n">new_conf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span>
-            <span class="n">new_conf_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)</span>
-        <span class="p">)</span>
-        <span class="n">new_data_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span>
-            <span class="n">new_data_path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">pardir</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">rel_path_loc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">new_conf_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">new_conf_path</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">rel_path_loc</span><span class="p">))</span>
+        <span class="n">new_data_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">new_data_path</span><span class="p">)</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">rel_path_loc</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="s2">&quot;projects&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
         <span class="n">config</span><span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -820,10 +845,10 @@
     <span class="n">user_conf</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">user_conf</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_info</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CALLED_FROM_PYTEST&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">,</span> <span class="n">new_conf_path</span><span class="p">,</span> <span class="s2">&quot;user.yml&quot;</span><span class="p">)</span>
+        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">)</span> <span class="o">/</span> <span class="n">new_conf_path</span> <span class="o">/</span> <span class="s2">&quot;user.yml&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">proj_dir</span> <span class="o">=</span> <span class="n">constants</span><span class="o">.</span><span class="n">CONFIG_PATH_TEST</span>
-        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">,</span> <span class="s2">&quot;user.yml&quot;</span><span class="p">)</span>
+        <span class="n">proj_conf_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">proj_dir</span><span class="p">,</span> <span class="s2">&quot;user.yml&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">proj_conf_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">yf</span><span class="p">:</span>
         <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">user_conf</span><span class="p">,</span> <span class="n">yf</span><span class="p">)</span></div>
 </pre></div>
@@ -870,10 +895,5 @@
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
     <script src="../../../_static/tabs.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>
