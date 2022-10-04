@@ -12,6 +12,7 @@ import logging
 import shutil
 import importlib.metadata
 
+from pathlib import Path
 from ..subcommands.lazy_loader import LazyLoader
 
 VERSION = importlib.metadata.version("gmprocess")
@@ -57,9 +58,9 @@ class GMrecordsApp(object):
         # Try not to let tests interfere with actual system:
         if os.getenv("CALLED_FROM_PYTEST") is None:
             # Not called from pytest
-            local_proj = os.path.join(os.getcwd(), const.PROJ_CONF_DIR)
-            local_proj_conf = os.path.join(local_proj, "projects.conf")
-            if os.path.isdir(local_proj) and os.path.isfile(local_proj_conf):
+            local_proj = Path.cwd() / const.PROJ_CONF_DIR
+            local_proj_conf = local_proj / "projects.conf"
+            if local_proj.is_dir() and local_proj_conf.is_file():
                 PROJECTS_PATH = local_proj
             else:
                 PROJECTS_PATH = const.PROJECTS_PATH
@@ -67,7 +68,7 @@ class GMrecordsApp(object):
             PROJECTS_PATH = const.CONFIG_PATH_TEST
 
         self.PROJECTS_PATH = PROJECTS_PATH
-        self.PROJECTS_FILE = os.path.join(PROJECTS_PATH, "projects.conf")
+        self.PROJECTS_FILE = str(Path(Path(PROJECTS_PATH) / "projects.conf"))
         self.gmprocess_version = VERSION
 
     def main(self, **kwargs):
@@ -144,7 +145,7 @@ class GMrecordsApp(object):
         logging.info(f"PROJECTS_PATH: {self.PROJECTS_PATH}")
 
     def _load_config(self):
-        if not os.path.isfile(self.PROJECTS_FILE):
+        if not Path(self.PROJECTS_FILE).is_file():
             # If projects.conf file doesn't exist then we need to run the
             # initial setup.
             print("No project config file detected.")
@@ -178,29 +179,25 @@ class GMrecordsApp(object):
             print("Exiting.")
             sys.exit()
 
-        self.conf_path = os.path.abspath(
-            os.path.join(
-                self.PROJECTS_FILE, os.pardir, self.current_project["conf_path"]
-            )
-        )
-        self.data_path = os.path.abspath(
-            os.path.join(
-                self.PROJECTS_FILE, os.pardir, self.current_project["data_path"]
-            )
-        )
+        self.conf_path = Path(
+            Path(self.PROJECTS_FILE).parent / self.current_project["conf_path"]
+        ).resolve()
+        self.data_path = Path(
+            Path(self.PROJECTS_FILE).parent / self.current_project["data_path"]
+        ).resolve()
 
         if os.getenv("CALLED_FROM_PYTEST") is not None:
             self.conf_path = const.CONFIG_PATH_TEST  # ~/gmptest
-            test_conf_file = os.path.normpath(
-                os.path.join(const.DATA_DIR, const.CONFIG_FILE_TEST)  # config_test.yml
-            )
-            if not os.path.exists(self.conf_path):
-                os.mkdir(self.conf_path)
+            test_conf_file = Path(
+                Path(const.DATA_DIR) / const.CONFIG_FILE_TEST
+            ).resolve()
+            if not Path(self.conf_path).exists():
+                Path(self.conf_path).mkdir()
             shutil.copyfile(
-                test_conf_file, os.path.join(self.conf_path, const.CONFIG_FILE_TEST)
+                test_conf_file, Path(Path(self.conf_path) / const.CONFIG_FILE_TEST)
             )
 
-        if (not os.path.exists(self.conf_path)) or (not os.path.exists(self.data_path)):
+        if (not Path(self.conf_path).exists()) or (not Path(self.data_path).exists()):
             print(
                 "Config and/or data directory does not exist for project: "
                 + self.project
@@ -209,14 +206,14 @@ class GMrecordsApp(object):
             project = self.project
 
             conf_path = config["projects"][project]["conf_path"]
-            if os.path.exists(conf_path):
+            if Path(conf_path).exists():
                 question = f"Okay to delete everything in: {conf_path}?\n"
                 if not prompt.query_yes_no(question, default="yes"):
                     shutil.rmtree(conf_path, ignore_errors=True)
                     print(f"\tDeleted conf directory {conf_path}:")
 
             data_path = config["projects"][project]["data_path"]
-            if os.path.exists(data_path):
+            if Path(data_path).exists():
                 question = f"Okay to delete everything in: {data_path}?\n"
                 if not prompt.query_yes_no(question, default="yes"):
                     shutil.rmtree(data_path, ignore_errors=True)
@@ -260,13 +257,13 @@ class GMrecordsApp(object):
             if ("conf_path" not in proj) or ("data_path" not in proj):
                 bad_projs.append(proj_name)
                 continue
-            conf_path = os.path.abspath(
-                os.path.join(self.PROJECTS_FILE, os.pardir, proj["conf_path"])
-            )
-            data_path = os.path.abspath(
-                os.path.join(self.PROJECTS_FILE, os.pardir, proj["data_path"])
-            )
-            if not (os.path.isdir(conf_path) and os.path.isdir(data_path)):
+            conf_path = Path(
+                Path(self.PROJECTS_FILE).parent / proj["conf_path"]
+            ).resolve()
+            data_path = Path(
+                Path(self.PROJECTS_FILE).parent / proj["data_path"]
+            ).resolve()
+            if not (conf_path.is_dir() and data_path.is_dir()):
                 bad_projs.append(proj_name)
         for bad in bad_projs:
             print(f'Problem encountered in "{bad}" project. Deleting.')
@@ -292,8 +289,8 @@ class GMrecordsApp(object):
         Initial setup of ~/.gmprogress/projects.conf; essentially invoke
         # gmrecords projects -c
         """
-        if not os.path.isdir(self.PROJECTS_PATH):
-            os.mkdir(self.PROJECTS_PATH)
+        if not Path(self.PROJECTS_PATH).is_dir():
+            Path(self.PROJECTS_PATH).mkdir()
         empty_conf = configobj.ConfigObj(encoding="utf-8")
         empty_conf.filename = self.PROJECTS_FILE
         projmod.create(empty_conf)
