@@ -55,7 +55,10 @@ class AssembleModule(base.SubcommandModule):
             executor = ProcessPoolExecutor(
                 max_workers=self.gmrecords.args.num_processes
             )
-            for event in events:
+            for ievent, event in enumerate(events):
+                logging.info(
+                    f"Assembling event {event} ({1+ievent} of {len(events)})..."
+                )
                 future = executor.submit(
                     self._assemble_event,
                     event,
@@ -68,7 +71,10 @@ class AssembleModule(base.SubcommandModule):
             results = [future.result() for future in futures]
             executor.shutdown()
         else:
-            for event in events:
+            for ievent, event in enumerate(events):
+                logging.info(
+                    f"Assembling event {event} ({1+ievent} of {len(events)})..."
+                )
                 results.append(
                     self._assemble_event(event, data_path, overwrite, conf, version)
                 )
@@ -83,7 +89,6 @@ class AssembleModule(base.SubcommandModule):
     # call it with ProcessPoolExecutor.
     @staticmethod
     def _assemble_event(event, data_path, overwrite, conf, version):
-        logging.info(f"Starting event: {event}")
         event_dir = os.path.normpath(os.path.join(data_path, event))
         if not os.path.exists(event_dir):
             os.makedirs(event_dir)

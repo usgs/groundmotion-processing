@@ -41,7 +41,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        for event in self.events:
+        for ievent, event in enumerate(self.events):
             event_dir = os.path.join(self.gmrecords.data_path, event.id)
             workname = os.path.join(event_dir, const.WORKSPACE_NAME)
             if not os.path.isfile(workname):
@@ -61,7 +61,10 @@ class GenerateHTMLMapModule(base.SubcommandModule):
 
             self._get_labels()
             config = self.workspace.config
-            logging.info(f"Generating station maps for event {event.id}...")
+            logging.info(
+                f"Generating station maps for event {event.id} "
+                f"({1+ievent} of {len(self.events)})..."
+            )
 
             pstreams = []
             for station_id in station_list:

@@ -53,8 +53,10 @@ class ImportModule(base.SubcommandModule):
             raise ValueError("Can only import data for one event at a time.")
 
         logging.info(f"Number of events to download: {len(self.events)}")
-        for event in self.events:
-            logging.info(f"Starting event: {event.id}")
+        for ievent, event in enumerate(self.events):
+            logging.info(
+                f"Importing event {event.id} ({1+ievent} of {len(self.events)})..."
+            )
             event_dir = os.path.join(gmrecords.data_path, event.id)
             if not os.path.exists(event_dir):
                 os.makedirs(event_dir)

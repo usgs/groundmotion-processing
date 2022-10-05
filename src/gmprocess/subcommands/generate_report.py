@@ -47,13 +47,16 @@ class GenerateReportModule(base.SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        for event in self.events:
+        for ievent, event in enumerate(self.events):
             event_dir = os.path.join(self.gmrecords.data_path, event.id)
             pstreams = self.generate_diagnostic_plots(event)
             if pstreams is None:
                 return
 
-            logging.info(f"Generating summary report for event {event.id}...")
+            logging.info(
+                f"Generating summary report for event {event.id} "
+                f"({1+ievent} of {len(self.events)})..."
+            )
 
             config = self._get_config()
             build_conf = config["build_report"]

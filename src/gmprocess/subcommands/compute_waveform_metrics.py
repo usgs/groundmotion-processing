@@ -45,14 +45,16 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        for event in self.events:
+        for ievent, event in enumerate(self.events):
+            logging.info(
+                f"Computing waveform metrics for event {event.id} ({1+ievent} of {len(self.events)})..."
+            )
             self._compute_event_waveform_metrics(event)
 
         self._summarize_files_created()
 
     def _compute_event_waveform_metrics(self, event):
         self.eventid = event.id
-        logging.info(f"Computing waveform metrics for event {self.eventid}...")
         event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
         workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
         if not os.path.isfile(workname):

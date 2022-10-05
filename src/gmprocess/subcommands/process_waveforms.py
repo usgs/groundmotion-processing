@@ -66,7 +66,11 @@ class ProcessWaveformsModule(base.SubcommandModule):
         self.process_tag = gmrecords.args.label or "default"
         logging.info(f"Processing tag: {self.process_tag}")
 
-        for event in self.events:
+        for ievent, event in enumerate(self.events):
+            logging.info(
+                f"Processing waveforms for event {event.id} "
+                f"({1+ievent} of {len(self.events)})..."
+            )
             self._process_event(event)
 
         self._summarize_files_created()
