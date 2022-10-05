@@ -195,10 +195,10 @@ def read_obspy(filename, config=None, **kwargs):
             pparts = pattern.split(".")
             instparts = instrument.split(".")
             if len(pparts) != len(instparts):
-                logging.info(
+                logging.error(
                     "There are too many fields in the exclude_pattern element. Ensure "
                     "that you have 4 fields: Network, Station ID, Location Code, and "
-                    "Channel."
+                    f"Channel. Skipping {pattern}."
                 )
                 sys.exit(0)
             # Loop over each component, convert the pattern's field
@@ -214,8 +214,7 @@ def read_obspy(filename, config=None, **kwargs):
                 continue
             else:
                 logging.info(
-                    f"{instrument} is an instrument that should be excluded. "
-                    "The station is not going into the station stream."
+                    f"Ignoring {instrument} because it matches exclude pattern {pattern}."
                 )
                 break
 

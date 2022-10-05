@@ -50,11 +50,11 @@ class ExportMetricTablesModule(base.SubcommandModule):
             event_dir = os.path.join(gmrecords.data_path, self.eventid)
             workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):
-                logging.info(
+                logging.warning(
                     f"No workspace file found for event {self.eventid}. Please run "
-                    "subcommand 'assemble' to generate workspace file."
+                    "subcommand 'assemble' to generate workspace file. "
+                    "Continuing to next event."
                 )
-                logging.info("Continuing to next event.")
                 continue
 
             self.workspace = ws.StreamWorkspace.open(workname)
@@ -62,10 +62,10 @@ class ExportMetricTablesModule(base.SubcommandModule):
             config = self._get_config()
 
             if "StationMetrics" not in self.workspace.dataset.auxiliary_data:
-                logging.info(
+                logging.warning(
                     f"Station metrics not found in workspace for event {self.eventid}."
+                    "Continuing to next event."
                 )
-                logging.info("Continuing to next event.")
                 continue
 
             event_table, imc_tables, readmes = self.workspace.getTables(
@@ -142,13 +142,11 @@ class ExportMetricTablesModule(base.SubcommandModule):
                         continue
                     else:
                         if self.gmrecords.args.overwrite:
-                            logging.warning(f"File exists: {filename}")
-                            logging.warning(f"Overwriting file: {filename}")
+                            logging.info(f"Overwriting file: {filename}")
                             mode = "w"
                             header = True
                         else:
-                            logging.warning(f"File exists: {filename}")
-                            logging.warning(f"Appending to file: {filename}")
+                            logging.info(f"Appending to file: {filename}")
                             mode = "a"
                             header = False
                 else:

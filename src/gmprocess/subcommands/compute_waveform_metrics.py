@@ -88,7 +88,10 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                 config=config,
             )
             if not len(streams):
-                logging.info("No matching streams found. Exiting.")
+                logging.warning(
+                    "No matching streams found. "
+                    f"Aborting computation of station metrics for {station_id} for {event.id}."
+                )
                 sys.exit()
 
             for stream in streams:

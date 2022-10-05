@@ -57,8 +57,11 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
         if len(event_files) == 1:
             event_file = event_files[0]
         elif len(event_files) == 0:
-            print("No event file found. Cannot build regression plot.")
-            print("Please run 'gmrecords export_metric_tables'.")
+            msg = (
+                "No event file found. Cannot build regression plot. "
+                "Please run 'gmrecords export_metric_tables'."
+            )
+            logging.error(msg)
             sys.exit(1)
         else:
             print("Multiple event files found, please select one:")

@@ -234,10 +234,10 @@ class GMrecordsApp(object):
 
             config.filename = self.PROJECTS_FILE
             config.write()
-            print(f"Deleted project: {project}")
+            logging.info(f"Deleted project: {project}")
 
-            print("\nSet to new project:\n")
-            print(newproject)
+            logging.info("\nSet to new project:\n")
+            logging.info(newproject)
             sys.exit(0)
 
         # Only run get_config for assemble and projects
