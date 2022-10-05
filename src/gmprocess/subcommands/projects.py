@@ -89,7 +89,7 @@ class ProjectsModule(base.SubcommandModule):
 
         if self.gmrecords.args.create:
             create(config)
-            sys.exit(0)
+            return
 
         config = check_project_config(config)
 
@@ -102,14 +102,16 @@ class ProjectsModule(base.SubcommandModule):
                     is_current = True
                 project = Project(pname, pdict, config.filename, is_current=is_current)
                 print("\n" + str(project) + "\n")
-            sys.exit(0)
+            return
 
         if args.switch:
             newproject = args.switch
             if newproject not in config["projects"]:
-                msg = "Project %s not in %s.  Run %s -l to see available projects."
-                print(msg % (newproject, configfile, self.command_name))
-                sys.exit(1)
+                msg = (
+                    f"Project {newproject} not in {configfile}. "
+                    "Run {self.command_name} -l to see available projects."
+                )
+                raise IOError(msg)
             config["project"] = newproject
             config.filename = configfile
             config.write()
@@ -120,14 +122,17 @@ class ProjectsModule(base.SubcommandModule):
                 is_current=True,
             )
             print(f"\nSwitched to project: \n{str(sp)}\n")
-            sys.exit(0)
+            return
 
         if args.delete:
             project = args.delete
             if project not in config["projects"]:
-                msg = "Project %s not in %s.  Run '%s' -l to available projects."
-                print(msg % (project, configfile, self.command_name))
-                sys.exit(1)
+                msg = (
+                    f"Project {newproject} not in {configfile}. "
+                    "Run {self.command_name} -l to see available projects."
+                )
+                logging.error(msg)
+                return
 
             conf_path = Path(
                 Path(config.filename).parent / config["projects"][project]["conf_path"]
@@ -141,7 +146,7 @@ class ProjectsModule(base.SubcommandModule):
                 f"{conf_path}\n--and--\n{data_path}?\n"
             )
             if not prompt.query_yes_no(question, default="yes"):
-                sys.exit(0)
+                return
 
             shutil.rmtree(data_path, ignore_errors=True)
             shutil.rmtree(conf_path, ignore_errors=True)
@@ -167,7 +172,7 @@ class ProjectsModule(base.SubcommandModule):
 
             print("\nSet to new project:\n")
             print(newproject)
-            sys.exit(0)
+            return
 
         if args.rename:
             source, target = args.rename
@@ -205,14 +210,13 @@ class ProjectsModule(base.SubcommandModule):
         projects = config["projects"]
         if project not in projects:
             msg = (
-                "Current project %s not in %s. Edit your projects.conf "
-                "file to match the specification."
+                f"Current project {project} not in {configfile}. "
+                "Edit your projects.conf file to match the specification."
             )
-            print(msg % (project, configfile))
-            sys.exit(1)
+            raise IOError(msg)
+
         sproj = Project(project, projects[project], projects.filename, is_current=True)
         print(sproj)
-        sys.exit(0)
 
 
 current_markers = {True: "**Current Project**", False: ""}
@@ -260,7 +264,7 @@ def check_project_config(config):
             'There are currently no projects. Use "gmrecords '
             'projects -c <project>" to create one.'
         )
-        sys.exit(1)
+        return
     # Check that the paths for each project exist
     for project in config["projects"].keys():
 
@@ -300,11 +304,11 @@ def create(config, cwd=False):
         project = "default"
     if "projects" in config and project in config["projects"]:
         msg = (
-            "Project '%s' already exists.  Run 'gmrecords projects "
+            f"Project '{project}' already exists.  Run 'gmrecords projects "
             "-l' to see existing projects."
         )
-        print(msg % project)
-        sys.exit(1)
+        logging.error(msg)
+        return
 
     if not cwd:
         proj_dir = constants.PROJECTS_PATH
@@ -328,11 +332,11 @@ def create(config, cwd=False):
     user_info["name"] = input("\tName: ")
     if not len(user_info["name"].strip()):
         print("User name is required. Exiting.")
-        sys.exit(0)
+        sys.exit(1)
     user_info["email"] = input("\tEmail: ")
     if not re.search(re_email, user_info["email"]):
         print("Invalid Email. Exiting.")
-        sys.exit(0)
+        sys.exit(1)
 
     # Apparently, relpath doesn't work for Windows, at least with the Azure
     # CI builds

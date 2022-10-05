@@ -42,5 +42,3 @@ class InitModule(base.SubcommandModule):
         config.filename = conf_file
 
         projects.create(config, cwd=True)
-
-        sys.exit(0)
