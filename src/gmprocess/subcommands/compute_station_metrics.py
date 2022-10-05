@@ -113,8 +113,11 @@ class ComputeStationMetricsModule(base.SubcommandModule):
                 config=config,
             )
             if not len(streams):
-                logging.info("No matching streams found. Exiting.")
-                sys.exit()
+                logging.error(
+                    "No matching streams found. "
+                    f"Aborting computing station metrics for {station_id} for {event.id}."
+                )
+                continue
 
             for st in streams:
                 geo_tuple = ob.gps2dist_azimuth(
