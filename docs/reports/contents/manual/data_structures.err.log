@@ -1,19 +1,19 @@
 Traceback (most recent call last):
-  File "/Users/baagaard/software/unix/py310-venv/gmprocess/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/Users/baagaard/software/unix/py310-venv/gmprocess/lib/python3.10/site-packages/nbclient/client.py", line 1204, in execute
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 1204, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/Users/baagaard/software/unix/py310-venv/gmprocess/lib/python3.10/site-packages/nbclient/util.py", line 84, in wrapped
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/nbclient/util.py", line 84, in wrapped
     return just_run(coro(*args, **kwargs))
-  File "/Users/baagaard/software/unix/py310-venv/gmprocess/lib/python3.10/site-packages/nbclient/util.py", line 62, in just_run
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/nbclient/util.py", line 62, in just_run
     return loop.run_until_complete(coro)
-  File "/Users/baagaard/software/unix/python-3.10/clang-13.1/lib/python3.10/asyncio/base_events.py", line 646, in run_until_complete
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
     return future.result()
-  File "/Users/baagaard/software/unix/py310-venv/gmprocess/lib/python3.10/site-packages/nbclient/client.py", line 663, in async_execute
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 663, in async_execute
     await self.async_execute_cell(
-  File "/Users/baagaard/software/unix/py310-venv/gmprocess/lib/python3.10/site-packages/nbclient/client.py", line 965, in async_execute_cell
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 965, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/Users/baagaard/software/unix/py310-venv/gmprocess/lib/python3.10/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+  File "/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
@@ -42,13 +42,13 @@ Cell [0;32mIn [1], line 10[0m
 [1;32m     11[0m inventory [38;5;241m=[39m stream[38;5;241m.[39mgetInventory()
 [1;32m     13[0m stream[38;5;241m.[39mwrite([38;5;124m"[39m[38;5;124mexample.mseed[39m[38;5;124m"[39m, [38;5;28mformat[39m[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMSEED[39m[38;5;124m"[39m)
 
-File [0;32m~/src/usgs/gmprocess/src/gmprocess/io/read.py:39[0m, in [0;36mread_data[0;34m(filename, config, read_format, **kwargs)[0m
+File [0;32m~/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/io/read.py:39[0m, in [0;36mread_data[0;34m(filename, config, read_format, **kwargs)[0m
 [1;32m     37[0m [38;5;66;03m# Check if file exists[39;00m
 [1;32m     38[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m os[38;5;241m.[39mpath[38;5;241m.[39mexists(filename):
 [0;32m---> 39[0m     [38;5;28;01mraise[39;00m [38;5;167;01mOSError[39;00m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mNot a file [39m[38;5;132;01m{[39;00mfilename[38;5;132;01m!r}[39;00m[38;5;124m"[39m)
 [1;32m     40[0m [38;5;66;03m# Get and validate format[39;00m
 [1;32m     41[0m [38;5;28;01mif[39;00m config [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 
-[0;31mOSError[0m: Not a file '/Users/baagaard/src/usgs/gmprocess/src/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat'
-OSError: Not a file '/Users/baagaard/src/usgs/gmprocess/src/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat'
+[0;31mOSError[0m: Not a file '/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat'
+OSError: Not a file '/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat'
 

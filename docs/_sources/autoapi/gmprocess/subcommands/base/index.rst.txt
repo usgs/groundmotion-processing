@@ -54,16 +54,24 @@ Attributes
 
    gmprocess base module.
 
+   .. py:property:: command_name
+      :abstractmethod:
+
+      string, all lowercase.
+
+      :type: Name of subcommand
+
+   .. py:property:: arguments
+      :abstractmethod:
+
+      A list of dicts for each argument of the subcommands. Each dict
+      should have the following keys: short_flag, long_flag, help, action,
+      default.
+
    .. py:attribute:: aliases
       :annotation: = []
 
       
-
-   .. py:method:: command_name()
-      :property:
-
-      Name of subcommand: string, all lowercase.
-
 
    .. py:method:: open_workspace(eventid)
 
@@ -73,14 +81,6 @@ Attributes
    .. py:method:: close_workspace()
 
       Close workspace.
-
-
-   .. py:method:: arguments()
-      :property:
-
-      A list of dicts for each argument of the subcommands. Each dict
-      should have the following keys: short_flag, long_flag, help, action,
-      default.
 
 
    .. py:method:: main(gmrecords)

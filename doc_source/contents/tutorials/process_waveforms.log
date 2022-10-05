@@ -1,0 +1,50 @@
+INFO 2022-10-04 15:42:17 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-04 15:42:17 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-04 15:42:17 | process_waveforms.main: Running subcommand 'process_waveforms'
+INFO 2022-10-04 15:42:17 | process_waveforms.main: Processing tag: default
+INFO 2022-10-04 15:42:17 | process_waveforms._process_event: Processing 'unprocessed' streams for event nc73291880...
+INFO 2022-10-04 15:42:17 | processing.process_streams: Stream: BK.BRIB.BH
+INFO 2022-10-04 15:42:18 | stationtrace.fail: check_clipping - BK.BRIB.01.BHE - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-04 15:42:18 | stationtrace.fail: check_clipping - BK.BRIB.01.BHN - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-04 15:42:18 | stationtrace.fail: check_clipping - BK.BRIB.01.BHZ - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-04 15:42:19 | processing.process_streams: Stream: BK.BRIB.HH
+INFO 2022-10-04 15:42:19 | stationtrace.fail: check_clipping - BK.BRIB.01.HHE - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-04 15:42:19 | stationtrace.fail: check_clipping - BK.BRIB.01.HHN - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-04 15:42:19 | stationtrace.fail: check_clipping - BK.BRIB.01.HHZ - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-04 15:42:22 | processing.process_streams: Stream: BK.BRIB.HN
+INFO 2022-10-04 15:42:25 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:25 | processing.process_streams: Stream: CE.58360.HN
+INFO 2022-10-04 15:42:25 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:25 | processing.process_streams: Stream: CE.58369.HN
+INFO 2022-10-04 15:42:25 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:25 | processing.process_streams: Stream: CE.58442.HN
+INFO 2022-10-04 15:42:25 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:25 | processing.process_streams: Stream: NC.C010.HN
+INFO 2022-10-04 15:42:26 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:26 | processing.process_streams: Stream: NC.C018.HN
+INFO 2022-10-04 15:42:26 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:26 | processing.process_streams: Stream: NC.CRH.HN
+INFO 2022-10-04 15:42:27 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:27 | processing.process_streams: Stream: NC.CTA.HN
+INFO 2022-10-04 15:42:28 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:28 | processing.process_streams: Stream: NP.1691.HN
+INFO 2022-10-04 15:42:28 | stationtrace.fail: check_tail - NP.1691..HNZ - Velocity ratio is greater than 0.3
+INFO 2022-10-04 15:42:28 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:28 | processing.process_streams: Stream: NP.1844.HN
+INFO 2022-10-04 15:42:29 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:29 | processing.process_streams: Stream: NP.1847.HN
+INFO 2022-10-04 15:42:29 | processing.process_streams: Finished processing streams.
+INFO 2022-10-04 15:42:29 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
+INFO 2022-10-04 15:42:30 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
+INFO 2022-10-04 15:42:31 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
+INFO 2022-10-04 15:42:32 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
+INFO 2022-10-04 15:42:32 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
+INFO 2022-10-04 15:42:32 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
+INFO 2022-10-04 15:42:32 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
+INFO 2022-10-04 15:42:32 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
+INFO 2022-10-04 15:42:33 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
+INFO 2022-10-04 15:42:33 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
+INFO 2022-10-04 15:42:33 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
+INFO 2022-10-04 15:42:33 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
+INFO 2022-10-04 15:42:33 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
+INFO 2022-10-04 15:42:33 | base._summarize_files_created: No new files created.

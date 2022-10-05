@@ -1,0 +1,877 @@
+Record,Processing Step,Step Attribute,Attribute Value
+BK.BRIB.01.BHE_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.BHE_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.BHE_nc73291880_default,Remove Response,output_units,cm/s
+BK.BRIB.01.BHE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 18.0, 20.0)"
+BK.BRIB.01.BHE_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.BHE_nc73291880_default,Differentiate,differentiation_method,frequency
+BK.BRIB.01.BHE_nc73291880_default,Differentiate,input_units,cm/s
+BK.BRIB.01.BHE_nc73291880_default,Differentiate,output_units,cm/s/s
+BK.BRIB.01.BHN_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.BHN_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.BHN_nc73291880_default,Remove Response,output_units,cm/s
+BK.BRIB.01.BHN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 18.0, 20.0)"
+BK.BRIB.01.BHN_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.BHN_nc73291880_default,Differentiate,differentiation_method,frequency
+BK.BRIB.01.BHN_nc73291880_default,Differentiate,input_units,cm/s
+BK.BRIB.01.BHN_nc73291880_default,Differentiate,output_units,cm/s/s
+BK.BRIB.01.BHZ_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.BHZ_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.BHZ_nc73291880_default,Remove Response,output_units,cm/s
+BK.BRIB.01.BHZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 18.0, 20.0)"
+BK.BRIB.01.BHZ_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.BHZ_nc73291880_default,Differentiate,differentiation_method,frequency
+BK.BRIB.01.BHZ_nc73291880_default,Differentiate,input_units,cm/s
+BK.BRIB.01.BHZ_nc73291880_default,Differentiate,output_units,cm/s/s
+BK.BRIB.01.HHE_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.HHE_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.HHE_nc73291880_default,Remove Response,output_units,cm/s
+BK.BRIB.01.HHE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+BK.BRIB.01.HHE_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.HHE_nc73291880_default,Differentiate,differentiation_method,frequency
+BK.BRIB.01.HHE_nc73291880_default,Differentiate,input_units,cm/s
+BK.BRIB.01.HHE_nc73291880_default,Differentiate,output_units,cm/s/s
+BK.BRIB.01.HHN_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.HHN_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.HHN_nc73291880_default,Remove Response,output_units,cm/s
+BK.BRIB.01.HHN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+BK.BRIB.01.HHN_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.HHN_nc73291880_default,Differentiate,differentiation_method,frequency
+BK.BRIB.01.HHN_nc73291880_default,Differentiate,input_units,cm/s
+BK.BRIB.01.HHN_nc73291880_default,Differentiate,output_units,cm/s/s
+BK.BRIB.01.HHZ_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.HHZ_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.HHZ_nc73291880_default,Remove Response,output_units,cm/s
+BK.BRIB.01.HHZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+BK.BRIB.01.HHZ_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.HHZ_nc73291880_default,Differentiate,differentiation_method,frequency
+BK.BRIB.01.HHZ_nc73291880_default,Differentiate,input_units,cm/s
+BK.BRIB.01.HHZ_nc73291880_default,Differentiate,output_units,cm/s/s
+BK.BRIB.01.HNE_nc73291880_default,Detrend,detrending_method,linear
+BK.BRIB.01.HNE_nc73291880_default,Detrend,detrending_method,demean
+BK.BRIB.01.HNE_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.HNE_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+BK.BRIB.01.HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+BK.BRIB.01.HNE_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.HNE_nc73291880_default,Detrend,detrending_method,linear
+BK.BRIB.01.HNE_nc73291880_default,Detrend,detrending_method,demean
+BK.BRIB.01.HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:14.000000Z
+BK.BRIB.01.HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+BK.BRIB.01.HNE_nc73291880_default,Taper,side,both
+BK.BRIB.01.HNE_nc73291880_default,Taper,taper_width,0.05
+BK.BRIB.01.HNE_nc73291880_default,Taper,window_type,Hann
+BK.BRIB.01.HNE_nc73291880_default,Highpass Filter,corner_frequency,0.07932152308166361
+BK.BRIB.01.HNE_nc73291880_default,Highpass Filter,filter_order,5
+BK.BRIB.01.HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+BK.BRIB.01.HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+BK.BRIB.01.HNE_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+BK.BRIB.01.HNE_nc73291880_default,Lowpass Filter,filter_order,5
+BK.BRIB.01.HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+BK.BRIB.01.HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+BK.BRIB.01.HNE_nc73291880_default,Detrend,detrending_method,pre
+BK.BRIB.01.HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+BK.BRIB.01.HNN_nc73291880_default,Detrend,detrending_method,linear
+BK.BRIB.01.HNN_nc73291880_default,Detrend,detrending_method,demean
+BK.BRIB.01.HNN_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.HNN_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+BK.BRIB.01.HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+BK.BRIB.01.HNN_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.HNN_nc73291880_default,Detrend,detrending_method,linear
+BK.BRIB.01.HNN_nc73291880_default,Detrend,detrending_method,demean
+BK.BRIB.01.HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:14.000000Z
+BK.BRIB.01.HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+BK.BRIB.01.HNN_nc73291880_default,Taper,side,both
+BK.BRIB.01.HNN_nc73291880_default,Taper,taper_width,0.05
+BK.BRIB.01.HNN_nc73291880_default,Taper,window_type,Hann
+BK.BRIB.01.HNN_nc73291880_default,Highpass Filter,corner_frequency,0.07932152308166361
+BK.BRIB.01.HNN_nc73291880_default,Highpass Filter,filter_order,5
+BK.BRIB.01.HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+BK.BRIB.01.HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+BK.BRIB.01.HNN_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+BK.BRIB.01.HNN_nc73291880_default,Lowpass Filter,filter_order,5
+BK.BRIB.01.HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+BK.BRIB.01.HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+BK.BRIB.01.HNN_nc73291880_default,Detrend,detrending_method,pre
+BK.BRIB.01.HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+BK.BRIB.01.HNZ_nc73291880_default,Detrend,detrending_method,linear
+BK.BRIB.01.HNZ_nc73291880_default,Detrend,detrending_method,demean
+BK.BRIB.01.HNZ_nc73291880_default,Remove Response,input_units,counts
+BK.BRIB.01.HNZ_nc73291880_default,Remove Response,method,remove_response
+BK.BRIB.01.HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+BK.BRIB.01.HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+BK.BRIB.01.HNZ_nc73291880_default,Remove Response,water_level,60
+BK.BRIB.01.HNZ_nc73291880_default,Detrend,detrending_method,linear
+BK.BRIB.01.HNZ_nc73291880_default,Detrend,detrending_method,demean
+BK.BRIB.01.HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:14.000000Z
+BK.BRIB.01.HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+BK.BRIB.01.HNZ_nc73291880_default,Taper,side,both
+BK.BRIB.01.HNZ_nc73291880_default,Taper,taper_width,0.05
+BK.BRIB.01.HNZ_nc73291880_default,Taper,window_type,Hann
+BK.BRIB.01.HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.12022894661571443
+BK.BRIB.01.HNZ_nc73291880_default,Highpass Filter,filter_order,5
+BK.BRIB.01.HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+BK.BRIB.01.HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+BK.BRIB.01.HNZ_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+BK.BRIB.01.HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+BK.BRIB.01.HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+BK.BRIB.01.HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+BK.BRIB.01.HNZ_nc73291880_default,Detrend,detrending_method,pre
+BK.BRIB.01.HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58360..HNE_nc73291880_default,Detrend,detrending_method,linear
+CE.58360..HNE_nc73291880_default,Detrend,detrending_method,demean
+CE.58360..HNE_nc73291880_default,Remove Response,input_units,counts
+CE.58360..HNE_nc73291880_default,Remove Response,method,remove_response
+CE.58360..HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58360..HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58360..HNE_nc73291880_default,Remove Response,water_level,60
+CE.58360..HNE_nc73291880_default,Detrend,detrending_method,linear
+CE.58360..HNE_nc73291880_default,Detrend,detrending_method,demean
+CE.58360..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:05.000000Z
+CE.58360..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58360..HNE_nc73291880_default,Taper,side,both
+CE.58360..HNE_nc73291880_default,Taper,taper_width,0.05
+CE.58360..HNE_nc73291880_default,Taper,window_type,Hann
+CE.58360..HNE_nc73291880_default,Highpass Filter,corner_frequency,0.1324808913523117
+CE.58360..HNE_nc73291880_default,Highpass Filter,filter_order,5
+CE.58360..HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58360..HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58360..HNE_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+CE.58360..HNE_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58360..HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58360..HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58360..HNE_nc73291880_default,Detrend,detrending_method,pre
+CE.58360..HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58360..HNN_nc73291880_default,Detrend,detrending_method,linear
+CE.58360..HNN_nc73291880_default,Detrend,detrending_method,demean
+CE.58360..HNN_nc73291880_default,Remove Response,input_units,counts
+CE.58360..HNN_nc73291880_default,Remove Response,method,remove_response
+CE.58360..HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58360..HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58360..HNN_nc73291880_default,Remove Response,water_level,60
+CE.58360..HNN_nc73291880_default,Detrend,detrending_method,linear
+CE.58360..HNN_nc73291880_default,Detrend,detrending_method,demean
+CE.58360..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:05.000000Z
+CE.58360..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58360..HNN_nc73291880_default,Taper,side,both
+CE.58360..HNN_nc73291880_default,Taper,taper_width,0.05
+CE.58360..HNN_nc73291880_default,Taper,window_type,Hann
+CE.58360..HNN_nc73291880_default,Highpass Filter,corner_frequency,0.1324808913523117
+CE.58360..HNN_nc73291880_default,Highpass Filter,filter_order,5
+CE.58360..HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58360..HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58360..HNN_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+CE.58360..HNN_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58360..HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58360..HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58360..HNN_nc73291880_default,Detrend,detrending_method,pre
+CE.58360..HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58360..HNZ_nc73291880_default,Detrend,detrending_method,linear
+CE.58360..HNZ_nc73291880_default,Detrend,detrending_method,demean
+CE.58360..HNZ_nc73291880_default,Remove Response,input_units,counts
+CE.58360..HNZ_nc73291880_default,Remove Response,method,remove_response
+CE.58360..HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58360..HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58360..HNZ_nc73291880_default,Remove Response,water_level,60
+CE.58360..HNZ_nc73291880_default,Detrend,detrending_method,linear
+CE.58360..HNZ_nc73291880_default,Detrend,detrending_method,demean
+CE.58360..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:05.000000Z
+CE.58360..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58360..HNZ_nc73291880_default,Taper,side,both
+CE.58360..HNZ_nc73291880_default,Taper,taper_width,0.05
+CE.58360..HNZ_nc73291880_default,Taper,window_type,Hann
+CE.58360..HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.17002940689377422
+CE.58360..HNZ_nc73291880_default,Highpass Filter,filter_order,5
+CE.58360..HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58360..HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58360..HNZ_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+CE.58360..HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58360..HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58360..HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58360..HNZ_nc73291880_default,Detrend,detrending_method,pre
+CE.58360..HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58369..HNE_nc73291880_default,Detrend,detrending_method,linear
+CE.58369..HNE_nc73291880_default,Detrend,detrending_method,demean
+CE.58369..HNE_nc73291880_default,Remove Response,input_units,counts
+CE.58369..HNE_nc73291880_default,Remove Response,method,remove_response
+CE.58369..HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58369..HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58369..HNE_nc73291880_default,Remove Response,water_level,60
+CE.58369..HNE_nc73291880_default,Detrend,detrending_method,linear
+CE.58369..HNE_nc73291880_default,Detrend,detrending_method,demean
+CE.58369..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:06.000000Z
+CE.58369..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58369..HNE_nc73291880_default,Taper,side,both
+CE.58369..HNE_nc73291880_default,Taper,taper_width,0.05
+CE.58369..HNE_nc73291880_default,Taper,window_type,Hann
+CE.58369..HNE_nc73291880_default,Highpass Filter,corner_frequency,0.14767759377342046
+CE.58369..HNE_nc73291880_default,Highpass Filter,filter_order,5
+CE.58369..HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58369..HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58369..HNE_nc73291880_default,Lowpass Filter,corner_frequency,39.41090179896187
+CE.58369..HNE_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58369..HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58369..HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58369..HNE_nc73291880_default,Detrend,detrending_method,pre
+CE.58369..HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58369..HNN_nc73291880_default,Detrend,detrending_method,linear
+CE.58369..HNN_nc73291880_default,Detrend,detrending_method,demean
+CE.58369..HNN_nc73291880_default,Remove Response,input_units,counts
+CE.58369..HNN_nc73291880_default,Remove Response,method,remove_response
+CE.58369..HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58369..HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58369..HNN_nc73291880_default,Remove Response,water_level,60
+CE.58369..HNN_nc73291880_default,Detrend,detrending_method,linear
+CE.58369..HNN_nc73291880_default,Detrend,detrending_method,demean
+CE.58369..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:06.000000Z
+CE.58369..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58369..HNN_nc73291880_default,Taper,side,both
+CE.58369..HNN_nc73291880_default,Taper,taper_width,0.05
+CE.58369..HNN_nc73291880_default,Taper,window_type,Hann
+CE.58369..HNN_nc73291880_default,Highpass Filter,corner_frequency,0.14767759377342046
+CE.58369..HNN_nc73291880_default,Highpass Filter,filter_order,5
+CE.58369..HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58369..HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58369..HNN_nc73291880_default,Lowpass Filter,corner_frequency,39.41090179896187
+CE.58369..HNN_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58369..HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58369..HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58369..HNN_nc73291880_default,Detrend,detrending_method,pre
+CE.58369..HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58369..HNZ_nc73291880_default,Detrend,detrending_method,linear
+CE.58369..HNZ_nc73291880_default,Detrend,detrending_method,demean
+CE.58369..HNZ_nc73291880_default,Remove Response,input_units,counts
+CE.58369..HNZ_nc73291880_default,Remove Response,method,remove_response
+CE.58369..HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58369..HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58369..HNZ_nc73291880_default,Remove Response,water_level,60
+CE.58369..HNZ_nc73291880_default,Detrend,detrending_method,linear
+CE.58369..HNZ_nc73291880_default,Detrend,detrending_method,demean
+CE.58369..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:06.000000Z
+CE.58369..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58369..HNZ_nc73291880_default,Taper,side,both
+CE.58369..HNZ_nc73291880_default,Taper,taper_width,0.05
+CE.58369..HNZ_nc73291880_default,Taper,window_type,Hann
+CE.58369..HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.12332377453043362
+CE.58369..HNZ_nc73291880_default,Highpass Filter,filter_order,5
+CE.58369..HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58369..HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58369..HNZ_nc73291880_default,Lowpass Filter,corner_frequency,58.2366793234228
+CE.58369..HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58369..HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58369..HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58369..HNZ_nc73291880_default,Detrend,detrending_method,pre
+CE.58369..HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58442..HNE_nc73291880_default,Detrend,detrending_method,linear
+CE.58442..HNE_nc73291880_default,Detrend,detrending_method,demean
+CE.58442..HNE_nc73291880_default,Remove Response,input_units,counts
+CE.58442..HNE_nc73291880_default,Remove Response,method,remove_response
+CE.58442..HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58442..HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58442..HNE_nc73291880_default,Remove Response,water_level,60
+CE.58442..HNE_nc73291880_default,Detrend,detrending_method,linear
+CE.58442..HNE_nc73291880_default,Detrend,detrending_method,demean
+CE.58442..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+CE.58442..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58442..HNE_nc73291880_default,Taper,side,both
+CE.58442..HNE_nc73291880_default,Taper,taper_width,0.05
+CE.58442..HNE_nc73291880_default,Taper,window_type,Hann
+CE.58442..HNE_nc73291880_default,Highpass Filter,corner_frequency,0.23066262918545513
+CE.58442..HNE_nc73291880_default,Highpass Filter,filter_order,5
+CE.58442..HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58442..HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58442..HNE_nc73291880_default,Lowpass Filter,corner_frequency,46.009382531243716
+CE.58442..HNE_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58442..HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58442..HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58442..HNE_nc73291880_default,Detrend,detrending_method,pre
+CE.58442..HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58442..HNN_nc73291880_default,Detrend,detrending_method,linear
+CE.58442..HNN_nc73291880_default,Detrend,detrending_method,demean
+CE.58442..HNN_nc73291880_default,Remove Response,input_units,counts
+CE.58442..HNN_nc73291880_default,Remove Response,method,remove_response
+CE.58442..HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58442..HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58442..HNN_nc73291880_default,Remove Response,water_level,60
+CE.58442..HNN_nc73291880_default,Detrend,detrending_method,linear
+CE.58442..HNN_nc73291880_default,Detrend,detrending_method,demean
+CE.58442..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+CE.58442..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58442..HNN_nc73291880_default,Taper,side,both
+CE.58442..HNN_nc73291880_default,Taper,taper_width,0.05
+CE.58442..HNN_nc73291880_default,Taper,window_type,Hann
+CE.58442..HNN_nc73291880_default,Highpass Filter,corner_frequency,0.23066262918545513
+CE.58442..HNN_nc73291880_default,Highpass Filter,filter_order,5
+CE.58442..HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58442..HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58442..HNN_nc73291880_default,Lowpass Filter,corner_frequency,46.009382531243716
+CE.58442..HNN_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58442..HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58442..HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58442..HNN_nc73291880_default,Detrend,detrending_method,pre
+CE.58442..HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+CE.58442..HNZ_nc73291880_default,Detrend,detrending_method,linear
+CE.58442..HNZ_nc73291880_default,Detrend,detrending_method,demean
+CE.58442..HNZ_nc73291880_default,Remove Response,input_units,counts
+CE.58442..HNZ_nc73291880_default,Remove Response,method,remove_response
+CE.58442..HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+CE.58442..HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+CE.58442..HNZ_nc73291880_default,Remove Response,water_level,60
+CE.58442..HNZ_nc73291880_default,Detrend,detrending_method,linear
+CE.58442..HNZ_nc73291880_default,Detrend,detrending_method,demean
+CE.58442..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+CE.58442..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+CE.58442..HNZ_nc73291880_default,Taper,side,both
+CE.58442..HNZ_nc73291880_default,Taper,taper_width,0.05
+CE.58442..HNZ_nc73291880_default,Taper,window_type,Hann
+CE.58442..HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.038669760247486466
+CE.58442..HNZ_nc73291880_default,Highpass Filter,filter_order,5
+CE.58442..HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+CE.58442..HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+CE.58442..HNZ_nc73291880_default,Lowpass Filter,corner_frequency,54.33674312630288
+CE.58442..HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+CE.58442..HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+CE.58442..HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+CE.58442..HNZ_nc73291880_default,Detrend,detrending_method,pre
+CE.58442..HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.C010.01.HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:50.000000Z
+NC.C010.01.HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C010.01.HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.C010.01.HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.C010.01.HNE_nc73291880_default,Remove Response,input_units,counts
+NC.C010.01.HNE_nc73291880_default,Remove Response,method,remove_response
+NC.C010.01.HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.C010.01.HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NC.C010.01.HNE_nc73291880_default,Remove Response,water_level,60
+NC.C010.01.HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.C010.01.HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.C010.01.HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:05.000000Z
+NC.C010.01.HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.C010.01.HNE_nc73291880_default,Taper,side,both
+NC.C010.01.HNE_nc73291880_default,Taper,taper_width,0.05
+NC.C010.01.HNE_nc73291880_default,Taper,window_type,Hann
+NC.C010.01.HNE_nc73291880_default,Highpass Filter,corner_frequency,0.21671278751325093
+NC.C010.01.HNE_nc73291880_default,Highpass Filter,filter_order,5
+NC.C010.01.HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.C010.01.HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.C010.01.HNE_nc73291880_default,Lowpass Filter,corner_frequency,51.763246192068806
+NC.C010.01.HNE_nc73291880_default,Lowpass Filter,filter_order,5
+NC.C010.01.HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.C010.01.HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.C010.01.HNE_nc73291880_default,Detrend,detrending_method,pre
+NC.C010.01.HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.C010.01.HNE_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:50.000000Z
+NC.C010.01.HNE_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C010.01.HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:50.000000Z
+NC.C010.01.HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C010.01.HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.C010.01.HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.C010.01.HNN_nc73291880_default,Remove Response,input_units,counts
+NC.C010.01.HNN_nc73291880_default,Remove Response,method,remove_response
+NC.C010.01.HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.C010.01.HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NC.C010.01.HNN_nc73291880_default,Remove Response,water_level,60
+NC.C010.01.HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.C010.01.HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.C010.01.HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:05.000000Z
+NC.C010.01.HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.C010.01.HNN_nc73291880_default,Taper,side,both
+NC.C010.01.HNN_nc73291880_default,Taper,taper_width,0.05
+NC.C010.01.HNN_nc73291880_default,Taper,window_type,Hann
+NC.C010.01.HNN_nc73291880_default,Highpass Filter,corner_frequency,0.21671278751325093
+NC.C010.01.HNN_nc73291880_default,Highpass Filter,filter_order,5
+NC.C010.01.HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.C010.01.HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.C010.01.HNN_nc73291880_default,Lowpass Filter,corner_frequency,51.763246192068806
+NC.C010.01.HNN_nc73291880_default,Lowpass Filter,filter_order,5
+NC.C010.01.HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.C010.01.HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.C010.01.HNN_nc73291880_default,Detrend,detrending_method,pre
+NC.C010.01.HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.C010.01.HNN_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:50.000000Z
+NC.C010.01.HNN_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C010.01.HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:50.000000Z
+NC.C010.01.HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C010.01.HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.C010.01.HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.C010.01.HNZ_nc73291880_default,Remove Response,input_units,counts
+NC.C010.01.HNZ_nc73291880_default,Remove Response,method,remove_response
+NC.C010.01.HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.C010.01.HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NC.C010.01.HNZ_nc73291880_default,Remove Response,water_level,60
+NC.C010.01.HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.C010.01.HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.C010.01.HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:05.000000Z
+NC.C010.01.HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.C010.01.HNZ_nc73291880_default,Taper,side,both
+NC.C010.01.HNZ_nc73291880_default,Taper,taper_width,0.05
+NC.C010.01.HNZ_nc73291880_default,Taper,window_type,Hann
+NC.C010.01.HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.2960383918965621
+NC.C010.01.HNZ_nc73291880_default,Highpass Filter,filter_order,5
+NC.C010.01.HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.C010.01.HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.C010.01.HNZ_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NC.C010.01.HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+NC.C010.01.HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.C010.01.HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.C010.01.HNZ_nc73291880_default,Detrend,detrending_method,pre
+NC.C010.01.HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.C010.01.HNZ_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:50.000000Z
+NC.C010.01.HNZ_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C018.01.HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:51.000000Z
+NC.C018.01.HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C018.01.HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.C018.01.HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.C018.01.HNE_nc73291880_default,Remove Response,input_units,counts
+NC.C018.01.HNE_nc73291880_default,Remove Response,method,remove_response
+NC.C018.01.HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.C018.01.HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NC.C018.01.HNE_nc73291880_default,Remove Response,water_level,60
+NC.C018.01.HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.C018.01.HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.C018.01.HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:11.000000Z
+NC.C018.01.HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.C018.01.HNE_nc73291880_default,Taper,side,both
+NC.C018.01.HNE_nc73291880_default,Taper,taper_width,0.05
+NC.C018.01.HNE_nc73291880_default,Taper,window_type,Hann
+NC.C018.01.HNE_nc73291880_default,Highpass Filter,corner_frequency,0.23226701464896893
+NC.C018.01.HNE_nc73291880_default,Highpass Filter,filter_order,5
+NC.C018.01.HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.C018.01.HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.C018.01.HNE_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NC.C018.01.HNE_nc73291880_default,Lowpass Filter,filter_order,5
+NC.C018.01.HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.C018.01.HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.C018.01.HNE_nc73291880_default,Detrend,detrending_method,pre
+NC.C018.01.HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.C018.01.HNE_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:51.000000Z
+NC.C018.01.HNE_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C018.01.HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:51.000000Z
+NC.C018.01.HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C018.01.HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.C018.01.HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.C018.01.HNN_nc73291880_default,Remove Response,input_units,counts
+NC.C018.01.HNN_nc73291880_default,Remove Response,method,remove_response
+NC.C018.01.HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.C018.01.HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NC.C018.01.HNN_nc73291880_default,Remove Response,water_level,60
+NC.C018.01.HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.C018.01.HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.C018.01.HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:11.000000Z
+NC.C018.01.HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.C018.01.HNN_nc73291880_default,Taper,side,both
+NC.C018.01.HNN_nc73291880_default,Taper,taper_width,0.05
+NC.C018.01.HNN_nc73291880_default,Taper,window_type,Hann
+NC.C018.01.HNN_nc73291880_default,Highpass Filter,corner_frequency,0.23226701464896893
+NC.C018.01.HNN_nc73291880_default,Highpass Filter,filter_order,5
+NC.C018.01.HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.C018.01.HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.C018.01.HNN_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NC.C018.01.HNN_nc73291880_default,Lowpass Filter,filter_order,5
+NC.C018.01.HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.C018.01.HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.C018.01.HNN_nc73291880_default,Detrend,detrending_method,pre
+NC.C018.01.HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.C018.01.HNN_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:51.000000Z
+NC.C018.01.HNN_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C018.01.HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:51.000000Z
+NC.C018.01.HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.C018.01.HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.C018.01.HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.C018.01.HNZ_nc73291880_default,Remove Response,input_units,counts
+NC.C018.01.HNZ_nc73291880_default,Remove Response,method,remove_response
+NC.C018.01.HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.C018.01.HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NC.C018.01.HNZ_nc73291880_default,Remove Response,water_level,60
+NC.C018.01.HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.C018.01.HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.C018.01.HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:11.000000Z
+NC.C018.01.HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.C018.01.HNZ_nc73291880_default,Taper,side,both
+NC.C018.01.HNZ_nc73291880_default,Taper,taper_width,0.05
+NC.C018.01.HNZ_nc73291880_default,Taper,window_type,Hann
+NC.C018.01.HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.30647816324091803
+NC.C018.01.HNZ_nc73291880_default,Highpass Filter,filter_order,5
+NC.C018.01.HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.C018.01.HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.C018.01.HNZ_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NC.C018.01.HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+NC.C018.01.HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.C018.01.HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.C018.01.HNZ_nc73291880_default,Detrend,detrending_method,pre
+NC.C018.01.HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.C018.01.HNZ_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:51.000000Z
+NC.C018.01.HNZ_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NC.CRH..HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.CRH..HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.CRH..HNE_nc73291880_default,Remove Response,input_units,counts
+NC.CRH..HNE_nc73291880_default,Remove Response,method,remove_response
+NC.CRH..HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.CRH..HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NC.CRH..HNE_nc73291880_default,Remove Response,water_level,60
+NC.CRH..HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.CRH..HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.CRH..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NC.CRH..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.CRH..HNE_nc73291880_default,Taper,side,both
+NC.CRH..HNE_nc73291880_default,Taper,taper_width,0.05
+NC.CRH..HNE_nc73291880_default,Taper,window_type,Hann
+NC.CRH..HNE_nc73291880_default,Highpass Filter,corner_frequency,0.12022894661571443
+NC.CRH..HNE_nc73291880_default,Highpass Filter,filter_order,5
+NC.CRH..HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.CRH..HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.CRH..HNE_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+NC.CRH..HNE_nc73291880_default,Lowpass Filter,filter_order,5
+NC.CRH..HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.CRH..HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.CRH..HNE_nc73291880_default,Detrend,detrending_method,pre
+NC.CRH..HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.CRH..HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.CRH..HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.CRH..HNN_nc73291880_default,Remove Response,input_units,counts
+NC.CRH..HNN_nc73291880_default,Remove Response,method,remove_response
+NC.CRH..HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.CRH..HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NC.CRH..HNN_nc73291880_default,Remove Response,water_level,60
+NC.CRH..HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.CRH..HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.CRH..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NC.CRH..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.CRH..HNN_nc73291880_default,Taper,side,both
+NC.CRH..HNN_nc73291880_default,Taper,taper_width,0.05
+NC.CRH..HNN_nc73291880_default,Taper,window_type,Hann
+NC.CRH..HNN_nc73291880_default,Highpass Filter,corner_frequency,0.12022894661571443
+NC.CRH..HNN_nc73291880_default,Highpass Filter,filter_order,5
+NC.CRH..HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.CRH..HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.CRH..HNN_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+NC.CRH..HNN_nc73291880_default,Lowpass Filter,filter_order,5
+NC.CRH..HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.CRH..HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.CRH..HNN_nc73291880_default,Detrend,detrending_method,pre
+NC.CRH..HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.CRH..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.CRH..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.CRH..HNZ_nc73291880_default,Remove Response,input_units,counts
+NC.CRH..HNZ_nc73291880_default,Remove Response,method,remove_response
+NC.CRH..HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.CRH..HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NC.CRH..HNZ_nc73291880_default,Remove Response,water_level,60
+NC.CRH..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.CRH..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.CRH..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NC.CRH..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.CRH..HNZ_nc73291880_default,Taper,side,both
+NC.CRH..HNZ_nc73291880_default,Taper,taper_width,0.05
+NC.CRH..HNZ_nc73291880_default,Taper,window_type,Hann
+NC.CRH..HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.1429771187446899
+NC.CRH..HNZ_nc73291880_default,Highpass Filter,filter_order,5
+NC.CRH..HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.CRH..HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.CRH..HNZ_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+NC.CRH..HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+NC.CRH..HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.CRH..HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.CRH..HNZ_nc73291880_default,Detrend,detrending_method,pre
+NC.CRH..HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.CTA..HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.CTA..HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.CTA..HNE_nc73291880_default,Remove Response,input_units,counts
+NC.CTA..HNE_nc73291880_default,Remove Response,method,remove_response
+NC.CTA..HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.CTA..HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NC.CTA..HNE_nc73291880_default,Remove Response,water_level,60
+NC.CTA..HNE_nc73291880_default,Detrend,detrending_method,linear
+NC.CTA..HNE_nc73291880_default,Detrend,detrending_method,demean
+NC.CTA..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NC.CTA..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.CTA..HNE_nc73291880_default,Taper,side,both
+NC.CTA..HNE_nc73291880_default,Taper,taper_width,0.05
+NC.CTA..HNE_nc73291880_default,Taper,window_type,Hann
+NC.CTA..HNE_nc73291880_default,Highpass Filter,corner_frequency,0.18223300615953256
+NC.CTA..HNE_nc73291880_default,Highpass Filter,filter_order,5
+NC.CTA..HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.CTA..HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.CTA..HNE_nc73291880_default,Lowpass Filter,corner_frequency,36.60214239864058
+NC.CTA..HNE_nc73291880_default,Lowpass Filter,filter_order,5
+NC.CTA..HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.CTA..HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.CTA..HNE_nc73291880_default,Detrend,detrending_method,pre
+NC.CTA..HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.CTA..HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.CTA..HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.CTA..HNN_nc73291880_default,Remove Response,input_units,counts
+NC.CTA..HNN_nc73291880_default,Remove Response,method,remove_response
+NC.CTA..HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.CTA..HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NC.CTA..HNN_nc73291880_default,Remove Response,water_level,60
+NC.CTA..HNN_nc73291880_default,Detrend,detrending_method,linear
+NC.CTA..HNN_nc73291880_default,Detrend,detrending_method,demean
+NC.CTA..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NC.CTA..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.CTA..HNN_nc73291880_default,Taper,side,both
+NC.CTA..HNN_nc73291880_default,Taper,taper_width,0.05
+NC.CTA..HNN_nc73291880_default,Taper,window_type,Hann
+NC.CTA..HNN_nc73291880_default,Highpass Filter,corner_frequency,0.18223300615953256
+NC.CTA..HNN_nc73291880_default,Highpass Filter,filter_order,5
+NC.CTA..HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.CTA..HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.CTA..HNN_nc73291880_default,Lowpass Filter,corner_frequency,36.60214239864058
+NC.CTA..HNN_nc73291880_default,Lowpass Filter,filter_order,5
+NC.CTA..HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.CTA..HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.CTA..HNN_nc73291880_default,Detrend,detrending_method,pre
+NC.CTA..HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NC.CTA..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.CTA..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.CTA..HNZ_nc73291880_default,Remove Response,input_units,counts
+NC.CTA..HNZ_nc73291880_default,Remove Response,method,remove_response
+NC.CTA..HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+NC.CTA..HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NC.CTA..HNZ_nc73291880_default,Remove Response,water_level,60
+NC.CTA..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NC.CTA..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NC.CTA..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NC.CTA..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NC.CTA..HNZ_nc73291880_default,Taper,side,both
+NC.CTA..HNZ_nc73291880_default,Taper,taper_width,0.05
+NC.CTA..HNZ_nc73291880_default,Taper,window_type,Hann
+NC.CTA..HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.15864304616332725
+NC.CTA..HNZ_nc73291880_default,Highpass Filter,filter_order,5
+NC.CTA..HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NC.CTA..HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+NC.CTA..HNZ_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+NC.CTA..HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+NC.CTA..HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NC.CTA..HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+NC.CTA..HNZ_nc73291880_default,Detrend,detrending_method,pre
+NC.CTA..HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1691..HNE_nc73291880_default,Detrend,detrending_method,linear
+NP.1691..HNE_nc73291880_default,Detrend,detrending_method,demean
+NP.1691..HNE_nc73291880_default,Remove Response,input_units,counts
+NP.1691..HNE_nc73291880_default,Remove Response,method,remove_response
+NP.1691..HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1691..HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NP.1691..HNE_nc73291880_default,Remove Response,water_level,60
+NP.1691..HNE_nc73291880_default,Detrend,detrending_method,linear
+NP.1691..HNE_nc73291880_default,Detrend,detrending_method,demean
+NP.1691..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:02.000000Z
+NP.1691..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1691..HNE_nc73291880_default,Taper,side,both
+NP.1691..HNE_nc73291880_default,Taper,taper_width,0.05
+NP.1691..HNE_nc73291880_default,Taper,window_type,Hann
+NP.1691..HNE_nc73291880_default,Highpass Filter,corner_frequency,0.10515015314917223
+NP.1691..HNE_nc73291880_default,Highpass Filter,filter_order,5
+NP.1691..HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1691..HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1691..HNE_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NP.1691..HNE_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1691..HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1691..HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1691..HNE_nc73291880_default,Detrend,detrending_method,pre
+NP.1691..HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1691..HNN_nc73291880_default,Detrend,detrending_method,linear
+NP.1691..HNN_nc73291880_default,Detrend,detrending_method,demean
+NP.1691..HNN_nc73291880_default,Remove Response,input_units,counts
+NP.1691..HNN_nc73291880_default,Remove Response,method,remove_response
+NP.1691..HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1691..HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NP.1691..HNN_nc73291880_default,Remove Response,water_level,60
+NP.1691..HNN_nc73291880_default,Detrend,detrending_method,linear
+NP.1691..HNN_nc73291880_default,Detrend,detrending_method,demean
+NP.1691..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:02.000000Z
+NP.1691..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1691..HNN_nc73291880_default,Taper,side,both
+NP.1691..HNN_nc73291880_default,Taper,taper_width,0.05
+NP.1691..HNN_nc73291880_default,Taper,window_type,Hann
+NP.1691..HNN_nc73291880_default,Highpass Filter,corner_frequency,0.10515015314917223
+NP.1691..HNN_nc73291880_default,Highpass Filter,filter_order,5
+NP.1691..HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1691..HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1691..HNN_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NP.1691..HNN_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1691..HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1691..HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1691..HNN_nc73291880_default,Detrend,detrending_method,pre
+NP.1691..HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1691..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NP.1691..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NP.1691..HNZ_nc73291880_default,Remove Response,input_units,counts
+NP.1691..HNZ_nc73291880_default,Remove Response,method,remove_response
+NP.1691..HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1691..HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NP.1691..HNZ_nc73291880_default,Remove Response,water_level,60
+NP.1691..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NP.1691..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NP.1691..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:02.000000Z
+NP.1691..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1691..HNZ_nc73291880_default,Taper,side,both
+NP.1691..HNZ_nc73291880_default,Taper,taper_width,0.05
+NP.1691..HNZ_nc73291880_default,Taper,window_type,Hann
+NP.1691..HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.06685547504644494
+NP.1691..HNZ_nc73291880_default,Highpass Filter,filter_order,5
+NP.1691..HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1691..HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1691..HNZ_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NP.1691..HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1691..HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1691..HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1691..HNZ_nc73291880_default,Detrend,detrending_method,pre
+NP.1691..HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1844..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:48.000000Z
+NP.1844..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NP.1844..HNE_nc73291880_default,Detrend,detrending_method,linear
+NP.1844..HNE_nc73291880_default,Detrend,detrending_method,demean
+NP.1844..HNE_nc73291880_default,Remove Response,input_units,counts
+NP.1844..HNE_nc73291880_default,Remove Response,method,remove_response
+NP.1844..HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1844..HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NP.1844..HNE_nc73291880_default,Remove Response,water_level,60
+NP.1844..HNE_nc73291880_default,Detrend,detrending_method,linear
+NP.1844..HNE_nc73291880_default,Detrend,detrending_method,demean
+NP.1844..HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:09.000000Z
+NP.1844..HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1844..HNE_nc73291880_default,Taper,side,both
+NP.1844..HNE_nc73291880_default,Taper,taper_width,0.05
+NP.1844..HNE_nc73291880_default,Taper,window_type,Hann
+NP.1844..HNE_nc73291880_default,Highpass Filter,corner_frequency,0.16423758110424108
+NP.1844..HNE_nc73291880_default,Highpass Filter,filter_order,5
+NP.1844..HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1844..HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1844..HNE_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NP.1844..HNE_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1844..HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1844..HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1844..HNE_nc73291880_default,Detrend,detrending_method,pre
+NP.1844..HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1844..HNE_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:48.000000Z
+NP.1844..HNE_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NP.1844..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:48.000000Z
+NP.1844..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NP.1844..HNN_nc73291880_default,Detrend,detrending_method,linear
+NP.1844..HNN_nc73291880_default,Detrend,detrending_method,demean
+NP.1844..HNN_nc73291880_default,Remove Response,input_units,counts
+NP.1844..HNN_nc73291880_default,Remove Response,method,remove_response
+NP.1844..HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1844..HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NP.1844..HNN_nc73291880_default,Remove Response,water_level,60
+NP.1844..HNN_nc73291880_default,Detrend,detrending_method,linear
+NP.1844..HNN_nc73291880_default,Detrend,detrending_method,demean
+NP.1844..HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:09.000000Z
+NP.1844..HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1844..HNN_nc73291880_default,Taper,side,both
+NP.1844..HNN_nc73291880_default,Taper,taper_width,0.05
+NP.1844..HNN_nc73291880_default,Taper,window_type,Hann
+NP.1844..HNN_nc73291880_default,Highpass Filter,corner_frequency,0.16423758110424108
+NP.1844..HNN_nc73291880_default,Highpass Filter,filter_order,5
+NP.1844..HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1844..HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1844..HNN_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NP.1844..HNN_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1844..HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1844..HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1844..HNN_nc73291880_default,Detrend,detrending_method,pre
+NP.1844..HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1844..HNN_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:48.000000Z
+NP.1844..HNN_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NP.1844..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:36:48.000000Z
+NP.1844..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NP.1844..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NP.1844..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NP.1844..HNZ_nc73291880_default,Remove Response,input_units,counts
+NP.1844..HNZ_nc73291880_default,Remove Response,method,remove_response
+NP.1844..HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1844..HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 90.0, 100.0)"
+NP.1844..HNZ_nc73291880_default,Remove Response,water_level,60
+NP.1844..HNZ_nc73291880_default,Detrend,detrending_method,linear
+NP.1844..HNZ_nc73291880_default,Detrend,detrending_method,demean
+NP.1844..HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:09.000000Z
+NP.1844..HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1844..HNZ_nc73291880_default,Taper,side,both
+NP.1844..HNZ_nc73291880_default,Taper,taper_width,0.05
+NP.1844..HNZ_nc73291880_default,Taper,window_type,Hann
+NP.1844..HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.20220018043776897
+NP.1844..HNZ_nc73291880_default,Highpass Filter,filter_order,5
+NP.1844..HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1844..HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1844..HNZ_nc73291880_default,Lowpass Filter,corner_frequency,75.0
+NP.1844..HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1844..HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1844..HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1844..HNZ_nc73291880_default,Detrend,detrending_method,pre
+NP.1844..HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1844..HNZ_nc73291880_unprocessed,Cut,new_end_time,2019-10-15T05:36:48.000000Z
+NP.1844..HNZ_nc73291880_unprocessed,Cut,new_start_time,2019-10-15T05:33:12.000000Z
+NP.1847.10.HNE_nc73291880_default,Detrend,detrending_method,linear
+NP.1847.10.HNE_nc73291880_default,Detrend,detrending_method,demean
+NP.1847.10.HNE_nc73291880_default,Remove Response,input_units,counts
+NP.1847.10.HNE_nc73291880_default,Remove Response,method,remove_response
+NP.1847.10.HNE_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1847.10.HNE_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NP.1847.10.HNE_nc73291880_default,Remove Response,water_level,60
+NP.1847.10.HNE_nc73291880_default,Detrend,detrending_method,linear
+NP.1847.10.HNE_nc73291880_default,Detrend,detrending_method,demean
+NP.1847.10.HNE_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NP.1847.10.HNE_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1847.10.HNE_nc73291880_default,Taper,side,both
+NP.1847.10.HNE_nc73291880_default,Taper,taper_width,0.05
+NP.1847.10.HNE_nc73291880_default,Taper,window_type,Hann
+NP.1847.10.HNE_nc73291880_default,Highpass Filter,corner_frequency,0.11613350732448445
+NP.1847.10.HNE_nc73291880_default,Highpass Filter,filter_order,5
+NP.1847.10.HNE_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1847.10.HNE_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1847.10.HNE_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+NP.1847.10.HNE_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1847.10.HNE_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1847.10.HNE_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1847.10.HNE_nc73291880_default,Detrend,detrending_method,pre
+NP.1847.10.HNE_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1847.10.HNN_nc73291880_default,Detrend,detrending_method,linear
+NP.1847.10.HNN_nc73291880_default,Detrend,detrending_method,demean
+NP.1847.10.HNN_nc73291880_default,Remove Response,input_units,counts
+NP.1847.10.HNN_nc73291880_default,Remove Response,method,remove_response
+NP.1847.10.HNN_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1847.10.HNN_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NP.1847.10.HNN_nc73291880_default,Remove Response,water_level,60
+NP.1847.10.HNN_nc73291880_default,Detrend,detrending_method,linear
+NP.1847.10.HNN_nc73291880_default,Detrend,detrending_method,demean
+NP.1847.10.HNN_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NP.1847.10.HNN_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1847.10.HNN_nc73291880_default,Taper,side,both
+NP.1847.10.HNN_nc73291880_default,Taper,taper_width,0.05
+NP.1847.10.HNN_nc73291880_default,Taper,window_type,Hann
+NP.1847.10.HNN_nc73291880_default,Highpass Filter,corner_frequency,0.11613350732448445
+NP.1847.10.HNN_nc73291880_default,Highpass Filter,filter_order,5
+NP.1847.10.HNN_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1847.10.HNN_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1847.10.HNN_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+NP.1847.10.HNN_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1847.10.HNN_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1847.10.HNN_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1847.10.HNN_nc73291880_default,Detrend,detrending_method,pre
+NP.1847.10.HNN_nc73291880_default,Detrend,detrending_method,baseline_sixth_order
+NP.1847.10.HNZ_nc73291880_default,Detrend,detrending_method,linear
+NP.1847.10.HNZ_nc73291880_default,Detrend,detrending_method,demean
+NP.1847.10.HNZ_nc73291880_default,Remove Response,input_units,counts
+NP.1847.10.HNZ_nc73291880_default,Remove Response,method,remove_response
+NP.1847.10.HNZ_nc73291880_default,Remove Response,output_units,cm/s^2
+NP.1847.10.HNZ_nc73291880_default,Remove Response,pre_filt_freqs,"(0.001, 0.005, 45.0, 50.0)"
+NP.1847.10.HNZ_nc73291880_default,Remove Response,water_level,60
+NP.1847.10.HNZ_nc73291880_default,Detrend,detrending_method,linear
+NP.1847.10.HNZ_nc73291880_default,Detrend,detrending_method,demean
+NP.1847.10.HNZ_nc73291880_default,Cut,new_end_time,2019-10-15T05:34:17.000000Z
+NP.1847.10.HNZ_nc73291880_default,Cut,new_start_time,2019-10-15T05:33:42.000000Z
+NP.1847.10.HNZ_nc73291880_default,Taper,side,both
+NP.1847.10.HNZ_nc73291880_default,Taper,taper_width,0.05
+NP.1847.10.HNZ_nc73291880_default,Taper,window_type,Hann
+NP.1847.10.HNZ_nc73291880_default,Highpass Filter,corner_frequency,0.153239081620459
+NP.1847.10.HNZ_nc73291880_default,Highpass Filter,filter_order,5
+NP.1847.10.HNZ_nc73291880_default,Highpass Filter,filter_type,Butterworth gmprocess
+NP.1847.10.HNZ_nc73291880_default,Highpass Filter,number_of_passes,1
+NP.1847.10.HNZ_nc73291880_default,Lowpass Filter,corner_frequency,37.5
+NP.1847.10.HNZ_nc73291880_default,Lowpass Filter,filter_order,5
+NP.1847.10.HNZ_nc73291880_default,Lowpass Filter,filter_type,Butterworth gmprocess
+NP.1847.10.HNZ_nc73291880_default,Lowpass Filter,number_of_passes,1
+NP.1847.10.HNZ_nc73291880_default,Detrend,detrending_method,pre
+NP.1847.10.HNZ_nc73291880_default,Detrend,detrending_method,baseline_sixth_order

@@ -76,6 +76,19 @@ Attributes
    of the channel code, since these should all be applicable to all traces in
    the StationStream object.
 
+   .. py:property:: passed
+
+      Attribute indicating if the stream passed QA checks.
+
+      See `StationStream.check_stream` for more details.
+
+      :returns: Stream has passed QA checks.
+      :rtype: bool
+
+   .. py:property:: num_horizontal
+
+      Get the number of horizontal components in the StationStream.
+
    .. py:method:: validate()
 
       Validation checks for Traces within a StationStream.
@@ -119,23 +132,6 @@ Attributes
    .. py:method:: get_inst()
 
       Get first two characters of the channel code.
-
-
-   .. py:method:: passed()
-      :property:
-
-      Attribute indicating if the stream passed QA checks.
-
-      See `StationStream.check_stream` for more details.
-
-      :returns: Stream has passed QA checks.
-      :rtype: bool
-
-
-   .. py:method:: num_horizontal()
-      :property:
-
-      Get the number of horizontal components in the StationStream.
 
 
    .. py:method:: __str__(extended=False, indent=0)

@@ -1,7 +1,7 @@
 # Changelog
 
 
-## 1.2.1 / 2022-09-30
+## 1.2.1 / 2022-10-04
 
 - Data fetcher bugfix.
 - Improvement to Windows install instructions.

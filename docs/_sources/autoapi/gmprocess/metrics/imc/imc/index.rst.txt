@@ -23,6 +23,13 @@ Classes
 
    Base class for the IMC classes.
 
+   .. py:property:: steps
+
+      Steps for the imt/imc computation.
+
+      :returns: Steps for the imt/imc computation as a dictionary.
+      :rtype: self._steps
+
    .. py:method:: valid_combination(imt)
 
       Checks whether the combinations of imt and imc is valid.
@@ -32,15 +39,6 @@ Classes
 
       :returns: Whether or not the pair is valid.
       :rtype: bool
-
-
-   .. py:method:: steps()
-      :property:
-
-      Steps for the imt/imc computation.
-
-      :returns: Steps for the imt/imc computation as a dictionary.
-      :rtype: self._steps
 
 
 

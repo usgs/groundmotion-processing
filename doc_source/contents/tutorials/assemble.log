@@ -1,0 +1,75 @@
+INFO 2022-10-04 15:42:05 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-04 15:42:05 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-04 15:42:05 | assemble.main: Running subcommand 'assemble'
+INFO 2022-10-04 15:42:09 | assemble.main: Number of events to assemble: 1
+INFO 2022-10-04 15:42:09 | assemble._assemble_event: Starting event: nc73291880
+INFO 2022-10-04 15:42:15 | assemble_utils.assemble: 
+13 StationStreams(s) in StreamCollection:
+  3 StationTrace(s) in StationStream (passed):
+    CE.58369..HNZ | 2019-10-15T05:33:17.000000Z - 2019-10-15T05:34:27.995000Z | 200.0 Hz, 14200 samples (passed)
+    CE.58369..HNN | 2019-10-15T05:33:17.000000Z - 2019-10-15T05:34:27.995000Z | 200.0 Hz, 14200 samples (passed)
+    CE.58369..HNE | 2019-10-15T05:33:17.000000Z - 2019-10-15T05:34:27.995000Z | 200.0 Hz, 14200 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.C010.01.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:50.125000Z | 200.0 Hz, 43464 samples (passed)
+    NC.C010.01.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:50.125000Z | 200.0 Hz, 43464 samples (passed)
+    NC.C010.01.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:50.125000Z | 200.0 Hz, 43464 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NP.1847.10.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NP.1847.10.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NP.1847.10.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.CTA..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CTA..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CTA..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BK.BRIB.01.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NP.1691..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:03.995000Z | 200.0 Hz, 34238 samples (passed)
+    NP.1691..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:03.995000Z | 200.0 Hz, 34238 samples (passed)
+    NP.1691..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:03.995000Z | 200.0 Hz, 34238 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    CE.58442..HNN | 2019-10-15T05:33:19.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12800 samples (passed)
+    CE.58442..HNZ | 2019-10-15T05:33:19.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12800 samples (passed)
+    CE.58442..HNE | 2019-10-15T05:33:19.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12800 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.CRH..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CRH..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    NC.CRH..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BK.BRIB.01.HHE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HHN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+    BK.BRIB.01.HHZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:40:42.800000Z | 100.0 Hz, 45000 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NP.1844..HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:48.995000Z | 200.0 Hz, 43238 samples (passed)
+    NP.1844..HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:48.995000Z | 200.0 Hz, 43238 samples (passed)
+    NP.1844..HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:48.995000Z | 200.0 Hz, 43238 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    CE.58360..HNE | 2019-10-15T05:33:21.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12400 samples (passed)
+    CE.58360..HNN | 2019-10-15T05:33:21.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12400 samples (passed)
+    CE.58360..HNZ | 2019-10-15T05:33:21.000000Z - 2019-10-15T05:34:22.995000Z | 200.0 Hz, 12400 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    NC.C018.01.HNE | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:51.390000Z | 200.0 Hz, 43717 samples (passed)
+    NC.C018.01.HNN | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:51.390000Z | 200.0 Hz, 43717 samples (passed)
+    NC.C018.01.HNZ | 2019-10-15T05:33:12.810000Z - 2019-10-15T05:36:51.390000Z | 200.0 Hz, 43717 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BK.BRIB.01.BHE | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
+    BK.BRIB.01.BHN | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
+    BK.BRIB.01.BHZ | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
+INFO 2022-10-04 15:42:16 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
+INFO 2022-10-04 15:42:17 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-04 15:42:17 | base._summarize_files_created: File type: Workspace
+INFO 2022-10-04 15:42:17 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting/nc73291880/workspace.h5
