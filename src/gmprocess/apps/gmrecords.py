@@ -158,10 +158,10 @@ class GMrecordsApp(object):
             response = int(input("> "))
             if response not in [1, 2]:
                 print("Not a valid response. Exiting.")
-                sys.exit(0)
+                sys.exit(1)
             elif response == 1:
                 init.InitModule().main(self)
-                sys.exit(0)
+                return
             else:
                 self._initial_setup()
 
@@ -170,14 +170,13 @@ class GMrecordsApp(object):
         # self.current_project gets set by _validate_projects_config if it is
         # successful.
         if not hasattr(self, "current_project"):
-            print("Project validation failed.")
-            print("This likely has occurred due to errors in the project conf file: ")
-            print(f"    {self.PROJECTS_FILE}")
-            print("Deleting this file and creating a new one with:")
-            print("    gmrecords proj -c")
-            print("will likely solve the problem.")
-            print("Exiting.")
-            sys.exit()
+            msg = (
+                "Project validation failed. Missing 'current_project' in "
+                f"{self.PROJECTS_FILE}."
+                "Add 'current_project' or delete this file and create a new one with:"
+                "    gmrecords projects --create"
+            )
+            raise IOError(msg)
 
         self.conf_path = Path(
             Path(self.PROJECTS_FILE).parent / self.current_project["conf_path"]
@@ -235,10 +234,9 @@ class GMrecordsApp(object):
             config.filename = self.PROJECTS_FILE
             config.write()
             logging.info(f"Deleted project: {project}")
-
             logging.info("\nSet to new project:\n")
             logging.info(newproject)
-            sys.exit(0)
+            return
 
         # Only run get_config for assemble and projects
         subcommands_need_conf = ["download", "assemble", "auto_shakemap"]

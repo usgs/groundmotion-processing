@@ -78,7 +78,6 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         self.workspace = ws.StreamWorkspace.open(workname)
         ds = self.workspace.dataset
         self._get_labels()
-
         config = self._get_config()
 
         station_list = ds.waveforms.list()

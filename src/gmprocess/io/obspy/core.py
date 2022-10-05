@@ -200,7 +200,7 @@ def read_obspy(filename, config=None, **kwargs):
                     "that you have 4 fields: Network, Station ID, Location Code, and "
                     f"Channel. Skipping {pattern}."
                 )
-                sys.exit(0)
+                continue
             # Loop over each component, convert the pattern's field
             # into its regular expression form, and see if the
             # pattern is in the instrument's component.

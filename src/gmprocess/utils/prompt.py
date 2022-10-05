@@ -71,28 +71,24 @@ def set_project_paths(default_conf, default_data):
     """
     new_conf_path, conf_ok = make_dir("conf path", default_conf)
     if not conf_ok:
-        print(
-            "\n".join(
-                textwrap.wrap(
-                    "Please try to find a path that can be created on this "
-                    "system and then try again. Exiting."
-                )
+        msg = "\n".join(
+            textwrap.wrap(
+                "Please provide a conf path that can be created on this "
+                "system and then try again. Aborting creating project paths."
             )
         )
         shutil.rmtree(new_conf_path)
-        sys.exit(1)
+        raise IOError(msg)
     new_data_path, data_ok = make_dir("data path", default_data)
     if not data_ok:
-        print(
-            "\n".join(
-                textwrap.wrap(
-                    "Please try to find a path that can be created on this "
-                    "system and then try again. Exiting."
-                )
+        msg = "\n".join(
+            textwrap.wrap(
+                "Please provide a data path that can be created on this "
+                "system and then try again. Aborting creating project paths."
             )
         )
         shutil.rmtree(new_data_path)
-        sys.exit(1)
+        raise IOError(msg)
     return (new_conf_path, new_data_path)
 
 

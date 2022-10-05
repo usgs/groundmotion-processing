@@ -62,7 +62,7 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
                 "Please run 'gmrecords export_metric_tables'."
             )
             logging.error(msg)
-            sys.exit(1)
+            return
         else:
             print("Multiple event files found, please select one:")
             for e in event_files:

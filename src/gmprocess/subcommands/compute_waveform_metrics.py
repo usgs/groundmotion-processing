@@ -92,7 +92,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
                     "No matching streams found. "
                     f"Aborting computation of station metrics for {station_id} for {event.id}."
                 )
-                sys.exit()
+                continue
 
             for stream in streams:
                 if not stream.passed:
