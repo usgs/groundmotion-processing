@@ -53,14 +53,16 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        for event in self.events:
+        for ievent, event in enumerate(self.events):
+            logging.info(
+                f"Computing station metrics for event {event.id} ({1+ievent} of {len(self.events)})..."
+            )
             self._event_station_metrics(event)
 
         self._summarize_files_created()
 
     def _event_station_metrics(self, event):
         self.eventid = event.id
-        logging.info(f"Computing station metrics for event {self.eventid}...")
         event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
         workname = os.path.normpath(
             os.path.join(event_dir, utils.constants.WORKSPACE_NAME)
@@ -232,7 +234,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
         logging.info(
             "Added station metrics to workspace files with tag "
             f"'{self.gmrecords.args.label}'."
-                )
+        )
 
         self.workspace.close()
         return event.id

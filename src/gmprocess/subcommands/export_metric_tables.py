@@ -41,9 +41,12 @@ class ExportMetricTablesModule(base.SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        for event in self.events:
+        for ievent, event in enumerate(self.events):
+            logging.info(
+                f"Creating tables for event {event.id} "
+                f"({1+ievent} of {len(self.events)})..."
+            )
             self.eventid = event.id
-            logging.info(f"Creating tables for event {self.eventid}...")
             event_dir = os.path.join(gmrecords.data_path, self.eventid)
             workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
             if not os.path.isfile(workname):

@@ -38,9 +38,12 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
         self._check_arguments()
         self._get_events()
 
-        for event in self.events:
+        for ievent, event in enumerate(self.events):
             self.eventid = event.id
-            logging.info(f"Creating provenance tables for event {self.eventid}...")
+            logging.info(
+                f"Creating provenance tables for event {self.eventid} "
+                f"({1+ievent} of {len(self.events)})..."
+            )
             event_dir = os.path.normpath(
                 os.path.join(gmrecords.data_path, self.eventid)
             )
