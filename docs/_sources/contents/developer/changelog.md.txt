@@ -1,5 +1,9 @@
 # Changelog
 
+## Updates since last release
+
+- Adding "Merge Request Guidelines" and "Release Steps" sections to developer resources. 
+
 
 ## 1.2.1 / 2022-10-04
 

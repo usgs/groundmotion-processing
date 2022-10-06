@@ -104,7 +104,7 @@ for step in STEPS:
 Running the script will produce CSV files with the waveform metrics in the `data/scripting` directory and reports in the `data/scripting/nc73291880` directory.
 
 ```{code-block} console
-$ ls -1 data/scripting/*.csv
+ls -1 data/scripting/*.csv
 
 data/scripting/scripting-tutorial_default_events.csv
 data/scripting/scripting-tutorial_default_fit_spectra_parameters.csv
@@ -122,7 +122,7 @@ data/scripting/scripting-tutorial_default_snr_README.csv
 ```
 
 ```{code-block} console
-$ ls -1 data/scripting/nc73291880/*.pdf data/scripting/nc73291880/*.html
+ls -1 data/scripting/nc73291880/*.pdf data/scripting/nc73291880/*.html
 
 data/scripting/nc73291880/scripting-tutorial_default_report_nc73291880.pdf
 data/scripting/nc73291880/stations_map.html

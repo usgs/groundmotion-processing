@@ -25,8 +25,8 @@ If you do not wish to share your personal information, we recommend using an ins
 
 To create a directory project, use the gmrecords `init` subcommand in the directory where you would like to activate the project.
 
-```code-block} console]
-$ gmrecords init
+```{code-block} console
+gmrecords init
 INFO 2021-11-12 20:00:32 | gmrecords.__init__: Logging level includes INFO.
 INFO 2021-11-12 20:00:32 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess
 INFO 2021-11-12 20:00:32 | init.main: Running subcommand 'init'

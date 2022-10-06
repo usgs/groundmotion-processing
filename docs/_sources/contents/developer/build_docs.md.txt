@@ -4,14 +4,14 @@ Some additional packages are required to build the documentation, which can be i
 with the `doc` install option, e.g.,
 
 ```
-$ pip install .[doc]
-```
+pip install .[doc]
+```{code-block} console
 
 Then the docs are built with
 
-```
-$ cd doc_source/
-$ ./makedocs.sh
+```{code-block} console
+cd doc_source/
+./makedocs.sh
 ```
 
 The docs can then be previewed by opening `../docs/index.html` in a browser.

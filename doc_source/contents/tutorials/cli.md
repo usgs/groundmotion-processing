@@ -37,7 +37,7 @@ In this example we will consider ground motions recorded for a [magnitude 4.5 ea
 ```{tab} Download
 We download data from FDSN data centers using the USGS ComCat event ID nc73291880.
 
-`$ gmrecords download --eventid nc73291880`
+`gmrecords download --eventid nc73291880`
 ```
 
 ```{tab} Use cached data
