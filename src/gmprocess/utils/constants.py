@@ -9,9 +9,10 @@ DATA_DIR = pathlib.Path(__file__).parent / ".." / "data"
 TEST_DATA_DIR = pathlib.Path(__file__).parent / ".." / ".." / ".." / "tests" / "data"
 
 PROJ_CONF_DIR = ".gmprocess"
-PROJECTS_PATH = os.path.join(os.path.expanduser("~"), PROJ_CONF_DIR)
+PROJ_CONF_FILE = "projects.conf"
+PROJECTS_PATH = pathlib.Path("~").expanduser() / PROJ_CONF_DIR
 
-CONFIG_PATH_TEST = os.path.join(os.path.expanduser("~"), "gmptest")
+CONFIG_PATH_TEST = pathlib.Path("~").expanduser() / "gmptest"
 CONFIG_FILE_PRODUCTION = "config_production.yml"
 CONFIG_FILE_TEST = "config_test.yml"
 PICKER_FILE = "picker.yml"

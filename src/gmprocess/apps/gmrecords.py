@@ -13,6 +13,8 @@ import shutil
 import importlib.metadata
 
 from pathlib import Path
+
+from gmprocess.subcommands.projects import Project
 from ..subcommands.lazy_loader import LazyLoader
 
 VERSION = importlib.metadata.version("gmprocess")
@@ -55,21 +57,23 @@ class GMrecordsApp(object):
     """
 
     def __init__(self):
-        # Try not to let tests interfere with actual system:
-        if os.getenv("CALLED_FROM_PYTEST") is None:
-            # Not called from pytest
-            local_proj = Path.cwd() / const.PROJ_CONF_DIR
-            local_proj_conf = local_proj / "projects.conf"
-            if local_proj.is_dir() and local_proj_conf.is_file():
-                PROJECTS_PATH = local_proj
-            else:
-                PROJECTS_PATH = const.PROJECTS_PATH
+        if "CALLED_FROM_PYTEST" in os.environ:
+            projects_path = const.CONFIG_PATH_TEST
         else:
-            PROJECTS_PATH = const.CONFIG_PATH_TEST
+            local_proj = Path.cwd() / const.PROJ_CONF_DIR
+            local_proj_conf = local_proj / const.PROJ_CONF_FILE
+            if local_proj.is_dir() and local_proj_conf.is_file():
+                projects_path = local_proj
+            else:
+                projects_path = const.PROJECTS_PATH
 
-        self.PROJECTS_PATH = PROJECTS_PATH
-        self.PROJECTS_FILE = str(Path(Path(PROJECTS_PATH) / "projects.conf"))
+        self.projects_path = projects_path
+        self.projects_file = projects_path / const.PROJ_CONF_FILE
         self.gmprocess_version = VERSION
+
+        self.projects_conf = None
+        self.conf = None
+        self.classes = {}
 
     def main(self, **kwargs):
         self.args = (
@@ -77,20 +81,17 @@ class GMrecordsApp(object):
         )
 
         if self.args.subcommand is None:
-            self.parser.print_help()
+            parser.print_help()
             sys.exit()
         else:
-            self._initialize()
-            exclude_subcommands = ["projects", "proj", "init"]
-            if self.args.subcommand not in exclude_subcommands and not self.args.quiet:
-                # Print the current project information to try to avoid
-                # confusion
-                selected_project = self.projects_conf["project"]
-                proj = projmod.Project(
-                    selected_project,
-                    self.projects_conf["projects"][selected_project],
-                    self.projects_conf.filename,
-                )
+            subcmds_noinit = ["init"]
+            if not self.args.subcommand in subcmds_noinit:
+                self._initialize()
+
+            subcmds_quiet = ["init", "projects", "proj"]
+            if not self.args.subcommand in subcmds_quiet and not self.args.quiet:
+                # Print the current project information to avoid confusion
+                proj = Project.from_config(self.projects_conf, self.project_name)
                 print("-" * 80)
                 print(proj)
                 print("-" * 80)
@@ -115,7 +116,7 @@ class GMrecordsApp(object):
             for m in inspect.getmembers(module, inspect.isclass):
                 if m[1].__module__ == name:
                     core_class = getattr(module, m[0])
-                    # Check that core_class is a SubcommandModule becuase it is
+                    # Check that core_class is a SubcommandModule because it is
                     # possible that other classes will be defined in the
                     # module.
                     if not issubclass(core_class, base.SubcommandModule):
@@ -133,8 +134,25 @@ class GMrecordsApp(object):
                         "mfile": module.__file__,
                     }
 
+    @property
+    def project_name(self):
+        return self.projects_conf["project"]
+
+    @property
+    def current_project(self):
+        return self.projects_conf["projects"][self.project_name]
+
+    @property
+    def conf_path(self):
+        return (self.projects_path / self.current_project["conf_path"]).resolve()
+
+    @property
+    def data_path(self):
+        return (self.projects_path / self.current_project["data_path"]).resolve()
+
     def _initialize(self):
-        self._load_config()
+        require_config = self.args.subcommand != "projects"
+        self._load_config(require_config)
 
         log_file = self.args.log or None
         if log_file and not self.args.quiet:
@@ -142,160 +160,63 @@ class GMrecordsApp(object):
         log_utils.setup_logger(self.args, log_file=log_file)
         logging.info("Logging level includes INFO.")
         logging.debug("Logging level includes DEBUG.")
-        logging.info(f"PROJECTS_PATH: {self.PROJECTS_PATH}")
+        logging.info(f"PROJECTS_PATH: {self.projects_path}")
 
-    def _load_config(self):
-        if not Path(self.PROJECTS_FILE).is_file():
-            # If projects.conf file doesn't exist then we need to run the
+    def _load_config(self, require_config=True):
+        self.projects_conf = None
+        if not self.projects_file.is_file():
+            if not require_config:
+                return
+
+            # If projects.conf file doesn't exist and we need one, then run the
             # initial setup.
-            print("No project config file detected.")
-            print("Please select a project setup option:")
-            print("(1) Initialize the current directory as a gmrecords")
-            print("    project, which will contain data and conf")
-            print("    subdirectories.")
-            print("(2) Setup a project with data and conf locations that")
-            print("    are independent of the current directory.")
+            msg = (
+                "No project config file detected. Please select a project setup option:",
+                "(1) Initialize the current directory as a gmrecords project,",
+                "    which will contain data and conf subdirectories.",
+                "(2) Setup a project with data and conf locations that are",
+                "    independent of the current directory.",
+                "(3) Exit.",
+            )
+            print("\n".join(msg))
             response = int(input("> "))
-            if response not in [1, 2]:
+            if response not in [1, 2, 3]:
                 print("Not a valid response. Exiting.")
                 sys.exit(1)
             elif response == 1:
                 init.InitModule().main(self)
-                return
-            else:
+                self.projects_path = Path.cwd() / const.PROJ_CONF_DIR
+                self.projects_file = self.projects_path / const.PROJ_CONF_FILE
+            elif response == 2:
                 self._initial_setup()
-
-        self.projects_conf = configobj.ConfigObj(self.PROJECTS_FILE, encoding="utf-8")
-        self._validate_projects_config()
-        # self.current_project gets set by _validate_projects_config if it is
-        # successful.
-        if not hasattr(self, "current_project"):
-            msg = (
-                "Project validation failed. Missing 'current_project' in "
-                f"{self.PROJECTS_FILE}."
-                "Add 'current_project' or delete this file and create a new one with:"
-                "    gmrecords projects --create"
-            )
-            raise IOError(msg)
-
-        self.conf_path = Path(
-            Path(self.PROJECTS_FILE).parent / self.current_project["conf_path"]
-        ).resolve()
-        self.data_path = Path(
-            Path(self.PROJECTS_FILE).parent / self.current_project["data_path"]
-        ).resolve()
-
-        if os.getenv("CALLED_FROM_PYTEST") is not None:
-            self.conf_path = const.CONFIG_PATH_TEST  # ~/gmptest
-            test_conf_file = Path(
-                Path(const.DATA_DIR) / const.CONFIG_FILE_TEST
-            ).resolve()
-            if not Path(self.conf_path).exists():
-                Path(self.conf_path).mkdir()
-            shutil.copyfile(
-                test_conf_file, Path(Path(self.conf_path) / const.CONFIG_FILE_TEST)
-            )
-
-        if (not Path(self.conf_path).exists()) or (not Path(self.data_path).exists()):
-            print(
-                "Config and/or data directory does not exist for project: "
-                + self.project
-            )
-            config = self.projects_conf
-            project = self.project
-
-            conf_path = config["projects"][project]["conf_path"]
-            if Path(conf_path).exists():
-                question = f"Okay to delete everything in: {conf_path}?\n"
-                if not prompt.query_yes_no(question, default="yes"):
-                    shutil.rmtree(conf_path, ignore_errors=True)
-                    print(f"\tDeleted conf directory {conf_path}:")
-
-            data_path = config["projects"][project]["data_path"]
-            if Path(data_path).exists():
-                question = f"Okay to delete everything in: {data_path}?\n"
-                if not prompt.query_yes_no(question, default="yes"):
-                    shutil.rmtree(data_path, ignore_errors=True)
-                    print(f"\tDeleted conf directory {data_path}:")
-
-            del config["projects"][project]
-
-            if config["projects"].keys() == []:
-                print("No remaining projects in projects.conf")
-                default = None
-                newproject = "None"
             else:
-                default = config["projects"].keys()[0]
-                newproject = projmod.Project(
-                    default, config["projects"][default], config.filename
-                )
-            config["project"] = default
+                sys.exit(0)
 
-            config.filename = self.PROJECTS_FILE
-            config.write()
-            logging.info(f"Deleted project: {project}")
-            logging.info("\nSet to new project:\n")
-            logging.info(newproject)
-            return
+        self.projects_conf = configobj.ConfigObj(
+            str(self.projects_file), encoding="utf-8"
+        )
+        projmod.validate_projects_config(self.projects_conf, self.projects_path)
+        current_project = projmod.get_current(self.projects_conf)
 
-        # Only run get_config for assemble and projects
+        if "CALLED_FROM_PYTEST" in os.environ:
+            conf_path = const.CONFIG_PATH_TEST  # ~/gmptest
+            conf_path.mkdir(exist_ok=True)
+            test_conf_file = (const.DATA_DIR / const.CONFIG_FILE_TEST).resolve()
+            shutil.copyfile(test_conf_file, conf_path / const.CONFIG_FILE_TEST)
+
         subcommands_need_conf = ["download", "assemble", "auto_shakemap"]
         if self.args.func.command_name in subcommands_need_conf:
-            self.conf = configmod.get_config(config_path=self.conf_path)
-
-    def _validate_projects_config(self):
-        if "CALLED_FROM_PYTEST" in os.environ:
-            self.project = self.projects_conf["project"]
-            self.current_project = self.projects_conf["projects"][self.project]
-            return
-
-        # Check that all of the listed projects have the required keys and valid paths
-        bad_projs = []
-        for proj_name, proj in self.projects_conf["projects"].items():
-            if ("conf_path" not in proj) or ("data_path" not in proj):
-                bad_projs.append(proj_name)
-                continue
-            conf_path = Path(
-                Path(self.PROJECTS_FILE).parent / proj["conf_path"]
-            ).resolve()
-            data_path = Path(
-                Path(self.PROJECTS_FILE).parent / proj["data_path"]
-            ).resolve()
-            if not (conf_path.is_dir() and data_path.is_dir()):
-                bad_projs.append(proj_name)
-        for bad in bad_projs:
-            print(f'Problem encountered in "{bad}" project. Deleting.')
-            self.projects_conf["projects"].pop(bad)
-
-        # Check that the selected project is in the list of projects
-        self.project = self.projects_conf["project"]
-        if self.project in self.projects_conf["projects"]:
-            self.current_project = self.projects_conf["projects"][self.project]
-        else:
-            if len(self.projects_conf["projects"]):
-                new_proj = self.projects_conf["projects"].keys()[0]
-                print(f'The currently configured project ("{self.project}") is not in ')
-                print("the list of available projects. ")
-                print(f'Switching to the "{new_proj}" project.')
-                self.project = new_proj
-                self.current_project = self.projects_conf["projects"][self.project]
-                self.projects_conf["project"] = new_proj
-                self.projects_conf.write()
+            self.conf = configmod.get_config(config_path=self.projects_path)
 
     def _initial_setup(self):
         """
         Initial setup of ~/.gmprogress/projects.conf; essentially invoke
         # gmrecords projects -c
         """
-        if not Path(self.PROJECTS_PATH).is_dir():
-            Path(self.PROJECTS_PATH).mkdir()
+        self.projects_path.mkdir(exist_ok=True)
         empty_conf = configobj.ConfigObj(encoding="utf-8")
-        empty_conf.filename = self.PROJECTS_FILE
+        empty_conf.filename = self.projects_file
         projmod.create(empty_conf)
-        # Need to exit here because if gmp projects -c is called when there is
-        # no prior setup, the user would otherwise be forced to setup two
-        # projects.
-        sys.exit(0)
 
     def _parse_command_line(self):
         """Parse command line arguments."""
@@ -305,8 +226,8 @@ class GMrecordsApp(object):
         records, as well as exporting commonly used station and waveform
         parameters for earthquake hazard analysis.
         """
-        self.parser = argparse.ArgumentParser(description=description)
-        group = self.parser.add_mutually_exclusive_group()
+        parser = argparse.ArgumentParser(description=description)
+        group = parser.add_mutually_exclusive_group()
         group.add_argument(
             "-d",
             "--debug",
@@ -316,14 +237,14 @@ class GMrecordsApp(object):
         group.add_argument(
             "-q", "--quiet", action="store_true", help="Print only errors."
         )
-        self.parser.add_argument(
+        parser.add_argument(
             "-v",
             "--version",
             action="version",
             version="%(prog)s " + VERSION,
             help="Print program version.",
         )
-        self.parser.add_argument(
+        parser.add_argument(
             "-l",
             "--log",
             action="store",
@@ -333,7 +254,7 @@ class GMrecordsApp(object):
         )
 
         # Parsers for subcommands
-        subparsers = self.parser.add_subparsers(
+        subparsers = parser.add_subparsers(
             title="Subcommands", dest="subcommand", metavar="<command> (<aliases>)"
         )
 
@@ -368,4 +289,4 @@ class GMrecordsApp(object):
                 targ_dict.pop("long_flag", None)
                 parsers[-1].add_argument(*pargs, **targ_dict)
             parsers[-1].set_defaults(func=cdict["class"])
-        return self.parser.parse_args()
+        return parser.parse_args()

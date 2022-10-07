@@ -4,7 +4,6 @@
 import os
 import sys
 import platform
-import re
 import logging
 import shutil
 
@@ -15,10 +14,10 @@ ryaml = LazyLoader("yaml", globals(), "ruamel.yaml")
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 constants = LazyLoader("constants", globals(), "gmprocess.utils.constants")
 prompt = LazyLoader("prompt", globals(), "gmprocess.utils.prompt")
+configobj = LazyLoader("configobj", globals(), "configobj")
 
 
-# Regular expression for checking valid email
-re_email = r"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+CURRENT_MARKERS = {True: "**Current Project**", False: ""}
 
 
 class ProjectsModule(base.SubcommandModule):
@@ -84,142 +83,131 @@ class ProjectsModule(base.SubcommandModule):
         self._check_arguments()
 
         args = self.gmrecords.args
-        config = self.gmrecords.projects_conf
-        configfile = self.gmrecords.PROJECTS_FILE
+        self.config = self.gmrecords.projects_conf
+        self.config_filepath = self.gmrecords.projects_file
 
         if self.gmrecords.args.create:
-            create(config)
+            self.create_project()
             return
 
-        config = check_project_config(config)
+        if not self.config:
+            print(f"Could not find project configuration file {self.config_filepath}.")
+            return
+        if len(self.config["projects"]) == 0:
+            print(f"No projects in {self.config_filepath}.")
 
         if args.list:
-            projects = config["projects"]
-            current = config["project"]
-            for pname, pdict in projects.items():
-                is_current = False
-                if pname == current:
-                    is_current = True
-                project = Project(pname, pdict, config.filename, is_current=is_current)
-                print("\n" + str(project) + "\n")
-            return
-
-        if args.switch:
-            newproject = args.switch
-            if newproject not in config["projects"]:
-                msg = (
-                    f"Project {newproject} not in {configfile}. "
-                    "Run {self.command_name} -l to see available projects."
-                )
-                raise IOError(msg)
-            config["project"] = newproject
-            config.filename = configfile
-            config.write()
-            sp = Project(
-                newproject,
-                config["projects"][newproject],
-                config.filename,
-                is_current=True,
-            )
-            print(f"\nSwitched to project: \n{str(sp)}\n")
-            return
-
-        if args.delete:
-            project = args.delete
-            if project not in config["projects"]:
-                msg = (
-                    f"Project {newproject} not in {configfile}. "
-                    "Run {self.command_name} -l to see available projects."
-                )
-                logging.error(msg)
-                return
-
-            conf_path = Path(
-                Path(config.filename).parent / config["projects"][project]["conf_path"]
-            )
-            data_path = Path(
-                Path(config.filename).parent / config["projects"][project]["data_path"]
-            )
-
-            question = (
-                "Are you sure you want to delete everything in:\n"
-                f"{conf_path}\n--and--\n{data_path}?\n"
-            )
-            if not prompt.query_yes_no(question, default="yes"):
-                return
-
-            shutil.rmtree(data_path, ignore_errors=True)
-            shutil.rmtree(conf_path, ignore_errors=True)
-
-            del config["projects"][project]
-
-            if config["projects"].keys() == []:
-                print("No remaining projects in projects.conf")
-                default = None
-                newproject = "None"
-            else:
-                default = config["projects"].keys()[0]
-                newproject = Project(
-                    default, config["projects"][default], config.filename
-                )
-            config["project"] = default
-
-            config.filename = configfile
-            config.write()
-            print(f"Deleted project: {project}")
-            print(f"\tDeleted conf directory {conf_path}:")
-            print(f"\tDeleted data directory {data_path}:")
-
-            print("\nSet to new project:\n")
-            print(newproject)
-            return
-
-        if args.rename:
+            self.list_projects()
+        elif args.switch:
+            self.switch_project(args.switch)
+        elif args.delete:
+            self.delete_project(args.delete)
+        elif args.rename:
             source, target = args.rename
-            if source not in config["projects"]:
-                msg = "Project %s not in %s.  Run %s -l to see available projects."
-                print(msg % (source, configfile, self.command_name))
-                sys.exit(1)
+            self.rename_project(source, target)
+        else:
+            raise NotImplementedError("Subcommand projects option not implemented.")
 
-            source_conf_path = Path(
-                Path(config.filename).parent / config["projects"][source]["conf_path"]
-            )
-            source_data_path = Path(
-                Path(config.filename).parent / config["projects"][source]["data_path"]
-            )
-            target_conf_path = Path(str(source_conf_path).replace(source, target))
-            target_dath_path = Path(str(source_data_path).replace(source, target))
+    def list_projects(self):
+        projects = self.config["projects"]
+        for name, pdict in projects.items():
+            project = Project.from_config(self.config, name)
+            print("\n" + str(project) + "\n")
 
-            shutil.move(
-                str(source_conf_path.parent),
-                str(target_conf_path.parent),
-            )
-
-            config["projects"][target] = {
-                "conf_path": target_conf_path,
-                "data_path": target_dath_path,
-            }
-            config["project"] = target
-            del config["projects"][source]
-            config.write()
-
-            print(f"\nRenamed {source} to {target}")
-            sys.exit(0)
-
-        project = config["project"]
-        projects = config["projects"]
-        if project not in projects:
+    def switch_project(self, target):
+        if target not in self.config["projects"]:
             msg = (
-                f"Current project {project} not in {configfile}. "
-                "Edit your projects.conf file to match the specification."
+                f"Project '{target}' not in {self.config_filepath}. "
+                f"Run 'gmrecords {self.command_name} -l' to see available projects."
+            )
+            raise IOError(msg)
+        self.config["project"] = target
+        self.config.write()
+        sp = Project.from_config(self.config, target)
+        print(f"\nSwitched to project: \n{str(sp)}\n")
+
+    def delete_project(self, target):
+        if target not in self.config["projects"]:
+            msg = (
+                f"Project '{target}' not in {self.config_filepath}. "
+                f"Run 'gmrecords {self.command_name} -l' to see available projects."
+            )
+            logging.error(msg)
+            return
+
+        config_filepath = self.config_filepath
+        project_config = self.config["projects"][target]
+        conf_path = (config_filepath.parent / project_config["conf_path"]).resolve()
+        data_path = (config_filepath.parent / project_config["data_path"]).resolve()
+
+        question = (
+            "Are you sure you want to delete everything in:\n"
+            f"\t{conf_path}\n\t--and--\n\t{data_path}?\n"
+        )
+        if not prompt.query_yes_no(question, default="yes"):
+            return
+
+        del self.config["projects"][target]
+        shutil.rmtree(data_path, ignore_errors=True)
+        shutil.rmtree(conf_path, ignore_errors=True)
+        print(f"Deleted project: {target}")
+        print(f"\tDeleted conf directory {conf_path}:")
+        print(f"\tDeleted data directory {data_path}:")
+
+        # If possible, set current project to first remaining project.
+        if not len(self.config["projects"].keys()):
+            print(f"No remaining projects in {self.config_filepath}.")
+            current_name = None
+            current_project = "None"
+        else:
+            current_name = self.config["projects"].keys()[0]
+            current_project = Project.from_config(self.config, current_name)
+        self.config["project"] = current_name
+        self.config.write()
+        print(f"\nCurrent {current_project}")
+
+    def create_project(self):
+        if not self.config:
+            self.config = configobj.ConfigObj(encoding="utf-8")
+            self.config.filename = self.config_filepath
+        use_cwd = self.config_filepath.parent.parent == Path.cwd()
+        create(self.config, use_cwd)
+
+    def rename_project(self, source, target):
+        if source not in self.config["projects"]:
+            msg = (
+                f"Project '{source}' not in {self.config_filepath}. "
+                f"Run 'gmrecords {self.command_name} -l' to see available projects."
             )
             raise IOError(msg)
 
-        sproj = Project(project, projects[project], projects.filename, is_current=True)
-        print(sproj)
+        config_filepath = self.config_filepath
+        source_config = self.config["projects"][source]
+        source_conf_path = config_filepath.parent / source_config["conf_path"]
+        source_data_path = config_filepath.parent / source_config["data_path"]
+        target_conf_path = Path(str(source_conf_path).replace(source, target))
+        target_data_path = Path(str(source_data_path).replace(source, target))
+        print("AA")
+        for child in source_conf_path.parent.iterdir():
+            print(child)
+        if source_conf_path.parent != target_conf_path.parent:
+            shutil.move(source_conf_path.parent, target_conf_path.parent)
+        if (
+            source_data_path.parent != target_data_path.parent
+            and source_conf_path.parent != source_data_path.parent
+        ):
+            shutil.move(source_data_path.parent, target_data_path.parent)
 
+        self.config["projects"][target] = {
+            "conf_path": target_conf_path,
+            "data_path": target_data_path,
+        }
+        if self.config["project"] == source:
+            self.config["project"] = target
+        del self.config["projects"][source]
+        self.config.write()
 
-current_markers = {True: "**Current Project**", False: ""}
+        print(f"\nRenamed '{source}' to '{target}'.")
 
 
 class Project(object):
@@ -240,62 +228,117 @@ class Project(object):
         self.filename = filename
         self.conf_path = indict["conf_path"]
         self.data_path = indict["data_path"]
-        self.current_marker = current_markers[is_current]
+        self.current_marker = CURRENT_MARKERS[is_current]
 
     def __repr__(self):
         fmt = "Project: %s %s\n\tConf Path: %s\n\tData Path: %s"
         tpl = (self.name, self.current_marker, self.conf_path, self.data_path)
         return fmt % tpl
 
+    @staticmethod
+    def from_config(config, name):
+        """Create Project from projects configuration.
 
-def check_project_config(config):
-    """
-    Validation checks on the project config. At least one project must exist
-    (otherwise exit) and the paths for each project should exist, otherwise the
-    project entry is removed.
+        Args:
+            config (ConfigObj):
+                Projects configuration.
+            name (str):
+                Name of project.
+        """
+        is_current = name == config["project"]
+        return Project(name, config["projects"][name], config.filename, is_current)
+
+
+def get_current(config):
+    """Get current project from configuration. We assume the configuration has already been validated.
 
     Args:
         config (ConfigObj):
-            The ConfigObj instance.
+            Projects configuration.
+
+    returns (str):
+        Name of current project or None if there is no current project.
     """
-    # Check that at least one project exists
-    if "projects" not in config:
-        logging.error(
-            'There are currently no projects. Use "gmrecords '
-            'projects -c <project>" to create one.'
-        )
+    if config["project"] == "None":
         return
-    # Check that the paths for each project exist
-    for project in config["projects"].keys():
-
-        data_exists = Path(
-            Path(config.filename).parent / config["projects"][project]["data_path"]
-        ).is_dir()
-        delete_project = False
-        if not data_exists:
-            logging.warn(f"Data path for project {project} does not exist.")
-            delete_project = True
-        conf_exists = Path(
-            Path(config.filename).parent / config["projects"][project]["conf_path"]
-        ).is_dir()
-        if not conf_exists:
-            logging.warn(f"Install path for project {project} does not exist.")
-            delete_project = True
-        if delete_project:
-            logging.warn(f"Deleting project {project}.")
-            del config["projects"][project]
-            config["project"] = config["projects"].keys()[0]
-            config.write()
-    return config
+    else:
+        return config["projects"][config["project"]]
 
 
-def create(config, cwd=False):
+def validate_projects_config(config, projects_filepath):
+    """Validate projects configuration.
+
+    raises IOError exception if projects configuration is invalid.
+
+    Args:
+        config (ConfigObj):
+            Projects configuration.
+        projects_filepath (pathlib.Path):
+            Path to current projects configuration file.
+    """
+
+    def check_keys(config):
+        """Check that all of the listed projects have the required keys and we
+        have a current project.
+        """
+        if not "projects" in config:
+            raise IOError("Projects configuration missing list of projects.")
+        bad_projs = []
+        for proj_name, proj in config["projects"].items():
+            if ("conf_path" not in proj) or ("data_path" not in proj):
+                bad_projs.append(proj_name)
+                continue
+        for bad in bad_projs:
+            msg = (
+                f"Project configuration '{bad}' missing 'conf_path' or 'data_path'."
+                "Removing project configuration from memory."
+            )
+            logging.error(msg)
+            config["projects"].pop(bad)
+
+        # Check that the selected project is in the list of projects
+        if not "project" in config:
+            raise IOError(
+                "Projects configuration missing 'project' to select current project."
+            )
+        current_name = config["project"]
+        if not current_name in config["projects"]:
+            msg = (
+                f"Currently selected project {current_name} is not in the list of "
+                "available projects."
+            )
+            raise IOError(msg)
+
+    def check_project_paths(project, projects_filepath):
+        """Check that project configuration paths are valid."""
+        msg = ""
+        conf_path = (projects_filepath.parent / project["conf_path"]).resolve()
+        if not conf_path.is_dir():
+            msg += f"Could not find 'conf_path' directory {conf_path}."
+
+        data_path = (projects_filepath.parent / project["data_path"]).resolve()
+        if not data_path.is_dir():
+            msg += f"Could not find 'data_path' directory {data_path}."
+
+        if len(msg):
+            raise IOError(msg)
+
+    try:
+        check_keys(config)
+
+        current_name = config["project"]
+        check_project_paths(config["projects"][current_name], projects_filepath)
+    except IOError as exception:
+        pass
+
+
+def create(config, use_cwd=False):
     """Create a new gmrecords project.
 
     Args:
         config (ConfigObj):
             ConfigObj instance representing the parsed projects config.
-        cwd (bool):
+        use_cwd (bool):
             Is this for initializing a "local" project in the current
             working directory?
     """
@@ -310,63 +353,54 @@ def create(config, cwd=False):
         logging.error(msg)
         return
 
-    if not cwd:
-        proj_dir = constants.PROJECTS_PATH
-        default_conf, default_data = prompt.get_default_project_paths(project)
-        new_conf_path, new_data_path = prompt.set_project_paths(
-            default_conf, default_data
-        )
-    else:
+    if use_cwd:
         cwd = Path.cwd()
-        proj_dir = Path(cwd / ".gmprocess")
-        new_conf_path = Path(cwd / "conf")
-        new_data_path = Path(cwd / "data")
-        for p in [new_conf_path, new_data_path]:
-            if not p.is_dir():
-                p.mkdir()
+        default_conf_path = "./conf"
+        default_data_path = "./data"
+    else:
+        project_path = Path("~").expanduser() / "gmprocess_projects" / project
+        default_conf_path = project_path / "conf"
+        default_data_path = project_path / "data"
+    conf_path = prompt.get_directory("conf", default_conf_path).resolve()
+    data_path = prompt.get_directory("data", default_data_path).resolve()
+    conf_path.mkdir(parents=True, exist_ok=True)
+    data_path.mkdir(parents=True, exist_ok=True)
 
-    print("Please enter your name and email. This information will be added")
-    print("to the config file and reported in the provenance of the data")
-    print("processed in this project.")
-    user_info = {}
-    user_info["name"] = input("\tName: ")
-    if not len(user_info["name"].strip()):
-        print("User name is required. Exiting.")
-        sys.exit(1)
-    user_info["email"] = input("\tEmail: ")
-    if not re.search(re_email, user_info["email"]):
-        print("Invalid Email. Exiting.")
+    user_info = prompt.get_user_info()
+    if not user_info:
         sys.exit(1)
 
     # Apparently, relpath doesn't work for Windows, at least with the Azure
     # CI builds
     if platform.system() != "Windows":
         rel_path_loc = Path(config.filename).parents[1]
-        new_conf_path = str(".." / Path(new_conf_path).relative_to(rel_path_loc))
-        new_data_path = str(".." / Path(new_data_path).relative_to(rel_path_loc))
+        conf_relpath = str(".." / conf_path.relative_to(rel_path_loc))
+        data_relpath = str(".." / data_path.relative_to(rel_path_loc))
+    else:
+        conf_relpath = conf_path
+        data_relpath = data_path
 
     if "projects" not in config:
         config["projects"] = {}
-
     config["projects"][project] = {
-        "conf_path": new_conf_path,
-        "data_path": new_data_path,
+        "conf_path": conf_relpath,
+        "data_path": data_relpath,
     }
-
     config["project"] = project
+
+    Path(config.filename).parent.mkdir(exist_ok=True)
     config.write()
-    sproj = Project(project, config["projects"][project], config.filename)
-    print(f"\nCreated project: {sproj}")
+    proj = Project.from_config(config, project)
+    print(f"\nCreated {proj}")
 
     yaml = ryaml.YAML()
     yaml.indent(mapping=4)
     yaml.preserve_quotes = True
     user_conf = {}
     user_conf["user"] = user_info
-    if os.getenv("CALLED_FROM_PYTEST") is None:
-        proj_conf_file = Path(Path(proj_dir) / new_conf_path / "user.yml")
+    if "CALLED_FROM_PYTEST" in os.environ:
+        proj_conf_file = constants.CONFIG_PATH_TEST / "user.yml"
     else:
-        proj_dir = constants.CONFIG_PATH_TEST
-        proj_conf_file = Path(proj_dir, "user.yml")
+        proj_conf_file = conf_path / "user.yml"
     with open(proj_conf_file, "w", encoding="utf-8") as yf:
         yaml.dump(user_conf, yf)
