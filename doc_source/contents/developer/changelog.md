@@ -1,9 +1,12 @@
 # Changelog
 
-## Updates since last release
+## Updates since most recent release
 
 - Adding "Merge Request Guidelines" and "Release Steps" sections to developer resources. 
-
+- Improve projects subcommand.
+  - Always prompt for names of 'data' and 'conf' directories with reasonable defaults.
+  - Provide appropriate error message when attempting to list, switch, or delete projects when none exist.
+  - Allow use of projects subcommand from Python scripts.
 
 ## 1.2.1 / 2022-10-04
 
