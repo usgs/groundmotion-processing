@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Build Documentation" href="build_docs.html" /><link rel="prev" title="Release Steps" href="merge_requests.html" />
 
     <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Adding New Data Readers - gmprocess 1.2.1.dev21+g10defb29.d20221006 documentation</title>
+        <title>Adding New Data Readers - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev21+g10defb29.d20221006 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -486,33 +486,33 @@ inconsistencies in adherence to the various standards. Here we’ll be removing
 those from the equation and presenting a semi-idealized data format and some
 code to read it.</p>
 <p><strong>The Format</strong></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Source</span><span class="p">:</span> <span class="n">Complete</span> <span class="n">Strong</span> <span class="n">Motion</span> <span class="n">Network</span>
-<span class="n">Network</span><span class="p">:</span> <span class="n">CS</span>
-<span class="n">Station</span><span class="p">:</span> <span class="n">ABCD</span>
-<span class="n">Station</span> <span class="n">Latitude</span><span class="p">:</span> <span class="mf">32.443343</span>
-<span class="n">Station</span> <span class="n">Longitude</span><span class="p">:</span> <span class="o">-</span><span class="mf">127.753918</span>
-<span class="n">Station</span> <span class="n">Elevation</span> <span class="p">(</span><span class="n">m</span><span class="p">):</span> <span class="mf">10.0</span>
-<span class="n">Instrument</span><span class="p">:</span> <span class="n">Acme</span> <span class="n">Strong</span> <span class="n">Motion</span> <span class="n">Sensor</span>
-<span class="n">Serial</span> <span class="n">Number</span><span class="p">:</span> <span class="mi">123456</span>
-<span class="n">Units</span><span class="p">:</span> <span class="n">cm</span><span class="o">/</span><span class="n">s</span><span class="o">^</span><span class="mi">2</span>
-<span class="n">Structure</span> <span class="n">Type</span><span class="p">:</span> <span class="n">Free</span> <span class="n">field</span> <span class="n">sensor</span>
-<span class="n">Channel</span> <span class="mi">1</span> <span class="n">Horizontal</span> <span class="n">Orientation</span><span class="p">:</span> <span class="mi">0</span>
-<span class="n">Channel</span> <span class="mi">2</span> <span class="n">Horizontal</span> <span class="n">Orientation</span><span class="p">:</span> <span class="mi">90</span>
-<span class="n">Channel</span> <span class="mi">3</span> <span class="n">Horizontal</span> <span class="n">Orientation</span><span class="p">:</span> <span class="mi">0</span>
-<span class="n">Vertical</span> <span class="n">Channel</span><span class="p">:</span> <span class="mi">3</span>
-<span class="n">Samples</span><span class="p">:</span> <span class="mi">10</span>
-<span class="n">Record</span> <span class="n">Start</span> <span class="n">Time</span><span class="p">:</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">01</span> <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mf">56.010</span>
-<span class="n">Sampling</span> <span class="n">Rate</span> <span class="p">(</span><span class="n">Hz</span><span class="p">):</span> <span class="mi">100</span>
-   <span class="mf">0.001</span>     <span class="mf">0.011</span>     <span class="mf">0.021</span>
-   <span class="mf">0.002</span>     <span class="mf">0.012</span>     <span class="mf">0.022</span>
-   <span class="mf">0.003</span>     <span class="mf">0.013</span>     <span class="mf">0.023</span>
-   <span class="mf">0.004</span>     <span class="mf">0.014</span>     <span class="mf">0.024</span>
-   <span class="mf">0.005</span>     <span class="mf">0.015</span>     <span class="mf">0.025</span>
-   <span class="mf">0.006</span>     <span class="mf">0.016</span>     <span class="mf">0.026</span>
-   <span class="mf">0.007</span>     <span class="mf">0.017</span>     <span class="mf">0.027</span>
-   <span class="mf">0.008</span>     <span class="mf">0.018</span>     <span class="mf">0.028</span>
-   <span class="mf">0.009</span>     <span class="mf">0.019</span>     <span class="mf">0.029</span>
-   <span class="mf">0.010</span>     <span class="mf">0.020</span>     <span class="mf">0.030</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Source: Complete Strong Motion Network
+Network: CS
+Station: ABCD
+Station Latitude: 32.443343
+Station Longitude: -127.753918
+Station Elevation (m): 10.0
+Instrument: Acme Strong Motion Sensor
+Serial Number: 123456
+Units: cm/s^2
+Structure Type: Free field sensor
+Channel 1 Horizontal Orientation: 0
+Channel 2 Horizontal Orientation: 90
+Channel 3 Horizontal Orientation: 0
+Vertical Channel: 3
+Samples: 10
+Record Start Time: 2019-05-01 12:34:56.010
+Sampling Rate (Hz): 100
+   0.001     0.011     0.021
+   0.002     0.012     0.022
+   0.003     0.013     0.023
+   0.004     0.014     0.024
+   0.005     0.015     0.025
+   0.006     0.016     0.026
+   0.007     0.017     0.027
+   0.008     0.018     0.028
+   0.009     0.019     0.029
+   0.010     0.020     0.030
 </pre></div>
 </div>
 <p><strong>The Code</strong></p>

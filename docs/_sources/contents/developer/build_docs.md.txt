@@ -3,13 +3,13 @@
 Some additional packages are required to build the documentation, which can be included
 with the `doc` install option, e.g.,
 
-```
+```term
 pip install .[doc]
-```{code-block} console
+```
 
 Then the docs are built with
 
-```{code-block} console
+```term
 cd doc_source/
 ./makedocs.sh
 ```

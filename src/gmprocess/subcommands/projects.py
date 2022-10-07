@@ -240,15 +240,7 @@ class Project(object):
 
     def __repr__(self):
         fmt = "Project: %s %s\n\tConf Path: %s\n\tData Path: %s"
-        if platform.system() != "Windows":
-            tpl = (
-                self.name,
-                self.current_marker,
-                Path(Path(self.filename).parent / self.conf_path).resolve(),
-                Path(Path(self.filename).parent / self.data_path).resolve(),
-            )
-        else:
-            tpl = (self.name, self.current_marker, self.conf_path, self.data_path)
+        tpl = (self.name, self.current_marker, self.conf_path, self.data_path)
         return fmt % tpl
 
 

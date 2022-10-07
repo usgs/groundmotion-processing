@@ -9,7 +9,7 @@ code to read it.
 
 **The Format**
 
-.. code-block:: 
+.. code-block:: text
 
    Source: Complete Strong Motion Network
    Network: CS

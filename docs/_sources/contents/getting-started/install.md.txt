@@ -58,7 +58,7 @@ Then open a new powershell terminal and run `conda create --name gmprocess pytho
 
 First clone this repository and go into the root directory with
 
-```{code-block} console
+```term
 git clone https://github.com/usgs/groundmotion-processing.git
 cd groundmotion-processing
 ```
@@ -69,7 +69,7 @@ cd groundmotion-processing
 
 Next, install the code with pip
 
-```{code-block} console
+```term
 pip install .
 ```
 
@@ -77,13 +77,13 @@ Note that this will install the minimum requirements to run the code.
 There are additional optional packages that can be installed that support running the unit tests (`test`), code development (`dev`), building wheels (`build`), and building the documentation (`doc`).
 To install these, you need to add the relevant option in brackets:
 
-```{code-block} console
+```term
 pip install .[test,dev,doc,build]
 ```
 
 For developers, it is also convenient to install the code in "editable" mode by adding the `-e` option:
 
-```{code-block} console
+```term
 pip install -e .[test,dev,doc]
 ```
 
@@ -91,7 +91,7 @@ pip install -e .[test,dev,doc]
 
 If you included the optional `test` dependencies in the install step, then you can run the unit tests in the root directory of the repository:
 
-```{code-block} console
+```term
 pytest .
 ```
 

@@ -32,13 +32,14 @@ which provides the following additional features:
 - A `free_field` property which can be used to query the object to ensure that
   its data comes from a free-field sensor. 
 
-  .. note:: 
+  ```{note}
 
      The free field condition is not always known reliably, and different people
      have have different definitions of the term `free_field`. When possible,
      we define a mapping between location code and the `free_field` property.
      For example, see the `LOCATION_CODES` variable `core.py` in 
      `gmprocess.io.fdsn`.
+  ```
 
 - Methods (e.g., `getProvenance`, `setProvenance`) for tracking  processing
   steps that have been performed. These are aligned with the 
@@ -92,15 +93,12 @@ StationXML file, suitable for passing to other packages.
 
 ```{code-cell} ipython3
 :tags: [remove-stderr]
-import os
-import pkg_resources
-
+from pathlib import Path
 from gmprocess.io.read import read_data
 
-datapath = os.path.join('data', 'testdata', 'cwb', 'us1000chhc')
-datadir = pkg_resources.resource_filename('gmprocess', datapath)
+datadir = Path("..") / ".." / ".." / "tests" / "data" / "cwb" / "us1000chhc"
 # cwb files are stored as three channels per file.
-datafile = os.path.join(datadir, '1-EAS.dat')
+datafile = datadir / "1-EAS.dat"
 stream = read_data(datafile)[0]
 inventory = stream.getInventory()
 
@@ -120,10 +118,7 @@ together.
 Imports:
 
 ```{code-cell} ipython3
-import os
-import glob
-import pkg_resources
-
+from pathlib import Path
 from gmprocess.io.read import read_data
 from gmprocess.core.streamcollection import StreamCollection
 ```
@@ -131,9 +126,8 @@ from gmprocess.core.streamcollection import StreamCollection
 Then read in some example test data that is distributed with gmprocess:
 
 ```{code-cell} ipython3
-datapath = os.path.join('data', 'testdata', 'knet', 'us2000cnnl')
-datadir = pkg_resources.resource_filename('gmprocess', datapath)
-datafiles = glob.glob(os.path.join(datadir, 'AOM*'))
+datadir = Path("..") / ".." / ".." / "tests" / "data" / "knet" / "us2000cnnl"
+datafiles = datadir.glob("AOM*")
 
 streams = []
 for datafile in datafiles:

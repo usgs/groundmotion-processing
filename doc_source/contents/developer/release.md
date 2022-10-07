@@ -6,11 +6,11 @@
 4. Update `doc_source/contents/developer/changelog.md` to include changes for this version.
 5. Rebuild docs
 6. Create tag locally with
-   ```{code-block} console
+   ```term
    git tag v1.2.1
    ```
 7. Push tag to upstream/main
-   ```{code-block} console
+   ```term
    git push origin v1.2.1
    ```
 8. Create release from tag in github. Give it a release title like "v1.2.1"

@@ -18,12 +18,12 @@ Traceback (most recent call last):
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
 import os
-import pkg_resources
+import pathlib
+from gmprocess.utils.constants import TEST_DATA_DIR
 
 from gmprocess.io.read import read_data
 
-datapath = os.path.join('data', 'testdata', 'cwb', 'us1000chhc')
-datadir = pkg_resources.resource_filename('gmprocess', datapath)
+datadir = TEST_DATA_DIR / 'cwb' / 'us1000chhc'
 # cwb files are stored as three channels per file.
 datafile = os.path.join(datadir, '1-EAS.dat')
 stream = read_data(datafile)[0]
@@ -49,6 +49,6 @@ File [0;32m~/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/io
 [1;32m     40[0m [38;5;66;03m# Get and validate format[39;00m
 [1;32m     41[0m [38;5;28;01mif[39;00m config [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 
-[0;31mOSError[0m: Not a file '/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat'
-OSError: Not a file '/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat'
+[0;31mOSError[0m: Not a file '/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/utils/../../../tests/data/cwb/us1000chhc/1-EAS.dat'
+OSError: Not a file '/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/utils/../../../tests/data/cwb/us1000chhc/1-EAS.dat'
 
