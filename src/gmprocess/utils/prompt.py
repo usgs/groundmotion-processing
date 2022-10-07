@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import os
-import textwrap
-import shutil
+from pathlib import Path
+import re
 
 
 def query_yes_no(question, default="yes"):
@@ -44,83 +43,35 @@ def query_yes_no(question, default="yes"):
             sys.stdout.write("Please respond with 'yes' or 'no' (or 'y' or 'n').\n")
 
 
-def make_dir(pathstr, default):
-    max_tries = 3
-    ntries = 1
-    make_ok = False
-    ppath = ""
-    while not make_ok:
-        ppath = input(f"Please enter the {pathstr}: [{default}] ")
-        if not len(ppath.strip()):
-            ppath = default
-        try:
-            os.makedirs(ppath, exist_ok=True)
-            make_ok = True
-        except OSError:
-            msg = "Cannot make directory: %s.  Please try again (%d " "of %d tries)."
-            print("\n".join(textwrap.wrap(msg % (ppath, ntries, max_tries))))
-            ntries += 1
-        if ntries > max_tries:
-            break
-    return (ppath, make_ok)
+def get_directory(label, default):
+    """Prompt user to enter a directory and return the answer.
+
+    Args:
+        label (str):
+            Label for the directory.
+        default (str):
+            Default value for the directory.
+    """
+    filepath = input(f"Please enter the {label}: [{default}] ")
+    if not len(filepath.strip()):
+        filepath = default
+    return Path(filepath)
 
 
-def set_project_paths(default_conf, default_data):
-    """
-    Function to set project directories.
-    """
-    new_conf_path, conf_ok = make_dir("conf path", default_conf)
-    if not conf_ok:
-        msg = "\n".join(
-            textwrap.wrap(
-                "Please provide a conf path that can be created on this "
-                "system and then try again. Aborting creating project paths."
-            )
-        )
-        shutil.rmtree(new_conf_path)
-        raise IOError(msg)
-    new_data_path, data_ok = make_dir("data path", default_data)
-    if not data_ok:
-        msg = "\n".join(
-            textwrap.wrap(
-                "Please provide a data path that can be created on this "
-                "system and then try again. Aborting creating project paths."
-            )
-        )
-        shutil.rmtree(new_data_path)
-        raise IOError(msg)
-    return (new_conf_path, new_data_path)
+def get_user_info():
+    """ """
+    EMAIL_PATTERN = r"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
 
-
-def get_default_project_paths(project):
-    """
-    Function to get default project paths.
-    """
-    default_project_path = os.path.join(
-        os.path.expanduser("~"), "gmprocess_projects", project
-    )
-    default_conf = os.path.join(default_project_path, "conf")
-    default_data = os.path.join(default_project_path, "data")
-    print(
-        "\n".join(
-            textwrap.wrap(
-                "You will be prompted to supply two directories for this project:"
-            )
-        )
-    )
-    print(
-        "\n   ".join(
-            textwrap.wrap(
-                " - A *config* path, which will store the gmprocess config files."
-            )
-        )
-    )
-    print(
-        "\n   ".join(
-            textwrap.wrap(
-                " - A *data* path, under which will be created directories for "
-                "each event processed.\n"
-            )
-        )
-    )
-    return (default_conf, default_data)
+    print("Please enter your name and email. This information will be added")
+    print("to the config file and reported in the provenance of the data")
+    print("processed in this project.")
+    user_info = {}
+    user_info["name"] = input("\tName: ")
+    if not len(user_info["name"].strip()):
+        print("User name is required.")
+        return
+    user_info["email"] = input("\tEmail address: ")
+    if not re.search(EMAIL_PATTERN, user_info["email"]):
+        print("Invalid Email address.")
+        return
+    return user_info

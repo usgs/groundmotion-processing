@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
+import pathlib
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -34,11 +33,17 @@ class InitModule(base.SubcommandModule):
         logging.info(f"Running subcommand '{self.command_name}'")
 
         config = configobj.ConfigObj(encoding="utf-8")
-        cwd = os.getcwd()
-        local_proj_path = os.path.join(cwd, const.PROJ_CONF_DIR)
-        if not os.path.isdir(local_proj_path):
-            os.mkdir(local_proj_path)
-        conf_file = os.path.join(local_proj_path, "projects.conf")
+        cwd = pathlib.Path.cwd()
+        local_proj_path = cwd / const.PROJ_CONF_DIR
+        local_proj_path.mkdir(exist_ok=True)
+        conf_file = local_proj_path / "projects.conf"
+        if conf_file.is_file():
+            msg = (
+                f"Current directory '{local_proj_path}' already contains project "
+                "configurations. Exiting. "
+                "Run 'gmrecords projects -l' to list the current projects."
+            )
+            raise IOError(msg)
         config.filename = conf_file
 
-        projects.create(config, cwd=True)
+        projects.create(config, use_cwd=True)
