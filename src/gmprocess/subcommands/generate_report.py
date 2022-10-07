@@ -67,7 +67,7 @@ class GenerateReportModule(base.SubcommandModule):
                         pstreams,
                         event_dir,
                         event,
-                        prefix=f"{gmrecords.project}_{gmrecords.args.label}",
+                        prefix=f"{gmrecords.project_name}_{gmrecords.args.label}",
                         config=config,
                         gmprocess_version=gmrecords.gmprocess_version,
                     )

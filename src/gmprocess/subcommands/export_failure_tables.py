@@ -90,7 +90,7 @@ class ExportFailureTablesModule(base.SubcommandModule):
                     event_dir,
                     "%s_%s_failure_reasons_%s"
                     % (
-                        gmrecords.project,
+                        gmrecords.project_name,
                         gmrecords.args.label,
                         self.gmrecords.args.type,
                     ),
@@ -107,12 +107,11 @@ class ExportFailureTablesModule(base.SubcommandModule):
                 status_info.to_excel(excelfile)
 
         if failures:
-            comp_failures_path = os.path.normpath(
-                os.path.join(
-                    self.gmrecords.data_path,
-                    f"{gmrecords.project}_{gmrecords.args.label}_complete_failures.csv",
-                )
+            comp_failures_path = (
+                self.gmrecords.data_path
+                / f"{gmrecords.project_name}_{gmrecords.args.label}_complete_failures.csv"
             )
+
             if self.gmrecords.args.type == "long":
                 for idx, item in enumerate(failures.items()):
                     eqid, status = item

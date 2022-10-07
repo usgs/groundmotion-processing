@@ -98,15 +98,15 @@ class ExportMetricTablesModule(base.SubcommandModule):
                 df_fit_spectra_formatted = None
 
             imc_list = [
-                f"{gmrecords.project}_{gmrecords.args.label}_metrics_{imc.lower()}"
+                f"{gmrecords.project_name}_{gmrecords.args.label}_metrics_{imc.lower()}"
                 for imc in imc_tables_formatted.keys()
             ]
             readme_list = [
                 "%s_%s_metrics_%s_README"
-                % (gmrecords.project, gmrecords.args.label, imc.lower())
+                % (gmrecords.project_name, gmrecords.args.label, imc.lower())
                 for imc in readmes.keys()
             ]
-            proj_lab = (gmrecords.project, gmrecords.args.label)
+            proj_lab = (gmrecords.project_name, gmrecords.args.label)
 
             filenames = (
                 ["%s_%s_events" % proj_lab]
