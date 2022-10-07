@@ -5,12 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Tutorials" href="../tutorials/index.html" /><link rel="prev" title="Installation" href="install.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Initial Setup - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Initial Setup - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -139,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -463,8 +464,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -483,44 +483,43 @@
 <p>In order to simplify the command line interface, the <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> command makes use of “projects”.
 You can have many projects configured on your system, and a project can have data from many events.
 A project is essentially a way to encapsulate the configuration and data directories so that they do not need to be specified as command line arguments.</p>
-<p>There are two different types of projects:</p>
+<p>There are two different types of configuration for projects:</p>
 <p><strong>directory projects</strong>
-A directory project works by checking the current working directory for a project config file that holds the data and config info.
-Thus, in order to activate the project, you have to be in that specific directory.</p>
+Directory projects work by checking the current working directory for a projects configuration file that holds the data and configuration info.
+Thus, in order to use the projects, you have to be in that specific directory.
+Whenever you are in a directory with a projects configuration, those projects are available; system-level projects are not available.</p>
 <p><strong>system-level projects</strong>
-A system-level project works by checking the user’s home directory for a project config file that can hold many different configured projects.
-Thus, when you use a system-level project you can switch between different projects easily from any directory on your system.</p>
+System-level projects work by checking the user’s home directory for a project configuration file (<code class="docutils literal notranslate"><span class="pre">~/.gmprocess/projects.conf</span></code>) that can hold many different configured projects.
+When you use system-level projects, the projects are available from any directory on your system that does not contain a local projects configuration.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>See the <a class="reference internal" href="../manual/config_file.html"><span class="doc std std-doc">Configuration File</span></a> section for more information on how configuration options work.</p>
 </div>
-<p>When you create either type of project, you will be prompted to include your name and email.
+<p>When you create either type of projects configuration, you will be prompted to include your name and email.
 This information is used for the data provenance.
-It is often important to be able to track where data originated.
+This facilitates reproducibility and giving credit to people processing data.
 If you do not wish to share your personal information, we recommend using an institution or project name.</p>
-<p>To create a directory project, use the gmrecords <code class="docutils literal notranslate"><span class="pre">init</span></code> subcommand in the directory where you would like to activate the project.</p>
-<div class="highlight-term notranslate"><div class="highlight"><pre><span></span>gmrecords init
-INFO 2021-11-12 20:00:32 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 20:00:32 | gmrecords.__init__: PROJECTS_PATH: /Users/&lt;username&gt;/.gmprocess
-INFO 2021-11-12 20:00:32 | init.main: Running subcommand &#39;init&#39;
-Please enter a project title: [default] local
+<p>To create a directory projects configuration, use the gmrecords <code class="docutils literal notranslate"><span class="pre">init</span></code> subcommand in the directory where you would like to host projects.</p>
+<div class="highlight-console] notranslate"><div class="highlight"><pre><span></span>$ gmrecords init
+Please enter a project title: [default]
+Please enter the conf: [./conf]
+Please enter the data: [./data]
 Please enter your name and email. This information will be added
 to the config file and reported in the provenance of the data
 processed in this project.
-  Name: Eric
-  Email: fake@email.com
+	Name: Jane
+	Email address: jane@mail.org
 
-Created project: Project: local
-  Conf Path: /Users/&lt;username&gt;/test_gmrecords/conf
-  Data Path: /Users/&lt;username&gt;/test_gmrecords/data
+Created Project: default **Current Project**
+	Conf Path: /Users/jane/tmp/gmprocess2/conf
+	Data Path: /Users/jane/tmp/gmprocess2/data
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand is used for managing system-level projects.
 The arguments are</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: gmrecords projects [-h] [-l] [-s PROJECT] [-c] [-d PROJECT]
-                          [--rename SOURCE TARGET]
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   -l, --list            List all configured gmrecords projects.
   -s PROJECT, --switch PROJECT
@@ -528,16 +527,9 @@ optional arguments:
   -c, --create          Create a project and switch to it.
   -d PROJECT, --delete PROJECT
                         Delete existing project PROJECT.
-  --rename SOURCE TARGET
-                        Rename project SOURCE to TARGET.
 </pre></div>
 </div>
-<p>The <a class="reference internal" href="../tutorials/cli.html"><span class="doc std std-doc">Command Line Interface</span></a> tutorial provides an example of how to create a system-level project.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>When creating a new project, please review the config file that is installed and adjust the options as necessary.
-Some fields have place holders (e.g., <code class="docutils literal notranslate"><span class="pre">EMAIL</span></code> for the CESMD fetcher) that must be filled in by each individual.</p>
-</div>
+<p>The <a class="reference internal" href="../tutorials/cli.html"><span class="doc std std-doc">Command Line Interface</span></a> tutorial provides an example of how to create system-level projects.</p>
 </section>
 
         </article>
@@ -601,5 +593,10 @@ Some fields have place holders (e.g., <code class="docutils literal notranslate"
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

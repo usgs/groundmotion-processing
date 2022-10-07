@@ -30,10 +30,15 @@ Use the syntax `gmrecords SUBCOMMAND -h` to show the help information for a give
 
 ### `init`
 
+Create a configuration file for projects in the current directory.
+
 :::{command-output} gmrecords init -h
 :::
 
 ### `projects`
+
+Manage local directory or system-level projects.
+Use this subcommand to switch among projects and add, delete, list, and rename projects.
 
 :::{command-output} gmrecords projects -h
 :::

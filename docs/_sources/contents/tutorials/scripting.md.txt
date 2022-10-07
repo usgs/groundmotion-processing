@@ -16,17 +16,35 @@ mystnb:
 
 You can write Python scripts that call the `GMrecordsApp` application to create high-level workflows.
 In the example below we create a Python script to run several subcommands to download and process ground motions recorded close to the epicenter of a magnitude 4.5 earthquake, and then export the results to CSV files and generate a report summarizing the results.
+The configuration and parameter files are in the `doc_source/contents/tutorials` directory.
 
 ## Local `gmprocess` configuration
 
 In this example we specify parameters in the project configuration to produce a small dataset.
 We use only the FDSN fetcher and limit the station distance to 0.1 degrees.
 The configuration files are in the `conf/scripting` directory.
-First, we first create the project `data` directory, and then we use the `projects` subcommand to select the project configuration `cli-tutorial` from the tutorial projects listed in the `.gmprocess/projects.conf` file.
+
+First, we list the available projects in the current directory.
 
 ```{code-cell} ipython3
-!mkdir -p data/cli data/scripting
+!gmrecords projects --list
+```
+
+The `PROJECTS_PATH` shows the location of the projects configuration file where the information for the projects is stored.
+Second, we use the `projects` subcommand to select the project configuration `scripting-tutorial`.
+
+```{code-cell} ipython3
 !gmrecords projects --switch scripting-tutorial
+```
+
+Third, we create the directory to hold the data.
+
+:::{note}
+We include the directory with the processing parameters for the project in the source code.
+:::
+
+```{code-cell} ipython3
+!mkdir -p data/scripting
 ```
 
 At this point we have an empty `data/scripting` directory.

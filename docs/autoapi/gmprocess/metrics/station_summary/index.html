@@ -5,12 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands" href="../../subcommands/index.html" /><link rel="prev" title="gmprocess.metrics.metrics_controller" href="../metrics_controller/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>gmprocess.metrics.station_summary - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>gmprocess.metrics.station_summary - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
@@ -139,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -463,8 +464,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -531,7 +531,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.metrics.station_summary.</span></span><span class="sig-name descname"><span class="pre">StationSummary</span></span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/station_summary.html#StationSummary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for returning pgm values for specific components.</p>
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.available_imcs">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_imcs</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.available_imcs" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method for getting a list of components.</p>
@@ -545,7 +545,7 @@
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.available_imts">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_imts</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.available_imts" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method for getting a list of measurement types.</p>
@@ -559,7 +559,7 @@
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.bandwidth">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bandwidth</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.bandwidth" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method for getting the defined bandwidth.</p>
@@ -573,7 +573,7 @@
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.components">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">components</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.components" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method returning a list of requested/calculated components.</p>
@@ -587,7 +587,7 @@
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.coordinates">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coordinates</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.coordinates" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method returning the coordinates of the station.</p>
@@ -601,7 +601,7 @@
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.damping">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">damping</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.damping" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method for getting the damping used in the spectral amplitude
@@ -616,7 +616,7 @@ calculation.</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.elevation">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">elevation</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.elevation" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method for getting the station elevation.</p>
@@ -630,7 +630,7 @@ calculation.</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.distances">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">distances</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.distances" title="Permalink to this definition">#</a></dt>
 <dd><p>Helper method for getting the distances.</p>
@@ -640,106 +640,6 @@ calculation.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.imts">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">imts</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.imts" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper method returning a list of requested/calculated measurement
-types.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List of requested/calculated measurement types (str).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.pgms">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pgms</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.pgms" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper method returning a station’s pgms.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Pgms for each imt and imc.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>dictionary</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.smoothing">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">smoothing</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.smoothing" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper method for getting the defined smoothing used for the
-calculation FAS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Smoothing method used.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>string</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.starttime">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">starttime</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.starttime" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper method returning a station’s starttime.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Start time for one station.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.station_code">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">station_code</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.station_code" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper method returning a station’s station code.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Station code for one station.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.stream">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.stream" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper method returning a station’s stream.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Stream for one station.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>obspy.core.stream.Stream</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.summary">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">summary</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.summary" title="Permalink to this definition">#</a></dt>
-<dd><p>Helper method returning a station’s summary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Summary for one station.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.Dataframe</p>
 </dd>
 </dl>
 </dd></dl>
@@ -870,9 +770,109 @@ No processing is done by this class.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.imts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">imts</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.imts" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper method returning a list of requested/calculated measurement
+types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of requested/calculated measurement types (str).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.pgms">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pgms</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.pgms" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper method returning a station’s pgms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pgms for each imt and imc.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.set_metadata">
 <span class="sig-name descname"><span class="pre">set_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/metrics/station_summary.html#StationSummary.set_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.set_metadata" title="Permalink to this definition">#</a></dt>
 <dd><p>Set the metadata for the station</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.smoothing">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">smoothing</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.smoothing" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper method for getting the defined smoothing used for the
+calculation FAS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Smoothing method used.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.starttime">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">starttime</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.starttime" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper method returning a station’s starttime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Start time for one station.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.station_code">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">station_code</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.station_code" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper method returning a station’s station code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Station code for one station.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.stream">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stream</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.stream" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper method returning a station’s stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Stream for one station.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>obspy.core.stream.Stream</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.metrics.station_summary.StationSummary.summary">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">summary</span></span><a class="headerlink" href="#gmprocess.metrics.station_summary.StationSummary.summary" title="Permalink to this definition">#</a></dt>
+<dd><p>Helper method returning a station’s summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Summary for one station.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pandas.Dataframe</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1093,27 +1093,27 @@ numpy arrays.</p>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.DEFAULT_DAMPING"><code class="docutils literal notranslate"><span class="pre">DEFAULT_DAMPING</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.M_PER_KM"><code class="docutils literal notranslate"><span class="pre">M_PER_KM</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary"><code class="docutils literal notranslate"><span class="pre">StationSummary</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.available_imcs"><code class="docutils literal notranslate"><span class="pre">StationSummary.available_imcs</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.available_imts"><code class="docutils literal notranslate"><span class="pre">StationSummary.available_imts</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.bandwidth"><code class="docutils literal notranslate"><span class="pre">StationSummary.bandwidth</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.components"><code class="docutils literal notranslate"><span class="pre">StationSummary.components</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.coordinates"><code class="docutils literal notranslate"><span class="pre">StationSummary.coordinates</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.damping"><code class="docutils literal notranslate"><span class="pre">StationSummary.damping</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.elevation"><code class="docutils literal notranslate"><span class="pre">StationSummary.elevation</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.distances"><code class="docutils literal notranslate"><span class="pre">StationSummary.distances</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.imts"><code class="docutils literal notranslate"><span class="pre">StationSummary.imts</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.pgms"><code class="docutils literal notranslate"><span class="pre">StationSummary.pgms</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.smoothing"><code class="docutils literal notranslate"><span class="pre">StationSummary.smoothing</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.starttime"><code class="docutils literal notranslate"><span class="pre">StationSummary.starttime</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.station_code"><code class="docutils literal notranslate"><span class="pre">StationSummary.station_code</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.stream"><code class="docutils literal notranslate"><span class="pre">StationSummary.stream</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.summary"><code class="docutils literal notranslate"><span class="pre">StationSummary.summary</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.available_imcs"><code class="docutils literal notranslate"><span class="pre">StationSummary.available_imcs()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.available_imts"><code class="docutils literal notranslate"><span class="pre">StationSummary.available_imts()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.bandwidth"><code class="docutils literal notranslate"><span class="pre">StationSummary.bandwidth()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.components"><code class="docutils literal notranslate"><span class="pre">StationSummary.components()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.coordinates"><code class="docutils literal notranslate"><span class="pre">StationSummary.coordinates()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.damping"><code class="docutils literal notranslate"><span class="pre">StationSummary.damping()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.elevation"><code class="docutils literal notranslate"><span class="pre">StationSummary.elevation()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.distances"><code class="docutils literal notranslate"><span class="pre">StationSummary.distances()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_config"><code class="docutils literal notranslate"><span class="pre">StationSummary.from_config()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_pgms"><code class="docutils literal notranslate"><span class="pre">StationSummary.from_pgms()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_stream"><code class="docutils literal notranslate"><span class="pre">StationSummary.from_stream()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.get_pgm"><code class="docutils literal notranslate"><span class="pre">StationSummary.get_pgm()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.get_summary"><code class="docutils literal notranslate"><span class="pre">StationSummary.get_summary()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.imts"><code class="docutils literal notranslate"><span class="pre">StationSummary.imts()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.pgms"><code class="docutils literal notranslate"><span class="pre">StationSummary.pgms()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.set_metadata"><code class="docutils literal notranslate"><span class="pre">StationSummary.set_metadata()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.smoothing"><code class="docutils literal notranslate"><span class="pre">StationSummary.smoothing()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.starttime"><code class="docutils literal notranslate"><span class="pre">StationSummary.starttime()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.station_code"><code class="docutils literal notranslate"><span class="pre">StationSummary.station_code()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.stream"><code class="docutils literal notranslate"><span class="pre">StationSummary.stream()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.summary"><code class="docutils literal notranslate"><span class="pre">StationSummary.summary()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_xml"><code class="docutils literal notranslate"><span class="pre">StationSummary.from_xml()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.compute_station_metrics"><code class="docutils literal notranslate"><span class="pre">StationSummary.compute_station_metrics()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.get_metric_xml"><code class="docutils literal notranslate"><span class="pre">StationSummary.get_metric_xml()</span></code></a></li>
@@ -1135,19 +1135,19 @@ numpy arrays.</p>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.damping">damping</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.elevation">elevation</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.distances">distances</a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.imts">imts</a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.pgms">pgms</a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.smoothing">smoothing</a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.starttime">starttime</a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.station_code">station_code</a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.stream">stream</a></li>
-<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.summary">summary</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_config">from_config</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_pgms">from_pgms</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_stream">from_stream</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.get_pgm">get_pgm</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.get_summary">get_summary</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.imts">imts</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.pgms">pgms</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.set_metadata">set_metadata</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.smoothing">smoothing</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.starttime">starttime</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.station_code">station_code</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.stream">stream</a></li>
+<li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.summary">summary</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.from_xml">from_xml</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.compute_station_metrics">compute_station_metrics</a></li>
 <li><a class="reference internal" href="#gmprocess.metrics.station_summary.StationSummary.get_metric_xml">get_metric_xml</a></li>
@@ -1182,5 +1182,10 @@ numpy arrays.</p>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

@@ -34,13 +34,6 @@ Functions
 
    Class for compiling metrics.
 
-   .. py:property:: step_sets
-
-      Dictionary of steps for each imt/imc pair.
-
-      :returns: Defines a set of steps for each imt/imc pair.
-      :rtype: dictionary
-
    .. py:method:: from_config(timeseries, config=None, event=None)
       :classmethod:
 
@@ -95,6 +88,15 @@ Functions
       }
       Currently the only acceptied smoothing type is 'konno_ohmachi',
       and the options for spacing are 'linspace' or 'logspace'.
+
+
+   .. py:method:: step_sets()
+      :property:
+
+      Dictionary of steps for each imt/imc pair.
+
+      :returns: Defines a set of steps for each imt/imc pair.
+      :rtype: dictionary
 
 
    .. py:method:: get_steps()

@@ -4,42 +4,42 @@ In order to simplify the command line interface, the `gmrecords` command makes u
 You can have many projects configured on your system, and a project can have data from many events.
 A project is essentially a way to encapsulate the configuration and data directories so that they do not need to be specified as command line arguments.
 
-There are two different types of projects:
+There are two different types of configuration for projects:
 
 **directory projects**
-  A directory project works by checking the current working directory for a project config file that holds the data and config info.
-  Thus, in order to activate the project, you have to be in that specific directory.
+  Directory projects work by checking the current working directory for a projects configuration file that holds the data and configuration info.
+  Thus, in order to use the projects, you have to be in that specific directory.
+  Whenever you are in a directory with a projects configuration, those projects are available; system-level projects are not available.
 
 **system-level projects**
-  A system-level project works by checking the user's home directory for a project config file that can hold many different configured projects.
-  Thus, when you use a system-level project you can switch between different projects easily from any directory on your system.
+  System-level projects work by checking the user's home directory for a project configuration file (`~/.gmprocess/projects.conf`) that can hold many different configured projects.
+  When you use system-level projects, the projects are available from any directory on your system that does not contain a local projects configuration.
 
 :::{attention}
 See the [Configuration File](../manual/config_file) section for more information on how configuration options work.
 :::
 
-When you create either type of project, you will be prompted to include your name and email.
+When you create either type of projects configuration, you will be prompted to include your name and email.
 This information is used for the data provenance.
-It is often important to be able to track where data originated.
+This facilitates reproducibility and giving credit to people processing data.
 If you do not wish to share your personal information, we recommend using an institution or project name.
 
-To create a directory project, use the gmrecords `init` subcommand in the directory where you would like to activate the project.
+To create a directory projects configuration, use the gmrecords `init` subcommand in the directory where you would like to host projects.
 
-```term
-gmrecords init
-INFO 2021-11-12 20:00:32 | gmrecords.__init__: Logging level includes INFO.
-INFO 2021-11-12 20:00:32 | gmrecords.__init__: PROJECTS_PATH: /Users/<username>/.gmprocess
-INFO 2021-11-12 20:00:32 | init.main: Running subcommand 'init'
-Please enter a project title: [default] local
+```{code-block} console]
+$ gmrecords init
+Please enter a project title: [default]
+Please enter the conf: [./conf]
+Please enter the data: [./data]
 Please enter your name and email. This information will be added
 to the config file and reported in the provenance of the data
 processed in this project.
-  Name: Eric
-  Email: fake@email.com
+	Name: Jane
+	Email address: jane@mail.org
 
-Created project: Project: local
-  Conf Path: /Users/<username>/test_gmrecords/conf
-  Data Path: /Users/<username>/test_gmrecords/data
+Created Project: default **Current Project**
+	Conf Path: /Users/jane/tmp/gmprocess2/conf
+	Data Path: /Users/jane/tmp/gmprocess2/data
 ```
 
 The `projects` subcommand is used for managing system-level projects.
@@ -48,8 +48,4 @@ The arguments are
 ```{program-output} gmrecords projects -h
 ```
 
-The [Command Line Interface](../tutorials/cli) tutorial provides an example of how to create a system-level project.
-
-:::{note}
-When creating a new project, please review the config file that is installed and adjust the options as necessary.
-Some fields have place holders (e.g., `EMAIL` for the CESMD fetcher) that must be filled in by each individual.
+The [Command Line Interface](../tutorials/cli) tutorial provides an example of how to create system-level projects.

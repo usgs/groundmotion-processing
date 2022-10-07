@@ -14,9 +14,8 @@ Functions
 .. autoapisummary::
 
    gmprocess.utils.prompt.query_yes_no
-   gmprocess.utils.prompt.make_dir
-   gmprocess.utils.prompt.set_project_paths
-   gmprocess.utils.prompt.get_default_project_paths
+   gmprocess.utils.prompt.get_directory
+   gmprocess.utils.prompt.get_user_info
 
 
 
@@ -35,16 +34,16 @@ Functions
    :rtype: bool
 
 
-.. py:function:: make_dir(pathstr, default)
+.. py:function:: get_directory(label, default)
+
+   Prompt user to enter a directory and return the answer.
+
+   :param label: Label for the directory.
+   :type label: str
+   :param default: Default value for the directory.
+   :type default: str
 
 
-.. py:function:: set_project_paths(default_conf, default_data)
-
-   Function to set project directories.
-
-
-.. py:function:: get_default_project_paths(project)
-
-   Function to get default project paths.
+.. py:function:: get_user_info()
 
 

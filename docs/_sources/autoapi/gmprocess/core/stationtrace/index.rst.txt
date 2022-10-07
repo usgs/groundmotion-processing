@@ -168,16 +168,14 @@ Attributes
          arbitrary metadata in the form of a dictionary as trace property
          (self.parameters).
 
-   .. py:property:: free_field
+   .. py:method:: free_field()
+      :property:
 
       Is this station a free-field station?
 
       :returns: True if a free-field sensor, False if not.
       :rtype: bool
 
-   .. py:property:: passed
-
-      Has this trace passed checks?
 
    .. py:method:: fail(reason)
 
@@ -188,6 +186,12 @@ Attributes
 
       :param reason: Reason given for failure.
       :type reason: str
+
+
+   .. py:method:: passed()
+      :property:
+
+      Has this trace passed checks?
 
 
    .. py:method:: validate()

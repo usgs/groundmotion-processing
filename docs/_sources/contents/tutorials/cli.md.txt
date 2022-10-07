@@ -1,6 +1,7 @@
 # Command Line Interface
 
 This example covers using the `gmrecords` command line program in a typical workflow for downloading, processing, and generating products for ground-motion records from an earthquake.
+The configuration and parameter files are in the `doc_source/contents/tutorials` directory.
 
 ```{seealso}
 Be sure to review the discussion of all of the `gmrecords` subcommands in section {ref}`gmrecords` and configuring projects in section {ref}`Initial Setup`.
@@ -11,15 +12,31 @@ Be sure to review the discussion of all of the `gmrecords` subcommands in sectio
 In this example we specify parameters in the project configuration to produce a small dataset.
 We use only the FDSN fetcher and limit the station distance to 0.1 degrees.
 The configuration files are in the `conf/cli` directory.
-First, we first create the project `data` directory, and then we use the `projects` subcommand to select the project configuration `cli-tutorial` from the tutorial projects listed in the `.gmprocess/projects.conf` file.
 
-:::{command-output} mkdir -p data/cli data/scripting
+First, we list the available projects in the current directory.
+
+:::{command-output} gmrecords projects --list
 ---
 cwd: .
 ---
 :::
 
+The `PROJECTS_PATH` shows the location of the projects configuration file where the information for the projects is stored.
+Second, we use the `projects` subcommand to select the project configuration `cli-tutorial`.
+
 :::{command-output} gmrecords projects --switch cli-tutorial
+---
+cwd: .
+---
+:::
+
+Third, we create the directory to hold the data.
+
+:::{note}
+We include the directory with the processing parameters for the project in the source code.
+:::
+
+:::{command-output} mkdir -p data/cli
 ---
 cwd: .
 ---

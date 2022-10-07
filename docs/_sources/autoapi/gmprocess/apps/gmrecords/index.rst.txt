@@ -119,13 +119,26 @@ Attributes
       Load information for subcommands.
 
 
+   .. py:method:: project_name()
+      :property:
+
+
+   .. py:method:: current_project()
+      :property:
+
+
+   .. py:method:: conf_path()
+      :property:
+
+
+   .. py:method:: data_path()
+      :property:
+
+
    .. py:method:: _initialize()
 
 
-   .. py:method:: _load_config()
-
-
-   .. py:method:: _validate_projects_config()
+   .. py:method:: _load_config(require_config=True)
 
 
    .. py:method:: _initial_setup()

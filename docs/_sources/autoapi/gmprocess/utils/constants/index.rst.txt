@@ -22,6 +22,11 @@ Module Contents
 
    
 
+.. py:data:: PROJ_CONF_FILE
+   :annotation: = projects.conf
+
+   
+
 .. py:data:: PROJECTS_PATH
    
 

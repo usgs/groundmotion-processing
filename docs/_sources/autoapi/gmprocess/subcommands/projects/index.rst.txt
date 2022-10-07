@@ -22,7 +22,8 @@ Functions
 
 .. autoapisummary::
 
-   gmprocess.subcommands.projects.check_project_config
+   gmprocess.subcommands.projects.get_current
+   gmprocess.subcommands.projects.validate_projects_config
    gmprocess.subcommands.projects.create
 
 
@@ -36,8 +37,8 @@ Attributes
    gmprocess.subcommands.projects.base
    gmprocess.subcommands.projects.constants
    gmprocess.subcommands.projects.prompt
-   gmprocess.subcommands.projects.re_email
-   gmprocess.subcommands.projects.current_markers
+   gmprocess.subcommands.projects.configobj
+   gmprocess.subcommands.projects.CURRENT_MARKERS
 
 
 .. py:data:: ryaml
@@ -60,8 +61,13 @@ Attributes
 
    
 
-.. py:data:: re_email
-   :annotation: = ^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$
+.. py:data:: configobj
+   
+
+   
+
+.. py:data:: CURRENT_MARKERS
+   
 
    
 
@@ -93,11 +99,21 @@ Attributes
       :param gmrecords: GMrecordsApp instance.
 
 
+   .. py:method:: list_projects()
 
-.. py:data:: current_markers
-   
 
-   
+   .. py:method:: switch_project(target)
+
+
+   .. py:method:: delete_project(target)
+
+
+   .. py:method:: create_project()
+
+
+   .. py:method:: rename_project(source, target)
+
+
 
 .. py:class:: Project(name, indict, filename, is_current=False)
 
@@ -108,25 +124,49 @@ Attributes
       Return repr(self).
 
 
+   .. py:method:: from_config(config, name)
+      :staticmethod:
 
-.. py:function:: check_project_config(config)
+      Create Project from projects configuration.
 
-   Validation checks on the project config. At least one project must exist
-   (otherwise exit) and the paths for each project should exist, otherwise the
-   project entry is removed.
+      :param config: Projects configuration.
+      :type config: ConfigObj
+      :param name: Name of project.
+      :type name: str
 
-   :param config: The ConfigObj instance.
+
+
+.. py:function:: get_current(config)
+
+   Get current project from configuration. We assume the configuration has already been validated.
+
+   :param config: Projects configuration.
    :type config: ConfigObj
 
+   returns (str):
+       Name of current project or None if there is no current project.
 
-.. py:function:: create(config, cwd=False)
+
+.. py:function:: validate_projects_config(config, projects_filepath)
+
+   Validate projects configuration.
+
+   raises IOError exception if projects configuration is invalid.
+
+   :param config: Projects configuration.
+   :type config: ConfigObj
+   :param projects_filepath: Path to current projects configuration file.
+   :type projects_filepath: pathlib.Path
+
+
+.. py:function:: create(config, use_cwd=False)
 
    Create a new gmrecords project.
 
    :param config: ConfigObj instance representing the parsed projects config.
    :type config: ConfigObj
-   :param cwd: Is this for initializing a "local" project in the current
-               working directory?
-   :type cwd: bool
+   :param use_cwd: Is this for initializing a "local" project in the current
+                   working directory?
+   :type use_cwd: bool
 
 
