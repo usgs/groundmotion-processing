@@ -1,0 +1,27 @@
+image: ${DEVOPS_REGISTRY}usgs/python:3.9
+
+test:
+  tags:
+    - development
+  stage: test
+  script:
+  - pip install .[doc]
+  - export PATH="$PATH:/home/usgs-user/.local/bin"
+  - sphinx-build -b html doc_source/ public
+  rules:
+    - if: $CI_COMMIT_REF_NAME != $CI_DEFAULT_BRANCH
+    
+pages:
+  tags:
+    - development
+  stage: deploy
+  script:
+  - pip install .[doc]
+  - export PATH="$PATH:/home/usgs-user/.local/bin"
+  - sphinx-build -b html doc_source/ public
+  artifacts:
+    paths:
+    - public
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+
