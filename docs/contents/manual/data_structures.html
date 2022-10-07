@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Workspace" href="workspace.html" /><link rel="prev" title="Manual" href="index.html" />
 
     <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Data Structures - gmprocess 1.2.1.dev21+g10defb29.d20221006 documentation</title>
+        <title>Data Structures - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev21+g10defb29.d20221006 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -496,12 +496,14 @@ processing of the <code class="docutils literal notranslate"><span class="pre">S
 noise ratio, etc.)</p></li>
 <li><p>A <code class="docutils literal notranslate"><span class="pre">free_field</span></code> property which can be used to query the object to ensure that
 its data comes from a free-field sensor.</p>
-<p>.. note::</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The free field condition is not always known reliably, and different people
 have have different definitions of the term <code class="docutils literal notranslate"><span class="pre">free_field</span></code>. When possible,
 we define a mapping between location code and the <code class="docutils literal notranslate"><span class="pre">free_field</span></code> property.
 For example, see the <code class="docutils literal notranslate"><span class="pre">LOCATION_CODES</span></code> variable <code class="docutils literal notranslate"><span class="pre">core.py</span></code> in
 <code class="docutils literal notranslate"><span class="pre">gmprocess.io.fdsn</span></code>.</p>
+</div>
 </li>
 <li><p>Methods (e.g., <code class="docutils literal notranslate"><span class="pre">getProvenance</span></code>, <code class="docutils literal notranslate"><span class="pre">setProvenance</span></code>) for tracking  processing
 steps that have been performed. These are aligned with the
@@ -548,15 +550,12 @@ data format, and saving it into a MiniSEED file accompanied by a
 StationXML file, suitable for passing to other packages.</p>
 <div class="cell tag_remove-stderr docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pkg_resources</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">gmprocess.io.read</span> <span class="kn">import</span> <span class="n">read_data</span>
 
-<span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;testdata&#39;</span><span class="p">,</span> <span class="s1">&#39;cwb&#39;</span><span class="p">,</span> <span class="s1">&#39;us1000chhc&#39;</span><span class="p">)</span>
-<span class="n">datadir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;gmprocess&#39;</span><span class="p">,</span> <span class="n">datapath</span><span class="p">)</span>
+<span class="n">datadir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;cwb&quot;</span> <span class="o">/</span> <span class="s2">&quot;us1000chhc&quot;</span>
 <span class="c1"># cwb files are stored as three channels per file.</span>
-<span class="n">datafile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">datadir</span><span class="p">,</span> <span class="s1">&#39;1-EAS.dat&#39;</span><span class="p">)</span>
+<span class="n">datafile</span> <span class="o">=</span> <span class="n">datadir</span> <span class="o">/</span> <span class="s2">&quot;1-EAS.dat&quot;</span>
 <span class="n">stream</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">datafile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">inventory</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">getInventory</span><span class="p">()</span>
 
@@ -566,25 +565,6 @@ StationXML file, suitable for passing to other packages.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">OSError</span><span class="g g-Whitespace">                                   </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">10</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># cwb files are stored as three channels per file.</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">datafile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">datadir</span><span class="p">,</span> <span class="s1">&#39;1-EAS.dat&#39;</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">10</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">datafile</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">inventory</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">getInventory</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;example.mseed&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;MSEED&quot;</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/io/read.py:39,</span> in <span class="ni">read_data</span><span class="nt">(filename, config, read_format, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">37</span> <span class="c1"># Check if file exists</span>
-<span class="g g-Whitespace">     </span><span class="mi">38</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">39</span>     <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Not a file </span><span class="si">{</span><span class="n">filename</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="c1"># Get and validate format</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="ne">OSError</span>: Not a file &#39;/Users/emthompson/miniconda3/envs/gmprocess/lib/python3.8/site-packages/gmprocess/data/testdata/cwb/us1000chhc/1-EAS.dat&#39;
-</pre></div>
-</div>
 </div>
 </div>
 </section>
@@ -600,10 +580,7 @@ together.</p>
 <p>Imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">glob</span>
-<span class="kn">import</span> <span class="nn">pkg_resources</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">gmprocess.io.read</span> <span class="kn">import</span> <span class="n">read_data</span>
 <span class="kn">from</span> <span class="nn">gmprocess.core.streamcollection</span> <span class="kn">import</span> <span class="n">StreamCollection</span>
 </pre></div>
@@ -613,15 +590,19 @@ together.</p>
 <p>Then read in some example test data that is distributed with gmprocess:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;testdata&#39;</span><span class="p">,</span> <span class="s1">&#39;knet&#39;</span><span class="p">,</span> <span class="s1">&#39;us2000cnnl&#39;</span><span class="p">)</span>
-<span class="n">datadir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s1">&#39;gmprocess&#39;</span><span class="p">,</span> <span class="n">datapath</span><span class="p">)</span>
-<span class="n">datafiles</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">datadir</span><span class="p">,</span> <span class="s1">&#39;AOM*&#39;</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">datadir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;..&quot;</span> <span class="o">/</span> <span class="s2">&quot;tests&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span> <span class="o">/</span> <span class="s2">&quot;knet&quot;</span> <span class="o">/</span> <span class="s2">&quot;us2000cnnl&quot;</span>
+<span class="n">datafiles</span> <span class="o">=</span> <span class="n">datadir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;AOM*&quot;</span><span class="p">)</span>
 
 <span class="n">streams</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">datafile</span> <span class="ow">in</span> <span class="n">datafiles</span><span class="p">:</span>
     <span class="n">streams</span> <span class="o">+=</span> <span class="n">read_data</span><span class="p">(</span><span class="n">datafile</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">streams</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>27
 </pre></div>
 </div>
 </div>
@@ -636,12 +617,58 @@ separate stream.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9
+</pre></div>
+</div>
+</div>
 </div>
 <p>So the length of the collection should be 9.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">describe</span></code> method gives additional information.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">collection</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9 StationStreams(s) in StreamCollection:
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM009.--.HNZ | 2018-01-24T10:51:20.000000Z - 2018-01-24T10:53:23.990000Z | 100.0 Hz, 12400 samples (passed)
+    BO.AOM009.--.HN1 | 2018-01-24T10:51:20.000000Z - 2018-01-24T10:53:23.990000Z | 100.0 Hz, 12400 samples (passed)
+    BO.AOM009.--.HN2 | 2018-01-24T10:51:20.000000Z - 2018-01-24T10:53:23.990000Z | 100.0 Hz, 12400 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM007.--.HN1 | 2018-01-24T10:51:21.000000Z - 2018-01-24T10:53:11.990000Z | 100.0 Hz, 11100 samples (passed)
+    BO.AOM007.--.HN2 | 2018-01-24T10:51:21.000000Z - 2018-01-24T10:53:11.990000Z | 100.0 Hz, 11100 samples (passed)
+    BO.AOM007.--.HNZ | 2018-01-24T10:51:21.000000Z - 2018-01-24T10:53:11.990000Z | 100.0 Hz, 11100 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM006.--.HN1 | 2018-01-24T10:51:25.000000Z - 2018-01-24T10:53:18.990000Z | 100.0 Hz, 11400 samples (passed)
+    BO.AOM006.--.HN2 | 2018-01-24T10:51:25.000000Z - 2018-01-24T10:53:18.990000Z | 100.0 Hz, 11400 samples (passed)
+    BO.AOM006.--.HNZ | 2018-01-24T10:51:25.000000Z - 2018-01-24T10:53:18.990000Z | 100.0 Hz, 11400 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM008.--.HNZ | 2018-01-24T10:51:21.000000Z - 2018-01-24T10:53:38.990000Z | 100.0 Hz, 13800 samples (passed)
+    BO.AOM008.--.HN1 | 2018-01-24T10:51:21.000000Z - 2018-01-24T10:53:38.990000Z | 100.0 Hz, 13800 samples (passed)
+    BO.AOM008.--.HN2 | 2018-01-24T10:51:21.000000Z - 2018-01-24T10:53:38.990000Z | 100.0 Hz, 13800 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM001.--.HN1 | 2018-01-24T10:51:28.000000Z - 2018-01-24T10:53:09.990000Z | 100.0 Hz, 10200 samples (passed)
+    BO.AOM001.--.HN2 | 2018-01-24T10:51:28.000000Z - 2018-01-24T10:53:09.990000Z | 100.0 Hz, 10200 samples (passed)
+    BO.AOM001.--.HNZ | 2018-01-24T10:51:28.000000Z - 2018-01-24T10:53:09.990000Z | 100.0 Hz, 10200 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM002.--.HNZ | 2018-01-24T10:51:27.000000Z - 2018-01-24T10:53:14.990000Z | 100.0 Hz, 10800 samples (passed)
+    BO.AOM002.--.HN2 | 2018-01-24T10:51:27.000000Z - 2018-01-24T10:53:14.990000Z | 100.0 Hz, 10800 samples (passed)
+    BO.AOM002.--.HN1 | 2018-01-24T10:51:27.000000Z - 2018-01-24T10:53:14.990000Z | 100.0 Hz, 10800 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM005.--.HNZ | 2018-01-24T10:51:25.000000Z - 2018-01-24T10:52:59.990000Z | 100.0 Hz, 9500 samples (passed)
+    BO.AOM005.--.HN2 | 2018-01-24T10:51:25.000000Z - 2018-01-24T10:52:59.990000Z | 100.0 Hz, 9500 samples (passed)
+    BO.AOM005.--.HN1 | 2018-01-24T10:51:25.000000Z - 2018-01-24T10:52:59.990000Z | 100.0 Hz, 9500 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM004.--.HNZ | 2018-01-24T10:51:22.000000Z - 2018-01-24T10:52:58.990000Z | 100.0 Hz, 9700 samples (passed)
+    BO.AOM004.--.HN2 | 2018-01-24T10:51:22.000000Z - 2018-01-24T10:52:58.990000Z | 100.0 Hz, 9700 samples (passed)
+    BO.AOM004.--.HN1 | 2018-01-24T10:51:22.000000Z - 2018-01-24T10:52:58.990000Z | 100.0 Hz, 9700 samples (passed)
+  3 StationTrace(s) in StationStream (passed):
+    BO.AOM003.--.HNZ | 2018-01-24T10:51:23.000000Z - 2018-01-24T10:53:30.990000Z | 100.0 Hz, 12800 samples (passed)
+    BO.AOM003.--.HN2 | 2018-01-24T10:51:23.000000Z - 2018-01-24T10:53:30.990000Z | 100.0 Hz, 12800 samples (passed)
+    BO.AOM003.--.HN1 | 2018-01-24T10:51:23.000000Z - 2018-01-24T10:53:30.990000Z | 100.0 Hz, 12800 samples (passed)
 </pre></div>
 </div>
 </div>

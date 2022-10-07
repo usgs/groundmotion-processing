@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Tutorials" href="../tutorials/index.html" /><link rel="prev" title="Installation" href="install.html" />
 
     <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Initial Setup - gmprocess 1.2.1.dev21+g10defb29.d20221006 documentation</title>
+        <title>Initial Setup - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.1.dev21+g10defb29.d20221006 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -499,20 +499,20 @@ This information is used for the data provenance.
 It is often important to be able to track where data originated.
 If you do not wish to share your personal information, we recommend using an institution or project name.</p>
 <p>To create a directory project, use the gmrecords <code class="docutils literal notranslate"><span class="pre">init</span></code> subcommand in the directory where you would like to activate the project.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">gmrecords init</span>
-<span class="go">INFO 2021-11-12 20:00:32 | gmrecords.__init__: Logging level includes INFO.</span>
-<span class="go">INFO 2021-11-12 20:00:32 | gmrecords.__init__: PROJECTS_PATH: /Users/emthompson/.gmprocess</span>
-<span class="go">INFO 2021-11-12 20:00:32 | init.main: Running subcommand &#39;init&#39;</span>
-<span class="go">Please enter a project title: [default] local</span>
-<span class="go">Please enter your name and email. This information will be added</span>
-<span class="go">to the config file and reported in the provenance of the data</span>
-<span class="go">processed in this project.</span>
-<span class="go">  Name: Eric</span>
-<span class="go">  Email: mail@email.com</span>
+<div class="highlight-term notranslate"><div class="highlight"><pre><span></span>gmrecords init
+INFO 2021-11-12 20:00:32 | gmrecords.__init__: Logging level includes INFO.
+INFO 2021-11-12 20:00:32 | gmrecords.__init__: PROJECTS_PATH: /Users/&lt;username&gt;/.gmprocess
+INFO 2021-11-12 20:00:32 | init.main: Running subcommand &#39;init&#39;
+Please enter a project title: [default] local
+Please enter your name and email. This information will be added
+to the config file and reported in the provenance of the data
+processed in this project.
+  Name: Eric
+  Email: fake@email.com
 
-<span class="go">Created project: Project: local</span>
-<span class="go">  Conf Path: /Users/emthompson/test_gmrecords/conf</span>
-<span class="go">  Data Path: /Users/emthompson/test_gmrecords/data</span>
+Created project: Project: local
+  Conf Path: /Users/&lt;username&gt;/test_gmrecords/conf
+  Data Path: /Users/&lt;username&gt;/test_gmrecords/data
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand is used for managing system-level projects.

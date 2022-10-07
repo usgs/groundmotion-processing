@@ -95,3 +95,25 @@ INFO 2022-10-06 09:05:46 | assemble._assemble_event: No action taken for nc73291
 INFO 2022-10-06 09:05:46 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-06 09:05:46 | base._summarize_files_created: File type: Workspace
 INFO 2022-10-06 09:05:46 | base._summarize_files_created: 	nc73291880
+INFO 2022-10-06 13:06:59 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-06 13:06:59 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-06 13:06:59 | assemble.main: Running subcommand 'assemble'
+INFO 2022-10-06 13:07:02 | assemble.main: Number of events to assemble: 1
+INFO 2022-10-06 13:07:02 | assemble._assemble_event: Starting event: nc73291880
+INFO 2022-10-06 13:07:02 | assemble._assemble_event: ASDF exists: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting/nc73291880/workspace.h5
+INFO 2022-10-06 13:07:02 | assemble._assemble_event: The --overwrite argument not selected.
+INFO 2022-10-06 13:07:02 | assemble._assemble_event: No action taken for nc73291880.
+INFO 2022-10-06 13:07:02 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-06 13:07:02 | base._summarize_files_created: File type: Workspace
+INFO 2022-10-06 13:07:02 | base._summarize_files_created: 	nc73291880
+INFO 2022-10-06 13:29:25 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-06 13:29:25 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-06 13:29:25 | assemble.main: Running subcommand 'assemble'
+INFO 2022-10-06 13:29:27 | assemble.main: Number of events to assemble: 1
+INFO 2022-10-06 13:29:27 | assemble._assemble_event: Starting event: nc73291880
+INFO 2022-10-06 13:29:27 | assemble._assemble_event: ASDF exists: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting/nc73291880/workspace.h5
+INFO 2022-10-06 13:29:27 | assemble._assemble_event: The --overwrite argument not selected.
+INFO 2022-10-06 13:29:27 | assemble._assemble_event: No action taken for nc73291880.
+INFO 2022-10-06 13:29:27 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-06 13:29:27 | base._summarize_files_created: File type: Workspace
+INFO 2022-10-06 13:29:27 | base._summarize_files_created: 	nc73291880
