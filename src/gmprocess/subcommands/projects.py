@@ -232,7 +232,12 @@ class Project(object):
 
     def __repr__(self):
         fmt = "Project: %s %s\n\tConf Path: %s\n\tData Path: %s"
-        tpl = (self.name, self.current_marker, self.conf_path, self.data_path)
+        cpath = self.conf_path
+        dpath = self.data_path
+        if platform.system() != "Windows":
+            cpath = Path(Path(self.filename).parent / self.conf_path).resolve()
+            dpath = Path(Path(self.filename).parent / self.data_path).resolve()
+        tpl = (self.name, self.current_marker, cpath, dpath)
         return fmt % tpl
 
     @staticmethod
