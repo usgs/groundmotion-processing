@@ -21,7 +21,7 @@ def test_process_waveforms(script_runner):
             dst = os.path.join(ddir, event, "_workspace.h5")
             shutil.copyfile(src, dst)
 
-        setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
+        setup_inputs = io.StringIO(f"test\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success

@@ -14,7 +14,7 @@ def test_export_shakemap(script_runner):
         cdir = constants.CONFIG_PATH_TEST
         ddir = constants.TEST_DATA_DIR / "demo_steps" / "exports"
 
-        setup_inputs = io.StringIO(f"2\ntest\n{cdir}\n{ddir}\nname\ntest@email.com\n")
+        setup_inputs = io.StringIO(f"test\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
