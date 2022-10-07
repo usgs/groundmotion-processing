@@ -5,12 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Response Spectra Calculation and Comparison" href="response_spectra.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Scripting - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>Scripting - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -139,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -463,8 +464,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -481,29 +481,66 @@
           <section id="scripting">
 <h1>Scripting<a class="headerlink" href="#scripting" title="Permalink to this heading">#</a></h1>
 <p>You can write Python scripts that call the <code class="docutils literal notranslate"><span class="pre">GMrecordsApp</span></code> application to create high-level workflows.
-In the example below we create a Python script to run several subcommands to download and process ground motions recorded close to the epicenter of a magnitude 4.5 earthquake, and then export the results to CSV files and generate a report summarizing the results.</p>
+In the example below we create a Python script to run several subcommands to download and process ground motions recorded close to the epicenter of a magnitude 4.5 earthquake, and then export the results to CSV files and generate a report summarizing the results.
+The configuration and parameter files are in the <code class="docutils literal notranslate"><span class="pre">doc_source/contents/tutorials</span></code> directory.</p>
 <section id="local-gmprocess-configuration">
 <h2>Local <code class="docutils literal notranslate"><span class="pre">gmprocess</span></code> configuration<a class="headerlink" href="#local-gmprocess-configuration" title="Permalink to this heading">#</a></h2>
 <p>In this example we specify parameters in the project configuration to produce a small dataset.
 We use only the FDSN fetcher and limit the station distance to 0.1 degrees.
-The configuration files are in the <code class="docutils literal notranslate"><span class="pre">conf/scripting</span></code> directory.
-First, we first create the project <code class="docutils literal notranslate"><span class="pre">data</span></code> directory, and then we use the <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand to select the project configuration <code class="docutils literal notranslate"><span class="pre">cli-tutorial</span></code> from the tutorial projects listed in the <code class="docutils literal notranslate"><span class="pre">.gmprocess/projects.conf</span></code> file.</p>
+The configuration files are in the <code class="docutils literal notranslate"><span class="pre">conf/scripting</span></code> directory.</p>
+<p>First, we list the available projects in the current directory.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>mkdir -p data/cli data/scripting
-<span class="o">!</span>gmrecords projects --switch scripting-tutorial
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>gmrecords projects --list
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-06 13:29:24 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-06 13:29:24 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
-INFO 2022-10-06 13:29:24 | projects.main: Running subcommand &#39;projects&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-07 09:57:42 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-07 09:57:42 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-07 09:57:42 | projects.main: Running subcommand &#39;projects&#39;
+
+Project: cli-tutorial 
+	Conf Path: ../conf/cli
+	Data Path: ../data/cli
+
+
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">PROJECTS_PATH</span></code> shows the location of the projects configuration file where the information for the projects is stored.
+Second, we use the <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand to select the project configuration <code class="docutils literal notranslate"><span class="pre">scripting-tutorial</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>gmrecords projects --switch scripting-tutorial
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-07 09:57:43 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-07 09:57:43 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-07 09:57:43 | projects.main: Running subcommand &#39;projects&#39;
 
 Switched to project: 
 Project: scripting-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
+</pre></div>
+</div>
+</div>
+</div>
+<p>Third, we create the directory to hold the data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We include the directory with the processing parameters for the project in the source code.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>mkdir -p data/scripting
 </pre></div>
 </div>
 </div>
@@ -654,9 +691,9 @@ Consequently, we simply copy the data from <code class="docutils literal notrans
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;assemble&#39;...
 Logging output sent to: assemble.log
 --------------------------------------------------------------------------------
-Project: scripting-tutorial 
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -664,30 +701,58 @@ Project: scripting-tutorial
 Running &#39;process_waveforms&#39;...
 Logging output sent to: process_waveforms.log
 --------------------------------------------------------------------------------
-Project: scripting-tutorial 
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;compute_station_metrics&#39;...
 Logging output sent to: compute_station_metrics.log
 --------------------------------------------------------------------------------
-Project: scripting-tutorial 
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;compute_waveform_metrics&#39;...
 Logging output sent to: compute_waveform_metrics.log
 --------------------------------------------------------------------------------
-Project: scripting-tutorial 
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;export_metric_tables&#39;...
+Logging output sent to: export_metric_tables.log
+--------------------------------------------------------------------------------
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
+--------------------------------------------------------------------------------
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;generate_report&#39;...
+Logging output sent to: generate_report.log
+--------------------------------------------------------------------------------
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
+--------------------------------------------------------------------------------
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;generate_station_maps&#39;...
+Logging output sent to: generate_station_maps.log
+--------------------------------------------------------------------------------
+Project: scripting-tutorial **Current Project**
+	Conf Path: ../conf/scripting
+	Data Path: ../data/scripting
+--------------------------------------------------------------------------------
+</pre></div>
+</div>
+<img alt="../../_images/562a53b7c9f34f9e37469087aeca12be3c3eae9b2b8001a90afa849f8a6ed41c.png" src="../../_images/562a53b7c9f34f9e37469087aeca12be3c3eae9b2b8001a90afa849f8a6ed41c.png" />
 </div>
 </div>
 <p>Running the script will produce CSV files with the waveform metrics in the <code class="docutils literal notranslate"><span class="pre">data/scripting</span></code> directory and reports in the <code class="docutils literal notranslate"><span class="pre">data/scripting/nc73291880</span></code> directory.</p>
@@ -802,5 +867,10 @@ data/scripting/nc73291880/stations_map.html
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

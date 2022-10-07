@@ -5,12 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.utils" href="../../utils/index.html" /><link rel="prev" title="gmprocess.subcommands.process_waveforms" href="../process_waveforms/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>gmprocess.subcommands.projects - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>gmprocess.subcommands.projects - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
@@ -139,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -463,8 +464,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -502,10 +502,13 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.check_project_config" title="gmprocess.subcommands.projects.check_project_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_project_config</span></code></a>(config)</p></td>
-<td><p>Validation checks on the project config. At least one project must exist</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.get_current" title="gmprocess.subcommands.projects.get_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current</span></code></a>(config)</p></td>
+<td><p>Get current project from configuration. We assume the configuration has already been validated.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.create" title="gmprocess.subcommands.projects.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(config[, cwd])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.validate_projects_config" title="gmprocess.subcommands.projects.validate_projects_config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_projects_config</span></code></a>(config, projects_filepath)</p></td>
+<td><p>Validate projects configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.create" title="gmprocess.subcommands.projects.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a>(config[, use_cwd])</p></td>
 <td><p>Create a new gmrecords project.</p></td>
 </tr>
 </tbody>
@@ -529,10 +532,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.prompt" title="gmprocess.subcommands.projects.prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prompt</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.re_email" title="gmprocess.subcommands.projects.re_email"><code class="xref py py-obj docutils literal notranslate"><span class="pre">re_email</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.configobj" title="gmprocess.subcommands.projects.configobj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">configobj</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.current_markers" title="gmprocess.subcommands.projects.current_markers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">current_markers</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.projects.CURRENT_MARKERS" title="gmprocess.subcommands.projects.CURRENT_MARKERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CURRENT_MARKERS</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -559,8 +562,13 @@
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.projects.re_email">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">re_email</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">^([a-zA-Z0-9_\-\.]+)&#64;([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$</span></em><a class="headerlink" href="#gmprocess.subcommands.projects.re_email" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.configobj">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">configobj</span></span><a class="headerlink" href="#gmprocess.subcommands.projects.configobj" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.CURRENT_MARKERS">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">CURRENT_MARKERS</span></span><a class="headerlink" href="#gmprocess.subcommands.projects.CURRENT_MARKERS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
@@ -594,12 +602,32 @@
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.projects.current_markers">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">current_markers</span></span><a class="headerlink" href="#gmprocess.subcommands.projects.current_markers" title="Permalink to this definition">#</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.ProjectsModule.list_projects">
+<span class="sig-name descname"><span class="pre">list_projects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#ProjectsModule.list_projects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.ProjectsModule.list_projects" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.ProjectsModule.switch_project">
+<span class="sig-name descname"><span class="pre">switch_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#ProjectsModule.switch_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.ProjectsModule.switch_project" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.ProjectsModule.delete_project">
+<span class="sig-name descname"><span class="pre">delete_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#ProjectsModule.delete_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.ProjectsModule.delete_project" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.ProjectsModule.create_project">
+<span class="sig-name descname"><span class="pre">create_project</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#ProjectsModule.create_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.ProjectsModule.create_project" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.ProjectsModule.rename_project">
+<span class="sig-name descname"><span class="pre">rename_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#ProjectsModule.rename_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.ProjectsModule.rename_project" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="gmprocess.subcommands.projects.Project">
@@ -611,30 +639,61 @@
 <dd><p>Return repr(self).</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.Project.from_config">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#Project.from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.Project.from_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Create Project from projects configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>ConfigObj</em>) – Projects configuration.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Name of project.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="gmprocess.subcommands.projects.check_project_config">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">check_project_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#check_project_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.check_project_config" title="Permalink to this definition">#</a></dt>
-<dd><p>Validation checks on the project config. At least one project must exist
-(otherwise exit) and the paths for each project should exist, otherwise the
-project entry is removed.</p>
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.get_current">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">get_current</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#get_current"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.get_current" title="Permalink to this definition">#</a></dt>
+<dd><p>Get current project from configuration. We assume the configuration has already been validated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>config</strong> (<em>ConfigObj</em>) – The ConfigObj instance.</p>
+<dd class="field-odd"><p><strong>config</strong> (<em>ConfigObj</em>) – Projects configuration.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>returns (str):</dt><dd><p>Name of current project or None if there is no current project.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gmprocess.subcommands.projects.validate_projects_config">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">validate_projects_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projects_filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#validate_projects_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.validate_projects_config" title="Permalink to this definition">#</a></dt>
+<dd><p>Validate projects configuration.</p>
+<p>raises IOError exception if projects configuration is invalid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<em>ConfigObj</em>) – Projects configuration.</p></li>
+<li><p><strong>projects_filepath</strong> (<em>pathlib.Path</em>) – Path to current projects configuration file.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.subcommands.projects.create">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.create" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.projects.</span></span><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_cwd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/projects.html#create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.projects.create" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a new gmrecords project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>config</strong> (<em>ConfigObj</em>) – ConfigObj instance representing the parsed projects config.</p></li>
-<li><p><strong>cwd</strong> (<em>bool</em>) – Is this for initializing a “local” project in the current
+<li><p><strong>use_cwd</strong> (<em>bool</em>) – Is this for initializing a “local” project in the current
 working directory?</p></li>
 </ul>
 </dd>
@@ -711,39 +770,53 @@ working directory?</p></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.base"><code class="docutils literal notranslate"><span class="pre">base</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.constants"><code class="docutils literal notranslate"><span class="pre">constants</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.prompt"><code class="docutils literal notranslate"><span class="pre">prompt</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.projects.re_email"><code class="docutils literal notranslate"><span class="pre">re_email</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.configobj"><code class="docutils literal notranslate"><span class="pre">configobj</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.CURRENT_MARKERS"><code class="docutils literal notranslate"><span class="pre">CURRENT_MARKERS</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule"><code class="docutils literal notranslate"><span class="pre">ProjectsModule</span></code></a><ul>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.command_name"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.command_name</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.aliases"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.aliases</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.arguments"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.arguments</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.main"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.main()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.list_projects"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.list_projects()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.switch_project"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.switch_project()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.delete_project"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.delete_project()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.create_project"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.create_project()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.rename_project"><code class="docutils literal notranslate"><span class="pre">ProjectsModule.rename_project()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#gmprocess.subcommands.projects.current_markers"><code class="docutils literal notranslate"><span class="pre">current_markers</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.Project"><code class="docutils literal notranslate"><span class="pre">Project</span></code></a><ul>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.Project.__repr__"><code class="docutils literal notranslate"><span class="pre">Project.__repr__()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.Project.from_config"><code class="docutils literal notranslate"><span class="pre">Project.from_config()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#gmprocess.subcommands.projects.check_project_config"><code class="docutils literal notranslate"><span class="pre">check_project_config()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.get_current"><code class="docutils literal notranslate"><span class="pre">get_current()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.validate_projects_config"><code class="docutils literal notranslate"><span class="pre">validate_projects_config()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.create"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ryaml">ryaml</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.base">base</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.constants">constants</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.prompt">prompt</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.projects.re_email">re_email</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.configobj">configobj</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.CURRENT_MARKERS">CURRENT_MARKERS</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule">ProjectsModule</a><ul>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.command_name">command_name</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.aliases">aliases</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.arguments">arguments</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.main">main</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.list_projects">list_projects</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.switch_project">switch_project</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.delete_project">delete_project</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.create_project">create_project</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.ProjectsModule.rename_project">rename_project</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#gmprocess.subcommands.projects.current_markers">current_markers</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.Project">Project</a><ul>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.Project.__repr__">__repr__</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.Project.from_config">from_config</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#gmprocess.subcommands.projects.check_project_config">check_project_config</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.get_current">get_current</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.projects.validate_projects_config">validate_projects_config</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.projects.create">create</a></li>
 </ul>
 </li>
@@ -770,5 +843,10 @@ working directory?</p></li>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

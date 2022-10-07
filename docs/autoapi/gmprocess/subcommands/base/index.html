@@ -5,12 +5,13 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands.clean" href="../clean/index.html" /><link rel="prev" title="gmprocess.subcommands.auto_shakemap" href="../auto_shakemap/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>gmprocess.subcommands.base - gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</title>
+    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
+        <title>gmprocess.subcommands.base - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
@@ -139,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev1+ge17fd39e.d20221006 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -463,8 +464,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -539,29 +539,16 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.base.</span></span><span class="sig-name descname"><span class="pre">SubcommandModule</span></span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/base.html#SubcommandModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.base.SubcommandModule" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>gmprocess base module.</p>
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.subcommands.base.SubcommandModule.command_name">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">command_name</span></span><a class="headerlink" href="#gmprocess.subcommands.base.SubcommandModule.command_name" title="Permalink to this definition">#</a></dt>
-<dd><p>string, all lowercase.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Name of subcommand</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="gmprocess.subcommands.base.SubcommandModule.arguments">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">arguments</span></span><a class="headerlink" href="#gmprocess.subcommands.base.SubcommandModule.arguments" title="Permalink to this definition">#</a></dt>
-<dd><p>A list of dicts for each argument of the subcommands. Each dict
-should have the following keys: short_flag, long_flag, help, action,
-default.</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="gmprocess.subcommands.base.SubcommandModule.aliases">
 <span class="sig-name descname"><span class="pre">aliases</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">[]</span></em><a class="headerlink" href="#gmprocess.subcommands.base.SubcommandModule.aliases" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.base.SubcommandModule.command_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">command_name</span></span><a class="headerlink" href="#gmprocess.subcommands.base.SubcommandModule.command_name" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of subcommand: string, all lowercase.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.subcommands.base.SubcommandModule.open_workspace">
@@ -573,6 +560,14 @@ default.</p>
 <dt class="sig sig-object py" id="gmprocess.subcommands.base.SubcommandModule.close_workspace">
 <span class="sig-name descname"><span class="pre">close_workspace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/base.html#SubcommandModule.close_workspace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.base.SubcommandModule.close_workspace" title="Permalink to this definition">#</a></dt>
 <dd><p>Close workspace.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gmprocess.subcommands.base.SubcommandModule.arguments">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">arguments</span></span><a class="headerlink" href="#gmprocess.subcommands.base.SubcommandModule.arguments" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of dicts for each argument of the subcommands. Each dict
+should have the following keys: short_flag, long_flag, help, action,
+default.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -706,11 +701,11 @@ directly, rather than from the gmrecords command line program.</p>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.ws"><code class="docutils literal notranslate"><span class="pre">ws</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.const"><code class="docutils literal notranslate"><span class="pre">const</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule"><code class="docutils literal notranslate"><span class="pre">SubcommandModule</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.command_name"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.command_name</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.arguments"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.arguments</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.aliases"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.aliases</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.command_name"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.command_name()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.open_workspace"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.open_workspace()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.close_workspace"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.close_workspace()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.arguments"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.arguments()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.main"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.main()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.list_arguments"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.list_arguments()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.argugments_default_dict"><code class="docutils literal notranslate"><span class="pre">SubcommandModule.argugments_default_dict()</span></code></a></li>
@@ -728,11 +723,11 @@ directly, rather than from the gmrecords command line program.</p>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.ws">ws</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.const">const</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule">SubcommandModule</a><ul>
-<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.command_name">command_name</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.arguments">arguments</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.aliases">aliases</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.command_name">command_name</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.open_workspace">open_workspace</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.close_workspace">close_workspace</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.arguments">arguments</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.main">main</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.list_arguments">list_arguments</a></li>
 <li><a class="reference internal" href="#gmprocess.subcommands.base.SubcommandModule.argugments_default_dict">argugments_default_dict</a></li>
@@ -770,5 +765,10 @@ directly, rather than from the gmrecords command line program.</p>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/tabs.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>
