@@ -71,7 +71,7 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
             )
             self.workspace.close()
 
-            basename = f"{gmrecords.project}_{gmrecords.args.label}_provenance"
+            basename = f"{gmrecords.project_name}_{gmrecords.args.label}_provenance"
             if gmrecords.args.output_format == "csv":
                 csvfile = os.path.join(event_dir, f"{basename}.csv")
                 self.append_file("Provenance", csvfile)
