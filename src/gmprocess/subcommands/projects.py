@@ -39,7 +39,7 @@ class ProjectsModule(base.SubcommandModule):
         {
             "short_flag": "-s",
             "long_flag": "--switch",
-            "help": "Switch from current project to PROJECT.",
+            "help": "Switch from current project to <name>.",
             "type": str,
             "metavar": "<name>",
             "default": None,
@@ -54,7 +54,7 @@ class ProjectsModule(base.SubcommandModule):
         {
             "short_flag": "-d",
             "long_flag": "--delete",
-            "help": "Delete existing project PROJECT.",
+            "help": "Delete existing project <name>.",
             "type": str,
             "metavar": "<name>",
             "default": None,
@@ -68,7 +68,45 @@ class ProjectsModule(base.SubcommandModule):
             "metavar": ("<old>", "<new>"),
             "default": None,
         },
+        {
+            "long_flag": "--set-conf",
+            "help": "Set the conf path to <path> for project <name>.",
+            "type": str,
+            "nargs": 2,
+            "metavar": ("<name>", "<path>"),
+            "default": None,
+        },
+        {
+            "long_flag": "--set-data",
+            "help": "Set the data path to <path> for project <name>.",
+            "type": str,
+            "nargs": 2,
+            "metavar": ("<name>", "<path>"),
+            "default": None,
+        },
     ]
+
+    epilog = """
+    In order to simplify the command line interface, the gmrecords command makes use of
+    "projects". You can have many projects configured on your system, and a project can
+    have data from many events. A project is essentially a way to encapsulate the
+    configuration and data directories so that they do not need to be specified as
+    command line arguments.
+
+    `gmrecords` first checks the current directory for the presence of
+    `./.gmprocess/projects.conf` (this is called a "local" or "directory" project); if
+    that is not found then it looks for the presence of `~/.gmprocess/projects.conf`
+    (this is called a "system" level project).
+
+    Within the `projects.conf` file, the key `project` indicates which the currently
+    selected project. Multiple projects can be included in a `projects.conf` file, but
+    that doesn't make a lot of sense for a "directory" type project.
+
+    The project name is then stored as a key at the top level, which itself has keys
+    `data_path` and `conf_path`. The `data_path` points to the directory where data
+    is stored, and organized at the top level by directories named by event id. The
+    `conf_path` points to the directory that holds configuration options in YML files.
+    """
 
     def main(self, gmrecords):
         """
@@ -106,12 +144,18 @@ class ProjectsModule(base.SubcommandModule):
         elif args.rename:
             source, target = args.rename
             self.rename_project(source, target)
+        elif args.set_conf:
+            proj_name, conf_path = args.set_conf
+            self._set_path(proj_name, conf_path, "conf_path")
+        elif args.set_data:
+            proj_name, data_path = args.set_data
+            self._set_path(proj_name, data_path, "data_path")
         else:
             raise NotImplementedError("Subcommand projects option not implemented.")
 
     def list_projects(self):
         projects = self.config["projects"]
-        for name, pdict in projects.items():
+        for name in projects.keys():
             project = Project.from_config(self.config, name)
             print("\n" + str(project) + "\n")
 
@@ -175,18 +219,26 @@ class ProjectsModule(base.SubcommandModule):
         create(self.config, use_cwd)
 
     def rename_project(self, source, target):
-        if source not in self.config["projects"]:
-            msg = (
-                f"Project '{source}' not in {self.config_filepath}. "
-                f"Run 'gmrecords {self.command_name} -l' to see available projects."
-            )
-            raise IOError(msg)
+        self._check_project_name(source)
         self.config["projects"][target] = self.config["projects"].pop(source)
         if self.config["project"] == source:
             self.config["project"] = target
         self.config.write()
+        print(f"Renamed '{source}' to '{target}'.")
 
-        logging.info(f"Renamed '{source}' to '{target}'.")
+    def _set_path(self, proj_name, path, key):
+        self._check_project_name(proj_name)
+        self.config["projects"][proj_name][key] = path
+        self.config.write()
+        print(f"Set {key} for '{proj_name}' to '{path}'.")
+
+    def _check_project_name(self, name):
+        if name not in self.config["projects"]:
+            msg = (
+                f"Project '{name}' not in {self.config_filepath}. "
+                f"Run 'gmrecords {self.command_name} -l' to see available projects."
+            )
+            raise IOError(msg)
 
 
 class Project(object):
