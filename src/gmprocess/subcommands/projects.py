@@ -99,8 +99,7 @@ class ProjectsModule(base.SubcommandModule):
     (this is called a "system" level project).
 
     Within the `projects.conf` file, the key `project` indicates which the currently
-    selected project. Multiple projects can be included in a `projects.conf` file, but
-    that doesn't make a lot of sense for a "directory" type project.
+    selected project. Multiple projects can be included in a `projects.conf` file.
 
     The project name is then stored as a key at the top level, which itself has keys
     `data_path` and `conf_path`. The `data_path` points to the directory where data
