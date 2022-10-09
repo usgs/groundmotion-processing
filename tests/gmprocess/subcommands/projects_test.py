@@ -42,6 +42,18 @@ def test_projects(script_runner):
         assert ret.success
         assert "Renamed 'test2' to 'tested'." in ret.stdout
 
+        ret = script_runner.run(
+            "gmrecords", "projects", "--set-data", "tested", "/tested"
+        )
+        assert ret.success
+        assert "Set data_path for 'tested'" in ret.stdout
+
+        ret = script_runner.run(
+            "gmrecords", "projects", "--set-conf", "tested", "/tested"
+        )
+        assert ret.success
+        assert "Set conf_path for 'tested'" in ret.stdout
+
         setup_inputs = io.StringIO("y\n")
         ret = script_runner.run(
             "gmrecords", "projects", "-d", "tested", stdin=setup_inputs
