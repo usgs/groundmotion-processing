@@ -151,7 +151,7 @@ class GMrecordsApp(object):
         return (self.projects_path / self.current_project["data_path"]).resolve()
 
     def _initialize(self):
-        require_config = self.args.subcommand != "projects"
+        require_config = self.args.subcommand not in ["projects", "proj"]
         self._load_config(require_config)
 
         log_file = self.args.log or None
