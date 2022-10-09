@@ -229,11 +229,8 @@ class Project(object):
 
     def __repr__(self):
         fmt = "Project: %s %s\n\tConf Path: %s\n\tData Path: %s"
-        cpath = self.conf_path
-        dpath = self.data_path
-        if platform.system() != "Windows":
-            cpath = (Path(self.filename).parent / self.conf_path).resolve()
-            dpath = (Path(self.filename).parent / self.data_path).resolve()
+        cpath = (Path(self.filename).parent / self.conf_path).resolve()
+        dpath = (Path(self.filename).parent / self.data_path).resolve()
         tpl = (self.name, self.current_marker, cpath, dpath)
         return fmt % tpl
 
@@ -374,7 +371,7 @@ def create(config, use_cwd=False):
 
     # Apparently, relpath doesn't work for Windows, at least with the Azure
     # CI builds
-    if platform.system() != "Windows":
+    if platform.system() != "Windows" and use_cwd:
         rel_path_loc = Path(config.filename).parents[1]
         conf_relpath = str(".." / conf_path.relative_to(rel_path_loc))
         data_relpath = str(".." / data_path.relative_to(rel_path_loc))
