@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import io
-import os
 import shutil
-import glob
+import pathlib
 
 from gmprocess.utils import constants
 
@@ -13,35 +12,41 @@ def test_import(script_runner):
     try:
         # Need to create profile first.
         cdir = constants.CONFIG_PATH_TEST
-        ddir = str(constants.TEST_DATA_DIR / "demo")
-        idir = str(constants.TEST_DATA_DIR / "import")
+        ddir = constants.TEST_DATA_DIR / "demo"
+        idir = constants.TEST_DATA_DIR / "import"
 
-        setup_inputs = io.StringIO(f"test\n{cdir}\n{ddir}\nname\ntest@email.com\n")
+        setup_inputs = io.StringIO(f"test\n{cdir}\n{str(ddir)}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
 
         # Test CESMD zip file
-        zfile = os.path.join(idir, "cesmd_test.zip")
-        ret = script_runner.run("gmrecords", "import", "-e", "nn00725272", "-p", zfile)
+        zfile = idir / "cesmd_test.zip"
+        ret = script_runner.run(
+            "gmrecords", "import", "-e", "nn00725272", "-p", str(zfile)
+        )
         assert ret.success
-        raw_dir = os.path.join(ddir, "nn00725272", "raw")
-        assert os.path.isdir(raw_dir)
-        dst_zips = glob.glob(os.path.join(raw_dir, "*.zip"))
-        assert len(dst_zips) == 10
+        raw_dir = ddir / "nn00725272" / "raw"
+        assert raw_dir.is_dir()
+        dst_files = list(pathlib.Path(raw_dir).glob("*"))
+        assert len(dst_files) == 22
 
-        # Test tar file of CWB data (they use zip usually though)
-        tfile = os.path.join(idir, "test.tar")
-        ret = script_runner.run("gmrecords", "import", "-e", "us6000e2mt", "-p", tfile)
+        # Test tar file of CWB data
+        tfile = idir / "test.tar.zip"
+        ret = script_runner.run(
+            "gmrecords", "import", "-e", "us6000e2mt", "-p", str(tfile)
+        )
         assert ret.success
-        raw_dir = os.path.join(ddir, "us6000e2mt", "raw")
-        assert os.path.isdir(raw_dir)
-        dst_dats = glob.glob(os.path.join(raw_dir, "*.dat"))
-        assert len(dst_dats) == 103
+        raw_dir = ddir / "us6000e2mt" / "raw"
+        assert raw_dir.is_dir()
+        dst_dats = list(raw_dir.glob("*.dat"))
+        assert len(dst_dats) == 19
 
         # Test directory of files
-        dpath = os.path.join(idir, "dir")
-        ret = script_runner.run("gmrecords", "import", "-e", "us6000e2mt", "-p", dpath)
+        dpath = idir / "dir"
+        ret = script_runner.run(
+            "gmrecords", "import", "-e", "us6000e2mt", "-p", str(dpath)
+        )
         assert ret.success
 
     except Exception as ex:
@@ -50,8 +55,8 @@ def test_import(script_runner):
         shutil.rmtree(constants.CONFIG_PATH_TEST)
         # Remove created files
         events = ["us6000e2mt", "nn00725272"]
-        for e in events:
-            shutil.rmtree(os.path.join(ddir, e))
+        for eid in events:
+            shutil.rmtree(str(ddir / eid))
 
 
 if __name__ == "__main__":

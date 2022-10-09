@@ -3,6 +3,7 @@
 
 import os
 import zipfile
+import tarfile
 import logging
 
 import numpy as np
@@ -161,15 +162,11 @@ def flatten_directory(directory):
 
 def _walk_and_unzip(directory):
     has_zips = False
-    for dirpath, sub_dirs, files in os.walk(directory, topdown=False):
+    for dirpath, _, files in os.walk(directory, topdown=False):
         for f in files:
             full_file = os.path.join(dirpath, f)
-            is_zip = False
-            try:
-                zipfile.ZipFile(full_file, "r")
-                is_zip = True
-            except BaseException:
-                pass
+            is_zip = zipfile.is_zipfile(full_file)
+            is_tar = tarfile.is_tarfile(full_file)
             if is_zip:
                 has_zips = True
                 base, ext = os.path.splitext(f)
@@ -186,6 +183,11 @@ def _walk_and_unzip(directory):
                             logging.warning(
                                 f"While extracting {f}, file {dst} already exists."
                             )
+                os.remove(full_file)
+            elif is_tar:
+                has_zips = True
+                with tarfile.open(full_file, "r") as tar_file:
+                    tar_file.extractall(dirpath)
                 os.remove(full_file)
     return has_zips
 

@@ -63,26 +63,6 @@ def test_grouping():
     for stream in cwb_streams:
         assert len(stream) == 3
 
-    # dmg
-    dmg_path = TEST_DATA_DIR / "dmg"
-    dmg_files = []
-    for (path, dirs, files) in os.walk(dmg_path):
-        for file in files:
-            if file.endswith("V2"):
-                fullfile = os.path.join(path, file)
-                dmg_files.append(fullfile)
-
-    dmg_streams = []
-    for filename in dmg_files:
-        if not os.path.basename(filename).startswith("Bad") and not os.path.basename(
-            filename
-        ).startswith("CE58667"):
-            dmg_streams += read_data(filename)
-    dmg_streams = StreamCollection(dmg_streams)
-    assert len(dmg_streams) == 3
-    for stream in dmg_streams:
-        assert len(stream) == 3
-
     # geonet
     geonet_files, _ = read_data_dir("geonet", "us1000778i", "*.V1A")
     geonet_streams = []

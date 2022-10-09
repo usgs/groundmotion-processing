@@ -5,9 +5,8 @@ import os
 import shutil
 from distutils.dir_util import copy_tree
 import logging
-import zipfile
-import tarfile
 
+from gmprocess.io.utils import flatten_directory
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
@@ -71,21 +70,11 @@ class ImportModule(base.SubcommandModule):
                 dst = os.path.join(raw_dir, import_file)
                 logging.info(f"Importing {src}")
                 shutil.copy(src, dst)
-                # Is this a zip or tar file? If so, extract
-                if zipfile.is_zipfile(dst):
-                    logging.info(f"Extracting {dst}")
-                    with zipfile.ZipFile(dst, "r") as zfile:
-                        zfile.extractall(raw_dir)
-                    os.remove(dst)
-                elif tarfile.is_tarfile(dst):
-                    logging.info(f"Extracting {dst}")
-                    with tarfile.open(dst, "r") as tar_file:
-                        tar_file.extractall(raw_dir)
-                    os.remove(dst)
             elif os.path.isdir(import_path):
                 src = import_path
                 dst = raw_dir
                 copy_tree(src, dst)
             else:
                 raise ValueError("Please provide a valid path to a file or directory")
+            flatten_directory(raw_dir)
             logging.info(f"Event {event.id} complete.")
