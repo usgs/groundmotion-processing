@@ -41,7 +41,7 @@ class ProjectsModule(base.SubcommandModule):
             "long_flag": "--switch",
             "help": "Switch from current project to PROJECT.",
             "type": str,
-            "metavar": "PROJECT",
+            "metavar": "<name>",
             "default": None,
         },
         {
@@ -56,15 +56,16 @@ class ProjectsModule(base.SubcommandModule):
             "long_flag": "--delete",
             "help": "Delete existing project PROJECT.",
             "type": str,
-            "metavar": "PROJECT",
+            "metavar": "<name>",
             "default": None,
         },
         {
+            "short_flag": "-r",
             "long_flag": "--rename",
-            "help": "Rename project SOURCE to TARGET.",
+            "help": "Rename project <old> to <new>.",
             "type": str,
             "nargs": 2,
-            "metavar": ("SOURCE", "TARGET"),
+            "metavar": ("<old>", "<new>"),
             "default": None,
         },
     ]
@@ -180,31 +181,12 @@ class ProjectsModule(base.SubcommandModule):
                 f"Run 'gmrecords {self.command_name} -l' to see available projects."
             )
             raise IOError(msg)
-
-        config_filepath = self.config_filepath
-        source_config = self.config["projects"][source]
-        source_conf_path = config_filepath.parent / source_config["conf_path"]
-        source_data_path = config_filepath.parent / source_config["data_path"]
-        target_conf_path = Path(str(source_conf_path).replace(source, target))
-        target_data_path = Path(str(source_data_path).replace(source, target))
-        if source_conf_path.parent != target_conf_path.parent:
-            shutil.move(source_conf_path.parent, target_conf_path.parent)
-        if (
-            source_data_path.parent != target_data_path.parent
-            and source_conf_path.parent != source_data_path.parent
-        ):
-            shutil.move(source_data_path.parent, target_data_path.parent)
-
-        self.config["projects"][target] = {
-            "conf_path": target_conf_path,
-            "data_path": target_data_path,
-        }
+        self.config["projects"][target] = self.config["projects"].pop(source)
         if self.config["project"] == source:
             self.config["project"] = target
-        del self.config["projects"][source]
         self.config.write()
 
-        print(f"\nRenamed '{source}' to '{target}'.")
+        logging.info(f"Renamed '{source}' to '{target}'.")
 
 
 class Project(object):
