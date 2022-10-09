@@ -6,6 +6,8 @@ import shutil
 
 from gmprocess.utils import constants
 
+EVENTS = ["ci38038071", "ci38457511", "ci38457511_rupt"]
+
 
 def test_compute_waveform_metrics(script_runner):
     try:
@@ -14,8 +16,7 @@ def test_compute_waveform_metrics(script_runner):
         ddir = constants.TEST_DATA_DIR / "demo_steps" / "compute_metrics"
 
         # Make a copy of the hdf files
-        events = ["ci38038071", "ci38457511"]
-        for event in events:
+        for event in EVENTS:
             src = ddir / event / "workspace.h5"
             dst = ddir / event / "_workspace.h5"
             shutil.copyfile(src, dst)
@@ -42,8 +43,7 @@ def test_compute_waveform_metrics(script_runner):
     finally:
         shutil.rmtree(constants.CONFIG_PATH_TEST)
         # Move the hdf files back
-        events = ["ci38038071", "ci38457511"]
-        for event in events:
+        for event in EVENTS:
             dst = ddir / event / "workspace.h5"
             src = ddir / event / "_workspace.h5"
             shutil.move(src, dst)

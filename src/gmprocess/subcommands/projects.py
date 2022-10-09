@@ -282,7 +282,9 @@ class Project(object):
 
 
 def get_current(config):
-    """Get current project from configuration. We assume the configuration has already been validated.
+    """Get current project from configuration.
+
+    We assume the configuration has already been validated.
 
     Args:
         config (ConfigObj):
@@ -313,7 +315,7 @@ def validate_projects_config(config, projects_filepath):
         """Check that all of the listed projects have the required keys and we
         have a current project.
         """
-        if not "projects" in config:
+        if "projects" not in config:
             raise IOError("Projects configuration missing list of projects.")
         bad_projs = []
         for proj_name, proj in config["projects"].items():
@@ -329,12 +331,12 @@ def validate_projects_config(config, projects_filepath):
             config["projects"].pop(bad)
 
         # Check that the selected project is in the list of projects
-        if not "project" in config:
+        if "project" not in config:
             raise IOError(
                 "Projects configuration missing 'project' to select current project."
             )
         current_name = config["project"]
-        if not current_name in config["projects"]:
+        if current_name not in config["projects"]:
             msg = (
                 f"Currently selected project {current_name} is not in the list of "
                 "available projects."
@@ -360,7 +362,7 @@ def validate_projects_config(config, projects_filepath):
 
         current_name = config["project"]
         check_project_paths(config["projects"][current_name], projects_filepath)
-    except IOError as exception:
+    except IOError:
         pass
 
 
@@ -387,8 +389,8 @@ def create(config, use_cwd=False):
 
     if use_cwd:
         cwd = Path.cwd()
-        default_conf_path = "./conf"
-        default_data_path = "./data"
+        default_conf_path = cwd / "conf"
+        default_data_path = cwd / "data"
     else:
         project_path = Path("~").expanduser() / "gmprocess_projects" / project
         default_conf_path = project_path / "conf"

@@ -41,8 +41,6 @@ def test_auto_shakemap(script_runner):
             for file in files:
                 if any(file.endswith(ext) for ext in pattern):
                     os.remove(os.path.join(root, file))
-        # rmdir = os.path.join(ddir, 'usp000a1b0')
-        # shutil.rmtree(rmdir)
 
 
 if __name__ == "__main__":

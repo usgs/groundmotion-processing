@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -55,7 +54,8 @@ class ComputeStationMetricsModule(base.SubcommandModule):
 
         for ievent, event in enumerate(self.events):
             logging.info(
-                f"Computing station metrics for event {event.id} ({1+ievent} of {len(self.events)})..."
+                f"Computing station metrics for event "
+                f"{event.id} ({1+ievent} of {len(self.events)})..."
             )
             self._event_station_metrics(event)
 
@@ -113,8 +113,8 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             )
             if not len(streams):
                 logging.error(
-                    "No matching streams found. "
-                    f"Aborting computing station metrics for {station_id} for {event.id}."
+                    "No matching streams found. Aborting computing station "
+                    f"metrics for {station_id} for {event.id}."
                 )
                 continue
 
