@@ -187,9 +187,6 @@ class ProjectsModule(base.SubcommandModule):
         source_data_path = config_filepath.parent / source_config["data_path"]
         target_conf_path = Path(str(source_conf_path).replace(source, target))
         target_data_path = Path(str(source_data_path).replace(source, target))
-        print("AA")
-        for child in source_conf_path.parent.iterdir():
-            print(child)
         if source_conf_path.parent != target_conf_path.parent:
             shutil.move(source_conf_path.parent, target_conf_path.parent)
         if (
@@ -235,8 +232,8 @@ class Project(object):
         cpath = self.conf_path
         dpath = self.data_path
         if platform.system() != "Windows":
-            cpath = Path(Path(self.filename).parent / self.conf_path).resolve()
-            dpath = Path(Path(self.filename).parent / self.data_path).resolve()
+            cpath = (Path(self.filename).parent / self.conf_path).resolve()
+            dpath = (Path(self.filename).parent / self.data_path).resolve()
         tpl = (self.name, self.current_marker, cpath, dpath)
         return fmt % tpl
 
