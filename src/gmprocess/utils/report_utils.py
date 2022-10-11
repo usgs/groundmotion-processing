@@ -47,7 +47,14 @@ def draw_stations_map(pstreams, event, event_dir):
     station_map = folium.Map(
         location=[event.latitude, event.longitude], zoom_start=7, control_scale=True
     )
+    stn_cluster = folium.FeatureGroup()
+    station_map.add_child(stn_cluster)
     stations_group = folium.FeatureGroup(name='stations')
+
+    passed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'passed')
+    station_map.add_child(passed)
+    failed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'failed')
+    station_map.add_child(failed)
 
     # failed_coords = zip(lats[failed_st], lons[failed_st])
     failed_coords = [list(tup) for tup in zip(lats[failed_st], lons[failed_st])]
@@ -201,7 +208,8 @@ def draw_stations_map(pstreams, event, event_dir):
                                 return marker};""")
     # print(failed_station_df["coords"].values.tolist())
     failed_station_cluster = folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback)
-    stations_group.add_child(failed_station_cluster)
+    failed_station_cluster.add_to(failed)
+    # stations_group.add_child(failed_station_cluster)
     # station_map.add_child(folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback))
 
     # passed_station_callback = ("""function (row) {
@@ -228,7 +236,7 @@ def draw_stations_map(pstreams, event, event_dir):
                                 return marker};""")
     
     map_info = passed_station_df.values.tolist()
-    print(map_info)
+    # print(map_info)
     # test = [row.values.ravel().tolist() for i,row in passed_station_df.iterrows()]
     # test = [dat.values.ravel().tolist() for i,row in passed_station_df.iterrows() for dat in row]
     # test = list(chain.from_iterable(passed_station_df.values.tolist()))
@@ -253,10 +261,12 @@ def draw_stations_map(pstreams, event, event_dir):
     print(test2)      
     map_info = test2
     passed_station_cluster = folium.plugins.FastMarkerCluster(map_info, callback=passed_station_callback)
-    stations_group.add_child(passed_station_cluster)
+    # stations_group.add_child(passed_station_cluster)
     # station_map.add_child(folium.plugins.FastMarkerCluster(map_info, callback=passed_station_callback))
+    # station_map.add_child(stations_group)
+    passed_station_cluster.add_to(passed)
 
-    station_map.add_child(stations_group)
+    folium.LayerControl().add_to(station_map)
 
     # And finally the event itself
     event_info = "<b>EVENT ID:</b> {}<br> <b>MAG:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;<br> <b>DEPTH:</b> {:.2f} km".format(
