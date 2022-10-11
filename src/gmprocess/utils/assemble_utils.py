@@ -11,7 +11,6 @@ from pathlib import Path
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.core.streamarray import StreamArray
 from gmprocess.utils.constants import WORKSPACE_NAME
-from gmprocess.utils.event import get_event_object
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.io.read_directory import directory_to_streams
 from gmprocess.utils.misc import get_rawdir
@@ -82,14 +81,13 @@ def assemble(event, config, directory, gmprocess_version):
         os.remove(workname)
 
     workspace = StreamWorkspace(workname)
-    event_obj = get_event_object(event)
-    workspace.addEvent(event_obj)
+    workspace.addEvent(event)
     logging.debug("workspace.dataset.events:")
     logging.debug(workspace.dataset.events)
     workspace.addGmprocessVersion(gmprocess_version)
     workspace.addConfig(config=config)
     workspace.addStreams(
-        event_obj,
+        event,
         stream_array,
         label="unprocessed",
         gmprocess_version=gmprocess_version,
