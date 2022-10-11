@@ -119,11 +119,8 @@ def get_event_files(directory):
         List of event.json files.
     """
     eventfiles = []
-    for root, dirs, files in os.walk(directory):
-        for name in files:
-            if name == "event.json":
-                fullname = os.path.join(root, name)
-                eventfiles.append(fullname)
+    for filename in directory.glob("**/event.json"):
+        eventfiles.append(filename)
     return eventfiles
 
 
