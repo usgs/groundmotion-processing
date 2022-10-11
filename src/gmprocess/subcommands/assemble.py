@@ -43,7 +43,6 @@ class AssembleModule(base.SubcommandModule):
 
         logging.info(f"Number of events to assemble: {len(self.events)}")
 
-        events = [e.id for e in self.events]
         data_path = self.gmrecords.data_path
         overwrite = self.gmrecords.args.overwrite
         conf = self.gmrecords.conf
@@ -55,9 +54,9 @@ class AssembleModule(base.SubcommandModule):
             executor = ProcessPoolExecutor(
                 max_workers=self.gmrecords.args.num_processes
             )
-            for ievent, event in enumerate(events):
+            for ievent, event in enumerate(self.events):
                 logging.info(
-                    f"Assembling event {event} ({1+ievent} of {len(events)})..."
+                    f"Assembling event {event.id} ({1+ievent} of {len(self.events)})..."
                 )
                 future = executor.submit(
                     self._assemble_event,
@@ -71,9 +70,9 @@ class AssembleModule(base.SubcommandModule):
             results = [future.result() for future in futures]
             executor.shutdown()
         else:
-            for ievent, event in enumerate(events):
+            for ievent, event in enumerate(self.events):
                 logging.info(
-                    f"Assembling event {event} ({1+ievent} of {len(events)})..."
+                    f"Assembling event {event.id} ({1+ievent} of {len(self.events)})..."
                 )
                 results.append(
                     self._assemble_event(event, data_path, overwrite, conf, version)
@@ -89,7 +88,7 @@ class AssembleModule(base.SubcommandModule):
     # call it with ProcessPoolExecutor.
     @staticmethod
     def _assemble_event(event, data_path, overwrite, conf, version):
-        event_dir = os.path.normpath(os.path.join(data_path, event))
+        event_dir = os.path.normpath(os.path.join(data_path, event.id))
         if not os.path.exists(event_dir):
             os.makedirs(event_dir)
         workname = os.path.normpath(os.path.join(event_dir, constants.WORKSPACE_NAME))
