@@ -46,16 +46,16 @@ def assemble(event, config, directory, gmprocess_version):
             - str: Path to the rupture file.
     """
 
-    # Make raw directory
-    in_event_dir = os.path.join(directory, event)
-    in_raw_dir = get_rawdir(in_event_dir)
-    logging.debug(f"in_raw_dir: {in_raw_dir}")
+    # Get raw directory
+    event_dir = directory / event.id
+    raw_dir = get_rawdir(event_dir)
+    logging.debug(f"raw_dir: {raw_dir}")
     streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
-        in_raw_dir, config=config
+        raw_dir, config=config
     )
     # Write errors to a csv file (but not for tests)
     if os.getenv("CALLED_FROM_PYTEST") is None:
-        failures_file = Path(in_raw_dir) / "read_failures.csv"
+        failures_file = Path(raw_dir) / "read_failures.csv"
         colnames = ["File", "Failure"]
         with open(failures_file, "w", newline="") as f:
             writer = csv.writer(f, delimiter=",", quoting=csv.QUOTE_MINIMAL)
@@ -74,11 +74,9 @@ def assemble(event, config, directory, gmprocess_version):
     logging.info(stream_array.describe_string())
 
     # Create the workspace file and put the unprocessed waveforms in it
-    workname = os.path.join(in_event_dir, WORKSPACE_NAME)
-
-    # Remove any existing workspace file
-    if os.path.isfile(workname):
-        os.remove(workname)
+    workname = event_dir / WORKSPACE_NAME
+    if workname.is_file():
+        workname.unlink()
 
     workspace = StreamWorkspace(workname)
     workspace.addEvent(event)
