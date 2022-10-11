@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 import folium
 import folium.plugins
-from itertools import compress
+from collections import Iterable
+from itertools import compress, chain
 
 OCEAN_COLOR = "#96e8ff"
 LAND_COLOR = "#ededaf"
@@ -46,6 +47,7 @@ def draw_stations_map(pstreams, event, event_dir):
     station_map = folium.Map(
         location=[event.latitude, event.longitude], zoom_start=7, control_scale=True
     )
+    stations_group = folium.FeatureGroup(name='stations')
 
     # failed_coords = zip(lats[failed_st], lons[failed_st])
     failed_coords = [list(tup) for tup in zip(lats[failed_st], lons[failed_st])]
@@ -186,9 +188,10 @@ def draw_stations_map(pstreams, event, event_dir):
     #                 "marker.bindPopup(popup);"
     #                 'return marker};')    
 
+
     failed_station_callback = ("""function (row) {
                                 var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform="rotate(180)" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
-                                var marker = L.marker(new L.LatLng(row[0][0], row[0][1]));
+                                var marker = L.marker(new L.LatLng(row[0], row[1]));
                                 marker.setIcon(icon);
                                 var popup = L.popup({maxWidth: '180', minWidth: '180'});
                                 const display_text = {text: 'beep boop'};
@@ -197,7 +200,9 @@ def draw_stations_map(pstreams, event, event_dir):
                                 marker.bindPopup(popup);
                                 return marker};""")
     # print(failed_station_df["coords"].values.tolist())
-    station_map.add_child(folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback))
+    failed_station_cluster = folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback)
+    stations_group.add_child(failed_station_cluster)
+    # station_map.add_child(folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback))
 
     # passed_station_callback = ("""function (row) {
     #                             var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`});
@@ -212,9 +217,8 @@ def draw_stations_map(pstreams, event, event_dir):
 
     # station_map.add_child(folium.plugins.FastMarkerCluster(passed_station_df["coords"].values.tolist(), callback=passed_station_callback))
     passed_station_callback = ("""function (row) {
-                                console.log(row)
                                 var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
-                                var marker = L.marker(new L.LatLng(row[3][0], row[3][1]));
+                                var marker = L.marker(new L.LatLng(row[0], row[1]));
                                 marker.setIcon(icon);
                                 var popup = L.popup({maxWidth: '180', minWidth: '180'});
                                 const display_text = {text: 'boop beep'};
@@ -225,9 +229,34 @@ def draw_stations_map(pstreams, event, event_dir):
     
     map_info = passed_station_df.values.tolist()
     print(map_info)
-    test = [row.values.tolist() for row in passed_station_df.values]
-    print(test)
-    station_map.add_child(folium.plugins.FastMarkerCluster(map_info, callback=passed_station_callback))
+    # test = [row.values.ravel().tolist() for i,row in passed_station_df.iterrows()]
+    # test = [dat.values.ravel().tolist() for i,row in passed_station_df.iterrows() for dat in row]
+    # test = list(chain.from_iterable(passed_station_df.values.tolist()))
+    # test = list(chain.from_iterable(*passed_station_df.values.tolist()))
+    # test = [list(chain.from_iterable(row)) for row in passed_station_df.values.tolist()]
+    # test = list(chain.from_iterable(item if isinstance(item,list) and
+                    # not isinstance(item, str) else list(item) for item in passed_station_df.values.tolist()))
+    # print(test)
+
+    test2 = []
+    for row in passed_station_df.values.tolist():
+        new_row = []
+        for ele in row:
+            if isinstance(ele,list):
+                # new_ele = chain.from_iterable(ele)
+                # new_row.append(new_ele)
+                for sub_ele in ele:
+                    new_row.append(sub_ele)
+            else:
+                new_row.append(ele)
+        test2.append(new_row)
+    print(test2)      
+    map_info = test2
+    passed_station_cluster = folium.plugins.FastMarkerCluster(map_info, callback=passed_station_callback)
+    stations_group.add_child(passed_station_cluster)
+    # station_map.add_child(folium.plugins.FastMarkerCluster(map_info, callback=passed_station_callback))
+
+    station_map.add_child(stations_group)
 
     # And finally the event itself
     event_info = "<b>EVENT ID:</b> {}<br> <b>MAG:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;<br> <b>DEPTH:</b> {:.2f} km".format(
