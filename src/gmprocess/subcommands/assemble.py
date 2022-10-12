@@ -79,8 +79,8 @@ class AssembleModule(base.SubcommandModule):
                 )
 
         for res in results:
-            print(res)
-            self.append_file("Workspace", res)
+            if res is not None:
+                self.append_file("Workspace", res)
 
         self._summarize_files_created()
 
@@ -97,8 +97,8 @@ class AssembleModule(base.SubcommandModule):
             logging.info(f"ASDF exists: {workname}")
             if not overwrite:
                 logging.info("The --overwrite argument not selected.")
-                logging.info(f"No action taken for {event}.")
-                return event
+                logging.info(f"No action taken for {event.id}.")
+                return None
             else:
                 logging.info(f"Removing existing ASDF file: {workname}")
                 os.remove(workname)
