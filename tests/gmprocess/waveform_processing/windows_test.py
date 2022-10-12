@@ -29,9 +29,9 @@ data_path = TEST_DATA_DIR / "process"
 
 def _test_signal_split():
 
-    st1 = read_data(data_path / "AOM0170806140843.EW")[0]
-    st2 = read_data(data_path / "AOM0170806140843.NS")[0]
-    st3 = read_data(data_path / "AOM0170806140843.UD")[0]
+    st1 = read_data(str(data_path / "AOM0170806140843.EW"))[0]
+    st2 = read_data(str(data_path / "AOM0170806140843.NS"))[0]
+    st3 = read_data(str(data_path / "AOM0170806140843.UD"))[0]
     st = st1 + st2 + st3
 
     # Test the AR pick
@@ -222,7 +222,7 @@ def test_signal_split2():
 
 def _test_trim_multiple_events():
     datadir = TEST_DATA_DIR / "multiple_events"
-    sc = StreamCollection.from_directory(datadir / "ci38457511")
+    sc = StreamCollection.from_directory(str(datadir / "ci38457511"))
     origin = get_event_object("ci38457511")
     df, catalog = create_travel_time_dataframe(
         sc, datadir / "catalog.csv", 5, 0.1, "iasp91"

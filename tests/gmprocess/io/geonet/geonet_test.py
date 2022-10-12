@@ -12,8 +12,8 @@ config = get_config()
 
 
 def test():
-    datadir_2016 = TEST_DATA_DIR / "geonet" / "us1000778i"
-    datadir_2018 = TEST_DATA_DIR / "geonet" / "nz2018p115908"
+    datadir_2016 = str(TEST_DATA_DIR / "geonet" / "us1000778i")
+    datadir_2018 = str(TEST_DATA_DIR / "geonet" / "nz2018p115908")
 
     # first test a non-geonet file
     assert is_geonet(os.path.abspath(__file__)) is False

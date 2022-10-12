@@ -4,8 +4,8 @@
 # stdlib imports
 import os
 from shutil import which
-import glob
 import re
+from pathlib import Path
 
 # third party imports
 import numpy as np
@@ -131,7 +131,7 @@ def build_report_latex(
     Args:
         st_list (list):
             List of streams.
-        directory (str):
+        directory (str or pathlib.Path):
             Directory for saving report.
         origin (ScalarEvent):
             ScalarEvent object.
@@ -152,21 +152,23 @@ def build_report_latex(
         config = get_config()
 
     # Check if directory exists, and if not, create it.
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    if not isinstance(directory, Path):
+        directory = Path(directory)
+    if not directory.is_dir():
+        directory.mkdir()
 
     # Initialize report string with PREAMBLE
     report = PREAMBLE
     timestr = origin.time.strftime("%m/%d/%Y %H:%M:%S")
 
     # Does the map exist?
-    map_file = os.path.join(directory, "stations_map.png")
-    if os.path.isfile(map_file):
+    map_file = directory / "stations_map.png"
+    if map_file.is_file():
         TB = TITLEBLOCK.replace("[MAPPATH]", "stations_map.png")
 
         TB = TB.replace("[VERSION]", gmprocess_version)
-        moveout_file = os.path.join(directory, "moveout_plot.png")
-        if os.path.isfile(moveout_file):
+        moveout_file = directory / "moveout_plot.png"
+        if moveout_file.is_file():
             TB = TB.replace("[MOVEOUT_PAGE]", moveout_page_tex)
             TB = TB.replace("[MOVEOUTPATH]", "moveout_plot.png")
         else:
@@ -180,9 +182,8 @@ def build_report_latex(
     st_list.sort(key=lambda x: x.id)
 
     for st in st_list:
-        # Do NOT use os.path.join() here becuase even on windows, latex needs the path
-        # to use linux-style forward slashs.
         streamid = st.get_id()
+        # Even on windows, latex needs the path to use linux-style forward slashs.
         plot_path = f"plots/{origin.id}_{streamid}.png"
         SB = STREAMBLOCK.replace("[PLOTPATH]", plot_path)
         SB = SB.replace(
@@ -196,9 +197,9 @@ def build_report_latex(
             prov_latex = get_prov_latex(st)
         except ValueError:
             prov_latex = str_for_latex(
-                "Provenance could not be tabulated; this should only happen when "
-                "the ``any_trace_failures'' option is False because this allows the traces to "
-                "have a different number of entries, preventing table construction."
+                "Provenance could not be tabulated; this should only happen when the "
+                "``any_trace_failures'' option is False because this allows the traces "
+                "to have a different number of entries, preventing table construction."
             )
 
         report += prov_latex
@@ -228,15 +229,17 @@ def build_report_latex(
     if "CALLED_FROM_PYTEST" not in os.environ:
 
         # Set working directory to be the event subdirectory
-        current_directory = os.getcwd()
+        current_directory = Path.cwd()
         os.chdir(directory)
 
         # File name relative to current location
-        file_name = f"{prefix}_report_{origin.id}.tex"
+        file_base = f"{prefix}_report_{origin.id}"
+        tex_name = Path(f"{file_base}.tex")
+        pdf_file = Path(f"{file_base}.pdf")
 
         # File name for printing out later relative base directory
-        latex_file = os.path.join(directory, file_name)
-        with open(file_name, "w", encoding="utf-8") as f:
+        latex_file = directory / tex_name
+        with open(tex_name, "w", encoding="utf-8") as f:
             f.write(report)
 
         # Can we find pdflatex?
@@ -248,18 +251,16 @@ def build_report_latex(
             else:
                 flag = "-"
             pdflatex_options = f"{flag}interaction=nonstopmode {flag}halt-on-error"
-            cmd = f"{pdflatex_bin} {pdflatex_options} {file_name}"
+            cmd = f"{pdflatex_bin} {pdflatex_options} {tex_name}"
             res, stdout, stderr = get_command_output(cmd)
             report_file = latex_file
             if res:
-                base, ext = os.path.splitext(file_name)
-                pdf_file = base + ".pdf"
-                if os.path.isfile(pdf_file):
-                    report_file = pdf_file
-                    auxfiles = glob.glob(base + "*")
-                    auxfiles.remove(pdf_file)
+                if pdf_file.is_file():
+                    report_file = str(pdf_file)
+                    auxfiles = directory.glob(f"{file_base}*")
                     for auxfile in auxfiles:
-                        os.remove(auxfile)
+                        if str(pdf_file) not in str(auxfile):
+                            auxfile.unlink(missing_ok=True)
                 else:
                     res = False
             else:
@@ -275,7 +276,7 @@ def build_report_latex(
         report_file = "not run"
 
     # make report file an absolute path
-    report_file = os.path.join(directory, report_file)
+    report_file = directory / report_file
 
     return (report_file, res)
 

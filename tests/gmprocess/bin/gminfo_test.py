@@ -33,7 +33,7 @@ def test_gminfo():
         print(se.decode())
         raise e
     finally:
-        shutil.rmtree(out_dir)
+        shutil.rmtree(out_dir, ignore_errors=True)
 
 
 if __name__ == "__main__":

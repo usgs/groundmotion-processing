@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 from concurrent.futures import ProcessPoolExecutor
 
@@ -88,20 +87,20 @@ class AssembleModule(base.SubcommandModule):
     # call it with ProcessPoolExecutor.
     @staticmethod
     def _assemble_event(event, data_path, overwrite, conf, version):
-        event_dir = os.path.normpath(os.path.join(data_path, event.id))
-        if not os.path.exists(event_dir):
-            os.makedirs(event_dir)
-        workname = os.path.normpath(os.path.join(event_dir, constants.WORKSPACE_NAME))
-        workspace_exists = os.path.isfile(workname)
+        event_dir = data_path / event.id
+        if not event_dir.exists():
+            event_dir.mkdir()
+        workname = event_dir / constants.WORKSPACE_NAME
+        workspace_exists = workname.is_file()
         if workspace_exists:
-            logging.info(f"ASDF exists: {workname}")
+            logging.info(f"ASDF exists: {str(workname)}")
             if not overwrite:
                 logging.info("The --overwrite argument not selected.")
                 logging.info(f"No action taken for {event.id}.")
                 return None
             else:
-                logging.info(f"Removing existing ASDF file: {workname}")
-                os.remove(workname)
+                logging.info(f"Removing existing ASDF file: {str(workname)}")
+                workname.unlink()
 
         workspace = assemble_utils.assemble(
             event=event,

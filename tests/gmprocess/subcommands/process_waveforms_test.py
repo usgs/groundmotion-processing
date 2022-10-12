@@ -46,7 +46,7 @@ def test_process_waveforms(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree(constants.CONFIG_PATH_TEST)
+        shutil.rmtree(constants.CONFIG_PATH_TEST, ignore_errors=True)
         # Move the hdf files back
         events = ["ci38038071", "ci38457511"]
         for event in events:

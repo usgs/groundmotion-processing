@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -47,9 +46,9 @@ class ExportMetricTablesModule(base.SubcommandModule):
                 f"({1+ievent} of {len(self.events)})..."
             )
             self.eventid = event.id
-            event_dir = os.path.join(gmrecords.data_path, self.eventid)
-            workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
-            if not os.path.isfile(workname):
+            event_dir = gmrecords.data_path / self.eventid
+            workname = event_dir / const.WORKSPACE_NAME
+            if not workname.is_file():
                 logging.warning(
                     f"No workspace file found for event {self.eventid}. Please run "
                     "subcommand 'assemble' to generate workspace file. "
@@ -134,10 +133,8 @@ class ExportMetricTablesModule(base.SubcommandModule):
             for filename, df in dict(zip(filenames, files)).items():
                 if df is None or df.size == 0:
                     continue
-                filepath = os.path.normpath(
-                    os.path.join(outdir, filename + f".{output_format}")
-                )
-                if os.path.exists(filepath):
+                filepath = outdir / (filename + f".{output_format}")
+                if filepath.exists():
                     if "README" in filename:
                         continue
                     else:

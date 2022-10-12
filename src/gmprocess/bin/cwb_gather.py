@@ -145,7 +145,7 @@ def main():
     responses = {}
     with tarfile.open(args.tarball, "r") as tarball:
         for member in tarball.getmembers():
-            if member.isdir():
+            if member.is_dir():
                 continue
             with tarball.extractfile(member) as fh:
                 inventory = read_inventory(fh)

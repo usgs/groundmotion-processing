@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -62,9 +61,9 @@ class ExportFailureTablesModule(base.SubcommandModule):
                 f"Creating failure tables for event {self.eventid} "
                 f"({1+ievent} of {len(self.events)})..."
             )
-            event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-            workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
-            if not os.path.isfile(workname):
+            event_dir = self.gmrecords.data_path / self.eventid
+            workname = event_dir / const.WORKSPACE_NAME
+            if not workname.is_file():
                 logging.info(
                     f"No workspace file found for event {self.eventid}. Please run "
                     "subcommand 'assemble' to generate workspace file."
@@ -85,31 +84,25 @@ class ExportFailureTablesModule(base.SubcommandModule):
             status_info = self.pstreams.get_status(self.gmrecords.args.type)
             failures[event.id] = status_info
 
-            base_file_name = os.path.normpath(
-                os.path.join(
-                    event_dir,
-                    "%s_%s_failure_reasons_%s"
-                    % (
-                        gmrecords.project_name,
-                        gmrecords.args.label,
-                        self.gmrecords.args.type,
-                    ),
-                )
+            base_file_name = (
+                f"{gmrecords.project_name}_{gmrecords.args.label}_"
+                f"failure_reasons_{self.gmrecords.args.type}"
             )
 
             if self.gmrecords.args.output_format == "csv":
                 csvfile = base_file_name + ".csv"
-                self.append_file("Failure table", csvfile)
-                status_info.to_csv(csvfile)
+                csvpath = event_dir / csvfile
+                self.append_file("Failure table", csvpath)
+                status_info.to_csv(csvpath)
             else:
                 excelfile = base_file_name + ".xlsx"
-                self.append_file("Failure table", excelfile)
-                status_info.to_excel(excelfile)
+                excelpath = event_dir / excelfile
+                self.append_file("Failure table", excelpath)
+                status_info.to_excel(excelpath)
 
         if failures:
-            comp_failures_path = (
-                self.gmrecords.data_path
-                / f"{gmrecords.project_name}_{gmrecords.args.label}_complete_failures.csv"
+            comp_failures_path = self.gmrecords.data_path / (
+                f"{gmrecords.project_name}_{gmrecords.args.label}_complete_failures.csv"
             )
 
             if self.gmrecords.args.type == "long":

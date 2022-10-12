@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # stdlib imports
-import os.path
+from pathlib import Path
 import argparse
 from collections import OrderedDict
 import sys
@@ -10,6 +10,7 @@ import textwrap
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
+from gmprocess.io.utils import _walk
 
 # third party imports
 pd = LazyLoader("pd", globals(), "pandas")
@@ -47,7 +48,6 @@ REV_PROCESS_LEVELS = {
 
 
 def get_dataframe(filename, stream):
-    fpath, fname = os.path.split(filename)
     rows = []
     for trace in stream:
         row = {}
@@ -74,19 +74,19 @@ def render_concise(files, save=False):
     errors = pd.DataFrame(columns=ERROR_COLUMNS)
     df = pd.DataFrame(columns=COLUMNS, index=None)
     folders = []
-    for filename in files:
-        fpath, fname = os.path.split(filename)
+    for path in files:
+        fpath = path.parent
         if fpath not in folders:
             sys.stderr.write(f"Parsing files from subfolder {fpath}...\n")
             folders.append(fpath)
         try:
-            streams = readmod.read_data(filename)
+            streams = readmod.read_data(str(path))
             for stream in streams:
-                tdf = get_dataframe(filename, stream)
+                tdf = get_dataframe(path, stream)
                 df = pd.concat([df, tdf], axis=0)
         except BaseException as e:
             row = pd.Series(index=ERROR_COLUMNS)
-            row["Filename"] = os.path.abspath(filename)
+            row["Filename"] = str(path)
             row["Error"] = str(e)
             errors = errors.append(row, ignore_index=True)
             continue
@@ -100,11 +100,9 @@ def render_concise(files, save=False):
 
 
 def render_dir(rootdir, concise=True, save=False):
-    datafiles = []
-    for root, dirs, files in os.walk(rootdir):
-        for tfile in files:
-            ffile = os.path.join(root, tfile)
-            datafiles.append(ffile)
+    if not isinstance(rootdir, Path):
+        rootdir = Path(rootdir)
+    datafiles = list(_walk(rootdir))
 
     if concise:
         df, errors = render_concise(datafiles, save=save)
@@ -159,7 +157,7 @@ def render_verbose(files):
                 print(chstr)
         except BaseException as e:
             row = pd.Series(index=ERROR_COLUMNS)
-            row["Filename"] = os.path.abspath(fname)
+            row["Filename"] = str(fname)
             row["Error"] = str(e)
             errors = errors.append(row, ignore_index=True)
             continue
@@ -229,11 +227,13 @@ def main():
     do_save = args.save is not None
     if len(files) == 1:
         # is this a file or a directory?
-        if os.path.isdir(files[0]):
+        if Path(files[0]).is_dir():
             df, errors = render_dir(files[0], concise=args.concise, save=do_save)
             if args.save is not None and args.concise:
-                fbase, fext = os.path.splitext(args.save)
-                errfile = fbase + "_errors" + fext
+                save_path = Path(args.save)
+                fbase = save_path.parent / save_path.stem
+                fext = save_path.suffix
+                errfile = str(fbase) + "_errors" + fext
                 print(f"Catalog written to {args.save}.")
                 print(f"Errors written to {errfile}.")
                 if fext == ".xlsx":
@@ -248,7 +248,9 @@ def main():
     if args.concise:
         df, errors = render_concise(files, save=do_save)
         if args.save is not None:
-            fbase, fext = os.path.splitext(args.save)
+            save_path = Path(args.save)
+            fbase = save_path.parent / save_path.stem
+            fext = save_path.suffix
             if fext == ".xlsx":
                 df.to_excel(args.save, index=False)
             else:

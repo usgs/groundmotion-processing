@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
 import logging
-import glob
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -36,24 +33,21 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
         self._check_arguments()
 
         imc_table_names = [
-            file.replace("_README", "")
-            for file in os.listdir(self.gmrecords.data_path)
-            if "README" in file
+            f.stem.replace("_README", "")
+            for f in self.gmrecords.data_path.glob("*_README*")
         ]
+        imc_table_ext = list(self.gmrecords.data_path.glob("*_README*"))[0].suffix
 
         imc_tables = {}
-        for file in imc_table_names:
-            imckey = os.path.splitext(file)[0]
-            imc_tables[imckey] = pd.read_csv(
-                os.path.normpath(os.path.join(self.gmrecords.data_path, file))
-            )
-            if "fit_spectra_parameters" in imc_tables:
-                del imc_tables["fit_spectra_parameters"]
+        for imckey in imc_table_names:
+            if "fit_spectra_parameters" not in imc_tables:
+                table_name = self.gmrecords.data_path / f"{imckey}{imc_table_ext}"
+                if imc_table_ext == ".csv":
+                    imc_tables[imckey] = pd.read_csv(table_name)
+                else:
+                    imc_tables[imckey] = pd.read_excel(table_name)
 
-        # TODO - where is this being written? Is it a requirement?
-        # It appears this is being written in gmprocess2 and
-        # generate_metric_tables.py, and it gets appended to when re-run.
-        event_files = glob.glob(os.path.join(self.gmrecords.data_path, "*_events.*"))
+        event_files = list(self.gmrecords.data_path.glob("*_events.*"))
         if len(event_files) == 1:
             event_file = event_files[0]
         elif len(event_files) == 0:
@@ -111,9 +105,8 @@ class GenerateRegressionPlotModule(base.SubcommandModule):
 
             if found_imc and found_imt:
                 pngfile = f"regression_{found_imc}_{found_imt}.png"
-                regression_file = os.path.normpath(
-                    os.path.join(self.gmrecords.data_path, pngfile)
-                )
+                regression_file = self.gmrecords.data_path / pngfile
+
                 plot.plot_regression(
                     event_table,
                     found_imc,

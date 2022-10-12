@@ -2,7 +2,7 @@
 
 # stdlib imports
 import sys
-import os.path
+from pathlib import Path
 import argparse
 import logging
 
@@ -87,7 +87,7 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         "Only used when converting from ASDF to specify the stream label to use."
     )
     parser.add_argument("-l", "--label", help=labelhelp, default="default")
-    parser.add_argument("-o", "--outdir", help="Output directory.", default=os.getcwd())
+    parser.add_argument("-o", "--outdir", help="Output directory.", default=Path.cwd())
     parser.add_argument(
         "-f",
         "--format",
@@ -107,8 +107,8 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
     logging.info("Running gmconvert.")
 
     # gather arguments
-    indir = args.indir
-    outdir = args.outdir
+    indir = Path(args.indir)
+    outdir = Path(args.outdir)
     oformat = args.format
 
     has_files = args.files is not None and len(args.files)
@@ -121,8 +121,8 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         print("You must specify input files or an input directory.")
         sys.exit(1)
 
-    if not os.path.isdir(outdir):
-        os.mkdir(outdir)
+    if not outdir.is_dir():
+        outdir.mkdir()
 
     if args.files:
         # read all the data files, gather up a list of obspy Stream objects
@@ -150,18 +150,18 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
                 trace_id = f"{tr.get_id()}_{label}"
             else:
                 trace_id = tr.get_id()
-            outfile = os.path.join(outdir, f"{trace_id}.{oformat.lower()}")
+            outfile = outdir / f"{trace_id}.{oformat.lower()}"
             logging.info(f"Writing data file {outfile}...")
-            tr.write(outfile, format=oformat)
+            tr.write(str(outfile), format=oformat)
 
         streamid = stream.get_id()
         if len(stream) == 1:
             streamid = stream[0].get_id()
-        invfile = os.path.join(outdir, f"{streamid}.xml")
+        invfile = outdir / f"{streamid}.xml"
         inv_format = "STATIONXML"
         inv = stream.getInventory()
         logging.info(f"Writing inventory file {invfile}...")
-        inv.write(invfile, format=inv_format)
+        inv.write(str(invfile), format=inv_format)
 
     print("Wrote %i streams to %s" % (len(sc), outdir))
     if len(error_dict):

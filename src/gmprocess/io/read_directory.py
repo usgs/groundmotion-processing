@@ -5,14 +5,14 @@ Module for methods for reading in directories of data, particularly messy data
 from CESMD.
 """
 
-import os
-import glob
 import tempfile
 import shutil
 import logging
+from pathlib import Path
 
 from gmprocess.io.read import read_data
 from gmprocess.io.utils import flatten_directory
+from gmprocess.io.utils import _walk
 
 EXT_IGNORE = [".gif", ".csv", ".dis", ".abc", ".zip", ".rs2", ".fs1", ".xml"]
 
@@ -27,7 +27,7 @@ def directory_to_streams(directory, config=None):
     a sensible fashion.
 
     Args:
-        directory (str):
+        directory (str or pathlib.Path):
             Directory of ground motion files (streams).
         config (dict):
             Configuration options.
@@ -38,24 +38,24 @@ def directory_to_streams(directory, config=None):
                 List of errors associated with trying to read unprocessed
                 files).
     """
+    if not isinstance(directory, Path):
+        directory = Path(directory)
     # Use a temp dir so that we don't modify data on disk since that may not be
-    # expected or desired in all cases. We create the temporary directory in
-    # the parent directory, which permits using shutil.copytree to duplicate
-    # the data prior to processing.
-    intermediate_dir = tempfile.mkdtemp(dir=os.path.dirname(directory))
-    temp_dir = os.path.join(intermediate_dir, "directory_to_streams")
+    # expected or desired in all cases.
+    tmp_dir = Path(tempfile.mkdtemp())
     try:
-        shutil.copytree(directory, temp_dir)
-        flatten_directory(temp_dir)
+        target_dir = tmp_dir / "directory_to_streams"
+        shutil.copytree(directory, target_dir)
+        flatten_directory(target_dir)
         # ---------------------------------------------------------------------
         # Read streams
         # ---------------------------------------------------------------------
         streams = []
         unprocessed_files = []
         unprocessed_file_errors = []
-        for file_path in glob.glob(os.path.join(temp_dir, "*")):
-            file_name = os.path.basename(file_path)
-            file_ext = os.path.splitext(file_name)[1].lower()
+        for file_path in _walk(target_dir):
+            file_name = file_path.name
+            file_ext = file_path.suffix.lower()
             if file_ext not in EXT_IGNORE:
                 try:
                     logging.debug(f"Attempting to read: {file_path}")
@@ -69,24 +69,8 @@ def directory_to_streams(directory, config=None):
         raise e
     finally:
         try:
-            shutil.rmtree(intermediate_dir)
+            shutil.rmtree(tmp_dir, ignore_errors=True)
         except OSError:
-            shutil.rmtree(intermediate_dir)
+            shutil.rmtree(tmp_dir, ignore_errors=True)
 
     return streams, unprocessed_files, unprocessed_file_errors
-
-
-def _split_all_path(path):
-    allparts = []
-    while True:
-        parts = os.path.split(path)
-        if parts[0] == path:
-            allparts.insert(0, parts[0])
-            break
-        elif parts[1] == path:
-            allparts.insert(0, parts[1])
-            break
-        else:
-            path = parts[0]
-            allparts.insert(0, parts[1])
-    return allparts

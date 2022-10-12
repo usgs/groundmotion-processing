@@ -10,7 +10,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 def test_sorted_duration():
     datadir = TEST_DATA_DIR / "cosmos" / "us1000hyfh"
-    data_file = datadir / "us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c"
+    data_file = str(datadir / "us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c")
     stream = read_data(data_file)[0]
 
     station = StationSummary.from_stream(stream, ["channels"], ["sorted_duration"])

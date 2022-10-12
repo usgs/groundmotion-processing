@@ -14,7 +14,6 @@ from gmprocess.io.read import read_data
 from gmprocess.io.stream import streams_to_dataframe
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.utils.test_utils import read_data_dir
-from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test():

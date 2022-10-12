@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -42,9 +40,9 @@ class GenerateHTMLMapModule(base.SubcommandModule):
         self._get_events()
 
         for ievent, event in enumerate(self.events):
-            event_dir = os.path.join(self.gmrecords.data_path, event.id)
-            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-            if not os.path.isfile(workname):
+            event_dir = self.gmrecords.data_path / event.id
+            workname = event_dir / const.WORKSPACE_NAME
+            if not workname.is_file():
                 logging.error(
                     f"No workspace file found for event {event.id}. Please run "
                     "subcommand 'assemble' to generate workspace file."

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -44,11 +43,10 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
                 f"Creating provenance tables for event {self.eventid} "
                 f"({1+ievent} of {len(self.events)})..."
             )
-            event_dir = os.path.normpath(
-                os.path.join(gmrecords.data_path, self.eventid)
-            )
-            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-            if not os.path.isfile(workname):
+            event_dir = gmrecords.data_path / self.eventid
+
+            workname = event_dir / const.WORKSPACE_NAME
+            if not workname.is_file():
                 logging.info(
                     f"No workspace file found for event {self.eventid}. Please run "
                     "subcommand 'assemble' to generate workspace file."
@@ -73,11 +71,11 @@ class ExportProvenanceTablesModule(base.SubcommandModule):
 
             basename = f"{gmrecords.project_name}_{gmrecords.args.label}_provenance"
             if gmrecords.args.output_format == "csv":
-                csvfile = os.path.join(event_dir, f"{basename}.csv")
+                csvfile = event_dir / f"{basename}.csv"
                 self.append_file("Provenance", csvfile)
                 provdata.to_csv(csvfile, index=False)
             else:
-                excelfile = os.path.join(event_dir, f"{basename}.xlsx")
+                excelfile = event_dir / f"{basename}.xlsx"
                 self.append_file("Provenance", excelfile)
                 provdata.to_excel(excelfile, index=False)
 

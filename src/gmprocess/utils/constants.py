@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 import scipy.constants as sp
-import os
 import pathlib
 
-DATA_DIR = pathlib.Path(__file__).parent / ".." / "data"
-TEST_DATA_DIR = pathlib.Path(__file__).parent / ".." / ".." / ".." / "tests" / "data"
+DATA_DIR = (pathlib.Path(__file__).parent / ".." / "data").resolve()
+TEST_DATA_DIR = (
+    pathlib.Path(__file__).parent / ".." / ".." / ".." / "tests" / "data"
+).resolve()
 
 PROJ_CONF_DIR = ".gmprocess"
 PROJ_CONF_FILE = "projects.conf"
-PROJECTS_PATH = pathlib.Path("~").expanduser() / PROJ_CONF_DIR
+PROJECTS_PATH = (pathlib.Path("~").expanduser() / PROJ_CONF_DIR).resolve()
 
-CONFIG_PATH_TEST = pathlib.Path("~").expanduser() / "gmptest"
+CONFIG_PATH_TEST = (pathlib.Path("~").expanduser() / "gmptest").resolve()
 CONFIG_FILE_PRODUCTION = "config_production.yml"
 CONFIG_FILE_TEST = "config_test.yml"
 PICKER_FILE = "picker.yml"

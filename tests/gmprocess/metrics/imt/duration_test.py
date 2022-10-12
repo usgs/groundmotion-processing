@@ -16,7 +16,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 def test_duration():
     data_file = TEST_DATA_DIR / "duration_data.json"
-    with open(data_file, "rt", encoding="utf-8") as f:
+    with open(str(data_file), "rt", encoding="utf-8") as f:
         jdict = json.load(f)
 
     time = np.array(jdict["time"])
@@ -91,7 +91,7 @@ def test_duration():
 
 def test_duration575():
     datadir = TEST_DATA_DIR / "cosmos" / "us1000hyfh"
-    data_file = datadir / "us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c"
+    data_file = str(datadir / "us1000hyfh_akbmrp_AKBMR--n.1000hyfh.BNZ.--.acc.V2c")
     stream = read_data(data_file)[0]
 
     dur = Duration(stream, interval=[5, 75])

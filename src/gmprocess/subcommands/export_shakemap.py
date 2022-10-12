@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -57,9 +56,9 @@ class ExportShakeMapModule(base.SubcommandModule):
                 f"({1+ievent} of {len(self.events)})..."
             )
 
-            event_dir = os.path.normpath(os.path.join(gmrecords.data_path, event.id))
-            workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-            if not os.path.isfile(workname):
+            event_dir = gmrecords.data_path / event.id
+            workname = event_dir / const.WORKSPACE_NAME
+            if not workname.is_file():
                 logging.info(
                     f"No workspace file found for event {event.id}. Please run "
                     "subcommand 'assemble' to generate workspace file."

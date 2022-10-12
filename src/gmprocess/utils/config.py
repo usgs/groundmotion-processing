@@ -271,7 +271,6 @@ def get_config(config_path=None):
         IndexError:
             If input section name is not found.
     """
-
     # Read in default config from the repository
     data_dir = Path(__file__).parent / ".." / "data"
     default_config_file = data_dir / constants.CONFIG_FILE_PRODUCTION

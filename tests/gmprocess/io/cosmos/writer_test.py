@@ -194,8 +194,8 @@ def test_cosmos_writer(datafile=None):
             try:
                 assert is_cosmos(tfile)
             except BaseException:
-                x = 1
-            streams = read_cosmos(tfile)
+                pass
+            read_cosmos(tfile)
 
     except Exception as e:
         raise (e)

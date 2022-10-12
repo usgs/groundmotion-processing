@@ -18,8 +18,8 @@ def test_fas():
     https://github.com/arkottke/notebooks/blob/master/effective_amp_spectrum.ipynb
     """
     fas_file = TEST_DATA_DIR / "fas_greater_of_two_horizontals.pkl"
-    p1 = TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL067.AT2"
-    p2 = TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL337.AT2"
+    p1 = str(TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL067.AT2")
+    p2 = str(TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL337.AT2")
 
     stream = StationStream([])
     for idx, fpath in enumerate([p1, p2]):

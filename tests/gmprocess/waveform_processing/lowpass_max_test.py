@@ -14,7 +14,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_lowpass_max():
-    datadir = TEST_DATA_DIR / "lowpass_max"
+    datadir = str(TEST_DATA_DIR / "lowpass_max")
     sc = StreamCollection.from_directory(datadir)
     sc.describe()
 

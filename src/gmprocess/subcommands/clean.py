@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 import shutil
-from glob import glob
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -88,62 +86,59 @@ class CleanModule(base.SubcommandModule):
 
         # ---------------------------------------------------------------------
         # Inside the event directories
-        events = glob(os.path.join(data_path, "*/"))
+        events = list(data_path.glob("*/"))
         logging.info(f"Number of events: {len(events)}")
-        for event in events:
-            event_dir = os.path.normpath(os.path.join(data_path, event))
-            if os.path.exists(event_dir):
-                # Exported tables
-                if gmrecords.args.all or gmrecords.args.export:
-                    patterns = [
-                        "*.xlsx",
-                        "*.csv",
-                        "*_groundmotions_dat.json",
-                        "*_metrics.json",
-                    ]
-                    self.__remove(event_dir, patterns)
+        for event_dir in events:
+            # Exported tables
+            if gmrecords.args.all or gmrecords.args.export:
+                patterns = [
+                    "*.xlsx",
+                    "*.csv",
+                    "*_groundmotions_dat.json",
+                    "*_metrics.json",
+                ]
+                self.__remove(event_dir, patterns)
 
-                # Workspace
-                if gmrecords.args.all or gmrecords.args.workspace:
-                    self.__remove(event_dir, ["*.h5", "*.hdf"])
+            # Workspace
+            if gmrecords.args.all or gmrecords.args.workspace:
+                self.__remove(event_dir, ["*.h5", "*.hdf"])
 
-                # Report
-                if gmrecords.args.all or gmrecords.args.report:
-                    self.__remove(event_dir, ["*_report_*.pdf"])
+            # Report
+            if gmrecords.args.all or gmrecords.args.report:
+                self.__remove(event_dir, ["*_report_*.pdf"])
 
-                # Raw
-                if gmrecords.args.raw:
-                    rawdir = os.path.normpath(os.path.join(event_dir, "raw"))
-                    if os.path.isdir(rawdir):
-                        try:
-                            logging.info(f"Removing: {rawdir}")
-                            shutil.rmtree(rawdir)
-                        except BaseException as e:
-                            logging.info(f"Error while deleting: {e}")
+            # Raw
+            if gmrecords.args.raw:
+                rawdir = event_dir / "raw"
+                if rawdir.is_dir():
+                    try:
+                        logging.info(f"Removing: {str(rawdir)}")
+                        shutil.rmtree(rawdir, ignore_errors=True)
+                    except BaseException as e:
+                        logging.info(f"Error while deleting: {e}")
 
-                # Plots
-                if gmrecords.args.all or gmrecords.args.plot:
-                    self.__remove(event_dir, ["*.png"])
-                    plotsdir = os.path.normpath(os.path.join(event_dir, "plots"))
-                    if os.path.isdir(plotsdir):
-                        try:
-                            logging.info(f"Removing: {plotsdir}")
-                            shutil.rmtree(plotsdir)
-                        except BaseException as e:
-                            logging.info(f"Error while deleting: {e}")
+            # Plots
+            if gmrecords.args.all or gmrecords.args.plot:
+                self.__remove(event_dir, ["*.png"])
+                plotsdir = event_dir / "plots"
+                if plotsdir.is_dir():
+                    try:
+                        logging.info(f"Removing: {str(plotsdir)}")
+                        shutil.rmtree(plotsdir, ignore_errors=True)
+                    except BaseException as e:
+                        logging.info(f"Error while deleting: {e}")
 
-                # HTML
-                if gmrecords.args.all or gmrecords.args.html:
-                    self.__remove(event_dir, ["*.html"])
+            # HTML
+            if gmrecords.args.all or gmrecords.args.html:
+                self.__remove(event_dir, ["*.html"])
 
     @staticmethod
     def __remove(base_dir, patterns):
         for pattern in patterns:
-            matches = glob(os.path.join(base_dir, pattern))
+            matches = base_dir.glob(pattern)
             for match in matches:
-                match = os.path.normpath(match)
                 try:
-                    logging.info(f"Removing: {match}")
-                    os.remove(match)
+                    logging.info(f"Removing: {str(match.resolve())}")
+                    match.unlink()
                 except BaseException as e:
                     logging.info(f"Error while deleting: {e}")

@@ -36,7 +36,7 @@ def generate_workspace():
     del raw_data
 
     config = update_config(
-        os.path.join(TEST_DATA_DIR, "config_min_freq_0p2.yml"), CONFIG
+        os.path.join(str(TEST_DATA_DIR), "config_min_freq_0p2.yml"), CONFIG
     )
 
     workspace = StreamWorkspace.open(tfilename)
@@ -55,7 +55,7 @@ def setup_module(module):
 
 def teardown_module(module):
     tdir = os.path.split(setup_module.tfilename)[0]
-    shutil.rmtree(tdir)
+    shutil.rmtree(tdir, ignore_errors=True)
     return
 
 
@@ -65,7 +65,7 @@ def test_layout():
     tfilename = setup_module.tfilename
     h5 = h5py.File(tfilename, "r")
 
-    testroot = TEST_DATA_DIR / "asdf"
+    testroot = str(TEST_DATA_DIR / "asdf")
     layout_abspath = os.path.join(testroot, LAYOUT_FILENAME)
     with open(layout_abspath, "r", encoding="utf-8") as fin:
         lines = fin.readlines()

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
@@ -63,11 +62,9 @@ class ComputeStationMetricsModule(base.SubcommandModule):
 
     def _event_station_metrics(self, event):
         self.eventid = event.id
-        event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-        workname = os.path.normpath(
-            os.path.join(event_dir, utils.constants.WORKSPACE_NAME)
-        )
-        if not os.path.isfile(workname):
+        event_dir = self.gmrecords.data_path / self.eventid
+        workname = event_dir / utils.constants.WORKSPACE_NAME
+        if not workname.is_file():
             logging.info(
                 f"No workspace file found for event {self.eventid}. Please run "
                 "subcommand 'assemble' to generate workspace file."

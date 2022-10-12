@@ -4,13 +4,13 @@
 # stdlib imports
 import importlib
 import inspect
-import os.path
 import logging
 import pathlib
 
 # local imports
 from .fetcher import DataFetcher
 from gmprocess.utils.config import get_config
+from gmprocess.io.utils import _walk
 
 
 def fetch_data(
@@ -138,21 +138,18 @@ def find_fetchers(lat, lon):
 
     fetchers = {}
     root = pathlib.Path(__file__).parent
-    for (rootdir, dirs, files) in os.walk(root):
-        if rootdir == root:
+    for modfile in _walk(root):
+        modname = ".".join(modfile.parts[modfile.parts.index("gmprocess") :]).replace(
+            ".py", ""
+        )
+        if modname.find("__") >= 0:
             continue
-        for tfile in files:
-            modfile = os.path.join(rootdir, tfile)
-            modname = modfile[modfile.rfind("gmprocess") :].replace(".py", "")
-            modname = modname.replace(os.path.sep, ".")
-            if modname.find("__") >= 0:
+        mod = importlib.import_module(modname)
+        for name, obj in inspect.getmembers(mod):
+            if name == "DataFetcher":
                 continue
-            mod = importlib.import_module(modname)
-            for name, obj in inspect.getmembers(mod):
-                if name == "DataFetcher":
-                    continue
-                if inspect.isclass(obj) and issubclass(obj, DataFetcher):
-                    xmin, xmax, ymin, ymax = obj.BOUNDS
-                    if (xmin < lon < xmax) and (ymin < lat < ymax):
-                        fetchers[name] = obj
+            if inspect.isclass(obj) and issubclass(obj, DataFetcher):
+                xmin, xmax, ymin, ymax = obj.BOUNDS
+                if (xmin < lon < xmax) and (ymin < lat < ymax):
+                    fetchers[name] = obj
     return fetchers

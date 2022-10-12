@@ -302,7 +302,7 @@ class GeoNetFetcher(object):
                 logging.warn(fmt % tpl)
 
         if self.rawdir is None:
-            shutil.rmtree(rawdir)
+            shutil.rmtree(rawdir, ignore_errors=True)
 
         if self.stream_collection:
             stream_collection = StreamCollection(

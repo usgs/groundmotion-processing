@@ -13,7 +13,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_usc():
-    datadir = TEST_DATA_DIR / "usc" / "ci3144585"
+    datadir = str(TEST_DATA_DIR / "usc" / "ci3144585")
     files = {
         "017m30cc.y0a": (-0.049, 0.086),
         "017m30lw.e0a": (0.046, 0.004),
@@ -112,7 +112,7 @@ def test_usc():
 
     # test wrong format exception
     try:
-        datadir = TEST_DATA_DIR / "smc"
+        datadir = str(TEST_DATA_DIR / "smc")
         read_usc(datadir / "0111b.smc")[0]
         success = True
     except Exception:

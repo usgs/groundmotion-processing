@@ -19,7 +19,7 @@ def test_fit_spectra():
     config = get_config()
     datadir = TEST_DATA_DIR / "demo" / "ci38457511" / "raw"
     event = get_event_object("ci38457511")
-    sc = StreamCollection.from_directory(datadir)
+    sc = StreamCollection.from_directory(str(datadir))
     for st in sc:
         st = signal_split(st, event)
         end_conf = config["windows"]["signal_end"]

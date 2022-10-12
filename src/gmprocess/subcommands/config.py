@@ -83,7 +83,7 @@ class ConfigModule(base.SubcommandModule):
         proj_config = confmod.get_config(gmrecords.conf_path)
 
         for event in self.events:
-            event_dir = Path(self.gmrecords.data_path) / event.id
+            event_dir = self.gmrecords.data_path / event.id
             if event_dir.exists():
                 workname = event_dir / const.WORKSPACE_NAME
 
@@ -105,16 +105,18 @@ class ConfigModule(base.SubcommandModule):
                     )
                     if config_exists:
                         logging.info(f"Saving config for {event.id}.")
-                        fname = self.gmrecords.args.save
+                        fname = Path(self.gmrecords.args.save)
                         yaml = ryaml.YAML()
                         yaml.indent(mapping=4)
                         yaml.preserve_quotes = True
                         with open(fname, "a", encoding="utf-8") as yf:
-                            yf.write(f"# Path: {str(workname)}\n")
+                            yf.write(f"# Path: {workname}\n")
                             yaml.dump(workspace.config, yf)
+                        self.append_file("Config", fname)
                     else:
                         logging.info(f"No config in workspace for event {event.id}.")
                 if self.gmrecords.args.update:
                     # Write project config to workspace
                     logging.info(f"Adding config {event.id} workspace file.")
                     workspace.addConfig(config=proj_config, force=True)
+        self._summarize_files_created()

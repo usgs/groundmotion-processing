@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # stdlib imports
-import glob
-import os
+from pathlib import Path
 
 # third party imports
 import pandas as pd
@@ -27,15 +26,17 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process
     for 0.3 second spectral acceleration, for example.
 
     Args:
-        directory (str): Directory of ground motion files (streams).
-        imcs (list): Strings designating desired components to create
-                in table.
-        imts (list): Strings designating desired PGMs to create
-                in table.
-        origin (obspy.core.event.Origin): Defines the focal time and
-                geographical location of an earthquake hypocenter.
-                Default is None.
-        process (bool): Process the stream using the config file.
+        directory (str or pathlib.Path):
+            Directory of ground motion files (streams).
+        imcs (list):
+            Strings designating desired components to create in table.
+        imts (list):
+            Strings designating desired PGMs to create in table.
+        origin (obspy.core.event.Origin):
+            Defines the focal time and geographical location of an earthquake
+            hypocenter. Default is None.
+        process (bool):
+            Process the stream using the config file.
 
     Returns:
         DataFrame: Pandas dataframe containing columns:
@@ -73,8 +74,11 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process
                 - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
                 - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
     """
+    if not isinstance(directory, Path):
+        directory = Path(directory)
+
     streams = []
-    for filepath in glob.glob(os.path.join(directory, "*")):
+    for filepath in directory.iterdir():
         streams += read_data(filepath)
     grouped_streams = StreamCollection(streams)
 

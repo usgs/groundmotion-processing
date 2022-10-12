@@ -29,8 +29,8 @@ def read_data_dir(file_format, eventid, files=None):
             - List of data files.
             - Event dictionary.
     """
-    eventdir = os.path.join(TEST_DATA_DIR, file_format, eventid)
-    if not os.path.isdir(eventdir):
+    eventdir = TEST_DATA_DIR / file_format / eventid
+    if not eventdir.is_dir():
         return (None, None)
     datafiles = []
     if files is None:
@@ -48,8 +48,8 @@ def read_data_dir(file_format, eventid, files=None):
                 datafiles.append(fullfile)
 
     # read the event.json file
-    jsonfile = os.path.join(eventdir, "event.json")
-    if not os.path.isfile(jsonfile):
+    jsonfile = eventdir / "event.json"
+    if not jsonfile.is_dir():
         event = None
     event = read_event_json_files([jsonfile])[0]
 

@@ -35,7 +35,7 @@ def test_asdf():
     except Exception as e:
         raise (e)
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 if __name__ == "__main__":
