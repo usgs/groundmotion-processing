@@ -192,8 +192,19 @@ def draw_stations_map(pstreams, event, event_dir):
 
         failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
 
+    print(chans)
+    print(list(assed_chans))
+    print(list(failed_chans))
+    chan_fmt = []
+    for i, r in failed_station_df.iterrows():
+        for j,fail in enumerate(failed_tr[i]):
+            if fail:
+                chan_fmt.append("fail")
+            else:
+                chan_fmt.append("pass")
+    
     failed_map_info = []
-    for row in passed_station_df.values.tolist():
+    for i,row in enumerate(failed_station_df.values.tolist()):
         new_row = []
         for ele in row:
             if isinstance(ele,list):
@@ -203,12 +214,18 @@ def draw_stations_map(pstreams, event, event_dir):
                 new_row.append(ele)
         failed_map_info.append(new_row)
 
+
+    print(failed_map_info)
+    print(len(failed_map_info))
+    print(chan_fmt)
+    print(len(chan_fmt))
+
     failed_station_callback = ("""function (row) {
                                 var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform="rotate(180)" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
                                 var marker = L.marker(new L.LatLng(row[0], row[1]));
                                 marker.setIcon(icon);
                                 var popup = L.popup({maxWidth: '180', minWidth: '180'});
-                                var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]}, ${row[5]}, ${row[6]}<br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg</div>`)[0];
+                                var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]}, ${row[5]}, ${row[6]}<br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg<br> <b>FAILURE MSG:</b><br> ${row[7]} </div>`)[0];
                                 popup.setContent(station_info);
                                 marker.bindPopup(popup);
                                 return marker};""")
