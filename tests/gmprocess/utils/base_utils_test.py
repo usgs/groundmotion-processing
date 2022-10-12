@@ -18,7 +18,7 @@ def test_read_event_json_files():
     mag = 3.5
     mag_type = "mw"
 
-    event = read_event_json_files([datafile])[0]
+    event = read_event_json_files([str(datafile)])[0]
     assert event.id == eid
     assert event.magnitude == mag
     assert event.magnitude_type == mag_type

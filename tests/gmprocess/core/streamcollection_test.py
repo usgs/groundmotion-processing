@@ -20,9 +20,7 @@ def test_StreamCollection():
 
     # read usc data
     directory = TEST_DATA_DIR / "usc" / "ci3144585"
-    usc_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
-        directory
-    )
+    usc_streams, _, _ = directory_to_streams(directory)
     assert len(usc_streams) == 7
 
     usc_sc = StreamCollection(usc_streams)
@@ -45,9 +43,7 @@ def test_StreamCollection():
 
     # read dmg data
     directory = TEST_DATA_DIR / "dmg" / "ci3144585"
-    dmg_streams, unprocessed_files, unprocessed_file_errors = directory_to_streams(
-        directory
-    )
+    dmg_streams, _, _ = directory_to_streams(directory)
     assert len(dmg_streams) == 1
 
     dmg_sc = StreamCollection(dmg_streams)

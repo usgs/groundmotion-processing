@@ -266,7 +266,7 @@ class TurkeyFetcher(DataFetcher):
             streams += read_nsmn(dfile)
 
         if self.rawdir is None:
-            shutil.rmtree(rawdir)
+            shutil.rmtree(rawdir, ignore_errors=True)
 
         stream_collection = StreamCollection(
             streams=streams, drop_non_free=self.drop_non_free

@@ -231,7 +231,6 @@ class CESMDFetcher(DataFetcher):
         if solve and len(events) > 1:
             event = self.solveEvents(events)
             events = [event]
-
         self.metadata = metadata
 
         return events
@@ -247,7 +246,6 @@ class CESMDFetcher(DataFetcher):
         Returns:
             StreamCollection: StreamCollection object.
         """
-
         if self.metadata is None:
             raise Exception("Must call getMatchingEvents() first.")
 
@@ -267,7 +265,7 @@ class CESMDFetcher(DataFetcher):
 
         if nstations < MAX_STATIONS:
             try:
-                (outfolder, datafiles) = get_records(
+                (_, datafiles) = get_records(
                     self.rawdir,
                     self.email,
                     unpack=True,

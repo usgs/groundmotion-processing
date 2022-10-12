@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from pathlib import Path
 
 
 def get_rawdir(event_dir):
@@ -9,6 +10,8 @@ def get_rawdir(event_dir):
         event_dir (str):
             Directory where raw directory will be found or created.
     """
+    if not isinstance(event_dir, Path):
+        event_dir = Path(event_dir)
     rawdir = event_dir / "raw"
     rawdir.mkdir(exist_ok=True)
     return rawdir

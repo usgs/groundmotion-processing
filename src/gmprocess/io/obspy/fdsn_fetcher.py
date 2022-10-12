@@ -1,8 +1,6 @@
 # stdlib imports
 import tempfile
-import os.path
 import logging
-import glob
 import sys
 
 # third party imports
@@ -130,8 +128,8 @@ class FDSNFetcher(DataFetcher):
         if self.rawdir is None:
             rawdir = tempfile.mkdtemp()
         else:
-            if not os.path.isdir(rawdir):
-                os.makedirs(rawdir)
+            if not rawdir.is_dir():
+                rawdir.mkdir()
 
         # use the mass downloader to retrieve data of interest from any FSDN
         # service.
@@ -238,13 +236,16 @@ class FDSNFetcher(DataFetcher):
             # The data will be downloaded to the ``./waveforms/`` and
             # ``./stations/`` folders with automatically chosen file names.
             mdl.download(
-                domain, restrictions, mseed_storage=rawdir, stationxml_storage=rawdir
+                domain,
+                restrictions,
+                mseed_storage=str(rawdir),
+                stationxml_storage=str(rawdir),
             )
             if "log_file" in vars() or "log_file" in globals():
                 sys.stdout.close()
 
             if self.stream_collection:
-                seed_files = glob.glob(os.path.join(rawdir, "*.mseed"))
+                seed_files = rawdir.glob("*.mseed")
                 streams = []
                 for seed_file in seed_files:
                     try:

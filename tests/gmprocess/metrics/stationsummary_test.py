@@ -171,7 +171,7 @@ def test_stationsummary():
 def test_allow_nans():
     datadir = TEST_DATA_DIR / "fdsn" / "uu60363602"
     sc = StreamCollection.from_directory(datadir)
-    origin = read_event_json_files([datadir / "event.json"])[0]
+    origin = read_event_json_files([str(datadir / "event.json")])[0]
     psc = process_streams(sc, origin)
     st = psc[0]
 

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-
 import numpy as np
 import pandas as pd
 import folium
@@ -72,7 +70,9 @@ def draw_stations_map(pstreams, event, event_dir):
         )
         failed_popup = folium.Popup(station_info, min_width=250, max_width=250)
 
-        failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
+        failed_tooltip = folium.Tooltip(
+            f"<b>Station:</b> {r['network']}.{r['stnames']}"
+        )
 
         failed_icon = folium.DivIcon(
             html=f""" 
@@ -98,7 +98,9 @@ def draw_stations_map(pstreams, event, event_dir):
 
         passed_popup = folium.Popup(station_info, min_width=180, max_width=180)
 
-        passed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
+        passed_tooltip = folium.Tooltip(
+            f"<b>Station:</b> {r['network']}.{r['stnames']}"
+        )
 
         passed_icon = folium.DivIcon(
             html=f""" 
@@ -187,7 +189,7 @@ def draw_stations_map(pstreams, event, event_dir):
         )
     )
 
-    html_mapfile = os.path.join(event_dir, "stations_map.html")
+    html_mapfile = event_dir / "stations_map.html"
     station_map.save(html_mapfile)
 
     return html_mapfile

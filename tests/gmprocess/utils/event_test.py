@@ -40,7 +40,7 @@ def test_scalar():
     assert event.magnitude_type == mag_type
 
     quakeml = TEST_DATA_DIR / "usp000hat0_quakeml.xml"
-    catalog = read_events(quakeml)
+    catalog = read_events(str(quakeml))
     tevent = catalog.events[0]
     event = ScalarEvent.fromEvent(tevent)
     assert event.id == "quakeml:us.anss.org/origin/pde20100406221501580_31"
@@ -82,7 +82,7 @@ def test_scalar():
 
 def test_event():
     tape_file = TEST_DATA_DIR / "vcr_event_test.yaml"
-    with vcr.use_cassette(tape_file):
+    with vcr.use_cassette(str(tape_file)):
         eid = "us1000j96d"  # M7.0 Peru Mar 1 2019
         edict = get_event_dict(eid)
         tdict = {

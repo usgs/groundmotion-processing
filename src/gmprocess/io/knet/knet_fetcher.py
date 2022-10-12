@@ -412,7 +412,7 @@ class KNETFetcher(DataFetcher):
                     streams += read_knet(dfile)
 
             if self.rawdir is None:
-                shutil.rmtree(rawdir)
+                shutil.rmtree(rawdir, ignore_errors=True)
 
             # Japan gives us a LOT of data, much of which is not useful as it
             # is too far away. Use the following distance thresholds for

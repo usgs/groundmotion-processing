@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
 from abc import ABC, abstractmethod
 import logging
@@ -101,9 +100,9 @@ class SubcommandModule(ABC):
     def append_file(self, tag, filename):
         """Convenience method to add file via tag to self.files_created."""
         if tag in self.files_created:
-            self.files_created[tag].append(filename)
+            self.files_created[tag].append(str(filename.resolve()))
         else:
-            self.files_created[tag] = [filename]
+            self.files_created[tag] = [str(filename.resolve())]
 
     def _summarize_files_created(self):
         if len(self.files_created):
@@ -111,7 +110,7 @@ class SubcommandModule(ABC):
             for file_type, file_list in self.files_created.items():
                 logging.info(f"File type: {file_type}")
                 for fname in file_list:
-                    logging.info(f"\t{os.path.normpath(fname)}")
+                    logging.info(f"\t{fname}")
         else:
             logging.info("No new files created.")
 
@@ -144,13 +143,13 @@ class SubcommandModule(ABC):
             if self.gmrecords.args.data_source is None:
                 # Use project directory from config
                 temp_dir = self.gmrecords.data_path
-                if not os.path.isdir(temp_dir):
+                if not temp_dir.is_dir():
                     raise OSError(f"No such directory: {temp_dir}")
             elif self.gmrecords.args.data_source == "download":
                 temp_dir = None
             else:
                 temp_dir = self.gmrecords.args.data_source
-                if not os.path.isdir(temp_dir):
+                if not temp_dir.is_dir():
                     raise OSError(f"No such directory: {temp_dir}")
             self.download_dir = temp_dir
         else:

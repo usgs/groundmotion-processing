@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+from pathlib import Path
 import re
 import json
 import logging
@@ -33,7 +33,7 @@ def create_json(
             gmrpocess StreamWorkspace object.
         event (ScalarEvent):
             Event object.
-        event_dir (str):
+        event_dir (str or pathlib.Path):
             Event directory.
         label (str):
             Processing label.
@@ -46,6 +46,9 @@ def create_json(
         gmprocess_version (str):
             gmprocess version.
     """
+    if not isinstance(event_dir, Path):
+        event_dir = Path(event_dir)
+
     features = []
 
     station_features = []
@@ -155,14 +158,14 @@ def create_json(
     }
 
     station_feature_dict = {"type": "FeatureCollection", "features": station_features}
-    stationfile = os.path.join(event_dir, f"{event.id}_groundmotions_dat.json")
+    stationfile = event_dir / f"{event.id}_groundmotions_dat.json"
     # debugging
     iterdict(station_feature_dict)
     # end debugging
     with open(stationfile, "wt") as f:
         json.dump(station_feature_dict, f, allow_nan=False)
 
-    jsonfile = os.path.join(event_dir, f"{event.id}_metrics.json")
+    jsonfile = event_dir / f"{event.id}_metrics.json"
     with open(jsonfile, "wt") as f:
         json.dump(feature_dict, f, allow_nan=False)
 

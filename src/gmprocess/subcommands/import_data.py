@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import shutil
+from pathlib import Path
 from distutils.dir_util import copy_tree
 import logging
 
@@ -41,7 +41,7 @@ class ImportModule(base.SubcommandModule):
         self.gmrecords = gmrecords
         self._check_arguments()
 
-        import_path = self.gmrecords.args.path
+        import_path = Path(self.gmrecords.args.path)
 
         self._get_events()
 
@@ -56,24 +56,24 @@ class ImportModule(base.SubcommandModule):
             logging.info(
                 f"Importing event {event.id} ({1+ievent} of {len(self.events)})..."
             )
-            event_dir = os.path.join(gmrecords.data_path, event.id)
-            if not os.path.exists(event_dir):
-                os.makedirs(event_dir)
+            event_dir = gmrecords.data_path / event.id
+            if not event_dir.exists():
+                event_dir.mkdir()
 
-            raw_dir = os.path.join(event_dir, "raw")
-            if not os.path.exists(raw_dir):
-                os.makedirs(raw_dir)
+            raw_dir = event_dir / "raw"
+            if not raw_dir.exists():
+                raw_dir.mkdir()
 
-            if os.path.isfile(import_path):
-                _, import_file = os.path.split(import_path)
+            if import_path.is_file():
+                import_file = import_path.name
                 src = import_path
-                dst = os.path.join(raw_dir, import_file)
-                logging.info(f"Importing {src}")
+                dst = raw_dir / import_file
+                logging.info(f"Importing {str(src)}")
                 shutil.copy(src, dst)
-            elif os.path.isdir(import_path):
+            elif import_path.is_dir():
                 src = import_path
                 dst = raw_dir
-                copy_tree(src, dst)
+                copy_tree(str(src), str(dst))
             else:
                 raise ValueError("Please provide a valid path to a file or directory")
             flatten_directory(raw_dir)

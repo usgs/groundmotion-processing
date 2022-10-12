@@ -1,9 +1,9 @@
 # stdlib imports
-import urllib
 import zipfile
 import io
 import os.path
 from datetime import timedelta
+from pathlib import Path
 
 # third party imports
 import logging
@@ -279,7 +279,7 @@ def get_records(
     """Retrieve strong motion waveform records from CESMD website.
 
     Args:
-        output (str):
+        output (str or pathlib.Path):
             Filename or directory where downloaded zip data will be written.
         unpack (bool):
             If True, all zipped files will be unpacked (output will become a
@@ -357,6 +357,9 @@ def get_records(
     Raises:
         KeyError
     """
+    if not isinstance(output, Path):
+        output = Path(output)
+
     # getting the inputargs must be the first line of the method!
     inputargs = locals().copy()
     del inputargs["output"]
@@ -443,8 +446,8 @@ def get_records(
         raise ConnectionError(fmt % (url, response.status_code, response.reason))
 
     if unpack:
-        if not os.path.exists(output):
-            os.makedirs(output)
+        if not output.exists():
+            output.mkdir()
         fbytes = io.BytesIO(response.content)
         myzip = zipfile.ZipFile(fbytes, mode="r")
         members = myzip.namelist()
@@ -455,8 +458,8 @@ def get_records(
             if not member.lower().endswith(".zip"):
                 fin = myzip.open(member)
                 flatfile = member.replace("/", "_")
-                outfile = os.path.join(output, flatfile)
-                with open(outfile, "wb") as fout:
+                outfile = output / flatfile
+                with open(str(outfile), "wb") as fout:
                     fout.write(fin.read())
                 fin.close()
             else:
@@ -467,17 +470,19 @@ def get_records(
                     for tmp_member in tmp_members:
                         tfinfo = tmpzip.getinfo(tmp_member)
                         if not tfinfo.is_dir():
+                            member_path = Path(member)
                             fin = tmpzip.open(tmp_member)
                             flatfile = tmp_member.replace("/", "_")
-                            parent, _ = os.path.splitext(member)
-                            parent = parent.replace("/", "_")
+                            parent = str(member_path.parent / member_path.stem).replace(
+                                "/", "_"
+                            )
                             # sometimes the member ends with .zip.zip (??)
                             parent = parent.replace(".zip", "")
-                            datadir = os.path.join(output, parent)
-                            if not os.path.exists(datadir):
-                                os.makedirs(datadir)
-                            outfile = os.path.join(datadir, flatfile)
-                            with open(outfile, "wb") as fout:
+                            datadir = output / parent
+                            if not datadir.exists():
+                                datadir.mkdir()
+                            outfile = datadir / flatfile
+                            with open(str(outfile), "wb") as fout:
                                 fout.write(fin.read())
                             fin.close()
                     tmpzip.close()

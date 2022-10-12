@@ -15,7 +15,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 def test_arias():
     data_file = TEST_DATA_DIR / "arias_data.json"
-    with open(data_file, "rt", encoding="utf-8") as f:
+    with open(str(data_file), "rt", encoding="utf-8") as f:
         jdict = json.load(f)
 
     time = np.array(jdict["time"])

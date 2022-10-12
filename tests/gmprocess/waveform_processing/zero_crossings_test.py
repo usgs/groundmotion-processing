@@ -15,7 +15,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 def test_zero_crossings():
     datadir = TEST_DATA_DIR / "zero_crossings"
-    sc = StreamCollection.from_directory(datadir)
+    sc = StreamCollection.from_directory(str(datadir))
     sc.describe()
 
     conf = get_config()

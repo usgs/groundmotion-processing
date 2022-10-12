@@ -8,7 +8,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test():
-    datadir = TEST_DATA_DIR / "esm" / "us60004wsq"
+    datadir = str(TEST_DATA_DIR / "esm" / "us60004wsq")
 
     esm_file1 = os.path.join(datadir, "HI.ARS1..HNE.D.20190728.160908.C.ACC.ASC")
     esm_file2 = os.path.join(datadir, "HI.ARS1..HNN.D.20190728.160908.C.ACC.ASC")

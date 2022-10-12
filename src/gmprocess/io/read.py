@@ -4,9 +4,8 @@
 # stdlib imports
 import importlib
 from collections import OrderedDict
-import os.path
 import logging
-import pathlib
+from pathlib import Path
 
 # third party imports
 import numpy as np
@@ -22,7 +21,7 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     Read strong motion data from a file.
 
     Args:
-        filename (str):
+        filename (str or pathlib.Path):
             Path to file
         read_format (str):
             Format of file
@@ -30,12 +29,14 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     Returns:
         list: Sequence of obspy.core.stream.Streams read from file
     """
-    _, file_ext = os.path.splitext(filename)
+    if not isinstance(filename, Path):
+        filename = Path(filename)
+
+    file_ext = filename.suffix
     if file_ext in EXCLUDED_EXTS:
         raise ValueError(f"Excluded extension: {filename}")
-
     # Check if file exists
-    if not os.path.exists(filename):
+    if not filename.exists():
         raise OSError(f"Not a file {filename!r}")
     # Get and validate format
     if config is None:
@@ -58,7 +59,7 @@ def _get_format(filename, config):
     Get the format of the file.
 
     Args:
-        filename (str):
+        filename (str or pathlib.Path):
             Path to file
         config (dict):
             Dictionary containing configuration.
@@ -68,16 +69,18 @@ def _get_format(filename, config):
     """
     # Get the valid formats
     valid_formats = []
-    io_directory = pathlib.Path(__file__).parent
+    io_directory = Path(__file__).parent
 
     # Create valid list
-    for module in os.listdir(io_directory):
-        if module.find(".") < 0 and module not in EXCLUDED_MODS:
-            valid_formats += [module]
+    for module in io_directory.iterdir():
+        if module.name.find(".") < 0 and module.name not in EXCLUDED_MODS:
+            valid_formats += [module.name]
 
     # Select most likely format to test first; use ordered dict so we can put
     # control order in which modules are moved to the front of the line.
-    _, file_ext = os.path.splitext(filename)
+    if not isinstance(filename, Path):
+        filename = Path(filename)
+    file_ext = filename.suffix
     ext_dict = OrderedDict()
     ext_dict["obspy"] = [".mseed", ".sac"]
     ext_dict["cwb"] = ["dat"]
@@ -144,15 +147,14 @@ def _validate_format(filename, config, read_format):
     """
     # Get the valid formats
     valid_formats = []
-    home = os.path.dirname(os.path.abspath(__file__))
-    io_directory = os.path.abspath(os.path.join(home, "..", "io"))
+    io_directory = (Path(__file__).parent / ".." / "io").resolve()
     # Create valid list
-    for module in os.listdir(io_directory):
-        if module.find(".") < 0 and module not in EXCLUDED_MODS:
+    for module in io_directory.iterdir():
+        if module.name.find(".") < 0 and module.name not in EXCLUDED_MODS:
             valid_formats += [module]
     # Check for a valid format
     if read_format in valid_formats:
-        reader = "gmprocess.io." + read_format + ".core"
+        reader = f"gmprocess.io.{read_format}.core"
         reader_module = importlib.import_module(reader)
         is_name = "is_" + read_format
         is_method = getattr(reader_module, is_name)

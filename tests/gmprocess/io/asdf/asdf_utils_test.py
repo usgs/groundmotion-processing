@@ -127,7 +127,7 @@ def test_storage():
 
     tdir = os.path.split(tfilename)[0]
     h5.close()
-    shutil.rmtree(tdir)
+    shutil.rmtree(tdir, ignore_errors=True)
     return
 
 

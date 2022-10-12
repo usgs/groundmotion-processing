@@ -31,7 +31,7 @@ def test_process_streams():
 
     sc.describe()
 
-    config = update_config(TEST_DATA_DIR / "config_min_freq_0p2.yml", CONFIG)
+    config = update_config(str(TEST_DATA_DIR / "config_min_freq_0p2.yml"), CONFIG)
 
     test = process_streams(sc, origin, config=config)
 
@@ -90,7 +90,7 @@ def test_check_instrument():
     sc = StreamCollection(streams)
     sc.describe()
 
-    config = update_config(TEST_DATA_DIR / "config_test_check_instr.yml", CONFIG)
+    config = update_config(str(TEST_DATA_DIR / "config_test_check_instr.yml"), CONFIG)
     test = process_streams(sc, origin, config=config)
 
     for sta, expected in [("CVS", True), ("GASB", True), ("SBT", False)]:

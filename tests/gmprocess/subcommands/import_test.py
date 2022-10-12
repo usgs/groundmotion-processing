@@ -15,7 +15,7 @@ def test_import(script_runner):
         ddir = constants.TEST_DATA_DIR / "demo"
         idir = constants.TEST_DATA_DIR / "import"
 
-        setup_inputs = io.StringIO(f"test\n{cdir}\n{str(ddir)}\nname\ntest@email.com\n")
+        setup_inputs = io.StringIO(f"test\n{str(cdir)}\n{str(ddir)}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
@@ -25,11 +25,15 @@ def test_import(script_runner):
         ret = script_runner.run(
             "gmrecords", "import", "-e", "nn00725272", "-p", str(zfile)
         )
+        print("*** stdout ***")
+        print(ret.stdout)
+        print("*** stderr ***")
+        print(ret.stderr)
         assert ret.success
         raw_dir = ddir / "nn00725272" / "raw"
         assert raw_dir.is_dir()
         dst_files = list(pathlib.Path(raw_dir).glob("*"))
-        assert len(dst_files) == 22
+        assert len(dst_files) == 23
 
         # Test tar file of CWB data
         tfile = idir / "test.tar.zip"
@@ -52,11 +56,11 @@ def test_import(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree(constants.CONFIG_PATH_TEST)
+        shutil.rmtree(str(constants.CONFIG_PATH_TEST), ignore_errors=True)
         # Remove created files
         events = ["us6000e2mt", "nn00725272"]
         for eid in events:
-            shutil.rmtree(str(ddir / eid))
+            shutil.rmtree(str(ddir / eid), ignore_errors=True)
 
 
 if __name__ == "__main__":

@@ -81,15 +81,15 @@ class GMrecordsApp(object):
         )
 
         if self.args.subcommand is None:
-            parser.print_help()
+            self.parser.print_help()
             sys.exit()
         else:
             subcmds_noinit = ["init"]
-            if not self.args.subcommand in subcmds_noinit:
+            if self.args.subcommand not in subcmds_noinit:
                 self._initialize()
 
             subcmds_quiet = ["init", "projects", "proj"]
-            if not self.args.subcommand in subcmds_quiet and not self.args.quiet:
+            if self.args.subcommand not in subcmds_quiet and not self.args.quiet:
                 # Print the current project information to avoid confusion
                 proj = Project.from_config(self.projects_conf, self.project_name)
                 print("-" * 80)
@@ -107,9 +107,7 @@ class GMrecordsApp(object):
         mod = importlib.import_module("gmprocess.subcommands")
         subcommands = {
             name: importlib.import_module(name)
-            for finder, name, ispkg in pkgutil.iter_modules(
-                mod.__path__, mod.__name__ + "."
-            )
+            for _, name, _ in pkgutil.iter_modules(mod.__path__, mod.__name__ + ".")
         }
         self.classes = {}
         for name, module in subcommands.items():
@@ -171,7 +169,7 @@ class GMrecordsApp(object):
             # If projects.conf file doesn't exist and we need one, then run the
             # initial setup.
             msg = (
-                "No project config file detected. Please select a project setup option:",
+                "No project config file detected. Please select a project setup option:",  # noqa
                 "(1) Initialize the current directory as a gmrecords project,",
                 "    which will contain data and conf subdirectories.",
                 "(2) Setup a project with data and conf locations that are",
@@ -226,6 +224,7 @@ class GMrecordsApp(object):
         parameters for earthquake hazard analysis.
         """
         parser = argparse.ArgumentParser(description=description)
+        self.parser = parser
         group = parser.add_mutually_exclusive_group()
         group.add_argument(
             "-d",

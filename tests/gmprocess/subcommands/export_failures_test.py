@@ -14,7 +14,9 @@ def test_export_failures(script_runner):
         cdir = constants.CONFIG_PATH_TEST
         ddir = constants.TEST_DATA_DIR / "demo_steps" / "exports"
 
-        setup_inputs = io.StringIO(f"test\n{cdir}\n{ddir}\nname\ntest@email.com\n")
+        setup_inputs = io.StringIO(
+            f"test\n{str(cdir)}\n{str(ddir)}\nname\ntest@email.com\n"
+        )
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
@@ -34,10 +36,10 @@ def test_export_failures(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree(constants.CONFIG_PATH_TEST)
+        shutil.rmtree(str(constants.CONFIG_PATH_TEST), ignore_errors=True)
         # Remove created files
         patterns = ["_failure_reasons_", "_complete_failures"]
-        for root, _, files in os.walk(ddir):
+        for root, _, files in os.walk(str(ddir)):
             for file in files:
                 for pattern in patterns:
                     if pattern in file:

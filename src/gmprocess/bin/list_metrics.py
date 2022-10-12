@@ -2,7 +2,6 @@
 
 import importlib
 import inspect
-import os.path
 import pathlib
 
 import pandas as pd
@@ -19,11 +18,12 @@ def get_class(imc, ctype):
     elif ctype == "imc":
         compclass = IMC
     imc_directory = pathlib.Path(__file__).parent / ".." / "metrics" / ctype
-    modfile = os.path.join(imc_directory, imc + ".py")
-    if not os.path.isfile(modfile):
+    modfile = (imc_directory / f"{imc}.py").resolve()
+    if not modfile.is_file():
         return None
-    modname = os.path.normpath(modfile[modfile.rfind("gmprocess") :].replace(".py", ""))
-    modname = modname.replace(os.path.sep, ".")
+    modname = ".".join(modfile.parts[modfile.parts.index("gmprocess") :]).replace(
+        ".py", ""
+    )
     mod = importlib.import_module(modname)
     tclass = None
     for name, obj in inspect.getmembers(mod):

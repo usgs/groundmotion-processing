@@ -4,8 +4,8 @@ import re
 import copy
 import warnings
 import logging
-import os
 import sys
+from pathlib import Path
 
 # third party imports
 import pyasdf
@@ -188,12 +188,15 @@ class StreamWorkspace(object):
         """Create an ASDF file given an Event and list of StationStreams.
 
         Args:
-            filename (str):
+            filename (str or pathlib.Path):
                 Path to ASDF file to create.
             compression (str):
                 Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
         """
-        if os.path.exists(filename):
+        if not isinstance(filename, Path):
+            filename = Path(filename)
+
+        if filename.exists():
             self.dataset = pyasdf.ASDFDataSet(filename)
         else:
             self.dataset = pyasdf.ASDFDataSet(filename, compression=compression)
@@ -210,7 +213,7 @@ class StreamWorkspace(object):
         """Load from existing ASDF file.
 
         Args:
-            filename (str):
+            filename (str or pathlib.Path):
                 Path to existing ASDF file.
             compression (str):
                 Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
@@ -218,7 +221,10 @@ class StreamWorkspace(object):
         Returns:
             StreamWorkspace: Object containing ASDF file.
         """
-        if os.path.exists(filename):
+        if not isinstance(filename, Path):
+            filename = Path(filename)
+
+        if filename.exists():
             raise IOError(f"File {filename} already exists.")
         return cls(filename)
 
@@ -227,13 +233,16 @@ class StreamWorkspace(object):
         """Load from existing ASDF file.
 
         Args:
-            filename (str):
+            filename (str or pathlib.Path):
                 Path to existing ASDF file.
 
         Returns:
             StreamWorkspace: Object containing ASDF file.
         """
-        if not os.path.exists(filename):
+        if not isinstance(filename, Path):
+            filename = Path(filename)
+
+        if not filename.exists():
             raise IOError(f"File {filename} does not exist.")
         return cls(filename)
 

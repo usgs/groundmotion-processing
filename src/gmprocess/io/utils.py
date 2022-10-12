@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import zipfile
 import tarfile
-import logging
+from pathlib import Path
+import os
 
 import numpy as np
 
@@ -122,7 +122,7 @@ def flatten_directory(directory):
     to be read in with teh directory_to_streams method.
 
     Args:
-        directory (str):
+        directory (str or pathlib.Path):
             Directory of ground motion files (streams).
 
     Returns:
@@ -132,84 +132,52 @@ def flatten_directory(directory):
     # -------------------------------------------------------------------------
     # First walk all the files and unzip until there are no more zip files
     # -------------------------------------------------------------------------
+    if not isinstance(directory, Path):
+        directory = Path(directory)
+
+    # Note: need to always resolve here, even if it is already an absolute path. This
+    # because /var/ resolves to /private/var/ for some reason that I do not understand
+    # and this messes up the path manipulation below.
+    directory = directory.resolve()
+
     has_zips = True
     while has_zips:
         has_zips = _walk_and_unzip(directory)
 
     # -------------------------------------------------------------------------
     # Flatten directoreis by crawling subdirectories and move files up to base
-    # directory, renaming them while taking care to avoid any collisions.
+    # directory, renaming them while trying to avoid any name collisions.
     # -------------------------------------------------------------------------
-    for dirpath, sub_dirs, files in os.walk(directory, topdown=False):
-        if dirpath != directory:
-            # Strip out "directory" path from dirpath
-            sub_path = dirpath.replace(directory, "")
-            split_path = _split_all_path(sub_path)
-            split_path = [s for s in split_path if s != os.path.sep]
-            sub_str = "_".join(split_path)
-            for f in files:
-                # Append subdir to file name:
-                long_name = f"{sub_str}_{f}"
-                src = os.path.join(dirpath, f)
-                # I don't think there should ever be duplicates but I'm
-                # leaving this here just in case.
-                dst = _handle_duplicates(os.path.join(directory, long_name))
-                os.rename(src, dst)
-
-        for d in sub_dirs:
-            os.rmdir(os.path.join(dirpath, d))
+    for path in _walk(directory):
+        # Get portion of path relative "directory" path from dirpath
+        sub_path_str = str(path).replace(str(directory), "").strip(os.path.sep)
+        sub_path_str = sub_path_str.replace(os.path.sep, "_")
+        dst = directory / sub_path_str
+        os.rename(path, dst)
 
 
 def _walk_and_unzip(directory):
     has_zips = False
-    for dirpath, _, files in os.walk(directory, topdown=False):
-        for f in files:
-            full_file = os.path.join(dirpath, f)
-            is_zip = zipfile.is_zipfile(full_file)
-            is_tar = tarfile.is_tarfile(full_file)
-            if is_zip:
-                has_zips = True
-                base, ext = os.path.splitext(f)
-                with zipfile.ZipFile(full_file, "r") as zip:
-                    for m in zip.namelist():
-                        zip.extract(m, dirpath)
-                        src = os.path.join(dirpath, m)
-                        new_name = f"{base}_{m.replace(os.path.sep, '_')}"
-                        dst = os.path.join(dirpath, new_name)
-                        if not os.path.exists(dst):
-                            os.rename(src, dst)
-                        else:
-                            # This should never happen
-                            logging.warning(
-                                f"While extracting {f}, file {dst} already exists."
-                            )
-                os.remove(full_file)
-            elif is_tar:
-                has_zips = True
-                with tarfile.open(full_file, "r") as tar_file:
-                    tar_file.extractall(dirpath)
-                os.remove(full_file)
+    for path in _walk(directory):
+        is_zip = zipfile.is_zipfile(path)
+        is_tar = tarfile.is_tarfile(path)
+        if is_zip:
+            has_zips = True
+            with zipfile.ZipFile(path, "r") as zip:
+                for m in zip.namelist():
+                    zip.extract(m, str(path.parent))
+            path.unlink()
+        elif is_tar:
+            has_zips = True
+            with tarfile.open(path, "r") as tar_file:
+                tar_file.extractall(str(path.parent))
+            path.unlink()
     return has_zips
 
 
-def _split_all_path(path):
-    allparts = []
-    while True:
-        parts = os.path.split(path)
-        if parts[0] == path:
-            allparts.insert(0, parts[0])
-            break
-        elif parts[1] == path:
-            allparts.insert(0, parts[1])
-            break
-        else:
-            path = parts[0]
-            allparts.insert(0, parts[1])
-    return allparts
-
-
-def _handle_duplicates(target):
-    while os.path.exists(target):
-        base, ext = os.path.splitext(target)
-        target = base + DUPLICATE_MARKER + ext
-    return target
+def _walk(path):
+    for p in path.iterdir():
+        if p.is_dir():
+            yield from _walk(p)
+            continue
+        yield p.resolve()

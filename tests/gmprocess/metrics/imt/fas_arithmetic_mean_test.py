@@ -26,8 +26,8 @@ def test_fas():
     """
 
     fas_file = TEST_DATA_DIR / "fas_arithmetic_mean.pkl"
-    p1 = TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL067.AT2"
-    p2 = TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL337.AT2"
+    p1 = str(TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL067.AT2")
+    p2 = str(TEST_DATA_DIR / "peer" / "RSN763_LOMAP_GIL337.AT2")
 
     stream = StationStream([])
     for idx, fpath in enumerate([p1, p2]):

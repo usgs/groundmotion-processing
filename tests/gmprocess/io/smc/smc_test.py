@@ -13,7 +13,7 @@ from gmprocess.utils.constants import TEST_DATA_DIR
 
 
 def test_smc():
-    datadir = TEST_DATA_DIR / "smc" / "nc216859"
+    datadir = str(TEST_DATA_DIR / "smc" / "nc216859")
 
     files = OrderedDict(
         [
@@ -67,7 +67,7 @@ def test_bad():
     tfile = "np01002r_4225a_u.smc"
     dfile = datadir / tfile
     try:
-        streams = read_smc(dfile)
+        streams = read_smc(str(dfile))
     except Exception as e:
         msg = str(e)
         if "nonsensical" not in msg:

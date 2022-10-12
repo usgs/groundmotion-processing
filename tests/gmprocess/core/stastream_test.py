@@ -83,7 +83,7 @@ def test_uneven_stream():
 
 def test_num_horizontals():
     sc = StreamCollection.from_directory(
-        TEST_DATA_DIR / "fdsn" / "uw61251926" / "strong_motion"
+        str(TEST_DATA_DIR / "fdsn" / "uw61251926" / "strong_motion")
     )
     st = sc.select(station="SP2")[0]
     assert st.num_horizontal == 2

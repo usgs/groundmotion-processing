@@ -624,10 +624,10 @@ def _get_header_info(int_data, flt_data, lines, cmt_data, location=""):
     for key in coordinates:
         if coordinates[key] == unknown:
             if key != "elevation":
-                logging.warning(f"Missing {key!r}. Setting to np.nan.", Warning)
+                # logging.warning(f"Missing {key!r}. Setting to np.nan.", Warning)
                 coordinates[key] = np.nan
             else:
-                logging.warning(f"Missing {key!r}. Setting to 0.0.", Warning)
+                # logging.warning(f"Missing {key!r}. Setting to 0.0.", Warning)
                 coordinates[key] = 0.0
 
     hdr["coordinates"] = coordinates

@@ -33,14 +33,14 @@ CONFIG = get_config()
 def test_p_pick():
     datadir = TEST_DATA_DIR / "process"
     # Testing a strong motion channel
-    tr = read(datadir / "ALCTENE.UW..sac")[0]
+    tr = read(str(datadir / "ALCTENE.UW..sac"))[0]
     chosen_ppick = UTCDateTime("2001-02-28T18:54:47")
     ppick = PowerPicker(tr)
     ptime = tr.times("utcdatetime")[0] + ppick
     assert (abs(chosen_ppick - ptime)) < 0.2
 
     # Testing a broadband channel
-    tr = read(datadir / "HAWABHN.US..sac")[0]
+    tr = read(str(datadir / "HAWABHN.US..sac"))[0]
     chosen_ppick = UTCDateTime("2003-01-15T03:42:12.5")
     ppick = PowerPicker(tr)
     ptime = tr.times("utcdatetime")[0] + ppick
@@ -55,7 +55,7 @@ def test_p_pick():
 def test_pphase_picker():
     # compare our results with a data file from E. Kalkan
     datafile = TEST_DATA_DIR / "strong-motion.mat"
-    matlabfile = loadmat(datafile)
+    matlabfile = loadmat(str(datafile))
     x = np.squeeze(matlabfile["x"])
 
     dt = matlabfile["dt"][0][0]
@@ -164,15 +164,15 @@ def get_streams():
 def test_get_travel_time_df():
     datadir = TEST_DATA_DIR / "travel_times"
 
-    sc1 = StreamCollection.from_directory(datadir / "ci37218996")
-    sc2 = StreamCollection.from_directory(datadir / "ci38461735")
+    sc1 = StreamCollection.from_directory(str(datadir / "ci37218996"))
+    sc2 = StreamCollection.from_directory(str(datadir / "ci38461735"))
     scs = [sc1, sc2]
 
     df1, catalog = create_travel_time_dataframe(
-        sc1, datadir / "catalog_test_traveltimes.csv", 5, 0.1, "iasp91"
+        sc1, str(datadir / "catalog_test_traveltimes.csv"), 5, 0.1, "iasp91"
     )
     df2, catalog = create_travel_time_dataframe(
-        sc2, datadir / "catalog_test_traveltimes.csv", 5, 0.1, "iasp91"
+        sc2, str(datadir / "catalog_test_traveltimes.csv"), 5, 0.1, "iasp91"
     )
 
     model = TauPyModel("iasp91")

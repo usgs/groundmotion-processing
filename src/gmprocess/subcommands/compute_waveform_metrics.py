@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
 import logging
 from concurrent.futures import ProcessPoolExecutor
 
@@ -47,7 +45,8 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
 
         for ievent, event in enumerate(self.events):
             logging.info(
-                f"Computing waveform metrics for event {event.id} ({1+ievent} of {len(self.events)})..."
+                f"Computing waveform metrics for event {event.id} "
+                f"({1+ievent} of {len(self.events)})..."
             )
             self._compute_event_waveform_metrics(event)
 
@@ -55,9 +54,9 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
 
     def _compute_event_waveform_metrics(self, event):
         self.eventid = event.id
-        event_dir = os.path.join(self.gmrecords.data_path, self.eventid)
-        workname = os.path.normpath(os.path.join(event_dir, const.WORKSPACE_NAME))
-        if not os.path.isfile(workname):
+        event_dir = self.gmrecords.data_path / self.eventid
+        workname = event_dir / const.WORKSPACE_NAME
+        if not workname.is_file():
             logging.info(
                 "No workspace file found for event {self.eventid}. Please run "
                 "subcommand 'assemble' to generate workspace file."
@@ -89,8 +88,8 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
             )
             if not len(streams):
                 logging.warning(
-                    "No matching streams found. "
-                    f"Aborting computation of station metrics for {station_id} for {event.id}."
+                    "No matching streams found. Aborting computation of station "
+                    f"metrics for {station_id} for {event.id}."
                 )
                 continue
 

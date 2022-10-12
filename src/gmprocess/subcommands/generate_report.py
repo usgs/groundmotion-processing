@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 from concurrent.futures import ProcessPoolExecutor
 
@@ -48,7 +47,7 @@ class GenerateReportModule(base.SubcommandModule):
         self._get_events()
 
         for ievent, event in enumerate(self.events):
-            event_dir = os.path.join(self.gmrecords.data_path, event.id)
+            event_dir = self.gmrecords.data_path / event.id
             pstreams = self.generate_diagnostic_plots(event)
             if pstreams is None:
                 return
@@ -74,15 +73,15 @@ class GenerateReportModule(base.SubcommandModule):
                 else:
                     report_file = ""
                     success = False
-                if os.path.isfile(report_file) and success:
+                if report_file.is_file() and success:
                     self.append_file("Summary report", report_file)
 
         self._summarize_files_created()
 
     def generate_diagnostic_plots(self, event):
-        event_dir = os.path.join(self.gmrecords.data_path, event.id)
-        workname = os.path.join(event_dir, const.WORKSPACE_NAME)
-        if not os.path.isfile(workname):
+        event_dir = self.gmrecords.data_path / event.id
+        workname = event_dir / const.WORKSPACE_NAME
+        if not workname.is_file():
             logging.info(
                 f"No workspace file found for event {event.id}. Please run "
                 "subcommand 'assemble' to generate workspace file."
@@ -106,9 +105,9 @@ class GenerateReportModule(base.SubcommandModule):
             )
 
         logging.info(f"Creating diagnostic plots for event {event.id}...")
-        plot_dir = os.path.join(event_dir, "plots")
-        if not os.path.isdir(plot_dir):
-            os.makedirs(plot_dir)
+        plot_dir = event_dir / "plots"
+        if not plot_dir.is_file():
+            plot_dir.mkdir()
 
         results = []
         pstreams = []
@@ -144,7 +143,7 @@ class GenerateReportModule(base.SubcommandModule):
             results = [future.result() for future in futures]
             executor.shutdown()
 
-        moveoutfile = os.path.join(event_dir, "moveout_plot.png")
+        moveoutfile = event_dir / "moveout_plot.png"
         plot.plot_moveout(pstreams, event.latitude, event.longitude, file=moveoutfile)
         self.append_file("Moveout plot", moveoutfile)
 

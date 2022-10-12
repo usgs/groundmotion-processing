@@ -19,7 +19,7 @@ datadir = TEST_DATA_DIR / "fdsnfetch"
 def test_radial_transverse():
 
     origin = Origin(latitude=47.149, longitude=-122.7266667)
-    st = read(datadir / "resp_cor" / "UW.ALCT.--.*.MSEED")
+    st = read(str(datadir / "resp_cor" / "UW.ALCT.--.*.MSEED"))
 
     st[0].stats.standard = {}
     st[0].stats.standard["horizontal_orientation"] = 0.0

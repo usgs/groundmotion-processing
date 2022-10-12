@@ -82,7 +82,7 @@ def _test_stream_params():
     except Exception as e:
         raise (e)
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 def _test_workspace():
@@ -95,7 +95,7 @@ def _test_workspace():
             warnings.filterwarnings("ignore", category=YAMLError)
             warnings.filterwarnings("ignore", category=FutureWarning)
             config = update_config(
-                os.path.join(TEST_DATA_DIR, "config_min_freq_0p2.yml"), CONFIG
+                os.path.join(str(TEST_DATA_DIR), "config_min_freq_0p2.yml"), CONFIG
             )
             tfile = os.path.join(tdir, "test.hdf")
             raw_streams = []
@@ -213,7 +213,7 @@ def _test_workspace():
     except Exception as e:
         raise (e)
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 def _test_metrics2():
@@ -253,7 +253,7 @@ def _test_metrics2():
     except Exception as e:
         raise (e)
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 def test_metrics():
@@ -303,7 +303,7 @@ def test_metrics():
     except Exception as e:
         raise (e)
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 def _test_colocated():
@@ -334,7 +334,7 @@ def _test_colocated():
     except Exception as e:
         raise (e)
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 def _test_vs30_dist_metrics():
@@ -414,7 +414,7 @@ def _test_vs30_dist_metrics():
     except Exception as e:
         raise (e)
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 def drop_processing(config, keys):

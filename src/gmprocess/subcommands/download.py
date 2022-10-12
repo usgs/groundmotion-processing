@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import logging
 import copy
 
@@ -52,9 +51,9 @@ class DownloadModule(base.SubcommandModule):
         logging.info(f"Number of events to download: {len(self.events)}")
         for event in self.events:
             logging.info(f"Starting event: {event.id}")
-            event_dir = os.path.normpath(os.path.join(gmrecords.data_path, event.id))
-            if not os.path.exists(event_dir):
-                os.makedirs(event_dir)
+            event_dir = gmrecords.data_path / event.id
+            if not event_dir.exists():
+                event_dir.mkdir()
 
             download_utils.download(
                 event=event, event_dir=event_dir, config=copy.deepcopy(gmrecords.conf)

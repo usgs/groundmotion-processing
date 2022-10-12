@@ -242,7 +242,7 @@ def _validate_steps(step_sets, data_type):
 
 def test_exceptions():
     homedir = TEST_DATA_DIR / "geonet"
-    datafile_v2 = homedir / "us1000778i" / "20161113_110259_WTMC_20.V2A"
+    datafile_v2 = str(homedir / "us1000778i" / "20161113_110259_WTMC_20.V2A")
     stream_v2 = read_geonet(datafile_v2)[0]
     # Check for origin Error
     passed = True

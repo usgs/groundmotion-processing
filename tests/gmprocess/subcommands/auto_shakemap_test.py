@@ -11,8 +11,8 @@ from gmprocess.utils import constants
 def test_auto_shakemap(script_runner):
     try:
         # Need to create profile first.
-        cdir = constants.CONFIG_PATH_TEST
-        ddir = constants.TEST_DATA_DIR / "demo"
+        cdir = str(constants.CONFIG_PATH_TEST)
+        ddir = str(constants.TEST_DATA_DIR / "demo")
         setup_inputs = io.StringIO(f"test\n{cdir}\n{ddir}\nname\ntest@email.com\n")
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()

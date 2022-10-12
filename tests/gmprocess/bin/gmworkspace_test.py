@@ -150,7 +150,7 @@ def setup_module(module):
 
 def teardown_module(module):
     tdir = os.path.split(setup_module.tfilename)[0]
-    shutil.rmtree(tdir)
+    shutil.rmtree(tdir, ignore_errors=True)
     return
 
 

@@ -17,8 +17,8 @@ def test_compute_waveform_metrics(script_runner):
 
         # Make a copy of the hdf files
         for event in EVENTS:
-            src = ddir / event / "workspace.h5"
-            dst = ddir / event / "_workspace.h5"
+            src = str(ddir / event / "workspace.h5")
+            dst = str(ddir / event / "_workspace.h5")
             shutil.copyfile(src, dst)
 
         setup_inputs = io.StringIO(f"test\n{cdir}\n{ddir}\nname\ntest@email.com\n")
@@ -41,11 +41,11 @@ def test_compute_waveform_metrics(script_runner):
     except Exception as ex:
         raise ex
     finally:
-        shutil.rmtree(constants.CONFIG_PATH_TEST)
+        shutil.rmtree(str(constants.CONFIG_PATH_TEST), ignore_errors=True)
         # Move the hdf files back
         for event in EVENTS:
-            dst = ddir / event / "workspace.h5"
-            src = ddir / event / "_workspace.h5"
+            dst = str(ddir / event / "workspace.h5")
+            src = str(ddir / event / "_workspace.h5")
             shutil.move(src, dst)
 
 

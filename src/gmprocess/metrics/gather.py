@@ -1,21 +1,21 @@
-import os
+from pathlib import Path
 
 EXCLUDED_MODULES = ["__init__.py", "imt.py", "imc.py"]
-BASE = os.path.dirname(os.path.abspath(__file__))
+BASE = Path(__file__).parent
 
 
 def gather_pgms():
-    imt_directory = os.path.join(BASE, "imt")
-    imc_directory = imt_directory.replace("imt", "imc")
+    imt_directory = BASE / "imt"
+    imc_directory = BASE / "imc"
     # Create list
     imt_classes = []
     imc_classes = []
-    for imt_file in os.listdir(imt_directory):
-        if imt_file.endswith(".py") and imt_file not in EXCLUDED_MODULES:
-            imt_file = imt_file[0:-3]
+    for imt_file in imt_directory.iterdir():
+        if imt_file.suffix == ".py" and imt_file.name not in EXCLUDED_MODULES:
+            imt_file = imt_file.stem
             imt_classes += [imt_file]
-    for imc_file in os.listdir(imc_directory):
-        if imc_file.endswith(".py") and imc_file not in EXCLUDED_MODULES:
-            imc_file = imc_file[0:-3]
+    for imc_file in imc_directory.iterdir():
+        if imc_file.suffix == ".py" and imc_file.name not in EXCLUDED_MODULES:
+            imc_file = imc_file.stem
             imc_classes += [imc_file]
     return imt_classes, imc_classes

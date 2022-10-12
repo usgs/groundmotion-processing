@@ -24,8 +24,8 @@ def test_regression():
     event_file = TEST_DATA_DIR / "events.xlsx"
     imc_file = TEST_DATA_DIR / "greater_of_two_horizontals.xlsx"
     imc = "G2H"
-    event_table = pd.read_excel(event_file, engine="openpyxl")
-    imc_table = pd.read_excel(imc_file, engine="openpyxl")
+    event_table = pd.read_excel(str(event_file), engine="openpyxl")
+    imc_table = pd.read_excel(str(imc_file), engine="openpyxl")
     imt = "PGA"
 
     tdir = tempfile.mkdtemp()
@@ -37,7 +37,7 @@ def test_regression():
     except Exception as e:
         raise e
     finally:
-        shutil.rmtree(tdir)
+        shutil.rmtree(tdir, ignore_errors=True)
 
 
 def test_plot():
