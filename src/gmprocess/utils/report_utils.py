@@ -47,12 +47,13 @@ def draw_stations_map(pstreams, event, event_dir):
     station_map = folium.Map(
         location=[event.latitude, event.longitude], zoom_start=7, control_scale=True
     )
-    stn_cluster = folium.FeatureGroup()
+
+    stn_cluster = folium.plugins.MarkerCluster(control='False')
     station_map.add_child(stn_cluster)
-    stations_group = folium.FeatureGroup(name='stations')
 
     passed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'passed')
     station_map.add_child(passed)
+
     failed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'failed')
     station_map.add_child(failed)
 
@@ -63,27 +64,14 @@ def draw_stations_map(pstreams, event, event_dir):
     failed_networks = networks[failed_st]
     failed_station_df = pd.DataFrame(
         {
+            "coords": failed_coords,
+            "network": failed_networks,
             "stnames": failed_stations,
             "chans": failed_chans,
-            "network": failed_networks,
-            "coords": failed_coords,
             "reason": failure_reasons,
         }
     )
 
-    # passed_coords = zip(lats[~failed_st], lons[~failed_st])
-    # passed_coords = [list(tup) for tup in zip(lats[~failed_st], lons[~failed_st])]
-    # passed_stations = stnames[~failed_st]
-    # passed_chans = compress(chans, ~failed_st)
-    # passed_networks = networks[~failed_st]
-    # passed_station_df = pd.DataFrame(
-    #     {
-    #         "stnames": passed_stations,
-    #         "chans": passed_chans,
-    #         "network": passed_networks,
-    #         "coords": passed_coords,
-    #     }
-    # )
     passed_coords = [list(tup) for tup in zip(lats[~failed_st], lons[~failed_st])]
     passed_stations = stnames[~failed_st]
     passed_chans = compress(chans, ~failed_st)
@@ -91,9 +79,10 @@ def draw_stations_map(pstreams, event, event_dir):
     passed_station_df = pd.DataFrame(
         {
             "coords": passed_coords,
+            "network": passed_networks,
             "stnames": passed_stations,
             "chans": passed_chans,
-            "network": passed_networks,        }
+        }
     )
     # # Plot the failed first
     # for i, r in failed_station_df.iterrows():
@@ -166,7 +155,7 @@ def draw_stations_map(pstreams, event, event_dir):
     #         icon=passed_icon,
     #     ).add_to(station_map)
 
-    passed_map_info = []
+    passed_map_format = []
     for i, r in passed_station_df.iterrows():
         chan_info = ", ".join(r["chans"])
 
@@ -178,75 +167,60 @@ def draw_stations_map(pstreams, event, event_dir):
 
         passed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
 
-    # callback = ('function (row) {' 
-    #                 'var marker = L.marker(new L.LatLng(row[0], row[1]), {color: "red"});'
-    #                 'var icon = L.AwesomeMarkers.icon({'
-    #                 "icon: 'info-sign',"
-    #                 "iconColor: 'white',"
-    #                 "markerColor: 'green',"
-    #                 "prefix: 'glyphicon',"
-    #                 "extraClasses: 'fa-rotate-0'"
-    #                     '});'
-    #                 'marker.setIcon(icon);'
-    #                 "var popup = L.popup({maxWidth: '300'});"
-    #                 "const display_text = {text: row[2]};"
-    #                 "var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];"
-    #                 "popup.setContent(mytext);"
-    #                 "marker.bindPopup(popup);"
-    #                 'return marker};')    
+    failed_map_format = []
+    for i, r in failed_station_df.iterrows():
+        chan_fmt = []
+        for j,fail in enumerate(failed_tr[i]):
+            if fail:
+                chan_fmt.append("<span style=\"color:" + FAILED_COLOR + ";\">" + str(r["chans"][j]) + "</span>")
+            else:
+                chan_fmt.append("<span style=\"color:" + PASSED_COLOR + ";\">" + str(r["chans"][j]) + "</span>")
 
+        chan_info = "<b>CHAN:</b> {}".format(
+            ', '.join(chan_fmt)
+        )
+
+        fail_info = "<b>FAILURE MSG:</b><br> <i>'{}'</i>".format(
+            "<span style=\"color:" + FAILED_COLOR + ";\">" + r["reason"] + "</span>"
+        )
+
+        station_info = "<b>NETWORK:</b> {}<br> <b>STATION:</b> {}<br> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;<br> {}".format(
+            r["network"], r["stnames"], chan_info, r["coords"][0], r["coords"][1], fail_info
+        ) 
+
+        failed_popup = folium.Popup(station_info, min_width=250, max_width=250)
+
+        failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
+
+    failed_map_info = []
+    for row in passed_station_df.values.tolist():
+        new_row = []
+        for ele in row:
+            if isinstance(ele,list):
+                for sub_ele in ele:
+                    new_row.append(sub_ele)
+            else:
+                new_row.append(ele)
+        failed_map_info.append(new_row)
 
     failed_station_callback = ("""function (row) {
                                 var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform="rotate(180)" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
                                 var marker = L.marker(new L.LatLng(row[0], row[1]));
                                 marker.setIcon(icon);
                                 var popup = L.popup({maxWidth: '180', minWidth: '180'});
-                                const display_text = {text: 'beep boop'};
-                                var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
-                                popup.setContent(mytext);
+                                var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]}, ${row[5]}, ${row[6]}<br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg</div>`)[0];
+                                popup.setContent(station_info);
                                 marker.bindPopup(popup);
                                 return marker};""")
-    # print(failed_station_df["coords"].values.tolist())
-    failed_station_cluster = folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback)
+
+                                # chan_info = "<b>CHAN:</b> {}".format(', '.join(chan_fmt)
+                                # fail_info = "<b>FAILURE MSG:</b><br> <i>'{}'</i>".format("<span style=\"color:" + FAILED_COLOR + ";\">" + r["reason"] + "</span>"
+
+    failed_station_cluster = folium.plugins.FastMarkerCluster(failed_map_info, callback=failed_station_callback)
+    # failed_station_cluster = folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback)
     failed_station_cluster.add_to(failed)
-    # stations_group.add_child(failed_station_cluster)
-    # station_map.add_child(folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback))
-
-    # passed_station_callback = ("""function (row) {
-    #                             var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`});
-    #                             var marker = L.marker(new L.LatLng(row[0], row[1]));
-    #                             marker.setIcon(icon);
-    #                             var popup = L.popup({maxWidth: '180', minWidth: '180'});
-    #                             const display_text = {text: row[2]};
-    #                             var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
-    #                             popup.setContent(mytext);
-    #                             marker.bindPopup(popup);
-    #                             return marker};""")
-
-    # station_map.add_child(folium.plugins.FastMarkerCluster(passed_station_df["coords"].values.tolist(), callback=passed_station_callback))
-    passed_station_callback = ("""function (row) {
-                                var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
-                                var marker = L.marker(new L.LatLng(row[0], row[1]));
-                                marker.setIcon(icon);
-                                var popup = L.popup({maxWidth: '180', minWidth: '180'});
-                                const display_text = {text: 'boop beep'};
-                                var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
-                                popup.setContent(mytext);
-                                marker.bindPopup(popup);
-                                return marker};""")
     
-    map_info = passed_station_df.values.tolist()
-    # print(map_info)
-    # test = [row.values.ravel().tolist() for i,row in passed_station_df.iterrows()]
-    # test = [dat.values.ravel().tolist() for i,row in passed_station_df.iterrows() for dat in row]
-    # test = list(chain.from_iterable(passed_station_df.values.tolist()))
-    # test = list(chain.from_iterable(*passed_station_df.values.tolist()))
-    # test = [list(chain.from_iterable(row)) for row in passed_station_df.values.tolist()]
-    # test = list(chain.from_iterable(item if isinstance(item,list) and
-                    # not isinstance(item, str) else list(item) for item in passed_station_df.values.tolist()))
-    # print(test)
-
-    test2 = []
+    passed_map_info = []
     for row in passed_station_df.values.tolist():
         new_row = []
         for ele in row:
@@ -257,13 +231,26 @@ def draw_stations_map(pstreams, event, event_dir):
                     new_row.append(sub_ele)
             else:
                 new_row.append(ele)
-        test2.append(new_row)
-    print(test2)      
-    map_info = test2
-    passed_station_cluster = folium.plugins.FastMarkerCluster(map_info, callback=passed_station_callback)
-    # stations_group.add_child(passed_station_cluster)
-    # station_map.add_child(folium.plugins.FastMarkerCluster(map_info, callback=passed_station_callback))
-    # station_map.add_child(stations_group)
+        passed_map_info.append(new_row)
+
+    passed_station_callback = ("""function (row) {
+                                var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
+                                var marker = L.marker(new L.LatLng(row[0], row[1]));
+                                marker.setIcon(icon);
+                                var popup = L.popup({maxWidth: '180', minWidth: '180'});
+                                const display_text = {text: 'boop beep'};
+                                var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]}, ${row[5]}, ${row[6]}<br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg</div>`)[0];
+                                var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
+                                popup.setContent(station_info);
+                                marker.bindPopup(popup);
+                                return marker};""")
+
+                                # const chan_info = {text: ", ".join(row[3:5])};
+                                # var station_info = $(`<b>NETWORK:</b> ${row[6]}<br> <b>STATION:</b> ${row[2]}<br> <b>CHAN:</b> ${row[2]}<br> <b>LAT:</b> ${row[0]:.4f}&deg; <b>LON:</b> ${row[1]:.4f}&deg;`);
+                                # const station_info = {text: "<b>NETWORK:</b> {}<br> <b>STATION:</b> {}<br> <b>CHAN:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;".format(row[6], row[2], chan_info, row[0], row[1])};
+                                    # var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
+
+    passed_station_cluster = folium.plugins.FastMarkerCluster(passed_map_info, callback=passed_station_callback)
     passed_station_cluster.add_to(passed)
 
     folium.LayerControl().add_to(station_map)
