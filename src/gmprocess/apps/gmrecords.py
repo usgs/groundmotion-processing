@@ -196,17 +196,16 @@ class GMrecordsApp(object):
             str(self.projects_file), encoding="utf-8"
         )
         projmod.validate_projects_config(self.projects_conf, self.projects_path)
-        current_project = projmod.get_current(self.projects_conf)
 
         if "CALLED_FROM_PYTEST" in os.environ:
-            conf_path = const.CONFIG_PATH_TEST  # ~/gmptest
+            conf_path = const.CONFIG_PATH_TEST
             conf_path.mkdir(exist_ok=True)
             test_conf_file = (const.DATA_DIR / const.CONFIG_FILE_TEST).resolve()
             shutil.copyfile(test_conf_file, conf_path / const.CONFIG_FILE_TEST)
 
         subcommands_need_conf = ["download", "assemble", "auto_shakemap"]
         if self.args.func.command_name in subcommands_need_conf:
-            self.conf = configmod.get_config(config_path=self.projects_path)
+            self.conf = configmod.get_config(config_path=self.conf_path)
 
     def _initial_setup(self):
         """
