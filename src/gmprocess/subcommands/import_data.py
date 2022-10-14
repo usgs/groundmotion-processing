@@ -57,8 +57,7 @@ class ImportModule(base.SubcommandModule):
                 f"Importing event {event.id} ({1+ievent} of {len(self.events)})..."
             )
             event_dir = gmrecords.data_path / event.id
-            if not event_dir.exists():
-                event_dir.mkdir()
+            event_dir.mkdir(exist_ok=True)
 
             raw_dir = event_dir / "raw"
             raw_dir.mkdir(exist_ok=True)

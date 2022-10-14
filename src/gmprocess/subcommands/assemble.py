@@ -88,8 +88,7 @@ class AssembleModule(base.SubcommandModule):
     @staticmethod
     def _assemble_event(event, data_path, overwrite, conf, version):
         event_dir = data_path / event.id
-        if not event_dir.exists():
-            event_dir.mkdir()
+        event_dir.mkdir(exist_ok=True)
         workname = event_dir / constants.WORKSPACE_NAME
         workspace_exists = workname.is_file()
         if workspace_exists:

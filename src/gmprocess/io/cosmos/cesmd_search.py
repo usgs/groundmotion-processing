@@ -445,8 +445,7 @@ def get_records(
         raise ConnectionError(fmt % (url, response.status_code, response.reason))
 
     if unpack:
-        if not output.exists():
-            output.mkdir()
+        output.mkdir(exist_ok=True)
         fbytes = io.BytesIO(response.content)
         myzip = zipfile.ZipFile(fbytes, mode="r")
         members = myzip.namelist()
@@ -478,8 +477,7 @@ def get_records(
                             # sometimes the member ends with .zip.zip (??)
                             parent = parent.replace(".zip", "")
                             datadir = output / parent
-                            if not datadir.exists():
-                                datadir.mkdir()
+                            datadir.mkdir(exist_ok=True)
                             outfile = datadir / flatfile
                             with open(str(outfile), "wb") as fout:
                                 fout.write(fin.read())
