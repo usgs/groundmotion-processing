@@ -18,6 +18,6 @@ def get_rupture_file(event_dir):
     """
     event_dir = Path(event_dir)
     rupture_file = event_dir / RUPTURE_FILE
-    if not rupture_file._is_file():
+    if not rupture_file.is_file():
         rupture_file = None
     return rupture_file
