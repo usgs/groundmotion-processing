@@ -46,8 +46,7 @@ def create_json(
         gmprocess_version (str):
             gmprocess version.
     """
-    if not isinstance(event_dir, Path):
-        event_dir = Path(event_dir)
+    event_dir = Path(event_dir)
 
     features = []
 

@@ -29,8 +29,7 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     Returns:
         list: Sequence of obspy.core.stream.Streams read from file
     """
-    if not isinstance(filename, Path):
-        filename = Path(filename)
+    filename = Path(filename)
 
     file_ext = filename.suffix
     if file_ext in EXCLUDED_EXTS:
@@ -78,8 +77,7 @@ def _get_format(filename, config):
 
     # Select most likely format to test first; use ordered dict so we can put
     # control order in which modules are moved to the front of the line.
-    if not isinstance(filename, Path):
-        filename = Path(filename)
+    filename = Path(filename)
     file_ext = filename.suffix
     ext_dict = OrderedDict()
     ext_dict["obspy"] = [".mseed", ".sac"]

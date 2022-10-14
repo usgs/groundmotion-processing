@@ -38,8 +38,7 @@ def directory_to_streams(directory, config=None):
                 List of errors associated with trying to read unprocessed
                 files).
     """
-    if not isinstance(directory, Path):
-        directory = Path(directory)
+    directory = Path(directory)
     # Use a temp dir so that we don't modify data on disk since that may not be
     # expected or desired in all cases.
     tmp_dir = Path(tempfile.mkdtemp())

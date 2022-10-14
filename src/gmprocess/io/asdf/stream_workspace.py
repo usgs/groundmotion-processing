@@ -193,8 +193,7 @@ class StreamWorkspace(object):
             compression (str):
                 Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
         """
-        if not isinstance(filename, Path):
-            filename = Path(filename)
+        filename = Path(filename)
 
         if filename.exists():
             self.dataset = pyasdf.ASDFDataSet(filename)
@@ -221,8 +220,7 @@ class StreamWorkspace(object):
         Returns:
             StreamWorkspace: Object containing ASDF file.
         """
-        if not isinstance(filename, Path):
-            filename = Path(filename)
+        filename = Path(filename)
 
         if filename.exists():
             raise IOError(f"File {filename} already exists.")
@@ -239,8 +237,7 @@ class StreamWorkspace(object):
         Returns:
             StreamWorkspace: Object containing ASDF file.
         """
-        if not isinstance(filename, Path):
-            filename = Path(filename)
+        filename = Path(filename)
 
         if not filename.exists():
             raise IOError(f"File {filename} does not exist.")

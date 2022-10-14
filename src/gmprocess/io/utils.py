@@ -132,8 +132,7 @@ def flatten_directory(directory):
     # -------------------------------------------------------------------------
     # First walk all the files and unzip until there are no more zip files
     # -------------------------------------------------------------------------
-    if not isinstance(directory, Path):
-        directory = Path(directory)
+    directory = Path(directory)
 
     # Note: need to always resolve here, even if it is already an absolute path. This
     # because /var/ resolves to /private/var/ for some reason that I do not understand
