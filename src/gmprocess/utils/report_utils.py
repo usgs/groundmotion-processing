@@ -33,6 +33,9 @@ def draw_stations_map(pstreams, event, event_dir):
          dtype='object'
     )[failed_st]
 
+    print("Failed tr:")
+    print(failed_tr)
+
     failure_reasons = list(
         pd.Series(
             [
@@ -59,9 +62,9 @@ def draw_stations_map(pstreams, event, event_dir):
 
     # failed_coords = zip(lats[failed_st], lons[failed_st])
     failed_coords = [list(tup) for tup in zip(lats[failed_st], lons[failed_st])]
+    failed_networks = networks[failed_st]
     failed_stations = stnames[failed_st]
     failed_chans = compress(chans,failed_st)
-    failed_networks = networks[failed_st]
     failed_station_df = pd.DataFrame(
         {
             "coords": failed_coords,
@@ -73,9 +76,9 @@ def draw_stations_map(pstreams, event, event_dir):
     )
 
     passed_coords = [list(tup) for tup in zip(lats[~failed_st], lons[~failed_st])]
+    passed_networks = networks[~failed_st]
     passed_stations = stnames[~failed_st]
     passed_chans = compress(chans, ~failed_st)
-    passed_networks = networks[~failed_st]
     passed_station_df = pd.DataFrame(
         {
             "coords": passed_coords,
@@ -84,157 +87,64 @@ def draw_stations_map(pstreams, event, event_dir):
             "chans": passed_chans,
         }
     )
-    # # Plot the failed first
-    # for i, r in failed_station_df.iterrows():
-    #     chan_fmt = []
-    #     for j,fail in enumerate(failed_tr[i]):
-    #         if fail:
-    #             chan_fmt.append("<span style=\"color:" + FAILED_COLOR + ";\">" + str(r["chans"][j]) + "</span>")
-    #         else:
-    #             chan_fmt.append("<span style=\"color:" + PASSED_COLOR + ";\">" + str(r["chans"][j]) + "</span>")
+        # passed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
 
-    #     chan_info = "<b>CHAN:</b> {}".format(
-    #         ', '.join(chan_fmt)
-    #     )
+        # failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
 
-    #     fail_info = "<b>FAILURE MSG:</b><br> <i>'{}'</i>".format(
-    #         "<span style=\"color:" + FAILED_COLOR + ";\">" + r["reason"] + "</span>"
-    #     )
-
-    #     station_info = "<b>NETWORK:</b> {}<br> <b>STATION:</b> {}<br> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;<br> {}".format(
-    #         r["network"], r["stnames"], chan_info, r["coords"][0], r["coords"][1], fail_info
-    #     ) 
-
-    #     failed_popup = folium.Popup(station_info, min_width=250, max_width=250)
-
-    #     failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
-
-    #     failed_icon = folium.DivIcon(
-    #         html=f""" 
-    #         <div>
-    #             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform='rotate(180)' viewBox="0 0 16 16">
-    #                 <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
-    #             </svg>
-    #         </div>"""
-    #     )
-
-    #     folium.Marker(
-    #         location=r["coords"],
-    #         tooltip=failed_tooltip,
-    #         popup=failed_popup,
-    #         icon=failed_icon,
-    #     ).add_to(station_map)
-
-    # # Then the passed stations
-    # for i, r in passed_station_df.iterrows():
-    #     chan_info = ", ".join(r["chans"])
-
-        failed_tooltip = folium.Tooltip(
-            f"<b>Station:</b> {r['network']}.{r['stnames']}"
-        )
-
-    #     passed_popup = folium.Popup(station_info, min_width=180, max_width=180)
-
-    #     passed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
-
-    #     passed_icon = folium.DivIcon(
-    #         html=f""" 
-    #         <div>
-    #             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\""""
-    #         + PASSED_COLOR
-    #         + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16">
-    #                 <path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/>
-    #             </svg>
-    #         </div>"""
-    #     )
-
-    #     folium.Marker(
-    #         location=r["coords"],
-    #         tooltip=passed_tooltip,
-    #         popup=passed_popup,
-    #         icon=passed_icon,
-    #     ).add_to(station_map)
-
-    passed_map_format = []
-    for i, r in passed_station_df.iterrows():
-        chan_info = ", ".join(r["chans"])
-
-        station_info = "<b>NETWORK:</b> {}<br> <b>STATION:</b> {}<br> <b>CHAN:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;".format(
-            r["network"], r["stnames"], chan_info, r["coords"][0], r["coords"][1]
-        )
-
-        passed_popup = folium.Popup(station_info, min_width=180, max_width=180)
-
-        passed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
-
-    failed_map_format = []
-    for i, r in failed_station_df.iterrows():
-        chan_fmt = []
-        for j,fail in enumerate(failed_tr[i]):
-            if fail:
-                chan_fmt.append("<span style=\"color:" + FAILED_COLOR + ";\">" + str(r["chans"][j]) + "</span>")
-            else:
-                chan_fmt.append("<span style=\"color:" + PASSED_COLOR + ";\">" + str(r["chans"][j]) + "</span>")
-
-        chan_info = "<b>CHAN:</b> {}".format(
-            ', '.join(chan_fmt)
-        )
-
-        fail_info = "<b>FAILURE MSG:</b><br> <i>'{}'</i>".format(
-            "<span style=\"color:" + FAILED_COLOR + ";\">" + r["reason"] + "</span>"
-        )
-
-        station_info = "<b>NETWORK:</b> {}<br> <b>STATION:</b> {}<br> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;<br> {}".format(
-            r["network"], r["stnames"], chan_info, r["coords"][0], r["coords"][1], fail_info
-        ) 
-
-        failed_popup = folium.Popup(station_info, min_width=250, max_width=250)
-
-        failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
-
-    print(chans)
-    print(list(assed_chans))
-    print(list(failed_chans))
     chan_fmt = []
     for i, r in failed_station_df.iterrows():
+        tmp_list = []
         for j,fail in enumerate(failed_tr[i]):
             if fail:
-                chan_fmt.append("fail")
+                tmp_list.append("fail")
             else:
-                chan_fmt.append("pass")
+                tmp_list.append("pass")
+        chan_fmt.append(tmp_list)
     
+    print("chan_fmt:\n")
+    print(chan_fmt)
+    print(len(chan_fmt))
+
     failed_map_info = []
     for i,row in enumerate(failed_station_df.values.tolist()):
         new_row = []
-        for ele in row:
-            if isinstance(ele,list):
-                for sub_ele in ele:
-                    new_row.append(sub_ele)
-            else:
+        for j,ele in enumerate(row):
+            if j<3:
+                if isinstance(ele,list):
+                    for sub_ele in ele:
+                        new_row.append(sub_ele)
+                else:
+                    new_row.append(ele)
+            elif j == 3:
+                comp_colors = []
+                for k,comp in enumerate(ele):
+                    if failed_tr[i][k]: 
+                        comp_colors.append("<span style=\"color:" + FAILED_COLOR + ";\">" + str(comp) + "</span>")
+                    else:
+                        comp_colors.append("<span style=\"color:" + PASSED_COLOR + ";\">" + str(comp) + "</span>")
+
+                print(comp_colors)
+                new_row.append(comp_colors)
+                
+            elif j == 4:
                 new_row.append(ele)
+        
         failed_map_info.append(new_row)
-
-
-    print(failed_map_info)
-    print(len(failed_map_info))
-    print(chan_fmt)
-    print(len(chan_fmt))
 
     failed_station_callback = ("""function (row) {
                                 var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform="rotate(180)" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
                                 var marker = L.marker(new L.LatLng(row[0], row[1]));
                                 marker.setIcon(icon);
                                 var popup = L.popup({maxWidth: '180', minWidth: '180'});
-                                var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]}, ${row[5]}, ${row[6]}<br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg<br> <b>FAILURE MSG:</b><br> ${row[7]} </div>`)[0];
+                                var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]} <br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg<br> <b>FAILURE MSG:</b><br> <i><span style="color:#ff2222"> ${row[5]} </span></i> </div>`)[0];
                                 popup.setContent(station_info);
                                 marker.bindPopup(popup);
+                                var tooltip = L.tooltip()
+                                tooltip.setContent($(`<b>Station:</b> ${row[2]}.${row[3]}`))
+                                marker.bindTooltip(tooltip)
                                 return marker};""")
 
-                                # chan_info = "<b>CHAN:</b> {}".format(', '.join(chan_fmt)
-                                # fail_info = "<b>FAILURE MSG:</b><br> <i>'{}'</i>".format("<span style=\"color:" + FAILED_COLOR + ";\">" + r["reason"] + "</span>"
-
     failed_station_cluster = folium.plugins.FastMarkerCluster(failed_map_info, callback=failed_station_callback)
-    # failed_station_cluster = folium.plugins.FastMarkerCluster(failed_station_df["coords"].values.flatten().tolist(), callback=failed_station_callback)
     failed_station_cluster.add_to(failed)
     
     passed_map_info = []
@@ -242,8 +152,6 @@ def draw_stations_map(pstreams, event, event_dir):
         new_row = []
         for ele in row:
             if isinstance(ele,list):
-                # new_ele = chain.from_iterable(ele)
-                # new_row.append(new_ele)
                 for sub_ele in ele:
                     new_row.append(sub_ele)
             else:
@@ -261,11 +169,6 @@ def draw_stations_map(pstreams, event, event_dir):
                                 popup.setContent(station_info);
                                 marker.bindPopup(popup);
                                 return marker};""")
-
-                                # const chan_info = {text: ", ".join(row[3:5])};
-                                # var station_info = $(`<b>NETWORK:</b> ${row[6]}<br> <b>STATION:</b> ${row[2]}<br> <b>CHAN:</b> ${row[2]}<br> <b>LAT:</b> ${row[0]:.4f}&deg; <b>LON:</b> ${row[1]:.4f}&deg;`);
-                                # const station_info = {text: "<b>NETWORK:</b> {}<br> <b>STATION:</b> {}<br> <b>CHAN:</b> {}<br> <b>LAT:</b> {:.4f}&deg; <b>LON:</b> {:.4f}&deg;".format(row[6], row[2], chan_info, row[0], row[1])};
-                                    # var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
 
     passed_station_cluster = folium.plugins.FastMarkerCluster(passed_map_info, callback=passed_station_callback)
     passed_station_cluster.add_to(passed)
