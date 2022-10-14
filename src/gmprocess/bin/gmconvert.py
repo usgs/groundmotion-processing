@@ -121,8 +121,7 @@ https://docs.obspy.org/packages/autogen/obspy.core.stream.Stream.write.html#supp
         print("You must specify input files or an input directory.")
         sys.exit(1)
 
-    if not outdir.is_dir():
-        outdir.mkdir()
+    outdir.mkdir(exist_ok=True)
 
     if args.files:
         # read all the data files, gather up a list of obspy Stream objects

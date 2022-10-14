@@ -128,8 +128,7 @@ class FDSNFetcher(DataFetcher):
         if self.rawdir is None:
             rawdir = tempfile.mkdtemp()
         else:
-            if not rawdir.is_dir():
-                rawdir.mkdir()
+            rawdir.mkdir(exist_ok=True)
 
         # use the mass downloader to retrieve data of interest from any FSDN
         # service.

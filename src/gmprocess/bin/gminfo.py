@@ -100,8 +100,7 @@ def render_concise(files, save=False):
 
 
 def render_dir(rootdir, concise=True, save=False):
-    if not isinstance(rootdir, Path):
-        rootdir = Path(rootdir)
+    rootdir = Path(rootdir)
     datafiles = list(_walk(rootdir))
 
     if concise:

@@ -152,10 +152,8 @@ def build_report_latex(
         config = get_config()
 
     # Check if directory exists, and if not, create it.
-    if not isinstance(directory, Path):
-        directory = Path(directory)
-    if not directory.is_dir():
-        directory.mkdir()
+    directory = Path(directory)
+    directory.mkdir(exist_ok=True)
 
     # Initialize report string with PREAMBLE
     report = PREAMBLE

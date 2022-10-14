@@ -74,8 +74,7 @@ def directory_to_dataframe(directory, imcs=None, imts=None, origin=None, process
                 - SA(1.0) Pseudo-spectral acceleration at 1.0 seconds (%g).
                 - SA(3.0) Pseudo-spectral acceleration at 3.0 seconds (%g).
     """
-    if not isinstance(directory, Path):
-        directory = Path(directory)
+    directory = Path(directory)
 
     streams = []
     for filepath in directory.iterdir():

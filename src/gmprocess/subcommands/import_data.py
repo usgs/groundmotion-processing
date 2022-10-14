@@ -61,8 +61,7 @@ class ImportModule(base.SubcommandModule):
                 event_dir.mkdir()
 
             raw_dir = event_dir / "raw"
-            if not raw_dir.exists():
-                raw_dir.mkdir()
+            raw_dir.mkdir(exist_ok=True)
 
             if import_path.is_file():
                 import_file = import_path.name

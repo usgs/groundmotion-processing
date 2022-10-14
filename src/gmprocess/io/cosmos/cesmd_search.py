@@ -357,8 +357,7 @@ def get_records(
     Raises:
         KeyError
     """
-    if not isinstance(output, Path):
-        output = Path(output)
+    output = Path(output)
 
     # getting the inputargs must be the first line of the method!
     inputargs = locals().copy()
