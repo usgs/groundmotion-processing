@@ -190,13 +190,13 @@ def main():
     create_event_file(scalar_event, str(event_path))
     event_file = event_path / "event.json"
     msg = f"Created event file at {event_file}."
-    if not event_file.exists():
+    if not event_file.is_file():
         msg = f"Error: Failed to create {event_file}."
     print(msg)
     download_rupture_file(args.event, str(event_path))
     rupture_file = event_path / "rupture.json"
     msg = f"Created rupture file at {rupture_file}."
-    if not rupture_file.exists():
+    if not rupture_file.is_file():
         msg = f"Error: Failed to create {rupture_file}."
     print(msg)
 

@@ -52,8 +52,7 @@ class DownloadModule(base.SubcommandModule):
         for event in self.events:
             logging.info(f"Starting event: {event.id}")
             event_dir = gmrecords.data_path / event.id
-            if not event_dir.exists():
-                event_dir.mkdir()
+            event_dir.mkdir(exist_ok=True)
 
             download_utils.download(
                 event=event, event_dir=event_dir, config=copy.deepcopy(gmrecords.conf)

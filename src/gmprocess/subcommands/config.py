@@ -87,7 +87,7 @@ class ConfigModule(base.SubcommandModule):
             if event_dir.exists():
                 workname = event_dir / const.WORKSPACE_NAME
 
-                if not workname.exists():
+                if not workname.is_file():
                     logging.info(
                         f"No workspace file found for event {event.id}. "
                         "Continuing to next event."

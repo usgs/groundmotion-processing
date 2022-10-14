@@ -35,7 +35,7 @@ def read_data(filename, config=None, read_format=None, **kwargs):
     if file_ext in EXCLUDED_EXTS:
         raise ValueError(f"Excluded extension: {filename}")
     # Check if file exists
-    if not filename.exists():
+    if not filename.is_file():
         raise OSError(f"Not a file {filename!r}")
     # Get and validate format
     if config is None:

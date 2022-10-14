@@ -37,7 +37,7 @@ class SubcommandModule(ABC):
         """Open workspace, add as attribute."""
         event_dir = Path(self.gmrecords.data_path) / eventid
         workname = event_dir / const.WORKSPACE_NAME
-        if not workname.exists():
+        if not workname.is_file():
             logging.info(
                 f"No workspace file found for event {eventid}. Please run subcommand "
                 "'assemble' to generate workspace file."
