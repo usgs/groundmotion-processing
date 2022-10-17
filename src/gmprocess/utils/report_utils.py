@@ -33,9 +33,6 @@ def draw_stations_map(pstreams, event, event_dir):
          dtype='object'
     )[failed_st]
 
-    print("Failed tr:")
-    print(failed_tr)
-
     failure_reasons = list(
         pd.Series(
             [
@@ -51,16 +48,15 @@ def draw_stations_map(pstreams, event, event_dir):
         location=[event.latitude, event.longitude], zoom_start=7, control_scale=True
     )
 
-    stn_cluster = folium.plugins.MarkerCluster(control='False')
+    stn_cluster = folium.plugins.MarkerCluster(name='All', control='False')
     station_map.add_child(stn_cluster)
 
-    passed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'passed')
+    passed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'Passed')
     station_map.add_child(passed)
 
-    failed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'failed')
+    failed = folium.plugins.FeatureGroupSubGroup(stn_cluster, 'Failed')
     station_map.add_child(failed)
 
-    # failed_coords = zip(lats[failed_st], lons[failed_st])
     failed_coords = [list(tup) for tup in zip(lats[failed_st], lons[failed_st])]
     failed_networks = networks[failed_st]
     failed_stations = stnames[failed_st]
@@ -87,23 +83,6 @@ def draw_stations_map(pstreams, event, event_dir):
             "chans": passed_chans,
         }
     )
-        # passed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
-
-        # failed_tooltip = folium.Tooltip(f"<b>Station:</b> {r['network']}.{r['stnames']}")
-
-    chan_fmt = []
-    for i, r in failed_station_df.iterrows():
-        tmp_list = []
-        for j,fail in enumerate(failed_tr[i]):
-            if fail:
-                tmp_list.append("fail")
-            else:
-                tmp_list.append("pass")
-        chan_fmt.append(tmp_list)
-    
-    print("chan_fmt:\n")
-    print(chan_fmt)
-    print(len(chan_fmt))
 
     failed_map_info = []
     for i,row in enumerate(failed_station_df.values.tolist()):
@@ -139,10 +118,13 @@ def draw_stations_map(pstreams, event, event_dir):
                                 var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]} <br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg<br> <b>FAILURE MSG:</b><br> <i><span style="color:#ff2222"> ${row[5]} </span></i> </div>`)[0];
                                 popup.setContent(station_info);
                                 marker.bindPopup(popup);
-                                var tooltip = L.tooltip()
-                                tooltip.setContent($(`<b>Station:</b> ${row[2]}.${row[3]}`))
-                                marker.bindTooltip(tooltip)
+                                var tooltip = L.tooltip();
+                                var tooltip_info = $(`<div><b>Station:</b> ${row[2]}.${row[3]}</div>`)[0];
+                                tooltip.setContent(tooltip_info);
+                                marker.bindTooltip(tooltip).openTooltip();
                                 return marker};""")
+
+# $(`<b>Station:</b> ${row[2]}'.'${row[3]}`)
 
     failed_station_cluster = folium.plugins.FastMarkerCluster(failed_map_info, callback=failed_station_callback)
     failed_station_cluster.add_to(failed)
@@ -168,6 +150,10 @@ def draw_stations_map(pstreams, event, event_dir):
                                 var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
                                 popup.setContent(station_info);
                                 marker.bindPopup(popup);
+                                var tooltip = L.tooltip();
+                                var tooltip_info = $(`<div><b>Station:</b> ${row[2]}.${row[3]}</div>`)[0]
+                                tooltip.setContent(tooltip_info);
+                                marker.bindTooltip(tooltip).openTooltip();
                                 return marker};""")
 
     passed_station_cluster = folium.plugins.FastMarkerCluster(passed_map_info, callback=passed_station_callback)
