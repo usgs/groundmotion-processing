@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.utils.assemble_utils - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.utils.assemble_utils - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -491,7 +491,6 @@
 <span class="kn">from</span> <span class="nn">gmprocess.core.streamcollection</span> <span class="kn">import</span> <span class="n">StreamCollection</span>
 <span class="kn">from</span> <span class="nn">gmprocess.core.streamarray</span> <span class="kn">import</span> <span class="n">StreamArray</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.constants</span> <span class="kn">import</span> <span class="n">WORKSPACE_NAME</span>
-<span class="kn">from</span> <span class="nn">gmprocess.utils.event</span> <span class="kn">import</span> <span class="n">get_event_object</span>
 <span class="kn">from</span> <span class="nn">gmprocess.io.asdf.stream_workspace</span> <span class="kn">import</span> <span class="n">StreamWorkspace</span>
 <span class="kn">from</span> <span class="nn">gmprocess.io.read_directory</span> <span class="kn">import</span> <span class="n">directory_to_streams</span>
 <span class="kn">from</span> <span class="nn">gmprocess.utils.misc</span> <span class="kn">import</span> <span class="n">get_rawdir</span>
@@ -527,16 +526,16 @@
 <span class="sd">            - str: Path to the rupture file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Make raw directory</span>
-    <span class="n">in_event_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
-    <span class="n">in_raw_dir</span> <span class="o">=</span> <span class="n">get_rawdir</span><span class="p">(</span><span class="n">in_event_dir</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;in_raw_dir: </span><span class="si">{</span><span class="n">in_raw_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Get raw directory</span>
+    <span class="n">event_dir</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">/</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
+    <span class="n">raw_dir</span> <span class="o">=</span> <span class="n">get_rawdir</span><span class="p">(</span><span class="n">event_dir</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;raw_dir: </span><span class="si">{</span><span class="n">raw_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">streams</span><span class="p">,</span> <span class="n">unprocessed_files</span><span class="p">,</span> <span class="n">unprocessed_file_errors</span> <span class="o">=</span> <span class="n">directory_to_streams</span><span class="p">(</span>
-        <span class="n">in_raw_dir</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+        <span class="n">raw_dir</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span>
     <span class="p">)</span>
     <span class="c1"># Write errors to a csv file (but not for tests)</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;CALLED_FROM_PYTEST&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">failures_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">in_raw_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;read_failures.csv&quot;</span>
+        <span class="n">failures_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">raw_dir</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;read_failures.csv&quot;</span>
         <span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;File&quot;</span><span class="p">,</span> <span class="s2">&quot;Failure&quot;</span><span class="p">]</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">failures_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_MINIMAL</span><span class="p">)</span>
@@ -555,21 +554,18 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">stream_array</span><span class="o">.</span><span class="n">describe_string</span><span class="p">())</span>
 
     <span class="c1"># Create the workspace file and put the unprocessed waveforms in it</span>
-    <span class="n">workname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">in_event_dir</span><span class="p">,</span> <span class="n">WORKSPACE_NAME</span><span class="p">)</span>
-
-    <span class="c1"># Remove any existing workspace file</span>
-    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">workname</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span>
+    <span class="n">workname</span> <span class="o">=</span> <span class="n">event_dir</span> <span class="o">/</span> <span class="n">WORKSPACE_NAME</span>
+    <span class="k">if</span> <span class="n">workname</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="n">workname</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
 
     <span class="n">workspace</span> <span class="o">=</span> <span class="n">StreamWorkspace</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span>
-    <span class="n">event_obj</span> <span class="o">=</span> <span class="n">get_event_object</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
-    <span class="n">workspace</span><span class="o">.</span><span class="n">addEvent</span><span class="p">(</span><span class="n">event_obj</span><span class="p">)</span>
+    <span class="n">workspace</span><span class="o">.</span><span class="n">addEvent</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;workspace.dataset.events:&quot;</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">workspace</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
     <span class="n">workspace</span><span class="o">.</span><span class="n">addGmprocessVersion</span><span class="p">(</span><span class="n">gmprocess_version</span><span class="p">)</span>
     <span class="n">workspace</span><span class="o">.</span><span class="n">addConfig</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
     <span class="n">workspace</span><span class="o">.</span><span class="n">addStreams</span><span class="p">(</span>
-        <span class="n">event_obj</span><span class="p">,</span>
+        <span class="n">event</span><span class="p">,</span>
         <span class="n">stream_array</span><span class="p">,</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;unprocessed&quot;</span><span class="p">,</span>
         <span class="n">gmprocess_version</span><span class="o">=</span><span class="n">gmprocess_version</span><span class="p">,</span>
@@ -618,7 +614,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>

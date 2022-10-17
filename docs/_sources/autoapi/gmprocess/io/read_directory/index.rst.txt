@@ -20,7 +20,6 @@ Functions
 .. autoapisummary::
 
    gmprocess.io.read_directory.directory_to_streams
-   gmprocess.io.read_directory._split_all_path
 
 
 
@@ -48,7 +47,7 @@ Attributes
    a sensible fashion.
 
    :param directory: Directory of ground motion files (streams).
-   :type directory: str
+   :type directory: str or pathlib.Path
    :param config: Configuration options.
    :type config: dict
 
@@ -59,8 +58,5 @@ Attributes
                      List of errors associated with trying to read unprocessed
                      files).
    :rtype: tuple
-
-
-.. py:function:: _split_all_path(path)
 
 

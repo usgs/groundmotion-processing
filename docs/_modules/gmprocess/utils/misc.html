@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.utils.misc - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.utils.misc - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -480,8 +480,7 @@
           <h1>Source code for gmprocess.utils.misc</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 
 <div class="viewcode-block" id="get_rawdir"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/misc/index.html#gmprocess.utils.misc.get_rawdir">[docs]</a><span class="k">def</span> <span class="nf">get_rawdir</span><span class="p">(</span><span class="n">event_dir</span><span class="p">):</span>
@@ -491,9 +490,9 @@
 <span class="sd">        event_dir (str):</span>
 <span class="sd">            Directory where raw directory will be found or created.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rawdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s2">&quot;raw&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">rawdir</span><span class="p">):</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">rawdir</span><span class="p">)</span>
+    <span class="n">event_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">event_dir</span><span class="p">)</span>
+    <span class="n">rawdir</span> <span class="o">=</span> <span class="n">event_dir</span> <span class="o">/</span> <span class="s2">&quot;raw&quot;</span>
+    <span class="n">rawdir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">rawdir</span></div>
 </pre></div>
         </article>
@@ -534,7 +533,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>

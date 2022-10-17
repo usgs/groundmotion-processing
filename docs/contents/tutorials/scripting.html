@@ -2,13 +2,13 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Response Spectra Calculation and Comparison" href="response_spectra.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Scripting - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>Scripting - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -496,18 +496,18 @@ The configuration files are in the <code class="docutils literal notranslate"><s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-07 09:57:42 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-07 09:57:42 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-10-07 09:57:42 | projects.main: Running subcommand &#39;projects&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-17 16:01:01 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-17 16:01:01 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-17 16:01:01 | projects.main: Running subcommand &#39;projects&#39;
 
-Project: cli-tutorial 
-	Conf Path: ../conf/cli
-	Data Path: ../data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 
 
-Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+Project: scripting-tutorial 
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 </pre></div>
 </div>
 </div>
@@ -521,14 +521,14 @@ Second, we use the <code class="docutils literal notranslate"><span class="pre">
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-07 09:57:43 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-07 09:57:43 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-10-07 09:57:43 | projects.main: Running subcommand &#39;projects&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-17 16:01:01 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-17 16:01:01 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-17 16:01:01 | projects.main: Running subcommand &#39;projects&#39;
 
 Switched to project: 
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 </pre></div>
 </div>
 </div>
@@ -572,64 +572,7 @@ Consequently, we simply copy the data from <code class="docutils literal notrans
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">data/scripting</span>
-└── <span class=" -Color -Color-Bold -Color-Bold-Blue">nc73291880</span>
-    ├── event.json
-    ├── <span class=" -Color -Color-Bold -Color-Bold-Blue">raw</span>
-    │   ├── BK.BRIB.01.BHE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.BHN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.BHZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.HHE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.HHN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.HHZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── BK.BRIB.xml
-    │   ├── CE.58360..HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58360..HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58360..HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58360.xml
-    │   ├── CE.58369..HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58369..HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58369..HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58369.xml
-    │   ├── CE.58442..HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58442..HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58442..HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── CE.58442.xml
-    │   ├── NC.C010.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.C010.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.C010.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.C010.xml
-    │   ├── NC.C018.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.C018.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.C018.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.C018.xml
-    │   ├── NC.CRH..HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.CRH..HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.CRH..HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.CRH.xml
-    │   ├── NC.CTA..HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.CTA..HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.CTA..HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NC.CTA.xml
-    │   ├── NP.1691..HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1691..HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1691..HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1691.xml
-    │   ├── NP.1844..HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1844..HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1844..HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1844.xml
-    │   ├── NP.1847.10.HNE__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1847.10.HNN__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1847.10.HNZ__20191015T053312Z__20191015T054042Z.mseed
-    │   ├── NP.1847.xml
-    │   └── read_failures.csv
-    └── workspace.h5
-
-2 directories, 53 files
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/bin/bash: tree: command not found
 </pre></div>
 </div>
 </div>
@@ -692,18 +635,17 @@ Consequently, we simply copy the data from <code class="docutils literal notrans
 Logging output sent to: assemble.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>nc73291880
-Running &#39;process_waveforms&#39;...
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;process_waveforms&#39;...
 Logging output sent to: process_waveforms.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -711,8 +653,8 @@ Project: scripting-tutorial **Current Project**
 Logging output sent to: compute_station_metrics.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -720,8 +662,8 @@ Project: scripting-tutorial **Current Project**
 Logging output sent to: compute_waveform_metrics.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -729,8 +671,8 @@ Project: scripting-tutorial **Current Project**
 Logging output sent to: export_metric_tables.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -738,21 +680,30 @@ Project: scripting-tutorial **Current Project**
 Logging output sent to: generate_report.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running &#39;generate_station_maps&#39;...
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>pdflatex output:
+
+/bin/sh: None: command not found
+
+Running &#39;generate_station_maps&#39;...
 Logging output sent to: generate_station_maps.log
 --------------------------------------------------------------------------------
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
-<img alt="../../_images/562a53b7c9f34f9e37469087aeca12be3c3eae9b2b8001a90afa849f8a6ed41c.png" src="../../_images/562a53b7c9f34f9e37469087aeca12be3c3eae9b2b8001a90afa849f8a6ed41c.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;&lt;span style=&quot;color:#ff2222;&quot;&gt;BHE&lt;/span&gt;&#39;, &#39;&lt;span style=&quot;color:#ff2222;&quot;&gt;BHN&lt;/span&gt;&#39;, &#39;&lt;span style=&quot;color:#ff2222;&quot;&gt;BHZ&lt;/span&gt;&#39;]
+[&#39;&lt;span style=&quot;color:#ff2222;&quot;&gt;HHE&lt;/span&gt;&#39;, &#39;&lt;span style=&quot;color:#ff2222;&quot;&gt;HHN&lt;/span&gt;&#39;, &#39;&lt;span style=&quot;color:#ff2222;&quot;&gt;HHZ&lt;/span&gt;&#39;]
+[&#39;&lt;span style=&quot;color:#00ac00;&quot;&gt;HNE&lt;/span&gt;&#39;, &#39;&lt;span style=&quot;color:#00ac00;&quot;&gt;HNN&lt;/span&gt;&#39;, &#39;&lt;span style=&quot;color:#ff2222;&quot;&gt;HNZ&lt;/span&gt;&#39;]
+</pre></div>
+</div>
+<img alt="../../_images/eac3b0229af875847058ffad7e472d786e961e07740d746af7c151bc8a435dff.png" src="../../_images/eac3b0229af875847058ffad7e472d786e961e07740d746af7c151bc8a435dff.png" />
 </div>
 </div>
 <p>Running the script will produce CSV files with the waveform metrics in the <code class="docutils literal notranslate"><span class="pre">data/scripting</span></code> directory and reports in the <code class="docutils literal notranslate"><span class="pre">data/scripting/nc73291880</span></code> directory.</p>
@@ -794,10 +745,10 @@ data/scripting/nc73291880/stations_map.html
                 </div>
                 <div class="title">Response Spectra Calculation and Comparison</div>
               </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="cli.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -833,7 +784,7 @@ data/scripting/nc73291880/stations_map.html
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            On this page
+            Contents
           </span>
         </div>
         <div class="toc-tree-container">
@@ -862,7 +813,6 @@ data/scripting/nc73291880/stations_map.html
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>

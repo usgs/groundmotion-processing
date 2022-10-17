@@ -106,7 +106,7 @@ Attributes
    Retrieve strong motion waveform records from CESMD website.
 
    :param output: Filename or directory where downloaded zip data will be written.
-   :type output: str
+   :type output: str or pathlib.Path
    :param unpack: If True, all zipped files will be unpacked (output will become a
                   directory name.)
    :type unpack: bool

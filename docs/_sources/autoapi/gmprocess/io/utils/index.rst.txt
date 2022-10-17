@@ -18,8 +18,7 @@ Functions
    gmprocess.io.utils.resample_uneven_trace
    gmprocess.io.utils.flatten_directory
    gmprocess.io.utils._walk_and_unzip
-   gmprocess.io.utils._split_all_path
-   gmprocess.io.utils._handle_duplicates
+   gmprocess.io.utils._walk
 
 
 
@@ -93,7 +92,7 @@ Attributes
    to be read in with teh directory_to_streams method.
 
    :param directory: Directory of ground motion files (streams).
-   :type directory: str
+   :type directory: str or pathlib.Path
 
    :returns: None.
 
@@ -101,9 +100,6 @@ Attributes
 .. py:function:: _walk_and_unzip(directory)
 
 
-.. py:function:: _split_all_path(path)
-
-
-.. py:function:: _handle_duplicates(target)
+.. py:function:: _walk(path)
 
 

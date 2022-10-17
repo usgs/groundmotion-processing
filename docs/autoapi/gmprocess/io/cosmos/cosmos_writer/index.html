@@ -2,13 +2,13 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.cwb" href="../../cwb/index.html" /><link rel="prev" title="gmprocess.io.cosmos.core" href="../core/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.io.cosmos.cosmos_writer - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.io.cosmos.cosmos_writer - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -906,10 +906,10 @@
                 </div>
                 <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.cwb</span></code></div>
               </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../core/index.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -945,7 +945,7 @@
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            On this page
+            Contents
           </span>
         </div>
         <div class="toc-tree-container">
@@ -956,73 +956,6 @@
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.COSMOS_FORMAT"><code class="docutils literal notranslate"><span class="pre">COSMOS_FORMAT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.UTC_TIME_FMT"><code class="docutils literal notranslate"><span class="pre">UTC_TIME_FMT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.AGENCY_RESERVED"><code class="docutils literal notranslate"><span class="pre">AGENCY_RESERVED</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.LOCAL_TIME_FMT"><code class="docutils literal notranslate"><span class="pre">LOCAL_TIME_FMT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Volume"><code class="docutils literal notranslate"><span class="pre">Volume</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Volume.RAW"><code class="docutils literal notranslate"><span class="pre">Volume.RAW</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Volume.CONVERTED"><code class="docutils literal notranslate"><span class="pre">Volume.CONVERTED</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Volume.PROCESSED"><code class="docutils literal notranslate"><span class="pre">Volume.PROCESSED</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.HEADER_LINES"><code class="docutils literal notranslate"><span class="pre">HEADER_LINES</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NUM_INT_VALUES"><code class="docutils literal notranslate"><span class="pre">NUM_INT_VALUES</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.INT_FMT"><code class="docutils literal notranslate"><span class="pre">INT_FMT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NUM_INT_ROWS"><code class="docutils literal notranslate"><span class="pre">NUM_INT_ROWS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NUM_INT_COLS"><code class="docutils literal notranslate"><span class="pre">NUM_INT_COLS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NUM_FLOAT_VALUES"><code class="docutils literal notranslate"><span class="pre">NUM_FLOAT_VALUES</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.FLOAT_FMT"><code class="docutils literal notranslate"><span class="pre">FLOAT_FMT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NUM_FLOAT_ROWS"><code class="docutils literal notranslate"><span class="pre">NUM_FLOAT_ROWS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NUM_FLOAT_COLS"><code class="docutils literal notranslate"><span class="pre">NUM_FLOAT_COLS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NUM_DATA_COLS"><code class="docutils literal notranslate"><span class="pre">NUM_DATA_COLS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.DATA_FMT"><code class="docutils literal notranslate"><span class="pre">DATA_FMT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TABLE1"><code class="docutils literal notranslate"><span class="pre">TABLE1</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TABLE2"><code class="docutils literal notranslate"><span class="pre">TABLE2</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TABLE7"><code class="docutils literal notranslate"><span class="pre">TABLE7</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.SEISMIC_TRIGGER"><code class="docutils literal notranslate"><span class="pre">SEISMIC_TRIGGER</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.MISSING_DATA_INT"><code class="docutils literal notranslate"><span class="pre">MISSING_DATA_INT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.MISSING_DATA_FLOAT"><code class="docutils literal notranslate"><span class="pre">MISSING_DATA_FLOAT</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.REV_BUILDING_TYPES"><code class="docutils literal notranslate"><span class="pre">REV_BUILDING_TYPES</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.REV_SENSOR_TYPES"><code class="docutils literal notranslate"><span class="pre">REV_SENSOR_TYPES</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.CAUSAL_BUTTERWORTH_FILTER"><code class="docutils literal notranslate"><span class="pre">CAUSAL_BUTTERWORTH_FILTER</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.NONCAUSAL_BUTTERWORTH_FILTER"><code class="docutils literal notranslate"><span class="pre">NONCAUSAL_BUTTERWORTH_FILTER</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.FREQ_DOMAIN_FILTER"><code class="docutils literal notranslate"><span class="pre">FREQ_DOMAIN_FILTER</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.cfmt_to_ffmt"><code class="docutils literal notranslate"><span class="pre">cfmt_to_ffmt()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TEXT_HEADER_LINES"><code class="docutils literal notranslate"><span class="pre">TEXT_HEADER_LINES</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Table4"><code class="docutils literal notranslate"><span class="pre">Table4</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Table4.get_cosmos_code"><code class="docutils literal notranslate"><span class="pre">Table4.get_cosmos_code()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Table4.get_agency_desc"><code class="docutils literal notranslate"><span class="pre">Table4.get_agency_desc()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Table4.get_agency_abbrev"><code class="docutils literal notranslate"><span class="pre">Table4.get_agency_abbrev()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Table4.get_matching_network"><code class="docutils literal notranslate"><span class="pre">Table4.get_matching_network()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.Table4.get_row"><code class="docutils literal notranslate"><span class="pre">Table4.get_row()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TextHeader"><code class="docutils literal notranslate"><span class="pre">TextHeader</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TextHeader.header_fmt"><code class="docutils literal notranslate"><span class="pre">TextHeader.header_fmt</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TextHeader.set_header_value"><code class="docutils literal notranslate"><span class="pre">TextHeader.set_header_value()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.TextHeader.write"><code class="docutils literal notranslate"><span class="pre">TextHeader.write()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.IntHeader"><code class="docutils literal notranslate"><span class="pre">IntHeader</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.IntHeader.write"><code class="docutils literal notranslate"><span class="pre">IntHeader.write()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.FloatHeader"><code class="docutils literal notranslate"><span class="pre">FloatHeader</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.FloatHeader.write"><code class="docutils literal notranslate"><span class="pre">FloatHeader.write()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.DataBlock"><code class="docutils literal notranslate"><span class="pre">DataBlock</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.DataBlock.write_comment"><code class="docutils literal notranslate"><span class="pre">DataBlock.write_comment()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.DataBlock.write"><code class="docutils literal notranslate"><span class="pre">DataBlock.write()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.split_data"><code class="docutils literal notranslate"><span class="pre">split_data()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.CosmosWriter"><code class="docutils literal notranslate"><span class="pre">CosmosWriter</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.CosmosWriter.write"><code class="docutils literal notranslate"><span class="pre">CosmosWriter.write()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.CosmosWriter.__del__"><code class="docutils literal notranslate"><span class="pre">CosmosWriter.__del__()</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.COSMOS_FORMAT">COSMOS_FORMAT</a></li>
 <li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.UTC_TIME_FMT">UTC_TIME_FMT</a></li>
 <li><a class="reference internal" href="#gmprocess.io.cosmos.cosmos_writer.AGENCY_RESERVED">AGENCY_RESERVED</a></li>
@@ -1110,7 +1043,6 @@
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
-    <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/scripts/furo.js"></script>
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.metrics.gather - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.metrics.gather - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -478,25 +478,25 @@
         </div>
         <article role="main">
           <h1>Source code for gmprocess.metrics.gather</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <span class="n">EXCLUDED_MODULES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;__init__.py&quot;</span><span class="p">,</span> <span class="s2">&quot;imt.py&quot;</span><span class="p">,</span> <span class="s2">&quot;imc.py&quot;</span><span class="p">]</span>
-<span class="n">BASE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">BASE</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
 
 <div class="viewcode-block" id="gather_pgms"><a class="viewcode-back" href="../../../autoapi/gmprocess/metrics/gather/index.html#gmprocess.metrics.gather.gather_pgms">[docs]</a><span class="k">def</span> <span class="nf">gather_pgms</span><span class="p">():</span>
-    <span class="n">imt_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE</span><span class="p">,</span> <span class="s2">&quot;imt&quot;</span><span class="p">)</span>
-    <span class="n">imc_directory</span> <span class="o">=</span> <span class="n">imt_directory</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;imt&quot;</span><span class="p">,</span> <span class="s2">&quot;imc&quot;</span><span class="p">)</span>
+    <span class="n">imt_directory</span> <span class="o">=</span> <span class="n">BASE</span> <span class="o">/</span> <span class="s2">&quot;imt&quot;</span>
+    <span class="n">imc_directory</span> <span class="o">=</span> <span class="n">BASE</span> <span class="o">/</span> <span class="s2">&quot;imc&quot;</span>
     <span class="c1"># Create list</span>
     <span class="n">imt_classes</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">imc_classes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">imt_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">imt_directory</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">imt_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">imt_file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODULES</span><span class="p">:</span>
-            <span class="n">imt_file</span> <span class="o">=</span> <span class="n">imt_file</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">imt_file</span> <span class="ow">in</span> <span class="n">imt_directory</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">imt_file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.py&quot;</span> <span class="ow">and</span> <span class="n">imt_file</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODULES</span><span class="p">:</span>
+            <span class="n">imt_file</span> <span class="o">=</span> <span class="n">imt_file</span><span class="o">.</span><span class="n">stem</span>
             <span class="n">imt_classes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imt_file</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">imc_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">imc_directory</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">imc_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.py&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">imc_file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODULES</span><span class="p">:</span>
-            <span class="n">imc_file</span> <span class="o">=</span> <span class="n">imc_file</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">imc_file</span> <span class="ow">in</span> <span class="n">imc_directory</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">imc_file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.py&quot;</span> <span class="ow">and</span> <span class="n">imc_file</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">EXCLUDED_MODULES</span><span class="p">:</span>
+            <span class="n">imc_file</span> <span class="o">=</span> <span class="n">imc_file</span><span class="o">.</span><span class="n">stem</span>
             <span class="n">imc_classes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">imc_file</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">imt_classes</span><span class="p">,</span> <span class="n">imc_classes</span></div>
 </pre></div>
@@ -538,7 +538,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>

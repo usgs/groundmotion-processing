@@ -2,13 +2,13 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.io.read_directory" href="../read_directory/index.html" /><link rel="prev" title="gmprocess.io.nga" href="../nga/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.io.read - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.io.read - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -531,7 +531,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – Path to file</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Path to file</p></li>
 <li><p><strong>read_format</strong> (<em>str</em>) – Format of file</p></li>
 </ul>
 </dd>
@@ -551,7 +551,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – Path to file</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Path to file</p></li>
 <li><p><strong>config</strong> (<em>dict</em>) – Dictionary containing configuration.</p></li>
 </ul>
 </dd>
@@ -601,10 +601,10 @@
                 </div>
                 <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.read_directory</span></code></div>
               </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../nga/index.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -640,7 +640,7 @@
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            On this page
+            Contents
           </span>
         </div>
         <div class="toc-tree-container">
@@ -650,11 +650,6 @@
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
-<li><a class="reference internal" href="#gmprocess.io.read.EXCLUDED_MODS"><code class="docutils literal notranslate"><span class="pre">EXCLUDED_MODS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.read.EXCLUDED_EXTS"><code class="docutils literal notranslate"><span class="pre">EXCLUDED_EXTS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.read.read_data"><code class="docutils literal notranslate"><span class="pre">read_data()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.read._get_format"><code class="docutils literal notranslate"><span class="pre">_get_format()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.read._validate_format"><code class="docutils literal notranslate"><span class="pre">_validate_format()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.read.EXCLUDED_MODS">EXCLUDED_MODS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.read.EXCLUDED_EXTS">EXCLUDED_EXTS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.read.read_data">read_data</a></li>
@@ -680,7 +675,6 @@
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>

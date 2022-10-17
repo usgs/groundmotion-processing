@@ -2,13 +2,13 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.io.utils" href="../utils/index.html" /><link rel="prev" title="gmprocess.io.seedname" href="../seedname/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.io.stream - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.io.stream - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -536,14 +536,11 @@ for 0.3 second spectral acceleration, for example.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>directory</strong> (<em>str</em>) – Directory of ground motion files (streams).</p></li>
-<li><p><strong>imcs</strong> (<em>list</em>) – Strings designating desired components to create
-in table.</p></li>
-<li><p><strong>imts</strong> (<em>list</em>) – Strings designating desired PGMs to create
-in table.</p></li>
-<li><p><strong>origin</strong> (<em>obspy.core.event.Origin</em>) – Defines the focal time and
-geographical location of an earthquake hypocenter.
-Default is None.</p></li>
+<li><p><strong>directory</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Directory of ground motion files (streams).</p></li>
+<li><p><strong>imcs</strong> (<em>list</em>) – Strings designating desired components to create in table.</p></li>
+<li><p><strong>imts</strong> (<em>list</em>) – Strings designating desired PGMs to create in table.</p></li>
+<li><p><strong>origin</strong> (<em>obspy.core.event.Origin</em>) – Defines the focal time and geographical location of an earthquake
+hypocenter. Default is None.</p></li>
 <li><p><strong>process</strong> (<em>bool</em>) – Process the stream using the config file.</p></li>
 </ul>
 </dd>
@@ -723,10 +720,10 @@ lat/lon provided)</p></li>
                 </div>
                 <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.utils</span></code></div>
               </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../seedname/index.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -762,7 +759,7 @@ lat/lon provided)</p></li>
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            On this page
+            Contents
           </span>
         </div>
         <div class="toc-tree-container">
@@ -772,11 +769,6 @@ lat/lon provided)</p></li>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
-<li><a class="reference internal" href="#gmprocess.io.stream.DEFAULT_IMTS"><code class="docutils literal notranslate"><span class="pre">DEFAULT_IMTS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.stream.DEFAULT_IMCS"><code class="docutils literal notranslate"><span class="pre">DEFAULT_IMCS</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.stream.directory_to_dataframe"><code class="docutils literal notranslate"><span class="pre">directory_to_dataframe()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.stream.streams_to_dataframe"><code class="docutils literal notranslate"><span class="pre">streams_to_dataframe()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.stream._match_traces"><code class="docutils literal notranslate"><span class="pre">_match_traces()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.stream.DEFAULT_IMTS">DEFAULT_IMTS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.stream.DEFAULT_IMCS">DEFAULT_IMCS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.stream.directory_to_dataframe">directory_to_dataframe</a></li>
@@ -802,7 +794,6 @@ lat/lon provided)</p></li>
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
-    <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>

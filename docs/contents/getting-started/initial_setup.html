@@ -2,13 +2,13 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Tutorials" href="../tutorials/index.html" /><link rel="prev" title="Installation" href="install.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Initial Setup - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>Initial Setup - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
@@ -140,7 +140,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -517,16 +517,43 @@ Created Project: default **Current Project**
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand is used for managing system-level projects.
 The arguments are</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: gmrecords projects [-h] [-l] [-s PROJECT] [-c] [-d PROJECT]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: gmrecords projects [-h] [-l] [-s &lt;name&gt;] [-c] [-d &lt;name&gt;]
+                          [-r &lt;old&gt; &lt;new&gt;] [--set-conf &lt;name&gt; &lt;path&gt;]
+                          [--set-data &lt;name&gt; &lt;path&gt;]
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -l, --list            List all configured gmrecords projects.
-  -s PROJECT, --switch PROJECT
-                        Switch from current project to PROJECT.
+  -s &lt;name&gt;, --switch &lt;name&gt;
+                        Switch from current project to &lt;name&gt;.
   -c, --create          Create a project and switch to it.
-  -d PROJECT, --delete PROJECT
-                        Delete existing project PROJECT.
+  -d &lt;name&gt;, --delete &lt;name&gt;
+                        Delete existing project &lt;name&gt;.
+  -r &lt;old&gt; &lt;new&gt;, --rename &lt;old&gt; &lt;new&gt;
+                        Rename project &lt;old&gt; to &lt;new&gt;.
+  --set-conf &lt;name&gt; &lt;path&gt;
+                        Set the conf path to &lt;path&gt; for project &lt;name&gt;.
+  --set-data &lt;name&gt; &lt;path&gt;
+                        Set the data path to &lt;path&gt; for project &lt;name&gt;.
+
+    In order to simplify the command line interface, the gmrecords command makes use of
+    &quot;projects&quot;. You can have many projects configured on your system, and a project can
+    have data from many events. A project is essentially a way to encapsulate the
+    configuration and data directories so that they do not need to be specified as
+    command line arguments.
+
+    `gmrecords` first checks the current directory for the presence of
+    `./.gmprocess/projects.conf` (this is called a &quot;local&quot; or &quot;directory&quot; project); if
+    that is not found then it looks for the presence of `~/.gmprocess/projects.conf`
+    (this is called a &quot;system&quot; level project).
+
+    Within the `projects.conf` file, the key `project` indicates which the currently
+    selected project. Multiple projects can be included in a `projects.conf` file.
+
+    The project name is then stored as a key at the top level, which itself has keys
+    `data_path` and `conf_path`. The `data_path` points to the directory where data
+    is stored, and organized at the top level by directories named by event id. The
+    `conf_path` points to the directory that holds configuration options in YML files.
 </pre></div>
 </div>
 <p>The <a class="reference internal" href="../tutorials/cli.html"><span class="doc std std-doc">Command Line Interface</span></a> tutorial provides an example of how to create system-level projects.</p>
@@ -544,10 +571,10 @@ options:
                 </div>
                 <div class="title">Tutorials</div>
               </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="install.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -588,7 +615,6 @@ options:
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
