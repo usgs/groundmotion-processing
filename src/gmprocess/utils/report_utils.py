@@ -48,6 +48,7 @@ def draw_stations_map(pstreams, event, event_dir):
         location=[event.latitude, event.longitude], zoom_start=7, control_scale=True
     )
 
+    # Create feature groups and subgroups so they share cluster behavior
     stn_cluster = folium.plugins.MarkerCluster(name='All', control='False')
     station_map.add_child(stn_cluster)
 
@@ -84,6 +85,7 @@ def draw_stations_map(pstreams, event, event_dir):
         }
     )
 
+    # Format relevant map data so it can be used Leaflet JS
     failed_map_info = []
     for i,row in enumerate(failed_station_df.values.tolist()):
         new_row = []
@@ -110,6 +112,7 @@ def draw_stations_map(pstreams, event, event_dir):
         
         failed_map_info.append(new_row)
 
+    # Create Javascript function to pass into Folium for marker cluster creation
     failed_station_callback = ("""function (row) {
                                 var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill="#ff2222" class="bi bi-triangle-fill" transform="rotate(180)" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
                                 var marker = L.marker(new L.LatLng(row[0], row[1]));
@@ -124,11 +127,10 @@ def draw_stations_map(pstreams, event, event_dir):
                                 marker.bindTooltip(tooltip).openTooltip();
                                 return marker};""")
 
-# $(`<b>Station:</b> ${row[2]}'.'${row[3]}`)
-
     failed_station_cluster = folium.plugins.FastMarkerCluster(failed_map_info, callback=failed_station_callback)
     failed_station_cluster.add_to(failed)
     
+    # Format relevant map data so it can be used Leaflet JS 
     passed_map_info = []
     for row in passed_station_df.values.tolist():
         new_row = []
@@ -140,6 +142,7 @@ def draw_stations_map(pstreams, event, event_dir):
                 new_row.append(ele)
         passed_map_info.append(new_row)
 
+    # Create Javascript function to pass into Folium for marker cluster creation
     passed_station_callback = ("""function (row) {
                                 var icon = L.divIcon({html: `<div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" stroke-linecap="square" fill=\"""" + PASSED_COLOR + """\" class="bi bi-triangle-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z"/></svg></div>`, className: 'dummy'});
                                 var marker = L.marker(new L.LatLng(row[0], row[1]));
