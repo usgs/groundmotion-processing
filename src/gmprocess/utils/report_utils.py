@@ -100,11 +100,10 @@ def draw_stations_map(pstreams, event, event_dir):
                 comp_colors = []
                 for k,comp in enumerate(ele):
                     if failed_tr[i][k]: 
-                        comp_colors.append("<span style=\"color:" + FAILED_COLOR + ";\">" + str(comp) + "</span>")
+                        comp_colors.append("<span style=\"color:" + FAILED_COLOR + ";\">" + "&ensp" + str(comp) + "</span>")
                     else:
-                        comp_colors.append("<span style=\"color:" + PASSED_COLOR + ";\">" + str(comp) + "</span>")
+                        comp_colors.append("<span style=\"color:" + PASSED_COLOR + ";\">" +"&ensp" + str(comp) + "</span>")
 
-                print(comp_colors)
                 new_row.append(comp_colors)
                 
             elif j == 4:
@@ -148,9 +147,7 @@ def draw_stations_map(pstreams, event, event_dir):
                                 var marker = L.marker(new L.LatLng(row[0], row[1]));
                                 marker.setIcon(icon);
                                 var popup = L.popup({maxWidth: '180', minWidth: '180'});
-                                const display_text = {text: 'boop beep'};
                                 var station_info = $(`<div><b>NETWORK:</b> ${row[2]}<br> <b>STATION:</b> ${row[3]}<br> <b>CHAN:</b> ${row[4]}, ${row[5]}, ${row[6]}<br> <b>LAT:</b> ${row[0].toFixed(2)}&deg; <b>LON:</b> ${row[1].toFixed(2)}&deg</div>`)[0];
-                                var mytext = $(`<div id='mytext' class='display_text' style='width: 100.0%; height: 100.0%;'> ${display_text.text}</div>`)[0];
                                 popup.setContent(station_info);
                                 marker.bindPopup(popup);
                                 var tooltip = L.tooltip();
