@@ -250,13 +250,6 @@ class StationTrace(Trace):
             if delta < MAX_DIP_OFFSET and not is_z:
                 header["channel"] = header["channel"][0:-1] + "Z"
 
-        # Apply conversion factor if one was specified for this format
-        if (
-            "format_specific" in header
-            and "conversion_factor" in header["format_specific"]
-        ):
-            data *= header["format_specific"]["conversion_factor"]
-
         super(StationTrace, self).__init__(data=data, header=header)
         self.provenance = []
         if prov_response is not None:
@@ -1054,9 +1047,6 @@ def _stats_from_inventory(data, inventory, seed_id, start_time):
     else:
         standard["vertical_orientation"] = np.nan
 
-    # if "units_type" not in standard.keys() or standard["units_type"] == "":
-    #     standard["units_type"] = get_units_type(channel_code)
-    # print(f"Stationtrace.py line 761: {standard['units_type']}")
     if len(channel.comments):
         comments = " ".join(
             channel.comments[i].value for i in range(len(channel.comments))
@@ -1146,7 +1136,6 @@ def _stats_from_header(header, config):
             utype = get_units_type(header["channel"])
             standard["units_type"] = utype
             standard["units"] = UNITS[utype]
-        print(f"Stationtrace.py line 844: {standard['units_type']}")
         standard["comments"] = ""
         standard["station_name"] = ""
         standard["station_name"] = header["station"]

@@ -2,7 +2,6 @@
 
 # stdlib imports
 import os
-import sys
 import logging
 import glob
 import re
@@ -127,8 +126,6 @@ def is_obspy(filename, config=None):
     except BaseException:
         return False
 
-    return False
-
 
 def read_obspy(filename, config=None, **kwargs):
     """Read Obspy data file (SAC and MiniSEED currently supported).
@@ -214,7 +211,8 @@ def read_obspy(filename, config=None, **kwargs):
                 continue
             else:
                 logging.info(
-                    f"Ignoring {instrument} because it matches exclude pattern {pattern}."
+                    f"Ignoring {instrument} because it matches exclude "
+                    f"pattern {pattern}."
                 )
                 break
 
@@ -228,6 +226,11 @@ def read_obspy(filename, config=None, **kwargs):
                     trace.stats.standard.structure_type = sdict["description"]
         head, tail = os.path.split(filename)
         trace.stats["standard"]["source_file"] = tail or os.path.basename(head)
+
+        # Do SAC-specific stuff
+        if "_format" in trace.stats and trace.stats._format.lower() == "sac":
+            # Apply conversion factor if one was specified for this format
+            trace.data *= float(config["read"]["sac_conversion_factor"])
 
         traces.append(trace)
     if no_match:

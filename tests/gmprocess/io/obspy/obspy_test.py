@@ -5,24 +5,52 @@ from gmprocess.io.obspy.core import read_obspy
 from gmprocess.utils.test_utils import read_data_dir
 from gmprocess.core.streamcollection import StreamCollection
 from gmprocess.waveform_processing.processing import process_streams
+from gmprocess.utils.config import get_config
 import numpy as np
+from obspy import read
+
+
+def test_sac_conversion():
+    # The "sac_conversion_factor" is specified in the "read" section of the config.
+    # It is a multiplicative factor to convert from whatever units the data is in to
+    # cm/s/s. This test is for how that conversion factor is applied.
+
+    # We will use a CSN data file
+    datafiles, _ = read_data_dir("csn", "ci38457511", "*.sac")
+    datafiles.sort()
+    datafile = datafiles[0]
+
+    # First, read in with obspy, which reads in the raw data:
+    tr_obspy = read(datafile)[0]
+    pga_obspy = np.max(np.abs(tr_obspy.data))
+
+    # Read in with gmprocess, which applies the conversion factor, specifying the
+    # conversion factor
+    config = get_config()
+    config["read"]["sac_conversion_factor"] = 980.665
+    tr_gmprocess = read_obspy(datafile, config=config)[0][0]
+    pga_gmprocess = np.max(np.abs(tr_gmprocess))
+    np.testing.assert_allclose(pga_gmprocess, pga_obspy * 980.665)
 
 
 def test_sac_csn():
     # This reads in example SAC data that does not have a separate metadata
     # file to meet the needs of the Community Seismic Network:
     # http://csn.caltech.edu/
-    datafiles, origin = read_data_dir("csn", "ci38457511", "*.sac")
+    config = get_config()
+    config["read"]["sac_conversion_factor"] = 980.665
+
+    datafiles, _ = read_data_dir("csn", "ci38457511", "*.sac")
     datafiles.sort()
     traces = []
     for d in datafiles:
-        traces.append(read_obspy(d)[0][0])
+        traces.append(read_obspy(d, config=config)[0][0])
 
     tr_amax = np.zeros(len(traces))
     for i, tr in enumerate(traces):
         tr_amax[i] = np.max(np.abs(tr.data))
 
-    target_amax = np.array([4.3384003e-09, 3.42233e-09, 1.0121747e-07])
+    target_amax = np.array([42.54516983, 33.5615921, 992.60430908])
     np.testing.assert_allclose(target_amax, tr_amax)
 
 
