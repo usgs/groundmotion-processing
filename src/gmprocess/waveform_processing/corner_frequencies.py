@@ -107,7 +107,7 @@ def get_corner_frequencies(
 
 
 @ProcessingStep
-def lowpass_max_frequency(st, fn_fac=0.75, config=None):
+def lowpass_max_frequency(st, fn_fac=0.75, lp_max=40.0, config=None):
     """
     Cap lowpass corner as a fraction of the Nyquist.
 
@@ -116,6 +116,8 @@ def lowpass_max_frequency(st, fn_fac=0.75, config=None):
             Stream of data.
         fn_fac (float):
             Factor to be multiplied by the Nyquist to cap the lowpass filter.
+        lp_max (float):
+            Maximum lowpass corner frequency (Hz).
         config (dict):
             Configuration dictionary (or None). See get_config().
 
@@ -124,6 +126,12 @@ def lowpass_max_frequency(st, fn_fac=0.75, config=None):
     """
     if not st.passed:
         return st
+
+    def _cap_lowpass(fc):
+        freq_dict = tr.getParameter("corner_frequencies")
+        if freq_dict["lowpass"] > fc:
+            freq_dict["lowpass"] = fc
+            tr.setParameter("corner_frequencies", freq_dict)
 
     for tr in st:
         if tr.passed:
@@ -139,11 +147,9 @@ def lowpass_max_frequency(st, fn_fac=0.75, config=None):
                         continue
 
             fn = 0.5 * tr.stats.sampling_rate
-            max_flp = fn * fn_fac
-            freq_dict = tr.getParameter("corner_frequencies")
-            if freq_dict["lowpass"] > max_flp:
-                freq_dict["lowpass"] = max_flp
-                tr.setParameter("corner_frequencies", freq_dict)
+            lp_max_fn = fn * fn_fac
+            _cap_lowpass(lp_max_fn)
+            _cap_lowpass(lp_max)
 
     return st
 

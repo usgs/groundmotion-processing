@@ -8,6 +8,7 @@
   - Provide appropriate error message when attempting to list, switch, or delete projects when none exist.
   - Allow use of projects subcommand from Python scripts.
 - Fixes SAC format units conversion issue. 
+- Add lp_max option for lowpass_max_frequency method.
 
 ## 1.2.1 / 2022-10-04
 
