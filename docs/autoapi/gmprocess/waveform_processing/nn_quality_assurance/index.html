@@ -2,16 +2,15 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.phase" href="../phase/index.html" /><link rel="prev" title="gmprocess.waveform_processing.integrate" href="../integrate/index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>gmprocess.waveform_processing.nn_quality_assurance - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
@@ -140,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -464,7 +463,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -567,7 +567,7 @@ Recommended parameters are:
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>st</strong> (<em>list of traces</em>) – The ground motion record to analyze. Should contain at least 2
+<li><p><strong>st</strong> (<em>list</em><em> of </em><em>traces</em>) – The ground motion record to analyze. Should contain at least 2
 orthogonal  horizontal traces.</p></li>
 <li><p><strong>acceptance_threshold</strong> (<em>float</em>) – Threshold from which GM records are considered acceptable.</p></li>
 <li><p><strong>model_name</strong> (<em>string</em>) – name of the used model (‘Cant’ or ‘CantWell’)</p></li>
@@ -710,7 +710,7 @@ quality metrics vector. Depending on the selected model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>list of floats</em>) – 20 quality metrics computed as described in the</p></li>
+<li><p><strong>data</strong> (<em>list</em><em> of </em><em>floats</em>) – 20 quality metrics computed as described in the</p></li>
 <li><p><strong>paper</strong> (<em>'CantWell' as described in the</em>) – </p></li>
 <li><p><strong>model_name</strong> (<em>string</em>) – name of the selected model. Available ‘Cant’ and</p></li>
 <li><p><strong>paper</strong> – </p></li>
@@ -732,10 +732,10 @@ quality metrics vector. Depending on the selected model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>list of float</em>) – data to standardize (size represents the dimensionality of the data
+<li><p><strong>data</strong> (<em>list</em><em> of </em><em>float</em>) – data to standardize (size represents the dimensionality of the data
 and not the number of point to standardize)</p></li>
-<li><p><strong>mu</strong> (<em>list of float</em>) – means</p></li>
-<li><p><strong>sigma</strong> (<em>list of float</em>) – standard deviation</p></li>
+<li><p><strong>mu</strong> (<em>list</em><em> of </em><em>float</em>) – means</p></li>
+<li><p><strong>sigma</strong> (<em>list</em><em> of </em><em>float</em>) – standard deviation</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -773,7 +773,7 @@ matrix is given as an input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>qm</strong> (<em>list of float</em>) – quality metrics estimated according to the paper</p></li>
+<li><p><strong>qm</strong> (<em>list</em><em> of </em><em>float</em>) – quality metrics estimated according to the paper</p></li>
 <li><p><strong>model_name</strong> (<em>string</em>) – name of the used model for processing. Available: ‘Cant’ and
 ‘CantWell’.</p></li>
 </ul>
@@ -805,7 +805,7 @@ matrix is given as an input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ft_freq</strong> (<em>list of float</em>) – list of ordred frequencies</p></li>
+<li><p><strong>ft_freq</strong> (<em>list</em><em> of </em><em>float</em>) – list of ordred frequencies</p></li>
 <li><p><strong>lower</strong> (<em>float</em>) – lower boud of the frequency range</p></li>
 <li><p><strong>upper</strong> (<em>float</em>) – upper bound of the frequency range</p></li>
 </ul>
@@ -826,7 +826,7 @@ matrix is given as an input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>husid</strong> (<em>list of float</em>) – husid vector</p></li>
+<li><p><strong>husid</strong> (<em>list</em><em> of </em><em>float</em>) – husid vector</p></li>
 <li><p><strong>threshold</strong> (<em>float</em>) – threshold not to be exceeded</p></li>
 </ul>
 </dd>
@@ -846,8 +846,8 @@ matrix is given as an input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ft_freq</strong> (<em>list of float</em>) – vector of frequencies used in the Fourier spectrum</p></li>
-<li><p><strong>snr</strong> (<em>list of float</em>) – vector of the snr at the frequencies in ft_freq</p></li>
+<li><p><strong>ft_freq</strong> (<em>list</em><em> of </em><em>float</em>) – vector of frequencies used in the Fourier spectrum</p></li>
+<li><p><strong>snr</strong> (<em>list</em><em> of </em><em>float</em>) – vector of the snr at the frequencies in ft_freq</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -896,7 +896,7 @@ in the paper.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tr</strong> (<em>list of list of float</em>) – each list contains an horizontal trace</p></li>
+<li><p><strong>tr</strong> (<em>list</em><em> of </em><em>list</em><em> of </em><em>float</em>) – each list contains an horizontal trace</p></li>
 <li><p><strong>p_pick</strong> (<em>float</em>) – estimated P-wave arrival time (in seconds) from the start of the
 record</p></li>
 <li><p><strong>delta_t</strong> (<em>float</em>) – time step used in the record in seconds (decimal)</p></li>
@@ -916,7 +916,7 @@ launching the computation of the qualtiy metrics as in Bellagamba et al.
 (2019)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>st</strong> (<em>list of trace</em>) – a list of trace as defined in gmprocess (USGS)</p>
+<dd class="field-odd"><p><strong>st</strong> (<em>list</em><em> of </em><em>trace</em>) – a list of trace as defined in gmprocess (USGS)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of float containing the 20 quality metrics</p>
@@ -940,10 +940,10 @@ launching the computation of the qualtiy metrics as in Bellagamba et al.
                 </div>
                 <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.waveform_processing.phase</span></code></div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../integrate/index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -979,7 +979,7 @@ launching the computation of the qualtiy metrics as in Bellagamba et al.
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -989,6 +989,27 @@ launching the computation of the qualtiy metrics as in Bellagamba et al.
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA"><code class="docutils literal notranslate"><span class="pre">NNet_QA()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.isNumber"><code class="docutils literal notranslate"><span class="pre">isNumber()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.loadCSV"><code class="docutils literal notranslate"><span class="pre">loadCSV()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.sigmoid"><code class="docutils literal notranslate"><span class="pre">sigmoid()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.tanh"><code class="docutils literal notranslate"><span class="pre">tanh()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet"><code class="docutils literal notranslate"><span class="pre">neuralNet</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.loadNN"><code class="docutils literal notranslate"><span class="pre">neuralNet.loadNN()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.neuralNet.useNN"><code class="docutils literal notranslate"><span class="pre">neuralNet.useNN()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.deskewData"><code class="docutils literal notranslate"><span class="pre">deskewData()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.standardizeData"><code class="docutils literal notranslate"><span class="pre">standardizeData()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.decorrelateData"><code class="docutils literal notranslate"><span class="pre">decorrelateData()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.preprocessQualityMetrics"><code class="docutils literal notranslate"><span class="pre">preprocessQualityMetrics()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.get_husid"><code class="docutils literal notranslate"><span class="pre">get_husid()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getFreqIndex"><code class="docutils literal notranslate"><span class="pre">getFreqIndex()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getHusidIndex"><code class="docutils literal notranslate"><span class="pre">getHusidIndex()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateSNR_min"><code class="docutils literal notranslate"><span class="pre">calculateSNR_min()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.calculateHusid"><code class="docutils literal notranslate"><span class="pre">calculateHusid()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.getClassificationMetrics"><code class="docutils literal notranslate"><span class="pre">getClassificationMetrics()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.computeQualityMetrics"><code class="docutils literal notranslate"><span class="pre">computeQualityMetrics()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.NNet_QA">NNet_QA</a></li>
 <li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.isNumber">isNumber</a></li>
 <li><a class="reference internal" href="#gmprocess.waveform_processing.nn_quality_assurance.loadCSV">loadCSV</a></li>
@@ -1030,14 +1051,10 @@ launching the computation of the qualtiy metrics as in Bellagamba et al.
     <script src="../../../../_static/underscore.js"></script>
     <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/scripts/furo.js"></script>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/tabs.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

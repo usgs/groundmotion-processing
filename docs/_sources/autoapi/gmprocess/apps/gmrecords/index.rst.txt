@@ -111,28 +111,24 @@ Attributes
              files so that we can split up the current content to make it
              easier to deal with.
 
+   .. py:property:: project_name
+
+
+   .. py:property:: current_project
+
+
+   .. py:property:: conf_path
+
+
+   .. py:property:: data_path
+
+
    .. py:method:: main(**kwargs)
 
 
    .. py:method:: load_subcommands()
 
       Load information for subcommands.
-
-
-   .. py:method:: project_name()
-      :property:
-
-
-   .. py:method:: current_project()
-      :property:
-
-
-   .. py:method:: conf_path()
-      :property:
-
-
-   .. py:method:: data_path()
-      :property:
 
 
    .. py:method:: _initialize()

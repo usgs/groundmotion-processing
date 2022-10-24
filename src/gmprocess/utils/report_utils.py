@@ -80,8 +80,6 @@ def draw_stations_map(pstreams, event, event_dir):
         }
     )
 
-    print(failed_locs)
-
     passed_coords = [list(tup) for tup in zip(lats[~failed_st], lons[~failed_st])]
     passed_networks = networks[~failed_st]
     passed_stations = stnames[~failed_st]
@@ -96,8 +94,6 @@ def draw_stations_map(pstreams, event, event_dir):
             "chans": passed_chans,
         }
     )
-
-    print(passed_locs)
 
     # Format relevant map data so it can be used Leaflet JS
     failed_map_info = []

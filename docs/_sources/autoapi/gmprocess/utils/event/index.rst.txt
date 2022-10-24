@@ -32,6 +32,38 @@ Functions
 
    Class to represent a flattened Event with only 1 origin and 1 magnitude.
 
+   .. py:property:: id
+
+      Return the origin resource_id.
+
+   .. py:property:: time
+
+      Return the origin time.
+
+   .. py:property:: latitude
+
+      Return the origin latitude.
+
+   .. py:property:: longitude
+
+      Return the origin longitude.
+
+   .. py:property:: depth
+
+      Return the origin depth.
+
+   .. py:property:: depth_km
+
+      Return the origin depth.
+
+   .. py:property:: magnitude
+
+      Return the magnitude value.
+
+   .. py:property:: magnitude_type
+
+      Return the magnitude type.
+
    .. py:method:: fromEvent(event)
       :classmethod:
 
@@ -65,54 +97,6 @@ Functions
 
 
    .. py:method:: _get_magnitude()
-
-
-   .. py:method:: id()
-      :property:
-
-      Return the origin resource_id.
-
-
-   .. py:method:: time()
-      :property:
-
-      Return the origin time.
-
-
-   .. py:method:: latitude()
-      :property:
-
-      Return the origin latitude.
-
-
-   .. py:method:: longitude()
-      :property:
-
-      Return the origin longitude.
-
-
-   .. py:method:: depth()
-      :property:
-
-      Return the origin depth.
-
-
-   .. py:method:: depth_km()
-      :property:
-
-      Return the origin depth.
-
-
-   .. py:method:: magnitude()
-      :property:
-
-      Return the magnitude value.
-
-
-   .. py:method:: magnitude_type()
-      :property:
-
-      Return the magnitude type.
 
 
 

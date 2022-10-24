@@ -2,16 +2,15 @@
 <html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.asdf.utils" href="../utils/index.html" /><link rel="prev" title="gmprocess.io.asdf.core" href="../core/index.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>gmprocess.io.asdf.stream_workspace - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/css/custom.css" />
@@ -140,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -464,7 +463,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -1171,10 +1171,10 @@ plain .sort() will put SA(10.0) before SA(2.0), for example.</p>
                 </div>
                 <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.io.asdf.utils</span></code></div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="../core/index.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -1210,7 +1210,7 @@ plain .sort() will put SA(10.0) before SA(2.0), for example.</p>
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -1221,6 +1221,54 @@ plain .sort() will put SA(10.0) before SA(2.0), for example.</p>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.TIMEPAT"><code class="docutils literal notranslate"><span class="pre">TIMEPAT</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.EVENT_TABLE_COLUMNS"><code class="docutils literal notranslate"><span class="pre">EVENT_TABLE_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FLATFILE_COLUMNS"><code class="docutils literal notranslate"><span class="pre">FLATFILE_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FLATFILE_IMT_COLUMNS"><code class="docutils literal notranslate"><span class="pre">FLATFILE_IMT_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FIT_SPECTRA_COLUMNS"><code class="docutils literal notranslate"><span class="pre">FIT_SPECTRA_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.SNR_COLUMNS"><code class="docutils literal notranslate"><span class="pre">SNR_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.SNR_FREQ_COLUMNS"><code class="docutils literal notranslate"><span class="pre">SNR_FREQ_COLUMNS</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.M_PER_KM"><code class="docutils literal notranslate"><span class="pre">M_PER_KM</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FORMAT_VERSION"><code class="docutils literal notranslate"><span class="pre">FORMAT_VERSION</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_netsta"><code class="docutils literal notranslate"><span class="pre">format_netsta()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_nslc"><code class="docutils literal notranslate"><span class="pre">format_nslc()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_nslct"><code class="docutils literal notranslate"><span class="pre">format_nslct()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.format_nslit"><code class="docutils literal notranslate"><span class="pre">format_nslit()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.create"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.create()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.open"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.open()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.close"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.close()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.__repr__"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.__repr__()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addEvent"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addEvent()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addConfig"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addConfig()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.setConfig"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.setConfig()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addGmprocessVersion"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addGmprocessVersion()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getGmprocessVersion"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getGmprocessVersion()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.addStreams"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.addStreams()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getEventIds"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getEventIds()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getLabels"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getLabels()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getStreams"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getStreams()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getStations"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getStations()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.insert_aux"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.insert_aux()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.calcMetrics"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.calcMetrics()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getTables"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getTables()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getFitSpectraTable"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getFitSpectraTable()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getSNRTable"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getSNRTable()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.__flatten_snr_dict"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.__flatten_snr_dict()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getStreamMetrics"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getStreamMetrics()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.summarizeLabels"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.summarizeLabels()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getInventory"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getInventory()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.hasEvent"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.hasEvent()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getEvent"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getEvent()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.StreamWorkspace.getProvenance"><code class="docutils literal notranslate"><span class="pre">StreamWorkspace.getProvenance()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._stringify_dict"><code class="docutils literal notranslate"><span class="pre">_stringify_dict()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._get_id"><code class="docutils literal notranslate"><span class="pre">_get_id()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._get_agents"><code class="docutils literal notranslate"><span class="pre">_get_agents()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._natural_keys"><code class="docutils literal notranslate"><span class="pre">_natural_keys()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace._atof"><code class="docutils literal notranslate"><span class="pre">_atof()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.camel_case_split"><code class="docutils literal notranslate"><span class="pre">camel_case_split()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.TIMEPAT">TIMEPAT</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.EVENT_TABLE_COLUMNS">EVENT_TABLE_COLUMNS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.asdf.stream_workspace.FLATFILE_COLUMNS">FLATFILE_COLUMNS</a></li>
@@ -1289,14 +1337,10 @@ plain .sort() will put SA(10.0) before SA(2.0), for example.</p>
     <script src="../../../../../_static/underscore.js"></script>
     <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/scripts/furo.js"></script>
     <script src="../../../../../_static/clipboard.min.js"></script>
     <script src="../../../../../_static/copybutton.js"></script>
     <script src="../../../../../_static/tabs.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

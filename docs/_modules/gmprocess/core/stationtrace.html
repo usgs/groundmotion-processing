@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
     <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.core.stationtrace - gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</title>
+        <title>gmprocess.core.stationtrace - gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev39+g3411c914.d20221017 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -729,13 +729,6 @@
             <span class="n">is_z</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">delta</span> <span class="o">&lt;</span> <span class="n">MAX_DIP_OFFSET</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_z</span><span class="p">:</span>
                 <span class="n">header</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;Z&quot;</span>
-
-        <span class="c1"># Apply conversion factor if one was specified for this format</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="s2">&quot;format_specific&quot;</span> <span class="ow">in</span> <span class="n">header</span>
-            <span class="ow">and</span> <span class="s2">&quot;conversion_factor&quot;</span> <span class="ow">in</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;format_specific&quot;</span><span class="p">]</span>
-        <span class="p">):</span>
-            <span class="n">data</span> <span class="o">*=</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;format_specific&quot;</span><span class="p">][</span><span class="s2">&quot;conversion_factor&quot;</span><span class="p">]</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">StationTrace</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">provenance</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1534,9 +1527,6 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;vertical_orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="c1"># if &quot;units_type&quot; not in standard.keys() or standard[&quot;units_type&quot;] == &quot;&quot;:</span>
-    <span class="c1">#     standard[&quot;units_type&quot;] = get_units_type(channel_code)</span>
-    <span class="c1"># print(f&quot;Stationtrace.py line 761: {standard[&#39;units_type&#39;]}&quot;)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">comments</span><span class="p">):</span>
         <span class="n">comments</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="n">channel</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">channel</span><span class="o">.</span><span class="n">comments</span><span class="p">))</span>
@@ -1626,7 +1616,6 @@
             <span class="n">utype</span> <span class="o">=</span> <span class="n">get_units_type</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;channel&quot;</span><span class="p">])</span>
             <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">utype</span>
             <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UNITS</span><span class="p">[</span><span class="n">utype</span><span class="p">]</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stationtrace.py line 844: </span><span class="si">{</span><span class="n">standard</span><span class="p">[</span><span class="s1">&#39;units_type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;comments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">standard</span><span class="p">[</span><span class="s2">&quot;station_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span>
