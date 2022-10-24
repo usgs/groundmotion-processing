@@ -226,7 +226,7 @@ Attributes
    :param st_list: List of streams.
    :type st_list: list
    :param directory: Directory for saving report.
-   :type directory: str
+   :type directory: str or pathlib.Path
    :param origin: ScalarEvent object.
    :type origin: ScalarEvent
    :param prefix: String to prepend to report file name.

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.utils.report_utils - gmprocess 1.2.1.dev21+gf990c20f.d20220929 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.utils.report_utils - gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.1.dev21+gf990c20f.d20220929 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -201,6 +201,8 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../contents/developer/index.html">Developer Resources</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/changelog.html">   Changelog</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/contributing.html">   Contributing Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/release.html">   Release Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/merge_requests.html">   Merge Request Guidelines</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/new_readers.html">   Adding New Data Readers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../contents/developer/build_docs.html">   Building the Documentation</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/index.html">   API</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -479,11 +481,12 @@
 <span></span><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">folium</span>
+<span class="kn">import</span> <span class="nn">folium.plugins</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">compress</span><span class="p">,</span> <span class="n">chain</span>
 
 <span class="n">OCEAN_COLOR</span> <span class="o">=</span> <span class="s2">&quot;#96e8ff&quot;</span>
 <span class="n">LAND_COLOR</span> <span class="o">=</span> <span class="s2">&quot;#ededaf&quot;</span>
@@ -496,14 +499,24 @@
 <div class="viewcode-block" id="draw_stations_map"><a class="viewcode-back" href="../../../autoapi/gmprocess/utils/report_utils/index.html#gmprocess.utils.report_utils.draw_stations_map">[docs]</a><span class="k">def</span> <span class="nf">draw_stations_map</span><span class="p">(</span><span class="n">pstreams</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">event_dir</span><span class="p">):</span>
 
     <span class="c1"># interactive html map is created first</span>
-    <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
-    <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
-    <span class="n">stnames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
-    <span class="n">networks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">stream</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
-
-    <span class="n">failed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="ow">not</span> <span class="n">trace</span><span class="o">.</span><span class="n">passed</span> <span class="k">for</span> <span class="n">trace</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">])</span> <span class="k">for</span> <span class="n">stream</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">]</span>
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
+    <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;longitude&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
+    <span class="n">networks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">network</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
+    <span class="n">stnames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">station</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">])</span>
+    <span class="n">locs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="k">if</span> <span class="n">st</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="k">else</span> <span class="s2">&quot;N/A&quot;</span>
+            <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span>
+        <span class="p">]</span>
     <span class="p">)</span>
+    <span class="n">chans</span> <span class="o">=</span> <span class="p">[[</span><span class="n">tr</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">channel</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">]</span>
+
+    <span class="n">failed_st</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">])</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">failed_tr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="n">tr</span><span class="o">.</span><span class="n">hasParameter</span><span class="p">(</span><span class="s2">&quot;failure&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">tr</span> <span class="ow">in</span> <span class="n">st</span><span class="p">]</span> <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="n">pstreams</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;object&quot;</span>
+    <span class="p">)[</span><span class="n">failed_st</span><span class="p">]</span>
 
     <span class="n">failure_reasons</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
         <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
@@ -520,83 +533,153 @@
         <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="n">event</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">longitude</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">control_scale</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
 
-    <span class="n">failed_coords</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lats</span><span class="p">[</span><span class="n">failed</span><span class="p">],</span> <span class="n">lons</span><span class="p">[</span><span class="n">failed</span><span class="p">])</span>
-    <span class="n">failed_stations</span> <span class="o">=</span> <span class="n">stnames</span><span class="p">[</span><span class="n">failed</span><span class="p">]</span>
-    <span class="n">failed_networks</span> <span class="o">=</span> <span class="n">networks</span><span class="p">[</span><span class="n">failed</span><span class="p">]</span>
+    <span class="c1"># Create feature groups and subgroups so they share cluster behavior</span>
+    <span class="n">stn_cluster</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">MarkerCluster</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;All&quot;</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">)</span>
+    <span class="n">station_map</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">stn_cluster</span><span class="p">)</span>
+
+    <span class="n">passed</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">FeatureGroupSubGroup</span><span class="p">(</span><span class="n">stn_cluster</span><span class="p">,</span> <span class="s2">&quot;Passed&quot;</span><span class="p">)</span>
+    <span class="n">station_map</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">passed</span><span class="p">)</span>
+
+    <span class="n">failed</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">FeatureGroupSubGroup</span><span class="p">(</span><span class="n">stn_cluster</span><span class="p">,</span> <span class="s2">&quot;Failed&quot;</span><span class="p">)</span>
+    <span class="n">station_map</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span>
+
+    <span class="c1"># Extract failed and passed station data</span>
+    <span class="n">failed_coords</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">tup</span><span class="p">)</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lats</span><span class="p">[</span><span class="n">failed_st</span><span class="p">],</span> <span class="n">lons</span><span class="p">[</span><span class="n">failed_st</span><span class="p">])]</span>
+    <span class="n">failed_networks</span> <span class="o">=</span> <span class="n">networks</span><span class="p">[</span><span class="n">failed_st</span><span class="p">]</span>
+    <span class="n">failed_stations</span> <span class="o">=</span> <span class="n">stnames</span><span class="p">[</span><span class="n">failed_st</span><span class="p">]</span>
+    <span class="n">failed_locs</span> <span class="o">=</span> <span class="n">locs</span><span class="p">[</span><span class="n">failed_st</span><span class="p">]</span>
+    <span class="n">failed_chans</span> <span class="o">=</span> <span class="n">compress</span><span class="p">(</span><span class="n">chans</span><span class="p">,</span> <span class="n">failed_st</span><span class="p">)</span>
     <span class="n">failed_station_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;stnames&quot;</span><span class="p">:</span> <span class="n">failed_stations</span><span class="p">,</span>
-            <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">failed_networks</span><span class="p">,</span>
             <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="n">failed_coords</span><span class="p">,</span>
+            <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">failed_networks</span><span class="p">,</span>
+            <span class="s2">&quot;stnames&quot;</span><span class="p">:</span> <span class="n">failed_stations</span><span class="p">,</span>
+            <span class="s2">&quot;locs&quot;</span><span class="p">:</span> <span class="n">failed_locs</span><span class="p">,</span>
+            <span class="s2">&quot;chans&quot;</span><span class="p">:</span> <span class="n">failed_chans</span><span class="p">,</span>
             <span class="s2">&quot;reason&quot;</span><span class="p">:</span> <span class="n">failure_reasons</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">)</span>
 
-    <span class="n">passed_coords</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lats</span><span class="p">[</span><span class="o">~</span><span class="n">failed</span><span class="p">],</span> <span class="n">lons</span><span class="p">[</span><span class="o">~</span><span class="n">failed</span><span class="p">])</span>
-    <span class="n">passed_stations</span> <span class="o">=</span> <span class="n">stnames</span><span class="p">[</span><span class="o">~</span><span class="n">failed</span><span class="p">]</span>
-    <span class="n">passed_networks</span> <span class="o">=</span> <span class="n">networks</span><span class="p">[</span><span class="o">~</span><span class="n">failed</span><span class="p">]</span>
+    <span class="n">passed_coords</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">tup</span><span class="p">)</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lats</span><span class="p">[</span><span class="o">~</span><span class="n">failed_st</span><span class="p">],</span> <span class="n">lons</span><span class="p">[</span><span class="o">~</span><span class="n">failed_st</span><span class="p">])]</span>
+    <span class="n">passed_networks</span> <span class="o">=</span> <span class="n">networks</span><span class="p">[</span><span class="o">~</span><span class="n">failed_st</span><span class="p">]</span>
+    <span class="n">passed_stations</span> <span class="o">=</span> <span class="n">stnames</span><span class="p">[</span><span class="o">~</span><span class="n">failed_st</span><span class="p">]</span>
+    <span class="n">passed_locs</span> <span class="o">=</span> <span class="n">locs</span><span class="p">[</span><span class="o">~</span><span class="n">failed_st</span><span class="p">]</span>
+    <span class="n">passed_chans</span> <span class="o">=</span> <span class="n">compress</span><span class="p">(</span><span class="n">chans</span><span class="p">,</span> <span class="o">~</span><span class="n">failed_st</span><span class="p">)</span>
     <span class="n">passed_station_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
         <span class="p">{</span>
-            <span class="s2">&quot;stnames&quot;</span><span class="p">:</span> <span class="n">passed_stations</span><span class="p">,</span>
-            <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">passed_networks</span><span class="p">,</span>
             <span class="s2">&quot;coords&quot;</span><span class="p">:</span> <span class="n">passed_coords</span><span class="p">,</span>
+            <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="n">passed_networks</span><span class="p">,</span>
+            <span class="s2">&quot;stnames&quot;</span><span class="p">:</span> <span class="n">passed_stations</span><span class="p">,</span>
+            <span class="s2">&quot;locs&quot;</span><span class="p">:</span> <span class="n">passed_locs</span><span class="p">,</span>
+            <span class="s2">&quot;chans&quot;</span><span class="p">:</span> <span class="n">passed_chans</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="p">)</span>
 
-    <span class="c1"># Plot the failed first</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">failed_station_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="n">station_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;NETWORK:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&lt;br&gt; &lt;b&gt;FAILURE MSG:&lt;/b&gt;&lt;br&gt; &lt;i&gt;&#39;</span><span class="si">{}</span><span class="s2">&#39;&lt;/i&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;reason&quot;</span><span class="p">]</span>
-        <span class="p">)</span>
-        <span class="n">failed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+    <span class="c1"># Format relevant map data so it can be used Leaflet JS</span>
+    <span class="n">failed_map_info</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">failed_station_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()):</span>
+        <span class="n">new_row</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ele</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">sub_ele</span> <span class="ow">in</span> <span class="n">ele</span><span class="p">:</span>
+                        <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_ele</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">comp_colors</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ele</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">failed_tr</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]:</span>
+                        <span class="n">comp_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="s1">&#39;&lt;span style=&quot;color:&#39;</span>
+                            <span class="o">+</span> <span class="n">FAILED_COLOR</span>
+                            <span class="o">+</span> <span class="s1">&#39;;&quot;&gt;&#39;</span>
+                            <span class="o">+</span> <span class="s2">&quot;&amp;nbsp&quot;</span>
+                            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
+                            <span class="o">+</span> <span class="s2">&quot;&lt;/span&gt;&quot;</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">comp_colors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="s1">&#39;&lt;span style=&quot;color:&#39;</span>
+                            <span class="o">+</span> <span class="n">PASSED_COLOR</span>
+                            <span class="o">+</span> <span class="s1">&#39;;&quot;&gt;&#39;</span>
+                            <span class="o">+</span> <span class="s2">&quot;&amp;nbsp&quot;</span>
+                            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">comp</span><span class="p">)</span>
+                            <span class="o">+</span> <span class="s2">&quot;&lt;/span&gt;&quot;</span>
+                        <span class="p">)</span>
 
-        <span class="n">failed_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;stnames&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">comp_colors</span><span class="p">)</span>
 
-        <span class="n">failed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span>
-            <span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
-<span class="s2">            &lt;div&gt;</span>
-<span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=&quot;#ff2222&quot; class=&quot;bi bi-triangle-fill&quot; transform=&#39;rotate(180)&#39; viewBox=&quot;0 0 16 16&quot;&gt;</span>
-<span class="s2">                    &lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;</span>
-<span class="s2">                &lt;/svg&gt;</span>
-<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span>
-        <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span>
 
-        <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="n">failed_tooltip</span><span class="p">,</span>
-            <span class="n">popup</span><span class="o">=</span><span class="n">failed_popup</span><span class="p">,</span>
-            <span class="n">icon</span><span class="o">=</span><span class="n">failed_icon</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
+        <span class="n">failed_map_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">)</span>
 
-    <span class="c1"># Then the passed stations</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">passed_station_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="n">station_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;NETWORK:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">r</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
-        <span class="p">)</span>
+    <span class="c1"># Create Javascript function to pass into Folium for marker cluster creation</span>
+    <span class="c1"># (Note this callback has to be passed in as a single string)</span>
+    <span class="c1"># fmt: off</span>
+    <span class="n">failed_station_callback</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;&quot;function (row) {</span>
+<span class="s2">                                var icon = L.divIcon({html: `&lt;div&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=&quot;#ff2222&quot; class=&quot;bi bi-triangle-fill&quot; transform=&quot;rotate(180)&quot; viewBox=&quot;0 0 16 16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;&lt;/svg&gt;&lt;/div&gt;`, className: &#39;dummy&#39;});</span>
+<span class="s2">                                var marker = L.marker(new L.LatLng(row[0], row[1]));</span>
+<span class="s2">                                marker.setIcon(icon);</span>
+<span class="s2">                                var popup = L.popup({maxWidth: &#39;180&#39;, minWidth: &#39;180&#39;});</span>
+<span class="s2">                                var station_info = $(`&lt;div&gt;&lt;b&gt;NETWORK:&lt;/b&gt; $</span><span class="si">{row[2]}</span><span class="s2">&lt;br&gt; &lt;b&gt;STATION:&lt;/b&gt; $</span><span class="si">{row[3]}</span><span class="s2">&lt;br&gt; &lt;b&gt;LOC:&lt;/b&gt; $</span><span class="si">{row[4]}</span><span class="s2">&lt;br&gt; &lt;b&gt;CHAN:&lt;/b&gt; $</span><span class="si">{row[5]}</span><span class="s2"> &lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; ${row[0].toFixed(2)}&amp;deg; &lt;b&gt;LON:&lt;/b&gt; ${row[1].toFixed(2)}&amp;deg&lt;br&gt; &lt;b&gt;FAILURE MSG:&lt;/b&gt;&lt;br&gt; &lt;i&gt;&lt;span style=&quot;color:#ff2222&quot;&gt; $</span><span class="si">{row[6]}</span><span class="s2"> &lt;/span&gt;&lt;/i&gt; &lt;/div&gt;`)[0];</span>
+<span class="s2">                                popup.setContent(station_info);</span>
+<span class="s2">                                marker.bindPopup(popup);</span>
+<span class="s2">                                var tooltip = L.tooltip();</span>
+<span class="s2">                                if (row[4] == &quot;N/A&quot;) {var tooltip_info = $(`&lt;div&gt;&lt;b&gt;Station:&lt;/b&gt; $</span><span class="si">{row[2]}</span><span class="s2">.&lt;b&gt;$</span><span class="si">{row[3]}</span><span class="s2">&lt;/b&gt;&lt;/div&gt;`)[0];}</span>
+<span class="s2">                                else {var tooltip_info = $(`&lt;div&gt;&lt;b&gt;Station:&lt;/b&gt; $</span><span class="si">{row[2]}</span><span class="s2">.&lt;b&gt;$</span><span class="si">{row[3]}</span><span class="s2">&lt;/b&gt;.$</span><span class="si">{row[4]}</span><span class="s2">&lt;/div&gt;`)[0];}</span>
+<span class="s2">                                tooltip.setContent(tooltip_info);</span>
+<span class="s2">                                marker.bindTooltip(tooltip).openTooltip();</span>
+<span class="s2">                                return marker};&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="c1"># fmt: off</span>
+    
+    <span class="c1"># Create station cluster object and add to &#39;failed&#39; subgroup</span>
+    <span class="n">failed_station_cluster</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">FastMarkerCluster</span><span class="p">(</span>
+        <span class="n">failed_map_info</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">failed_station_callback</span>
+    <span class="p">)</span>
+    <span class="n">failed_station_cluster</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">failed</span><span class="p">)</span>
 
-        <span class="n">passed_popup</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Popup</span><span class="p">(</span><span class="n">station_info</span><span class="p">,</span> <span class="n">min_width</span><span class="o">=</span><span class="mi">180</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+    <span class="c1"># Format relevant map data so it can be used Leaflet JS</span>
+    <span class="n">passed_map_info</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">passed_station_df</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">():</span>
+        <span class="n">new_row</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ele</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ele</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">sub_ele</span> <span class="ow">in</span> <span class="n">ele</span><span class="p">:</span>
+                    <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_ele</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ele</span><span class="p">)</span>
+        <span class="n">passed_map_info</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">)</span>
 
-        <span class="n">passed_tooltip</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Tooltip</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;b&gt;Station:&lt;/b&gt; </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;network&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;stnames&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Create Javascript function to pass into Folium for marker cluster creation</span>
+    <span class="c1"># fmt: off</span>
+    <span class="n">passed_station_callback</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;&quot;function (row) {</span>
+<span class="s2">                                var icon = L.divIcon({html: `&lt;div&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span> <span class="o">+</span> <span class="n">PASSED_COLOR</span> <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-triangle-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;&lt;/svg&gt;&lt;/div&gt;`, className: &#39;dummy&#39;});</span>
+<span class="s2">                                var marker = L.marker(new L.LatLng(row[0], row[1]));</span>
+<span class="s2">                                marker.setIcon(icon);</span>
+<span class="s2">                                var popup = L.popup({maxWidth: &#39;180&#39;, minWidth: &#39;180&#39;});</span>
+<span class="s2">                                var station_info = $(`&lt;div&gt;&lt;b&gt;NETWORK:&lt;/b&gt; $</span><span class="si">{row[2]}</span><span class="s2">&lt;br&gt; &lt;b&gt;STATION:&lt;/b&gt; $</span><span class="si">{row[3]}</span><span class="s2">&lt;br&gt; &lt;b&gt;LOC:&lt;/b&gt; $</span><span class="si">{row[4]}</span><span class="s2">&lt;br&gt; &lt;b&gt;CHAN:&lt;/b&gt; $</span><span class="si">{row[5]}</span><span class="s2">, $</span><span class="si">{row[6]}</span><span class="s2">, $</span><span class="si">{row[7]}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; ${row[0].toFixed(2)}&amp;deg; &lt;b&gt;LON:&lt;/b&gt; ${row[1].toFixed(2)}&amp;deg&lt;/div&gt;`)[0];</span>
+<span class="s2">                                popup.setContent(station_info);</span>
+<span class="s2">                                marker.bindPopup(popup);</span>
+<span class="s2">                                var tooltip = L.tooltip();</span>
+<span class="s2">                                if (row[4] == &quot;N/A&quot;) {var tooltip_info = $(`&lt;div&gt;&lt;b&gt;Station:&lt;/b&gt; $</span><span class="si">{row[2]}</span><span class="s2">.&lt;b&gt;$</span><span class="si">{row[3]}</span><span class="s2">&lt;/b&gt;&lt;/div&gt;`)[0];}</span>
+<span class="s2">                                else {var tooltip_info = $(`&lt;div&gt;&lt;b&gt;Station:&lt;/b&gt; $</span><span class="si">{row[2]}</span><span class="s2">.&lt;b&gt;$</span><span class="si">{row[3]}</span><span class="s2">&lt;/b&gt;.$</span><span class="si">{row[4]}</span><span class="s2">&lt;/div&gt;`)[0];}</span>
+<span class="s2">                                tooltip.setContent(tooltip_info);</span>
+<span class="s2">                                marker.bindTooltip(tooltip).openTooltip();</span>
+<span class="s2">                                return marker};&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="c1"># fmt: on</span>
 
-        <span class="n">passed_icon</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">DivIcon</span><span class="p">(</span>
-            <span class="n">html</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot; </span>
-<span class="s2">            &lt;div&gt;</span>
-<span class="s2">                &lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; stroke=&quot;black&quot; stroke-linecap=&quot;square&quot; fill=</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;&quot;</span>
-            <span class="o">+</span> <span class="n">PASSED_COLOR</span>
-            <span class="o">+</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\&quot;</span><span class="s2"> class=&quot;bi bi-triangle-fill&quot; viewBox=&quot;0 0 16 16&quot;&gt;</span>
-<span class="s2">                    &lt;path fill-rule=&quot;evenodd&quot; d=&quot;M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z&quot;/&gt;</span>
-<span class="s2">                &lt;/svg&gt;</span>
-<span class="s2">            &lt;/div&gt;&quot;&quot;&quot;</span>
-        <span class="p">)</span>
+    <span class="c1"># Create station cluster object and add to &#39;passed&#39; subgroup</span>
+    <span class="n">passed_station_cluster</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">plugins</span><span class="o">.</span><span class="n">FastMarkerCluster</span><span class="p">(</span>
+        <span class="n">passed_map_info</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">passed_station_callback</span>
+    <span class="p">)</span>
+    <span class="n">passed_station_cluster</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">passed</span><span class="p">)</span>
 
-        <span class="n">folium</span><span class="o">.</span><span class="n">Marker</span><span class="p">(</span>
-            <span class="n">location</span><span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">],</span>
-            <span class="n">tooltip</span><span class="o">=</span><span class="n">passed_tooltip</span><span class="p">,</span>
-            <span class="n">popup</span><span class="o">=</span><span class="n">passed_popup</span><span class="p">,</span>
-            <span class="n">icon</span><span class="o">=</span><span class="n">passed_icon</span><span class="p">,</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
+    <span class="c1"># Add the subgroup layers to the map</span>
+    <span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">()</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">station_map</span><span class="p">)</span>
 
-    <span class="c1"># And finally the event itself</span>
+    <span class="c1"># And finally plot the event itself using just Folium</span>
     <span class="n">event_info</span> <span class="o">=</span> <span class="s2">&quot;&lt;b&gt;EVENT ID:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;MAG:&lt;/b&gt; </span><span class="si">{}</span><span class="s2">&lt;br&gt; &lt;b&gt;LAT:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg; &lt;b&gt;LON:&lt;/b&gt; </span><span class="si">{:.4f}</span><span class="s2">&amp;deg;&lt;br&gt; &lt;b&gt;DEPTH:&lt;/b&gt; </span><span class="si">{:.2f}</span><span class="s2"> km&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
         <span class="n">event</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
@@ -665,7 +748,7 @@
         <span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="n">html_mapfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">event_dir</span><span class="p">,</span> <span class="s2">&quot;stations_map.html&quot;</span><span class="p">)</span>
+    <span class="n">html_mapfile</span> <span class="o">=</span> <span class="n">event_dir</span> <span class="o">/</span> <span class="s2">&quot;stations_map.html&quot;</span>
     <span class="n">station_map</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">html_mapfile</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">html_mapfile</span></div>
@@ -708,7 +791,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>

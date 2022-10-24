@@ -2,4 +2,5 @@
 # Pip v21.3 and later should work without setup.py.
 
 import setuptools
+
 setuptools.setup()

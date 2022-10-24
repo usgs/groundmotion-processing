@@ -5,13 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Scripting" href="scripting.html" /><link rel="prev" title="Tutorials" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>Command Line Interface - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>Command Line Interface - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
@@ -140,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -464,7 +463,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -493,31 +493,31 @@ We use only the FDSN fetcher and limit the station distance to 0.1 degrees.
 The configuration files are in the <code class="docutils literal notranslate"><span class="pre">conf/cli</span></code> directory.</p>
 <p>First, we list the available projects in the current directory.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords projects --list
-INFO 2022-10-07 09:57:30 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-07 09:57:30 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-10-07 09:57:30 | projects.main: Running subcommand &#39;projects&#39;
+INFO 2022-10-21 15:55:34 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:55:34 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:55:34 | projects.main: Running subcommand &#39;projects&#39;
 
 Project: cli-tutorial 
-	Conf Path: ../conf/cli
-	Data Path: ../data/cli
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 
 
 Project: scripting-tutorial **Current Project**
-	Conf Path: ../conf/scripting
-	Data Path: ../data/scripting
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">PROJECTS_PATH</span></code> shows the location of the projects configuration file where the information for the projects is stored.
 Second, we use the <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand to select the project configuration <code class="docutils literal notranslate"><span class="pre">cli-tutorial</span></code>.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords projects --switch cli-tutorial
-INFO 2022-09-29 12:14:45 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:14:45 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:14:45 | projects.main: Running subcommand &#39;projects&#39;
+INFO 2022-10-21 15:55:34 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:55:34 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:55:34 | projects.main: Running subcommand &#39;projects&#39;
 
 Switched to project: 
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 </pre></div>
 </div>
 <p>Third, we create the directory to hold the data.</p>
@@ -552,65 +552,10 @@ Consequently, we simply copy the data from <code class="docutils literal notrans
 <section id="list-data">
 <h3>List Data<a class="headerlink" href="#list-data" title="Permalink to this heading">#</a></h3>
 <p>We now have earthquake rupture information and raw waveforms in the <code class="docutils literal notranslate"><span class="pre">data/cli</span></code> directory.</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ tree data/cli
-data/cli
-└── nc73291880
-    ├── event.json
-    └── raw
-        ├── BK.BRIB.01.BHE__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.BHN__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.BHZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HHE__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HHN__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HHZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.xml
-        ├── CE.58360..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58360..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58360..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58360.xml
-        ├── CE.58369..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58369..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58369..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58369.xml
-        ├── CE.58442..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58442..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58442..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58442.xml
-        ├── NC.C010.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C010.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C010.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C010.xml
-        ├── NC.C018.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C018.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C018.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C018.xml
-        ├── NC.CRH..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CRH..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CRH..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CRH.xml
-        ├── NC.CTA..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CTA..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CTA..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CTA.xml
-        ├── NP.1691..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1691..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1691..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1691.xml
-        ├── NP.1844..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1844..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1844..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1844.xml
-        ├── NP.1847.10.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1847.10.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1847.10.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        └── NP.1847.xml
-
-2 directories, 51 files
-</pre></div>
-</div>
+<aside class="system-message">
+<p class="system-message-title">System Message: ERROR/6 (<span class="docutils literal">/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/cli.md</span>, line 76)</p>
+<p>Command ['tree', 'data/cli'] failed: [Errno 2] No such file or directory: 'tree'</p>
+</aside>
 <p>From the directory tree above, you can see how <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code> organizes the data directory:</p>
 <ul class="simple">
 <li><p>within the root data directory there are subdirectories for each event named
@@ -637,12 +582,12 @@ consists of miniseed and StationXML files,</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">assemble</span></code> subcommand collects the data in the raw directory and organizes it into an ASDF file.
 If we do not specify the event ID, then all of the events in the data directory will be assembled.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords assemble
-INFO 2022-09-29 12:14:45 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:14:45 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:14:45 | assemble.main: Running subcommand &#39;assemble&#39;
-INFO 2022-09-29 12:14:46 | assemble.main: Number of events to assemble: 1
-INFO 2022-09-29 12:14:46 | assemble._assemble_event: Starting event: nc73291880
-INFO 2022-09-29 12:14:48 | assemble_utils.assemble: 
+INFO 2022-10-21 15:55:35 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:55:35 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:55:35 | assemble.main: Running subcommand &#39;assemble&#39;
+INFO 2022-10-21 15:55:36 | assemble.main: Number of events to assemble: 1
+INFO 2022-10-21 15:55:36 | assemble.main: Assembling event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:55:39 | assemble_utils.assemble: 
 13 StationStreams(s) in StreamCollection:
   3 StationTrace(s) in StationStream (passed):
     CE.58369..HNZ | 2019-10-15T05:33:17.000000Z - 2019-10-15T05:34:27.995000Z | 200.0 Hz, 14200 samples (passed)
@@ -696,28 +641,27 @@ INFO 2022-09-29 12:14:48 | assemble_utils.assemble:
     BK.BRIB.01.BHE | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
     BK.BRIB.01.BHN | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
     BK.BRIB.01.BHZ | 2019-10-15T05:33:12.825000Z - 2019-10-15T05:40:42.800000Z | 40.0 Hz, 18000 samples (passed)
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
-INFO 2022-09-29 12:14:49 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
-INFO 2022-09-29 12:14:50 | base._summarize_files_created: The following files have been created:
-INFO 2022-09-29 12:14:50 | base._summarize_files_created: File type: Workspace
-INFO 2022-09-29 12:14:50 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/workspace.h5
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
+INFO 2022-10-21 15:55:39 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
+INFO 2022-10-21 15:55:39 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-21 15:55:39 | base._summarize_files_created: File type: Workspace
+INFO 2022-10-21 15:55:39 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/workspace.h5
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
-/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/workspace.h5
 </pre></div>
 </div>
 <p>The console message indicates that the <code class="docutils literal notranslate"><span class="pre">workspace.h5</span></code> ASDF file has been created.</p>
@@ -732,70 +676,61 @@ Since ASDF is an HDF5 specification, it can also be loaded in most programming l
 <p>The <code class="docutils literal notranslate"><span class="pre">process_waveforms</span></code> (or just <code class="docutils literal notranslate"><span class="pre">process</span></code> for short) subcommand reads in the raw data from the ASDF workspace files that were created by the assemble subcommand, and then applies the waveform processing steps that are specified the config file (in the processing section).
 The processed waveforms are then added to the ASDF workspace file.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords process_waveforms
-INFO 2022-09-29 12:14:50 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:14:50 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:14:50 | process_waveforms.main: Running subcommand &#39;process_waveforms&#39;
-INFO 2022-09-29 12:14:51 | process_waveforms.main: Processing tag: default
-INFO 2022-09-29 12:14:51 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:51 | processing.process_streams: Stream: BK.BRIB.BH
-INFO 2022-09-29 12:14:51 | stationtrace.fail: check_clipping - BK.BRIB.01.BHE - Failed clipping check: prob_clip = 0.61.
-INFO 2022-09-29 12:14:51 | stationtrace.fail: check_clipping - BK.BRIB.01.BHN - Failed clipping check: prob_clip = 0.61.
-INFO 2022-09-29 12:14:51 | stationtrace.fail: check_clipping - BK.BRIB.01.BHZ - Failed clipping check: prob_clip = 0.61.
-INFO 2022-09-29 12:14:51 | processing.process_streams: Stream: BK.BRIB.HH
-INFO 2022-09-29 12:14:52 | stationtrace.fail: check_clipping - BK.BRIB.01.HHE - Failed clipping check: prob_clip = 0.61.
-INFO 2022-09-29 12:14:52 | stationtrace.fail: check_clipping - BK.BRIB.01.HHN - Failed clipping check: prob_clip = 0.61.
-INFO 2022-09-29 12:14:52 | stationtrace.fail: check_clipping - BK.BRIB.01.HHZ - Failed clipping check: prob_clip = 0.61.
-INFO 2022-09-29 12:14:53 | processing.process_streams: Stream: BK.BRIB.HN
-INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: CE.58360.HN
-INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: CE.58369.HN
-INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: CE.58442.HN
-INFO 2022-09-29 12:14:55 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:55 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:55 | processing.process_streams: Stream: NC.C010.HN
-INFO 2022-09-29 12:14:56 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:56 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:56 | processing.process_streams: Stream: NC.C018.HN
-INFO 2022-09-29 12:14:56 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:56 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:56 | processing.process_streams: Stream: NC.CRH.HN
-INFO 2022-09-29 12:14:56 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:56 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:56 | processing.process_streams: Stream: NC.CTA.HN
-INFO 2022-09-29 12:14:57 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:57 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:57 | processing.process_streams: Stream: NP.1691.HN
-INFO 2022-09-29 12:14:57 | stationtrace.fail: check_tail - NP.1691..HNZ - Velocity ratio is greater than 0.3
-INFO 2022-09-29 12:14:57 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:57 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:57 | processing.process_streams: Stream: NP.1844.HN
-INFO 2022-09-29 12:14:57 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:57 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
-INFO 2022-09-29 12:14:57 | processing.process_streams: Stream: NP.1847.HN
-INFO 2022-09-29 12:14:58 | processing.process_streams: Finished processing streams.
-INFO 2022-09-29 12:14:58 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
-INFO 2022-09-29 12:14:58 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
-INFO 2022-09-29 12:14:58 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
-INFO 2022-09-29 12:14:59 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
-INFO 2022-09-29 12:15:00 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
-INFO 2022-09-29 12:15:00 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
-INFO 2022-09-29 12:15:00 | base._summarize_files_created: No new files created.
+INFO 2022-10-21 15:55:40 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:55:40 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:55:40 | process_waveforms.main: Running subcommand &#39;process_waveforms&#39;
+INFO 2022-10-21 15:55:41 | process_waveforms.main: Processing tag: default
+INFO 2022-10-21 15:55:41 | process_waveforms.main: Processing waveforms for event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:55:41 | process_waveforms._process_event: Processing &#39;unprocessed&#39; streams for event nc73291880...
+INFO 2022-10-21 15:55:41 | processing.process_streams: Stream: BK.BRIB.BH
+INFO 2022-10-21 15:55:42 | stationtrace.fail: check_clipping - BK.BRIB.01.BHE - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-21 15:55:42 | stationtrace.fail: check_clipping - BK.BRIB.01.BHN - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-21 15:55:42 | stationtrace.fail: check_clipping - BK.BRIB.01.BHZ - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-21 15:55:42 | processing.process_streams: Stream: BK.BRIB.HH
+INFO 2022-10-21 15:55:42 | stationtrace.fail: check_clipping - BK.BRIB.01.HHE - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-21 15:55:42 | stationtrace.fail: check_clipping - BK.BRIB.01.HHN - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-21 15:55:42 | stationtrace.fail: check_clipping - BK.BRIB.01.HHZ - Failed clipping check: prob_clip = 0.61.
+INFO 2022-10-21 15:55:44 | processing.process_streams: Stream: BK.BRIB.HN
+INFO 2022-10-21 15:55:45 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:45 | processing.process_streams: Stream: CE.58360.HN
+INFO 2022-10-21 15:55:46 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:46 | processing.process_streams: Stream: CE.58369.HN
+INFO 2022-10-21 15:55:46 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:46 | processing.process_streams: Stream: CE.58442.HN
+INFO 2022-10-21 15:55:46 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:46 | processing.process_streams: Stream: NC.C010.HN
+INFO 2022-10-21 15:55:46 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:46 | processing.process_streams: Stream: NC.C018.HN
+INFO 2022-10-21 15:55:46 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:46 | processing.process_streams: Stream: NC.CRH.HN
+INFO 2022-10-21 15:55:47 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:47 | processing.process_streams: Stream: NC.CTA.HN
+INFO 2022-10-21 15:55:47 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:47 | processing.process_streams: Stream: NP.1691.HN
+INFO 2022-10-21 15:55:47 | stationtrace.fail: check_tail - NP.1691..HNZ - Velocity ratio is greater than 0.3
+INFO 2022-10-21 15:55:47 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:47 | processing.process_streams: Stream: NP.1844.HN
+INFO 2022-10-21 15:55:48 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:48 | processing.process_streams: Stream: NP.1847.HN
+INFO 2022-10-21 15:55:48 | processing.process_streams: Finished processing streams.
+INFO 2022-10-21 15:55:48 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
+INFO 2022-10-21 15:55:48 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HH
+INFO 2022-10-21 15:55:49 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.HN
+INFO 2022-10-21 15:55:49 | stream_workspace.addStreams: Adding waveforms for station CE.58360.HN
+INFO 2022-10-21 15:55:49 | stream_workspace.addStreams: Adding waveforms for station CE.58369.HN
+INFO 2022-10-21 15:55:49 | stream_workspace.addStreams: Adding waveforms for station CE.58442.HN
+INFO 2022-10-21 15:55:49 | stream_workspace.addStreams: Adding waveforms for station NC.C010.HN
+INFO 2022-10-21 15:55:50 | stream_workspace.addStreams: Adding waveforms for station NC.C018.HN
+INFO 2022-10-21 15:55:50 | stream_workspace.addStreams: Adding waveforms for station NC.CRH.HN
+INFO 2022-10-21 15:55:50 | stream_workspace.addStreams: Adding waveforms for station NC.CTA.HN
+INFO 2022-10-21 15:55:50 | stream_workspace.addStreams: Adding waveforms for station NP.1691.HN
+INFO 2022-10-21 15:55:50 | stream_workspace.addStreams: Adding waveforms for station NP.1844.HN
+INFO 2022-10-21 15:55:50 | stream_workspace.addStreams: Adding waveforms for station NP.1847.HN
+INFO 2022-10-21 15:55:50 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -850,29 +785,29 @@ The <strong>fifth row</strong> of plots is the signal-to-noise ratio (SNR), wher
 <h2>Compute Station Metrics<a class="headerlink" href="#compute-station-metrics" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">compute_station_metrics</span></code> subcommand computes station metrics (like epicentral distance) and add them to the ASDF workspace file.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_station_metrics
-INFO 2022-09-29 12:15:00 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:15:00 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:15:00 | compute_station_metrics.main: Running subcommand &#39;compute_station_metrics&#39;
-INFO 2022-09-29 12:15:01 | compute_station_metrics._event_station_metrics: Computing station metrics for event nc73291880...
-INFO 2022-09-29 12:15:03 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.BH...
-INFO 2022-09-29 12:15:04 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.HH...
-INFO 2022-09-29 12:15:06 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.HN...
-INFO 2022-09-29 12:15:07 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58360.HN...
-INFO 2022-09-29 12:15:09 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58369.HN...
-INFO 2022-09-29 12:15:10 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58442.HN...
-INFO 2022-09-29 12:15:12 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.C010.HN...
-INFO 2022-09-29 12:15:14 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.C018.HN...
-INFO 2022-09-29 12:15:15 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.CRH.HN...
-INFO 2022-09-29 12:15:17 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.CTA.HN...
-INFO 2022-09-29 12:15:18 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1691.HN...
-INFO 2022-09-29 12:15:20 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1844.HN...
-INFO 2022-09-29 12:15:21 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1847.HN...
-INFO 2022-09-29 12:15:21 | compute_station_metrics._event_station_metrics: Added station metrics to workspace files with tag &#39;default&#39;.
-INFO 2022-09-29 12:15:21 | base._summarize_files_created: No new files created.
+INFO 2022-10-21 15:55:51 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:55:51 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:55:51 | compute_station_metrics.main: Running subcommand &#39;compute_station_metrics&#39;
+INFO 2022-10-21 15:55:53 | compute_station_metrics.main: Computing station metrics for event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:55:55 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.BH...
+INFO 2022-10-21 15:55:56 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.HH...
+INFO 2022-10-21 15:55:58 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.HN...
+INFO 2022-10-21 15:55:59 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58360.HN...
+INFO 2022-10-21 15:56:01 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58369.HN...
+INFO 2022-10-21 15:56:02 | compute_station_metrics._event_station_metrics: Calculating station metrics for CE.58442.HN...
+INFO 2022-10-21 15:56:04 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.C010.HN...
+INFO 2022-10-21 15:56:05 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.C018.HN...
+INFO 2022-10-21 15:56:07 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.CRH.HN...
+INFO 2022-10-21 15:56:08 | compute_station_metrics._event_station_metrics: Calculating station metrics for NC.CTA.HN...
+INFO 2022-10-21 15:56:10 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1691.HN...
+INFO 2022-10-21 15:56:11 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1844.HN...
+INFO 2022-10-21 15:56:13 | compute_station_metrics._event_station_metrics: Calculating station metrics for NP.1847.HN...
+INFO 2022-10-21 15:56:13 | compute_station_metrics._event_station_metrics: Added station metrics to workspace files with tag &#39;default&#39;.
+INFO 2022-10-21 15:56:13 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -883,26 +818,26 @@ Project: cli-tutorial
 The waveform metrics that are computed are defined in the metrics section of the conf file.
 The metrics are defined by intensity metric types (for example, spectral acceleration vs duration) and intensity measure component (how the instrument components are combined).</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_waveform_metrics
-INFO 2022-09-29 12:15:22 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:15:22 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:15:22 | compute_waveform_metrics.main: Running subcommand &#39;compute_waveform_metrics&#39;
-INFO 2022-09-29 12:15:22 | compute_waveform_metrics._compute_event_waveform_metrics: Computing waveform metrics for event nc73291880...
-INFO 2022-09-29 12:15:23 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for BK.BRIB.HN...
-INFO 2022-09-29 12:15:28 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58360.HN...
-INFO 2022-09-29 12:15:32 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58369.HN...
-INFO 2022-09-29 12:15:36 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58442.HN...
-INFO 2022-09-29 12:15:40 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.C010.HN...
-INFO 2022-09-29 12:15:43 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.C018.HN...
-INFO 2022-09-29 12:15:47 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.CRH.HN...
-INFO 2022-09-29 12:15:51 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.CTA.HN...
-INFO 2022-09-29 12:15:55 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NP.1844.HN...
-INFO 2022-09-29 12:15:59 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NP.1847.HN...
-INFO 2022-09-29 12:16:03 | compute_waveform_metrics._compute_event_waveform_metrics: Adding waveform metrics to workspace files with tag &#39;default&#39;.
-INFO 2022-09-29 12:16:03 | base._summarize_files_created: No new files created.
+INFO 2022-10-21 15:56:13 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:56:13 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:56:13 | compute_waveform_metrics.main: Running subcommand &#39;compute_waveform_metrics&#39;
+INFO 2022-10-21 15:56:14 | compute_waveform_metrics.main: Computing waveform metrics for event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:56:15 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for BK.BRIB.HN...
+INFO 2022-10-21 15:56:20 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58360.HN...
+INFO 2022-10-21 15:56:24 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58369.HN...
+INFO 2022-10-21 15:56:27 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for CE.58442.HN...
+INFO 2022-10-21 15:56:32 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.C010.HN...
+INFO 2022-10-21 15:56:35 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.C018.HN...
+INFO 2022-10-21 15:56:40 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.CRH.HN...
+INFO 2022-10-21 15:56:44 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NC.CTA.HN...
+INFO 2022-10-21 15:56:48 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NP.1844.HN...
+INFO 2022-10-21 15:56:52 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for NP.1847.HN...
+INFO 2022-10-21 15:56:56 | compute_waveform_metrics._compute_event_waveform_metrics: Adding waveform metrics to workspace files with tag &#39;default&#39;.
+INFO 2022-10-21 15:56:56 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -916,19 +851,19 @@ Project: cli-tutorial
 <p>It is useful to summarize the reasons that records have failed the QA checks, and this information can be output in a spreadsheet using the <code class="docutils literal notranslate"><span class="pre">export_failure_tables</span></code> subcommand.
 Unlike many of the other subcommands, the output combines the results in all project events and puts the result into the base project directory.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_failure_tables
-INFO 2022-09-29 12:16:04 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:16:04 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:16:04 | export_failure_tables.main: Running subcommand &#39;export_failure_tables&#39;
-INFO 2022-09-29 12:16:04 | export_failure_tables.main: Creating failure tables for event nc73291880...
-INFO 2022-09-29 12:16:05 | base._summarize_files_created: The following files have been created:
-INFO 2022-09-29 12:16:05 | base._summarize_files_created: File type: Failure table
-INFO 2022-09-29 12:16:05 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_failure_reasons_short.csv
-INFO 2022-09-29 12:16:05 | base._summarize_files_created: File type: Complete failures
-INFO 2022-09-29 12:16:05 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_complete_failures.csv
+INFO 2022-10-21 15:56:57 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:56:57 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:56:57 | export_failure_tables.main: Running subcommand &#39;export_failure_tables&#39;
+INFO 2022-10-21 15:56:58 | export_failure_tables.main: Creating failure tables for event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:56:59 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-21 15:56:59 | base._summarize_files_created: File type: Failure table
+INFO 2022-10-21 15:56:59 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_failure_reasons_short.csv
+INFO 2022-10-21 15:56:59 | base._summarize_files_created: File type: Complete failures
+INFO 2022-10-21 15:56:59 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_complete_failures.csv
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -937,29 +872,29 @@ Project: cli-tutorial
 <h2>Export Metric Tables<a class="headerlink" href="#export-metric-tables" title="Permalink to this heading">#</a></h2>
 <p>Although the metrics can be accessed directly from the ASDF file, it is often convenient to save the metrics (both station and waveform) into a “flatfile” where each row corresponds to a single record.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_metric_tables
-INFO 2022-09-29 12:16:06 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:16:06 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:16:06 | export_metric_tables.main: Running subcommand &#39;export_metric_tables&#39;
-INFO 2022-09-29 12:16:06 | export_metric_tables.main: Creating tables for event nc73291880...
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: The following files have been created:
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: File type: Metric tables
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_events.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z_README.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1_README.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0_README.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2_README.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters_README.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr.csv
-INFO 2022-09-29 12:16:13 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr_README.csv
+INFO 2022-10-21 15:57:00 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:57:00 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:57:00 | export_metric_tables.main: Running subcommand &#39;export_metric_tables&#39;
+INFO 2022-10-21 15:57:01 | export_metric_tables.main: Creating tables for event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: File type: Metric tables
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_events.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0_README.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1_README.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2_README.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z_README.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters_README.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr.csv
+INFO 2022-10-21 15:57:08 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr_README.csv
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -969,17 +904,17 @@ Project: cli-tutorial
 <h2>Export Provenance Tables<a class="headerlink" href="#export-provenance-tables" title="Permalink to this heading">#</a></h2>
 <p>As with the metric and failure tables, you can also output tables summarizing the provenance information.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_provenance_tables
-INFO 2022-09-29 12:16:13 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:16:13 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:16:13 | export_provenance_tables.main: Running subcommand &#39;export_provenance_tables&#39;
-INFO 2022-09-29 12:16:14 | export_provenance_tables.main: Creating provenance tables for event nc73291880...
-INFO 2022-09-29 12:16:15 | base._summarize_files_created: The following files have been created:
-INFO 2022-09-29 12:16:15 | base._summarize_files_created: File type: Provenance
-INFO 2022-09-29 12:16:15 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_provenance.csv
+INFO 2022-10-21 15:57:08 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:57:08 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:57:08 | export_provenance_tables.main: Running subcommand &#39;export_provenance_tables&#39;
+INFO 2022-10-21 15:57:10 | export_provenance_tables.main: Creating provenance tables for event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:57:11 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-21 15:57:11 | base._summarize_files_created: File type: Provenance
+INFO 2022-10-21 15:57:11 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_provenance.csv
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -993,16 +928,16 @@ This type of issue is relatively common, and can sometimes be identified by plot
 <p>You must run the <code class="docutils literal notranslate"><span class="pre">export_metric_tables</span></code> before running <code class="docutils literal notranslate"><span class="pre">generate_regression_plot</span></code>.</p>
 </div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_regression_plot
-INFO 2022-09-29 12:16:15 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:16:15 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:16:15 | generate_regression_plot.main: Running subcommand &#39;generate_regression_plot&#39;
-INFO 2022-09-29 12:16:16 | base._summarize_files_created: The following files have been created:
-INFO 2022-09-29 12:16:16 | base._summarize_files_created: File type: Multi-event regression plot
-INFO 2022-09-29 12:16:16 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/regression_rotd50.0_PGA.png
+INFO 2022-10-21 15:57:11 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:57:11 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:57:11 | generate_regression_plot.main: Running subcommand &#39;generate_regression_plot&#39;
+INFO 2022-10-21 15:57:12 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-21 15:57:12 | base._summarize_files_created: File type: Multi-event regression plot
+INFO 2022-10-21 15:57:12 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/regression_rotd50.0_PGA.png
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -1018,17 +953,17 @@ Project: cli-tutorial
 <h2>Station Map<a class="headerlink" href="#station-map" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">generate_station_maps</span></code> command makes an interactive HTML map that can be opened in a browser.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_station_maps
-INFO 2022-09-29 12:16:16 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-09-29 12:16:16 | gmrecords._initialize: PROJECTS_PATH: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/.gmprocess
-INFO 2022-09-29 12:16:16 | generate_station_maps.main: Running subcommand &#39;generate_station_maps&#39;
-INFO 2022-09-29 12:16:17 | generate_station_maps.main: Generating station maps for event nc73291880...
-INFO 2022-09-29 12:16:18 | base._summarize_files_created: The following files have been created:
-INFO 2022-09-29 12:16:18 | base._summarize_files_created: File type: Station map
-INFO 2022-09-29 12:16:18 | base._summarize_files_created: 	/Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli/nc73291880/stations_map.html
+INFO 2022-10-21 15:57:13 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-10-21 15:57:13 | gmrecords._initialize: PROJECTS_PATH: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-21 15:57:13 | generate_station_maps.main: Running subcommand &#39;generate_station_maps&#39;
+INFO 2022-10-21 15:57:14 | generate_station_maps.main: Generating station maps for event nc73291880 (1 of 1)...
+INFO 2022-10-21 15:57:15 | base._summarize_files_created: The following files have been created:
+INFO 2022-10-21 15:57:15 | base._summarize_files_created: File type: Station map
+INFO 2022-10-21 15:57:15 | base._summarize_files_created: 	/Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/stations_map.html
 --------------------------------------------------------------------------------
-Project: cli-tutorial 
-	Conf Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/baagaard/src/usgs/gmprocess/doc_source/contents/tutorials/data/cli
+Project: cli-tutorial **Current Project**
+	Conf Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/gferragut/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -1145,10 +1080,5 @@ Project: cli-tutorial
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="../../_static/tabs.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.apps.gmrecords - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.apps.gmrecords - gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -561,15 +561,15 @@
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">subcmds_noinit</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;init&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">in</span> <span class="n">subcmds_noinit</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">subcmds_noinit</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_initialize</span><span class="p">()</span>
 
             <span class="n">subcmds_quiet</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;projects&quot;</span><span class="p">,</span> <span class="s2">&quot;proj&quot;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">in</span> <span class="n">subcmds_quiet</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">subcmds_quiet</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
                 <span class="c1"># Print the current project information to avoid confusion</span>
                 <span class="n">proj</span> <span class="o">=</span> <span class="n">Project</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">80</span><span class="p">)</span>
@@ -587,9 +587,7 @@
         <span class="n">mod</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;gmprocess.subcommands&quot;</span><span class="p">)</span>
         <span class="n">subcommands</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">name</span><span class="p">:</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">finder</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">ispkg</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span>
-                <span class="n">mod</span><span class="o">.</span><span class="n">__path__</span><span class="p">,</span> <span class="n">mod</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span>
-            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">(</span><span class="n">mod</span><span class="o">.</span><span class="n">__path__</span><span class="p">,</span> <span class="n">mod</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">classes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">subcommands</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -631,7 +629,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_path</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_project</span><span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
 <div class="viewcode-block" id="GMrecordsApp._initialize"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp._initialize">[docs]</a>    <span class="k">def</span> <span class="nf">_initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">require_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="o">!=</span> <span class="s2">&quot;projects&quot;</span>
+        <span class="n">require_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">subcommand</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;projects&quot;</span><span class="p">,</span> <span class="s2">&quot;proj&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_load_config</span><span class="p">(</span><span class="n">require_config</span><span class="p">)</span>
 
         <span class="n">log_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">log</span> <span class="ow">or</span> <span class="kc">None</span>
@@ -651,7 +649,7 @@
             <span class="c1"># If projects.conf file doesn&#39;t exist and we need one, then run the</span>
             <span class="c1"># initial setup.</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;No project config file detected. Please select a project setup option:&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;No project config file detected. Please select a project setup option:&quot;</span><span class="p">,</span>  <span class="c1"># noqa</span>
                 <span class="s2">&quot;(1) Initialize the current directory as a gmrecords project,&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;    which will contain data and conf subdirectories.&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;(2) Setup a project with data and conf locations that are&quot;</span><span class="p">,</span>
@@ -676,17 +674,16 @@
             <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_file</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span>
         <span class="p">)</span>
         <span class="n">projmod</span><span class="o">.</span><span class="n">validate_projects_config</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">projects_path</span><span class="p">)</span>
-        <span class="n">current_project</span> <span class="o">=</span> <span class="n">projmod</span><span class="o">.</span><span class="n">get_current</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_conf</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;CALLED_FROM_PYTEST&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">CONFIG_PATH_TEST</span>  <span class="c1"># ~/gmptest</span>
+            <span class="n">conf_path</span> <span class="o">=</span> <span class="n">const</span><span class="o">.</span><span class="n">CONFIG_PATH_TEST</span>
             <span class="n">conf_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">test_conf_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">const</span><span class="o">.</span><span class="n">DATA_DIR</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">CONFIG_FILE_TEST</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">test_conf_file</span><span class="p">,</span> <span class="n">conf_path</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">CONFIG_FILE_TEST</span><span class="p">)</span>
 
         <span class="n">subcommands_need_conf</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;download&quot;</span><span class="p">,</span> <span class="s2">&quot;assemble&quot;</span><span class="p">,</span> <span class="s2">&quot;auto_shakemap&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">command_name</span> <span class="ow">in</span> <span class="n">subcommands_need_conf</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">configmod</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">projects_path</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">configmod</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">conf_path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GMrecordsApp._initial_setup"><a class="viewcode-back" href="../../../autoapi/gmprocess/apps/gmrecords/index.html#gmprocess.apps.gmrecords.GMrecordsApp._initial_setup">[docs]</a>    <span class="k">def</span> <span class="nf">_initial_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -707,6 +704,7 @@
 <span class="s2">        parameters for earthquake hazard analysis.</span>
 <span class="s2">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">parser</span>
         <span class="n">group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
         <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
             <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
@@ -809,7 +807,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>

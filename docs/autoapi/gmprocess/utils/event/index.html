@@ -5,13 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.utils.export_shakemap_utils" href="../export_shakemap_utils/index.html" /><link rel="prev" title="gmprocess.utils.download_utils" href="../download_utils/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.utils.event - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>gmprocess.utils.event - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
@@ -140,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -464,7 +463,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -513,6 +513,54 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.utils.event.</span></span><span class="sig-name descname"><span class="pre">ScalarEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/event.html#ScalarEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">obspy.core.event.event.Event</span></code></p>
 <p>Class to represent a flattened Event with only 1 origin and 1 magnitude.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.id" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the origin resource_id.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.time">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.time" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the origin time.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.latitude">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.latitude" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the origin latitude.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.longitude">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.longitude" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the origin longitude.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.depth">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.depth" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the origin depth.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.depth_km">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depth_km</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.depth_km" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the origin depth.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.magnitude">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.magnitude" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the magnitude value.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.magnitude_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude_type</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.magnitude_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the magnitude type.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.fromEvent">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/event.html#ScalarEvent.fromEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.fromEvent" title="Permalink to this definition">#</a></dt>
@@ -552,54 +600,6 @@
 <dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent._get_magnitude">
 <span class="sig-name descname"><span class="pre">_get_magnitude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/utils/event.html#ScalarEvent._get_magnitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent._get_magnitude" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.id" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the origin resource_id.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.time">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.time" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the origin time.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.latitude">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">latitude</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.latitude" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the origin latitude.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.longitude">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">longitude</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.longitude" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the origin longitude.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.depth">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.depth" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the origin depth.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.depth_km">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">depth_km</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.depth_km" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the origin depth.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.magnitude">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.magnitude" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the magnitude value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.utils.event.ScalarEvent.magnitude_type">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">magnitude_type</span></span><a class="headerlink" href="#gmprocess.utils.event.ScalarEvent.magnitude_type" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the magnitude type.</p>
-</dd></dl>
 
 </dd></dl>
 
@@ -715,29 +715,24 @@
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#functions">Functions</a><ul>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent"><code class="docutils literal notranslate"><span class="pre">ScalarEvent</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.id"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.id</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.time"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.time</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.latitude"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.latitude</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.longitude"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.longitude</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.depth"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.depth</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.depth_km"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.depth_km</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.magnitude"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.magnitude</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.magnitude_type"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.magnitude_type</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.fromEvent"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.fromEvent()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.fromParams"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.fromParams()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.__repr__"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.__repr__()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent._get_origin"><code class="docutils literal notranslate"><span class="pre">ScalarEvent._get_origin()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent._get_magnitude"><code class="docutils literal notranslate"><span class="pre">ScalarEvent._get_magnitude()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.id"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.id()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.time"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.time()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.latitude"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.latitude()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.longitude"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.longitude()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.depth"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.depth()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.depth_km"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.depth_km()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.magnitude"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.magnitude()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.magnitude_type"><code class="docutils literal notranslate"><span class="pre">ScalarEvent.magnitude_type()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#gmprocess.utils.event.get_event_dict"><code class="docutils literal notranslate"><span class="pre">get_event_dict()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.get_event_object"><code class="docutils literal notranslate"><span class="pre">get_event_object()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent">ScalarEvent</a><ul>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.fromEvent">fromEvent</a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.fromParams">fromParams</a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.__repr__">__repr__</a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent._get_origin">_get_origin</a></li>
-<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent._get_magnitude">_get_magnitude</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.id">id</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.time">time</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.latitude">latitude</a></li>
@@ -746,6 +741,11 @@
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.depth_km">depth_km</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.magnitude">magnitude</a></li>
 <li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.magnitude_type">magnitude_type</a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.fromEvent">fromEvent</a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.fromParams">fromParams</a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent.__repr__">__repr__</a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent._get_origin">_get_origin</a></li>
+<li><a class="reference internal" href="#gmprocess.utils.event.ScalarEvent._get_magnitude">_get_magnitude</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#gmprocess.utils.event.get_event_dict">get_event_dict</a></li>
@@ -775,10 +775,5 @@
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/tabs.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.subcommands.config - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
+        <title>gmprocess.subcommands.config - gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -563,11 +563,11 @@
         <span class="n">proj_config</span> <span class="o">=</span> <span class="n">confmod</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">conf_path</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
-            <span class="n">event_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span> <span class="o">/</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">event_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">data_path</span> <span class="o">/</span> <span class="n">event</span><span class="o">.</span><span class="n">id</span>
             <span class="k">if</span> <span class="n">event_dir</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
                 <span class="n">workname</span> <span class="o">=</span> <span class="n">event_dir</span> <span class="o">/</span> <span class="n">const</span><span class="o">.</span><span class="n">WORKSPACE_NAME</span>
 
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">workname</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">workname</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;No workspace file found for event </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">. &quot;</span>
                         <span class="s2">&quot;Continuing to next event.&quot;</span>
@@ -585,19 +585,21 @@
                     <span class="p">)</span>
                     <span class="k">if</span> <span class="n">config_exists</span><span class="p">:</span>
                         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Saving config for </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-                        <span class="n">fname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">save</span>
+                        <span class="n">fname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">save</span><span class="p">)</span>
                         <span class="n">yaml</span> <span class="o">=</span> <span class="n">ryaml</span><span class="o">.</span><span class="n">YAML</span><span class="p">()</span>
                         <span class="n">yaml</span><span class="o">.</span><span class="n">indent</span><span class="p">(</span><span class="n">mapping</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
                         <span class="n">yaml</span><span class="o">.</span><span class="n">preserve_quotes</span> <span class="o">=</span> <span class="kc">True</span>
                         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">yf</span><span class="p">:</span>
-                            <span class="n">yf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Path: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">workname</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="n">yf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;# Path: </span><span class="si">{</span><span class="n">workname</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
                             <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">workspace</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">yf</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">append_file</span><span class="p">(</span><span class="s2">&quot;Config&quot;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No config in workspace for event </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gmrecords</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">:</span>
                     <span class="c1"># Write project config to workspace</span>
                     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding config </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> workspace file.&quot;</span><span class="p">)</span>
-                    <span class="n">workspace</span><span class="o">.</span><span class="n">addConfig</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">proj_config</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+                    <span class="n">workspace</span><span class="o">.</span><span class="n">addConfig</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">proj_config</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_summarize_files_created</span><span class="p">()</span></div></div>
 </pre></div>
         </article>
       </div>
@@ -637,7 +639,6 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>

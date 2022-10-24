@@ -5,13 +5,12 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.metrics" href="../../metrics/index.html" /><link rel="prev" title="gmprocess.io.stream" href="../stream/index.html" />
 
-    <meta name="generator" content="sphinx-5.2.2, furo 2022.09.15"/>
-        <title>gmprocess.io.utils - gmprocess 1.2.2.dev10+gf24a0436 documentation</title>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+        <title>gmprocess.io.utils - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=9ec31e2665bf879c1d47d93a8ec4893870ee1e45" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
@@ -140,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev10+gf24a0436 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -464,7 +463,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -502,10 +502,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils._walk_and_unzip" title="gmprocess.io.utils._walk_and_unzip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_walk_and_unzip</span></code></a>(directory)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils._split_all_path" title="gmprocess.io.utils._split_all_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_split_all_path</span></code></a>(path)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.utils._handle_duplicates" title="gmprocess.io.utils._handle_duplicates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_handle_duplicates</span></code></a>(target)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.utils._walk" title="gmprocess.io.utils._walk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_walk</span></code></a>(path)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -600,7 +597,7 @@ and prepares it for use with either the gminfo command line program or
 to be read in with teh directory_to_streams method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>directory</strong> (<em>str</em>) – Directory of ground motion files (streams).</p>
+<dd class="field-odd"><p><strong>directory</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Directory of ground motion files (streams).</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>None.</p>
@@ -614,13 +611,8 @@ to be read in with teh directory_to_streams method.</p>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="gmprocess.io.utils._split_all_path">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">_split_all_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#_split_all_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils._split_all_path" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="gmprocess.io.utils._handle_duplicates">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">_handle_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#_handle_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils._handle_duplicates" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.io.utils._walk">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.io.utils.</span></span><span class="sig-name descname"><span class="pre">_walk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/io/utils.html#_walk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.io.utils._walk" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </section>
@@ -694,16 +686,14 @@ to be read in with teh directory_to_streams method.</p>
 <li><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace"><code class="docutils literal notranslate"><span class="pre">resample_uneven_trace()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.flatten_directory"><code class="docutils literal notranslate"><span class="pre">flatten_directory()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils._walk_and_unzip"><code class="docutils literal notranslate"><span class="pre">_walk_and_unzip()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.utils._split_all_path"><code class="docutils literal notranslate"><span class="pre">_split_all_path()</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.io.utils._handle_duplicates"><code class="docutils literal notranslate"><span class="pre">_handle_duplicates()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.utils._walk"><code class="docutils literal notranslate"><span class="pre">_walk()</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.DUPLICATE_MARKER">DUPLICATE_MARKER</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.is_binary">is_binary</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.is_evenly_spaced">is_evenly_spaced</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.resample_uneven_trace">resample_uneven_trace</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils.flatten_directory">flatten_directory</a></li>
 <li><a class="reference internal" href="#gmprocess.io.utils._walk_and_unzip">_walk_and_unzip</a></li>
-<li><a class="reference internal" href="#gmprocess.io.utils._split_all_path">_split_all_path</a></li>
-<li><a class="reference internal" href="#gmprocess.io.utils._handle_duplicates">_handle_duplicates</a></li>
+<li><a class="reference internal" href="#gmprocess.io.utils._walk">_walk</a></li>
 </ul>
 </li>
 </ul>
@@ -729,10 +719,5 @@ to be read in with teh directory_to_streams method.</p>
     <script src="../../../../_static/clipboard.min.js"></script>
     <script src="../../../../_static/copybutton.js"></script>
     <script src="../../../../_static/tabs.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

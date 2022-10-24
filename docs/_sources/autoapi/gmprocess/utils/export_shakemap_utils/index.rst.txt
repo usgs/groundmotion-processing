@@ -31,7 +31,7 @@ Functions
    :param event: Event object.
    :type event: ScalarEvent
    :param event_dir: Event directory.
-   :type event_dir: str
+   :type event_dir: str or pathlib.Path
    :param label: Processing label.
    :type label: str
    :param config: Configuration options.

@@ -117,7 +117,7 @@ Attributes
       Load from existing ASDF file.
 
       :param filename: Path to existing ASDF file.
-      :type filename: str
+      :type filename: str or pathlib.Path
       :param compression: Any value supported by pyasdf.asdf_data_set.ASDFDataSet.
       :type compression: str
 
@@ -131,7 +131,7 @@ Attributes
       Load from existing ASDF file.
 
       :param filename: Path to existing ASDF file.
-      :type filename: str
+      :type filename: str or pathlib.Path
 
       :returns: Object containing ASDF file.
       :rtype: StreamWorkspace

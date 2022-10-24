@@ -43,7 +43,7 @@ Attributes
    Read strong motion data from a file.
 
    :param filename: Path to file
-   :type filename: str
+   :type filename: str or pathlib.Path
    :param read_format: Format of file
    :type read_format: str
 
@@ -56,7 +56,7 @@ Attributes
    Get the format of the file.
 
    :param filename: Path to file
-   :type filename: str
+   :type filename: str or pathlib.Path
    :param config: Dictionary containing configuration.
    :type config: dict
 

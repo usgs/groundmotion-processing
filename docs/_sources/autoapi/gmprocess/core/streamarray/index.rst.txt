@@ -39,6 +39,12 @@ Attributes
 
    Bases: :py:obj:`object`
 
+   .. py:property:: n_passed
+
+
+   .. py:property:: n_failed
+
+
    .. py:method:: describe_string()
 
       More verbose description of StreamArray.
@@ -110,14 +116,6 @@ Attributes
       :param instrument: Instrument code; i.e., the first two characters of the
                          channel.
       :type instrument: str
-
-
-   .. py:method:: n_passed()
-      :property:
-
-
-   .. py:method:: n_failed()
-      :property:
 
 
 

@@ -48,16 +48,13 @@ Attributes
    for 0.3 second spectral acceleration, for example.
 
    :param directory: Directory of ground motion files (streams).
-   :type directory: str
-   :param imcs: Strings designating desired components to create
-                in table.
+   :type directory: str or pathlib.Path
+   :param imcs: Strings designating desired components to create in table.
    :type imcs: list
-   :param imts: Strings designating desired PGMs to create
-                in table.
+   :param imts: Strings designating desired PGMs to create in table.
    :type imts: list
-   :param origin: Defines the focal time and
-                  geographical location of an earthquake hypocenter.
-                  Default is None.
+   :param origin: Defines the focal time and geographical location of an earthquake
+                  hypocenter. Default is None.
    :type origin: obspy.core.event.Origin
    :param process: Process the stream using the config file.
    :type process: bool

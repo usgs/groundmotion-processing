@@ -92,6 +92,43 @@ Attributes
 
       
 
+   .. py:attribute:: epilog
+      :annotation: = Multiline-String
+
+       .. raw:: html
+
+           <details><summary>Show Value</summary>
+
+       .. code-block:: text
+           :linenos:
+
+           
+               In order to simplify the command line interface, the gmrecords command makes use of
+               "projects". You can have many projects configured on your system, and a project can
+               have data from many events. A project is essentially a way to encapsulate the
+               configuration and data directories so that they do not need to be specified as
+               command line arguments.
+
+               `gmrecords` first checks the current directory for the presence of
+               `./.gmprocess/projects.conf` (this is called a "local" or "directory" project); if
+               that is not found then it looks for the presence of `~/.gmprocess/projects.conf`
+               (this is called a "system" level project).
+
+               Within the `projects.conf` file, the key `project` indicates which the currently
+               selected project. Multiple projects can be included in a `projects.conf` file.
+
+               The project name is then stored as a key at the top level, which itself has keys
+               `data_path` and `conf_path`. The `data_path` points to the directory where data
+               is stored, and organized at the top level by directories named by event id. The
+               `conf_path` points to the directory that holds configuration options in YML files.
+               
+
+       .. raw:: html
+
+           </details>
+
+      
+
    .. py:method:: main(gmrecords)
 
       Manage gmrecords projects.
@@ -112,6 +149,12 @@ Attributes
 
 
    .. py:method:: rename_project(source, target)
+
+
+   .. py:method:: _set_path(proj_name, path, key)
+
+
+   .. py:method:: _check_project_name(name)
 
 
 
@@ -138,7 +181,9 @@ Attributes
 
 .. py:function:: get_current(config)
 
-   Get current project from configuration. We assume the configuration has already been validated.
+   Get current project from configuration.
+
+   We assume the configuration has already been validated.
 
    :param config: Projects configuration.
    :type config: ConfigObj
