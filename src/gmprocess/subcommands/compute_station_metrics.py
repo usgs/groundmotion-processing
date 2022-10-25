@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import pathlib
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
@@ -97,7 +98,9 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             }
         )
         self.origin = origin
-        rupture = rupt.factory.get_rupture(origin, str(rupture_file))
+        if isinstance(rupture_file, pathlib.Path):
+            rupture_file = str(rupture_file)
+        rupture = rupt.factory.get_rupture(origin, rupture_file)
 
         self._get_labels()
 
