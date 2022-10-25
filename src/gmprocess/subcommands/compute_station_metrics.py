@@ -97,7 +97,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
             }
         )
         self.origin = origin
-        rupture = rupt.factory.get_rupture(origin, rupture_file)
+        rupture = rupt.factory.get_rupture(origin, str(rupture_file))
 
         self._get_labels()
 
