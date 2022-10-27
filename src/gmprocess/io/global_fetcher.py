@@ -12,6 +12,18 @@ from .fetcher import DataFetcher
 from gmprocess.utils.config import get_config
 from gmprocess.io.utils import _walk
 
+SKIP_MODS = [
+    "fetcher.py",
+    "global_fetcher.py",
+    "nga.py",
+    "read.py",
+    "read_directory.py",
+    "report.py",
+    "seedname.py",
+    "stream.py",
+    "utils.py",
+]
+
 
 def fetch_data(
     time,
@@ -138,13 +150,16 @@ def find_fetchers(lat, lon):
 
     fetchers = {}
     root = pathlib.Path(__file__).parent
-    for modfile in _walk(root):
-        modname = ".".join(modfile.parts[modfile.parts.index("gmprocess") :]).replace(
-            ".py", ""
-        )
-        if modname.find("__") >= 0:
+    for mod_file in _walk(root):
+        if str(mod_file).find("__") >= 0:
             continue
-        mod = importlib.import_module(modname)
+        mod_tuple = mod_file.parts[mod_file.parts.index("gmprocess") :]
+        if mod_tuple[-1] in SKIP_MODS:
+            continue
+        mod_name = ".".join(mod_tuple)
+        if mod_name.endswith(".py"):
+            mod_name = mod_name[:-3]
+        mod = importlib.import_module(mod_name)
         for name, obj in inspect.getmembers(mod):
             if name == "DataFetcher":
                 continue
