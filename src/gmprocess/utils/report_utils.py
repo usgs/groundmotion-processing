@@ -31,9 +31,8 @@ def draw_stations_map(pstreams, event, event_dir):
     )
     chans = [[tr.stats.channel for tr in st] for st in pstreams]
 
-    failed_st = np.array(
-        [np.any([tr.hasParameter("failure") for tr in st]) for st in pstreams]
-    )
+    failed_st = np.array([not st.passed for st in pstreams])
+
     failed_tr = np.array(
         [[tr.hasParameter("failure") for tr in st] for st in pstreams], dtype="object"
     )[failed_st]
