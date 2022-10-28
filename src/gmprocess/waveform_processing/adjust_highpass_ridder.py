@@ -60,6 +60,8 @@ def ridder_fchp(st, target=0.02, tol=0.001, maxiter=30, maxfc=0.5, config=None):
         filter_code = 0
 
     for tr in st:
+        if not tr.passed:
+            continue
         initial_corners = tr.getParameter("corner_frequencies")
         if initial_corners["type"] == "reviewed":
             continue
