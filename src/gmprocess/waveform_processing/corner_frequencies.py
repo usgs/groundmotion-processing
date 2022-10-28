@@ -61,6 +61,7 @@ def get_corner_frequencies(
         st = from_magnitude(st, origin, **magnitude)
     elif method == "snr":
         st = from_snr(st, **snr)
+        # Constrain the two horizontals to have the same corner frequencies?
         if snr["same_horiz"] and st.passed and st.num_horizontal > 1:
             hlps = [
                 tr.getParameter("corner_frequencies")["lowpass"]
@@ -124,8 +125,6 @@ def lowpass_max_frequency(st, fn_fac=0.75, lp_max=40.0, config=None):
     Returns:
         StationStream: Resampled stream.
     """
-    if not st.passed:
-        return st
 
     def _cap_lowpass(fc):
         freq_dict = tr.getParameter("corner_frequencies")
