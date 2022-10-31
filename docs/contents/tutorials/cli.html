@@ -495,30 +495,30 @@ The configuration files are in the <code class="docutils literal notranslate"><s
 <p>First, we list the available projects in the current directory.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords projects --list
 INFO 2022-10-31 10:19:59 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:19:59 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:19:59 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:19:59 | projects.main: Running subcommand &#39;projects&#39;
 
 Project: cli-tutorial 
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 
 
 Project: scripting-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">PROJECTS_PATH</span></code> shows the location of the projects configuration file where the information for the projects is stored.
 Second, we use the <code class="docutils literal notranslate"><span class="pre">projects</span></code> subcommand to select the project configuration <code class="docutils literal notranslate"><span class="pre">cli-tutorial</span></code>.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords projects --switch cli-tutorial
 INFO 2022-10-31 10:20:01 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:20:01 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:20:01 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:20:01 | projects.main: Running subcommand &#39;projects&#39;
 
 Switched to project: 
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 </pre></div>
 </div>
 <p>Third, we create the directory to hold the data.</p>
@@ -641,7 +641,7 @@ consists of miniseed and StationXML files,</p>
 If we do not specify the event ID, then all of the events in the data directory will be assembled.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords assemble
 INFO 2022-10-31 10:20:02 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:20:02 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:20:02 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:20:02 | assemble.main: Running subcommand &#39;assemble&#39;
 INFO 2022-10-31 10:20:06 | assemble.main: Number of events to assemble: 1
 INFO 2022-10-31 10:20:06 | assemble.main: Assembling event nc73291880 (1 of 1)...
@@ -714,11 +714,11 @@ INFO 2022-10-31 10:20:14 | stream_workspace.addStreams: Adding waveforms for sta
 INFO 2022-10-31 10:20:15 | stream_workspace.addStreams: Adding waveforms for station BK.BRIB.BH
 INFO 2022-10-31 10:20:15 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-31 10:20:15 | base._summarize_files_created: File type: Workspace
-INFO 2022-10-31 10:20:15 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/workspace.h5
+INFO 2022-10-31 10:20:15 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/workspace.h5
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -735,7 +735,7 @@ Since ASDF is an HDF5 specification, it can also be loaded in most programming l
 The processed waveforms are then added to the ASDF workspace file.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords process_waveforms
 INFO 2022-10-31 10:20:17 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:20:17 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:20:17 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:20:17 | process_waveforms.main: Running subcommand &#39;process_waveforms&#39;
 INFO 2022-10-31 10:20:21 | process_waveforms.main: Processing tag: default
 INFO 2022-10-31 10:20:21 | process_waveforms.main: Processing waveforms for event nc73291880 (1 of 1)...
@@ -787,8 +787,8 @@ INFO 2022-10-31 10:20:39 | stream_workspace.addStreams: Adding waveforms for sta
 INFO 2022-10-31 10:20:39 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -809,19 +809,19 @@ The report gives a 1-page summary per station that includes:</p>
 </ul>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_report
 INFO 2022-10-31 10:20:41 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:20:41 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:20:41 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:20:41 | generate_report.main: Running subcommand &#39;generate_report&#39;
 INFO 2022-10-31 10:20:45 | generate_report.generate_diagnostic_plots: Creating diagnostic plots for event nc73291880...
 INFO 2022-10-31 10:21:17 | generate_report.main: Generating summary report for event nc73291880 (1 of 1)...
 INFO 2022-10-31 10:21:21 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-31 10:21:21 | base._summarize_files_created: File type: Moveout plot
-INFO 2022-10-31 10:21:21 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/moveout_plot.png
+INFO 2022-10-31 10:21:21 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/moveout_plot.png
 INFO 2022-10-31 10:21:21 | base._summarize_files_created: File type: Summary report
-INFO 2022-10-31 10:21:21 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_report_nc73291880.pdf
+INFO 2022-10-31 10:21:21 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_report_nc73291880.pdf
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -857,7 +857,7 @@ The <strong>fifth row</strong> of plots is the signal-to-noise ratio (SNR), wher
 <p>The <code class="docutils literal notranslate"><span class="pre">compute_station_metrics</span></code> subcommand computes station metrics (like epicentral distance) and add them to the ASDF workspace file.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_station_metrics
 INFO 2022-10-31 10:21:23 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:21:23 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:21:23 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:21:23 | compute_station_metrics.main: Running subcommand &#39;compute_station_metrics&#39;
 INFO 2022-10-31 10:21:28 | compute_station_metrics.main: Computing station metrics for event nc73291880 (1 of 1)...
 INFO 2022-10-31 10:21:32 | compute_station_metrics._event_station_metrics: Calculating station metrics for BK.BRIB.BH...
@@ -877,8 +877,8 @@ INFO 2022-10-31 10:22:09 | compute_station_metrics._event_station_metrics: Added
 INFO 2022-10-31 10:22:09 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -890,7 +890,7 @@ The waveform metrics that are computed are defined in the metrics section of the
 The metrics are defined by intensity metric types (for example, spectral acceleration vs duration) and intensity measure component (how the instrument components are combined).</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_waveform_metrics
 INFO 2022-10-31 10:22:11 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:22:11 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:22:11 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:22:11 | compute_waveform_metrics.main: Running subcommand &#39;compute_waveform_metrics&#39;
 INFO 2022-10-31 10:22:15 | compute_waveform_metrics.main: Computing waveform metrics for event nc73291880 (1 of 1)...
 INFO 2022-10-31 10:22:17 | compute_waveform_metrics._compute_event_waveform_metrics: Calculating waveform metrics for BK.BRIB.HN...
@@ -907,8 +907,8 @@ INFO 2022-10-31 10:23:41 | compute_waveform_metrics._compute_event_waveform_metr
 INFO 2022-10-31 10:23:41 | base._summarize_files_created: No new files created.
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -923,18 +923,18 @@ Project: cli-tutorial **Current Project**
 Unlike many of the other subcommands, the output combines the results in all project events and puts the result into the base project directory.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_failure_tables
 INFO 2022-10-31 10:23:43 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:23:43 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:23:43 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:23:43 | export_failure_tables.main: Running subcommand &#39;export_failure_tables&#39;
 INFO 2022-10-31 10:23:48 | export_failure_tables.main: Creating failure tables for event nc73291880 (1 of 1)...
 INFO 2022-10-31 10:23:50 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-31 10:23:50 | base._summarize_files_created: File type: Failure table
-INFO 2022-10-31 10:23:50 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_failure_reasons_short.csv
+INFO 2022-10-31 10:23:50 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_failure_reasons_short.csv
 INFO 2022-10-31 10:23:50 | base._summarize_files_created: File type: Complete failures
-INFO 2022-10-31 10:23:50 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_complete_failures.csv
+INFO 2022-10-31 10:23:50 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_complete_failures.csv
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -944,28 +944,28 @@ Project: cli-tutorial **Current Project**
 <p>Although the metrics can be accessed directly from the ASDF file, it is often convenient to save the metrics (both station and waveform) into a “flatfile” where each row corresponds to a single record.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_metric_tables
 INFO 2022-10-31 10:23:52 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:23:52 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:23:52 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:23:52 | export_metric_tables.main: Running subcommand &#39;export_metric_tables&#39;
 INFO 2022-10-31 10:23:56 | export_metric_tables.main: Creating tables for event nc73291880 (1 of 1)...
 INFO 2022-10-31 10:24:09 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-31 10:24:09 | base._summarize_files_created: File type: Metric tables
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_events.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2_README.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1_README.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z_README.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0_README.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters_README.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr.csv
-INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr_README.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_events.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h2_README.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_h1_README.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_z_README.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_metrics_rotd50.0_README.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_fit_spectra_parameters_README.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr.csv
+INFO 2022-10-31 10:24:09 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/cli-tutorial_default_snr_README.csv
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -976,16 +976,16 @@ Project: cli-tutorial **Current Project**
 <p>As with the metric and failure tables, you can also output tables summarizing the provenance information.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_provenance_tables
 INFO 2022-10-31 10:24:11 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:24:11 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:24:11 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:24:11 | export_provenance_tables.main: Running subcommand &#39;export_provenance_tables&#39;
 INFO 2022-10-31 10:24:15 | export_provenance_tables.main: Creating provenance tables for event nc73291880 (1 of 1)...
 INFO 2022-10-31 10:24:17 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-31 10:24:17 | base._summarize_files_created: File type: Provenance
-INFO 2022-10-31 10:24:17 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_provenance.csv
+INFO 2022-10-31 10:24:17 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/cli-tutorial_default_provenance.csv
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -1000,15 +1000,15 @@ This type of issue is relatively common, and can sometimes be identified by plot
 </div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_regression_plot
 INFO 2022-10-31 10:24:19 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:24:19 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:24:19 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:24:19 | generate_regression_plot.main: Running subcommand &#39;generate_regression_plot&#39;
 INFO 2022-10-31 10:24:22 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-31 10:24:22 | base._summarize_files_created: File type: Multi-event regression plot
-INFO 2022-10-31 10:24:22 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/regression_rotd50.0_PGA.png
+INFO 2022-10-31 10:24:22 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/regression_rotd50.0_PGA.png
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>
@@ -1025,16 +1025,16 @@ Project: cli-tutorial **Current Project**
 <p>The <code class="docutils literal notranslate"><span class="pre">generate_station_maps</span></code> command makes an interactive HTML map that can be opened in a browser.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_station_maps
 INFO 2022-10-31 10:24:23 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:24:23 | gmrecords._initialize: PROJECTS_PATH: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-10-31 10:24:23 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
 INFO 2022-10-31 10:24:23 | generate_station_maps.main: Running subcommand &#39;generate_station_maps&#39;
 INFO 2022-10-31 10:24:27 | generate_station_maps.main: Generating station maps for event nc73291880 (1 of 1)...
 INFO 2022-10-31 10:24:29 | base._summarize_files_created: The following files have been created:
 INFO 2022-10-31 10:24:29 | base._summarize_files_created: File type: Station map
-INFO 2022-10-31 10:24:29 | base._summarize_files_created: 	/Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/stations_map.html
+INFO 2022-10-31 10:24:29 | base._summarize_files_created: 	/Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli/nc73291880/stations_map.html
 --------------------------------------------------------------------------------
 Project: cli-tutorial **Current Project**
-	Conf Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
-	Data Path: /Users/emthompson/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
+	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
+	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 --------------------------------------------------------------------------------
 </pre></div>
 </div>

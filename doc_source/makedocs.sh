@@ -31,6 +31,9 @@ function clean_docs() {
     rm -fr _build
 }
 
+function replace_username() {
+    find .. -type f \( -iname \*.html -o -iname \*.log -o -iname \*.js \) | xargs sed -I '' -E "s/$USER/username/gi"
+}
 
 target="rebuild"
 if [ $# == 1 ]; then
@@ -43,19 +46,23 @@ case $target in
         clean_docs
 	clean_data
 	build_docs
+    replace_username
 	;;
     "update" )
         echo "Performing incremental rebuild of documentation..."
 	build_docs
+    replace_username
 	;;
     "clean_data" )
         echo "Removing temporary data files generated when building documentation..."
 	clean_data
+    replace_username
 	;;
     "clean_all" )
         echo "Removing all temporary data and documentation files ..."
 	clean_data
 	clean_docs
+    replace_username
 	;;
     *)
 	usage
