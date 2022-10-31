@@ -15,7 +15,9 @@ def test_import(script_runner):
         ddir = constants.TEST_DATA_DIR / "demo"
         idir = constants.TEST_DATA_DIR / "import"
 
-        setup_inputs = io.StringIO(f"test\n{str(cdir)}\n{str(ddir)}\nname\ntest@email.com\n")
+        setup_inputs = io.StringIO(
+            f"test\n{str(cdir)}\n{str(ddir)}\nname\ntest@email.com\n"
+        )
         ret = script_runner.run("gmrecords", "projects", "-c", stdin=setup_inputs)
         setup_inputs.close()
         assert ret.success
@@ -23,7 +25,7 @@ def test_import(script_runner):
         # Test CESMD zip file
         zfile = idir / "cesmd_test.zip"
         ret = script_runner.run(
-            "gmrecords", "import", "-e", "nn00725272", "-p", str(zfile)
+            "gmrecords", "-e", "nn00725272", "import", "-p", str(zfile)
         )
         print("*** stdout ***")
         print(ret.stdout)
@@ -38,7 +40,7 @@ def test_import(script_runner):
         # Test tar file of CWB data
         tfile = idir / "test.tar.zip"
         ret = script_runner.run(
-            "gmrecords", "import", "-e", "us6000e2mt", "-p", str(tfile)
+            "gmrecords", "-e", "us6000e2mt", "import", "-p", str(tfile)
         )
         assert ret.success
         raw_dir = ddir / "us6000e2mt" / "raw"
@@ -49,7 +51,7 @@ def test_import(script_runner):
         # Test directory of files
         dpath = idir / "dir"
         ret = script_runner.run(
-            "gmrecords", "import", "-e", "us6000e2mt", "-p", str(dpath)
+            "gmrecords", "-e", "us6000e2mt", "import", "-p", str(dpath)
         )
         assert ret.success
 

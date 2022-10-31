@@ -20,9 +20,6 @@ class ExportFailureTablesModule(base.SubcommandModule):
     aliases = ("ftables",)
 
     arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["label"],
         {
             "long_flag": "--type",
             "help": (

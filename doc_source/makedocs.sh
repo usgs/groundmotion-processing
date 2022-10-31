@@ -10,3 +10,5 @@ fi
 rm -fr ../docs
 cp -r _build/html ../docs
 touch ../docs/.nojekyll
+rm -fr contents/tutorials/data/cli/
+rm -fr contents/tutorials/data/scripting/

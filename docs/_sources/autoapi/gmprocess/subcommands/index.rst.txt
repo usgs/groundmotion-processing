@@ -12,7 +12,8 @@ Submodules
 
    arg_dicts/index.rst
    assemble/index.rst
-   auto_shakemap/index.rst
+   autoprocess/index.rst
+   autoshakemap/index.rst
    base/index.rst
    clean/index.rst
    compute_station_metrics/index.rst

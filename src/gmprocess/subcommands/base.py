@@ -163,6 +163,12 @@ class SubcommandModule(ABC):
             if hasattr(self.gmrecords.args, "textfile")
             else None
         )
+        if isinstance(self.gmrecords.args.eventid, str):
+            # Need to strip in case there is whitespace
+            self.gmrecords.args.eventid = [
+                eid.strip() for eid in self.gmrecords.args.eventid.split(",")
+            ]
+
         self.events = base_utils.get_events(
             eventids=self.gmrecords.args.eventid,
             textfile=tfile,

@@ -70,6 +70,7 @@ class CleanModule(base.SubcommandModule):
         """
         logging.info(f"Running subcommand '{self.command_name}'")
         self.gmrecords = gmrecords
+        self._get_events()
         self._check_arguments()
 
         # ---------------------------------------------------------------------
@@ -86,9 +87,9 @@ class CleanModule(base.SubcommandModule):
 
         # ---------------------------------------------------------------------
         # Inside the event directories
-        events = list(data_path.glob("*/"))
-        logging.info(f"Number of events: {len(events)}")
-        for event_dir in events:
+        logging.info(f"Number of events: {len(self.events)}")
+        for event in self.events:
+            event_dir = gmrecords.data_path / event.id
             # Exported tables
             if gmrecords.args.all or gmrecords.args.export:
                 patterns = [

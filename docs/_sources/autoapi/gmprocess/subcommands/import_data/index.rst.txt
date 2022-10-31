@@ -22,14 +22,8 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.import_data.arg_dicts
    gmprocess.subcommands.import_data.base
 
-
-.. py:data:: arg_dicts
-   
-
-   
 
 .. py:data:: base
    

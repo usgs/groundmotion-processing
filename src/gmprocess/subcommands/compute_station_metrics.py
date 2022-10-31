@@ -32,12 +32,7 @@ class ComputeStationMetricsModule(base.SubcommandModule):
     command_name = "compute_station_metrics"
     aliases = ("sm",)
 
-    arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["label"],
-        arg_dicts.ARG_DICTS["overwrite"],
-    ]
+    arguments = []
 
     def main(self, gmrecords):
         """Compute station metrics.

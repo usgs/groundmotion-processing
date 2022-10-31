@@ -18,21 +18,7 @@ class DownloadModule(base.SubcommandModule):
 
     command_name = "download"
 
-    arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        {
-            "long_flag": "--info",
-            "help": (
-                "Single event information as ID TIME(YYYY-MM-DDTHH:MM:SS) "
-                "LAT LON DEP MAG."
-            ),
-            "type": str,
-            "default": None,
-            "nargs": 7,
-            "metavar": ("ID", "TIME", "LAT", "LON", "DEPTH", "MAG", "MAG_TYPE"),
-        },
-    ]
+    arguments = []
 
     def main(self, gmrecords):
         """
@@ -45,7 +31,6 @@ class DownloadModule(base.SubcommandModule):
         logging.info(f"Running subcommand '{self.command_name}'")
         self.gmrecords = gmrecords
         self._check_arguments()
-
         self._get_events()
 
         logging.info(f"Number of events to download: {len(self.events)}")

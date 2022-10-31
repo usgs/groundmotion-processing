@@ -51,11 +51,13 @@ See [Configuration File](../manual/config_file) for more information.
 
 In this example we will consider ground motions recorded for a [magnitude 4.5 earthquake](https://earthquake.usgs.gov/earthquakes/eventpage/nc73291880/executive) east of San Francisco, California.
 
-```{tab} Download
+:::{tab} Download
 We download data from FDSN data centers using the USGS ComCat event ID nc73291880.
 
-`gmrecords download --eventid nc73291880`
 ```
+gmrecords --eventid nc73291880 download
+```
+:::
 
 ```{tab} Use cached data
 We have cached the results of running `gmrecords download --eventid nc73291880` in the `tests/data/tutorials` directory.
@@ -112,7 +114,7 @@ The console message indicates that the `workspace.h5` ASDF file has been created
 
 ```{note}
 The [Seismic Data](https://seismic-data.org/) folks have developed a graphical user interface to explore ASDF data sets called [ASDF Sextant](https://github.com/SeismicData/asdf_sextant) and this may be useful for browsing the contents of the ASDF file.
-Since ASDF is an HDF5 specification, it can also be loaded in most programming languages using [HDF5](https://www.hdfgroup.org/solutions/hdf5/ libraries.
+Since ASDF is an HDF5 specification, it can also be loaded in most programming languages using [HDF5](https://www.hdfgroup.org/solutions/hdf5/) libraries.
 ```
 
 ## Process Waveforms
@@ -141,7 +143,7 @@ The report gives a 1-page summary per station that includes:
 - the failure reason for stations that have failed.
 - shaded green regions that show range in acceptable amplitudes in the tail of the trace for a "sanity" check; this check is designed to remove records with unnatural drifts in the waveform.
 
-:::{command-output} gmrecords gnerate_report
+:::{command-output} gmrecords generate_report
 ---
 cwd: .
 ---

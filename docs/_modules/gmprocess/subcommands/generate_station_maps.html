@@ -4,13 +4,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <meta name="generator" content="sphinx-5.1.1, furo 2022.06.21"/>
-        <title>gmprocess.subcommands.generate_station_maps - gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>gmprocess.subcommands.generate_station_maps - gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
@@ -139,7 +138,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221020 documentation</div></a>
+      <a href="../../../index.html"><div class="brand">gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -374,7 +373,8 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/auto_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/autoprocess/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoprocess</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/autoshakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoshakemap</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.base</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
@@ -485,7 +485,6 @@
 
 <span class="kn">from</span> <span class="nn">gmprocess.subcommands.lazy_loader</span> <span class="kn">import</span> <span class="n">LazyLoader</span>
 
-<span class="n">arg_dicts</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;arg_dicts&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.arg_dicts&quot;</span><span class="p">)</span>
 <span class="n">base</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.subcommands.base&quot;</span><span class="p">)</span>
 <span class="n">ws</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;ws&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.io.asdf.stream_workspace&quot;</span><span class="p">)</span>
 <span class="n">const</span> <span class="o">=</span> <span class="n">LazyLoader</span><span class="p">(</span><span class="s2">&quot;const&quot;</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="s2">&quot;gmprocess.utils.constants&quot;</span><span class="p">)</span>
@@ -498,11 +497,7 @@
     <span class="n">command_name</span> <span class="o">=</span> <span class="s2">&quot;generate_station_maps&quot;</span>
     <span class="n">aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;maps&quot;</span><span class="p">,)</span>
 
-    <span class="n">arguments</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;eventid&quot;</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;textfile&quot;</span><span class="p">],</span>
-        <span class="n">arg_dicts</span><span class="o">.</span><span class="n">ARG_DICTS</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">],</span>
-    <span class="p">]</span>
+    <span class="n">arguments</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="GenerateHTMLMapModule.main"><a class="viewcode-back" href="../../../autoapi/gmprocess/subcommands/generate_station_maps/index.html#gmprocess.subcommands.generate_station_maps.GenerateHTMLMapModule.main">[docs]</a>    <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmrecords</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generate summary report.</span>
@@ -604,14 +599,10 @@
     <script src="../../../_static/underscore.js"></script>
     <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/scripts/furo.js"></script>
     <script src="../../../_static/clipboard.min.js"></script>
     <script src="../../../_static/copybutton.js"></script>
     <script src="../../../_static/tabs.js"></script>
-    <script>let toggleHintShow = 'Click to show';</script>
-    <script>let toggleHintHide = 'Click to hide';</script>
-    <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     </body>
 </html>

@@ -19,12 +19,7 @@ class AssembleModule(base.SubcommandModule):
 
     command_name = "assemble"
 
-    arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["overwrite"],
-        arg_dicts.ARG_DICTS["num_processes"],
-    ]
+    arguments = []
 
     def main(self, gmrecords):
         """

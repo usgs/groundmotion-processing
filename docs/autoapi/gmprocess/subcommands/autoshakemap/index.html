@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
-<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands.base" href="../base/index.html" /><link rel="prev" title="gmprocess.subcommands.assemble" href="../assemble/index.html" />
+<link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.subcommands.base" href="../base/index.html" /><link rel="prev" title="gmprocess.subcommands.autoprocess" href="../autoprocess/index.html" />
 
-    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>gmprocess.subcommands.auto_shakemap - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>gmprocess.subcommands.autoshakemap - gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -374,7 +374,8 @@
 <li class="toctree-l3 current has-children"><a class="reference internal" href="../index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
-<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../autoprocess/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoprocess</span></code></a></li>
+<li class="toctree-l4 current current-page"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoshakemap</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.base</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
@@ -478,8 +479,8 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-gmprocess.subcommands.auto_shakemap">
-<span id="gmprocess-subcommands-auto-shakemap"></span><h1><a class="reference internal" href="#module-gmprocess.subcommands.auto_shakemap" title="gmprocess.subcommands.auto_shakemap"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a><a class="headerlink" href="#module-gmprocess.subcommands.auto_shakemap" title="Permalink to this heading">#</a></h1>
+          <section id="module-gmprocess.subcommands.autoshakemap">
+<span id="gmprocess-subcommands-autoshakemap"></span><h1><a class="reference internal" href="#module-gmprocess.subcommands.autoshakemap" title="gmprocess.subcommands.autoshakemap"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoshakemap</span></code></a><a class="headerlink" href="#module-gmprocess.subcommands.autoshakemap" title="Permalink to this heading">#</a></h1>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
 <section id="classes">
@@ -487,7 +488,7 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule" title="gmprocess.subcommands.auto_shakemap.AutoShakemapModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoShakemapModule</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule" title="gmprocess.subcommands.autoshakemap.AutoShakemapModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AutoShakemapModule</span></code></a></p></td>
 <td><p>Chain together subcommands to get shakemap ground motion file.</p></td>
 </tr>
 </tbody>
@@ -499,123 +500,123 @@
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.arg_dicts" title="gmprocess.subcommands.auto_shakemap.arg_dicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arg_dicts</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.arg_dicts" title="gmprocess.subcommands.autoshakemap.arg_dicts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arg_dicts</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.base" title="gmprocess.subcommands.auto_shakemap.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.base" title="gmprocess.subcommands.autoshakemap.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.download" title="gmprocess.subcommands.auto_shakemap.download"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.download" title="gmprocess.subcommands.autoshakemap.download"><code class="xref py py-obj docutils literal notranslate"><span class="pre">download</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.import_data" title="gmprocess.subcommands.auto_shakemap.import_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.import_data" title="gmprocess.subcommands.autoshakemap.import_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">import_data</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.assemble" title="gmprocess.subcommands.auto_shakemap.assemble"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assemble</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.assemble" title="gmprocess.subcommands.autoshakemap.assemble"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assemble</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.process_waveforms" title="gmprocess.subcommands.auto_shakemap.process_waveforms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_waveforms</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.process_waveforms" title="gmprocess.subcommands.autoshakemap.process_waveforms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_waveforms</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.compute_station_metrics" title="gmprocess.subcommands.auto_shakemap.compute_station_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_station_metrics</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.compute_station_metrics" title="gmprocess.subcommands.autoshakemap.compute_station_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_station_metrics</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.compute_waveform_metrics" title="gmprocess.subcommands.auto_shakemap.compute_waveform_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_waveform_metrics</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.compute_waveform_metrics" title="gmprocess.subcommands.autoshakemap.compute_waveform_metrics"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_waveform_metrics</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.export_metric_tables" title="gmprocess.subcommands.auto_shakemap.export_metric_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_metric_tables</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.export_metric_tables" title="gmprocess.subcommands.autoshakemap.export_metric_tables"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_metric_tables</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.export_shakemap" title="gmprocess.subcommands.auto_shakemap.export_shakemap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_shakemap</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.export_shakemap" title="gmprocess.subcommands.autoshakemap.export_shakemap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export_shakemap</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.generate_regression_plot" title="gmprocess.subcommands.auto_shakemap.generate_regression_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_regression_plot</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.generate_regression_plot" title="gmprocess.subcommands.autoshakemap.generate_regression_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_regression_plot</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.generate_report" title="gmprocess.subcommands.auto_shakemap.generate_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_report</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.generate_report" title="gmprocess.subcommands.autoshakemap.generate_report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_report</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.arg_dicts">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">arg_dicts</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.arg_dicts" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.arg_dicts">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">arg_dicts</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.arg_dicts" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.base">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">base</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.base" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.base">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">base</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.base" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.download">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">download</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.download" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.download">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">download</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.download" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.import_data">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">import_data</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.import_data" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.import_data">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">import_data</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.import_data" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.assemble">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">assemble</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.assemble" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.assemble">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">assemble</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.assemble" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.process_waveforms">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">process_waveforms</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.process_waveforms" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.process_waveforms">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">process_waveforms</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.process_waveforms" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.compute_station_metrics">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">compute_station_metrics</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.compute_station_metrics" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.compute_station_metrics">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">compute_station_metrics</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.compute_station_metrics" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.compute_waveform_metrics">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">compute_waveform_metrics</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.compute_waveform_metrics" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.compute_waveform_metrics">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">compute_waveform_metrics</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.compute_waveform_metrics" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.export_metric_tables">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">export_metric_tables</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.export_metric_tables" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.export_metric_tables">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">export_metric_tables</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.export_metric_tables" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.export_shakemap">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">export_shakemap</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.export_shakemap" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.export_shakemap">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">export_shakemap</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.export_shakemap" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.generate_regression_plot">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">generate_regression_plot</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.generate_regression_plot" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.generate_regression_plot">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">generate_regression_plot</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.generate_regression_plot" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py data">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.generate_report">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">generate_report</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.generate_report" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.generate_report">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">generate_report</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.generate_report" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.AutoShakemapModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.auto_shakemap.</span></span><span class="sig-name descname"><span class="pre">AutoShakemapModule</span></span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/auto_shakemap.html#AutoShakemapModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule" title="Permalink to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.base" title="gmprocess.subcommands.auto_shakemap.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.AutoShakemapModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gmprocess.subcommands.autoshakemap.</span></span><span class="sig-name descname"><span class="pre">AutoShakemapModule</span></span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/autoshakemap.html#AutoShakemapModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gmprocess.subcommands.autoshakemap.base" title="gmprocess.subcommands.autoshakemap.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p>
 <p>Chain together subcommands to get shakemap ground motion file.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.AutoShakemapModule.command_name">
-<span class="sig-name descname"><span class="pre">command_name</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">auto_shakemap</span></em><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.command_name" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.AutoShakemapModule.command_name">
+<span class="sig-name descname"><span class="pre">command_name</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">autoshakemap</span></em><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.command_name" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.AutoShakemapModule.arguments">
-<span class="sig-name descname"><span class="pre">arguments</span></span><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.arguments" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.AutoShakemapModule.arguments">
+<span class="sig-name descname"><span class="pre">arguments</span></span><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.arguments" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="gmprocess.subcommands.auto_shakemap.AutoShakemapModule.main">
-<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gmrecords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/auto_shakemap.html#AutoShakemapModule.main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.main" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="gmprocess.subcommands.autoshakemap.AutoShakemapModule.main">
+<span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gmrecords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/subcommands/autoshakemap.html#AutoShakemapModule.main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.main" title="Permalink to this definition">#</a></dt>
 <dd><p>Chain together subcommands to get shakemap ground motion file.</p>
 </dd></dl>
 
@@ -639,14 +640,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../assemble/index.html">
+          <a class="prev-page" href="../autoprocess/index.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></div>
+                <div class="title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoprocess</span></code></div>
                 
               </div>
             </a>
@@ -682,44 +683,44 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a><ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoshakemap</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a></li>
 <li><a class="reference internal" href="#attributes">Attributes</a><ul>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.arg_dicts"><code class="docutils literal notranslate"><span class="pre">arg_dicts</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.base"><code class="docutils literal notranslate"><span class="pre">base</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.download"><code class="docutils literal notranslate"><span class="pre">download</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.import_data"><code class="docutils literal notranslate"><span class="pre">import_data</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.assemble"><code class="docutils literal notranslate"><span class="pre">assemble</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.process_waveforms"><code class="docutils literal notranslate"><span class="pre">process_waveforms</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.compute_station_metrics"><code class="docutils literal notranslate"><span class="pre">compute_station_metrics</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.compute_waveform_metrics"><code class="docutils literal notranslate"><span class="pre">compute_waveform_metrics</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.export_metric_tables"><code class="docutils literal notranslate"><span class="pre">export_metric_tables</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.export_shakemap"><code class="docutils literal notranslate"><span class="pre">export_shakemap</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.generate_regression_plot"><code class="docutils literal notranslate"><span class="pre">generate_regression_plot</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.generate_report"><code class="docutils literal notranslate"><span class="pre">generate_report</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule</span></code></a><ul>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.command_name"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule.command_name</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.arguments"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule.arguments</span></code></a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.main"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule.main()</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.arg_dicts"><code class="docutils literal notranslate"><span class="pre">arg_dicts</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.base"><code class="docutils literal notranslate"><span class="pre">base</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.download"><code class="docutils literal notranslate"><span class="pre">download</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.import_data"><code class="docutils literal notranslate"><span class="pre">import_data</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.assemble"><code class="docutils literal notranslate"><span class="pre">assemble</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.process_waveforms"><code class="docutils literal notranslate"><span class="pre">process_waveforms</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.compute_station_metrics"><code class="docutils literal notranslate"><span class="pre">compute_station_metrics</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.compute_waveform_metrics"><code class="docutils literal notranslate"><span class="pre">compute_waveform_metrics</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.export_metric_tables"><code class="docutils literal notranslate"><span class="pre">export_metric_tables</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.export_shakemap"><code class="docutils literal notranslate"><span class="pre">export_shakemap</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.generate_regression_plot"><code class="docutils literal notranslate"><span class="pre">generate_regression_plot</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.generate_report"><code class="docutils literal notranslate"><span class="pre">generate_report</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule</span></code></a><ul>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.command_name"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule.command_name</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.arguments"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule.arguments</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.main"><code class="docutils literal notranslate"><span class="pre">AutoShakemapModule.main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.arg_dicts">arg_dicts</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.base">base</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.download">download</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.import_data">import_data</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.assemble">assemble</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.process_waveforms">process_waveforms</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.compute_station_metrics">compute_station_metrics</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.compute_waveform_metrics">compute_waveform_metrics</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.export_metric_tables">export_metric_tables</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.export_shakemap">export_shakemap</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.generate_regression_plot">generate_regression_plot</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.generate_report">generate_report</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule">AutoShakemapModule</a><ul>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.command_name">command_name</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.arguments">arguments</a></li>
-<li><a class="reference internal" href="#gmprocess.subcommands.auto_shakemap.AutoShakemapModule.main">main</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.arg_dicts">arg_dicts</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.base">base</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.download">download</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.import_data">import_data</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.assemble">assemble</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.process_waveforms">process_waveforms</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.compute_station_metrics">compute_station_metrics</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.compute_waveform_metrics">compute_waveform_metrics</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.export_metric_tables">export_metric_tables</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.export_shakemap">export_shakemap</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.generate_regression_plot">generate_regression_plot</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.generate_report">generate_report</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule">AutoShakemapModule</a><ul>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.command_name">command_name</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.arguments">arguments</a></li>
+<li><a class="reference internal" href="#gmprocess.subcommands.autoshakemap.AutoShakemapModule.main">main</a></li>
 </ul>
 </li>
 </ul>

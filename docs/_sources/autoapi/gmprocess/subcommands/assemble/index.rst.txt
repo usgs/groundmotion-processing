@@ -60,7 +60,7 @@ Attributes
       
 
    .. py:attribute:: arguments
-      
+      :annotation: = []
 
       
 

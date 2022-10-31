@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Processing Steps" href="processing.html" /><link rel="prev" title="Configuration File" href="config_file.html" />
 
-    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>gmrecords - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>gmrecords - gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -374,7 +374,8 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/auto_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/autoprocess/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoprocess</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/autoshakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoshakemap</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.base</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../autoapi/gmprocess/subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
@@ -489,7 +490,9 @@ Each processing step is a subcommand and you can run only one subcommand at a ti
 You can use <a class="reference internal" href="../tutorials/scripting.html#scripting"><span class="std std-ref">Python scripting</span></a> to chain together multiple subcommands.</p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">-h</span></code> command line argument to output the list of subcommands and their descriptions:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords -h
-usage: gmrecords [-h] [-d | -q] [-v] [-l LOG] &lt;command&gt; &lt;aliases&gt; ...
+usage: gmrecords [-h] [-d | -q] [-v] [--log LOG] [-e EVENTID] [-t TEXTFILE]
+                 [-l LABEL] [-n NUM_PROCESSES] [-o]
+                 &lt;command&gt; &lt;aliases&gt; ...
 
 gmrecords is a program for retrieving and processing ground motion records, as
 well as exporting commonly used station and waveform parameters for earthquake
@@ -500,13 +503,33 @@ optional arguments:
   -d, --debug           Print all informational messages.
   -q, --quiet           Print only errors.
   -v, --version         Print program version.
-  -l LOG, --log LOG     Path to log file; if provided, loging is directed to
+  --log LOG             Path to log file; if provided, loging is directed to
                         this file.
+  -e EVENTID, --eventid EVENTID
+                        Comcat event ID. If None (default) all events in
+                        project data directory will be used. To specify
+                        multiple eventids, use a comma separated list like
+                        `gmrecords -e &quot;nc73799091, nc73774300&quot; autoprocess`
+  -t TEXTFILE, --textfile TEXTFILE
+                        CSV file containing either: (1) a single column in
+                        which that column contains ComCat event IDs, or (2)
+                        six columns in which those columns are: id (string, no
+                        spaces), time (any ISO standard for date/time),
+                        latitutde (float, decimal degrees), longitude (float,
+                        decimal degrees), depth (float, km), magnitude
+                        (float).
+  -l LABEL, --label LABEL
+                        Processing label (single word, no spaces) to attach to
+                        processed files. Default label is &#39;default&#39;.
+  -n NUM_PROCESSES, --num-processes NUM_PROCESSES
+                        Number of parallel processes to run over events.
+  -o, --overwrite       Overwrite results if they exist.
 
 Subcommands:
   &lt;command&gt; (&lt;aliases&gt;)
     assemble            Assemble raw data and organize it into an ASDF file.
-    auto_shakemap       Chain together subcommands to get shakemap ground
+    autoprocess         Chain together the most common processing subcommands.
+    autoshakemap        Chain together subcommands to get shakemap ground
                         motion file.
     clean               Clean (i.e., remove) project data.
     compute_station_metrics (sm)
@@ -546,7 +569,7 @@ Use the syntax <code class="docutils literal notranslate"><span class="pre">gmre
 <section id="config">
 <h3><code class="docutils literal notranslate"><span class="pre">config</span></code><a class="headerlink" href="#config" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords config -h
-usage: gmrecords config [-h] [-u] [-s filename] [-e EVENTID [EVENTID ...]]
+usage: gmrecords config [-h] [-u] [-s filename]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -554,9 +577,6 @@ optional arguments:
                         config.in the current project.
   -s filename, --save filename
                         Save the contents of the workspace config to a file.
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
 
     Config options are specified in the yml files in the config directory for each
     project. These are read in and stored in a config object in the workspace file
@@ -668,63 +688,30 @@ These event IDs can be found by searching for events on the <a class="reference 
 With <code class="docutils literal notranslate"><span class="pre">gmrecords</span></code>, you can specify a single event ID or a list of event IDs in a text file.
 Also, you can run customized searches of the earthquake catalog in Python with <a class="reference external" href="https://github.com/usgs/libcomcat">libcomcat</a> or <a class="reference external" href="https://github.com/obspy/obspy/wiki/">ObsPy</a>.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords download -h
-usage: gmrecords download [-h] [-e EVENTID [EVENTID ...]] [-t TEXTFILE]
-                          [--info ID TIME LAT LON DEPTH MAG MAG_TYPE]
+usage: gmrecords download [-h]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  --info ID TIME LAT LON DEPTH MAG MAG_TYPE
-                        Single event information as ID TIME(YYYY-MM-
-                        DDTHH:MM:SS) LAT LON DEP MAG.
+  -h, --help  show this help message and exit
 </pre></div>
 </div>
 </section>
 <section id="assemble">
 <h3><code class="docutils literal notranslate"><span class="pre">assemble</span></code><a class="headerlink" href="#assemble" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords assemble -h
-usage: gmrecords assemble [-h] [-e EVENTID [EVENTID ...]] [-t TEXTFILE] [-o]
-                          [-n n]
+usage: gmrecords assemble [-h]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -o, --overwrite       Overwrite results if they exist.
-  -n n, --num-processes n
-                        Number of parallel processes to run over events.
+  -h, --help  show this help message and exit
 </pre></div>
 </div>
 </section>
 <section id="import">
 <h3><code class="docutils literal notranslate"><span class="pre">import</span></code><a class="headerlink" href="#import" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords import -h
-usage: gmrecords import [-h] [-e EVENTID [EVENTID ...]] [-p PATH]
+usage: gmrecords import [-h] [-p PATH]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
   -p PATH, --path PATH  Path to file or directory containing data to import.
 </pre></div>
 </div>
@@ -735,108 +722,41 @@ optional arguments:
 <section id="process-waveforms">
 <h3><code class="docutils literal notranslate"><span class="pre">process_waveforms</span></code><a class="headerlink" href="#process-waveforms" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords process_waveforms -h
-usage: gmrecords process_waveforms [-h] [-e EVENTID [EVENTID ...]]
-                                   [-t TEXTFILE] [-l LABEL] [-r] [-n n] [-o]
+usage: gmrecords process_waveforms [-h] [-r]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label (single word, no spaces) to attach to
-                        processed files. Default label is &#39;default&#39;.
-  -r, --reprocess       Reprocess data using manually review information.
-  -n n, --num-processes n
-                        Number of parallel processes to run over events.
-  -o, --overwrite       Overwrite results if they exist.
+  -h, --help       show this help message and exit
+  -r, --reprocess  Reprocess data using manually review information.
 </pre></div>
 </div>
 </section>
 <section id="compute-station-metrics">
 <h3><code class="docutils literal notranslate"><span class="pre">compute_station_metrics</span></code><a class="headerlink" href="#compute-station-metrics" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_station_metrics -h
-usage: gmrecords compute_station_metrics [-h] [-e EVENTID [EVENTID ...]]
-                                         [-t TEXTFILE] [-l LABEL] [-o]
+usage: gmrecords compute_station_metrics [-h]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
-  -o, --overwrite       Overwrite results if they exist.
+  -h, --help  show this help message and exit
 </pre></div>
 </div>
 </section>
 <section id="compute-waveform-metrics">
 <h3><code class="docutils literal notranslate"><span class="pre">compute_waveform_metrics</span></code><a class="headerlink" href="#compute-waveform-metrics" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords compute_waveform_metrics -h
-usage: gmrecords compute_waveform_metrics [-h] [-e EVENTID [EVENTID ...]]
-                                          [-t TEXTFILE] [-l LABEL] [-o] [-n n]
+usage: gmrecords compute_waveform_metrics [-h]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
-  -o, --overwrite       Overwrite results if they exist.
-  -n n, --num-processes n
-                        Number of parallel processes to run over events.
+  -h, --help  show this help message and exit
 </pre></div>
 </div>
 </section>
 <section id="auto-shakemap">
 <h3><code class="docutils literal notranslate"><span class="pre">auto_shakemap</span></code><a class="headerlink" href="#auto-shakemap" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords auto_shakemap -h
-usage: gmrecords auto_shakemap [-h] [-e EVENTID [EVENTID ...]] [-p PATH]
-                               [--skip-download] [-d]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -p PATH, --path PATH  Path to external data file or directory. If given,
-                        then the download step is also skipped.
-  --skip-download       Skip data downlaod step.
-  -d, --diagnostics     Include diagnostic outputs that are created after
-                        ShakeMap data file is created.
+usage: gmrecords [-h] [-d | -q] [-v] [--log LOG] [-e EVENTID] [-t TEXTFILE]
+                 [-l LABEL] [-n NUM_PROCESSES] [-o]
+                 &lt;command&gt; &lt;aliases&gt; ...
+gmrecords: error: argument &lt;command&gt; (&lt;aliases&gt;): invalid choice: &#39;auto_shakemap&#39; (choose from &#39;assemble&#39;, &#39;autoprocess&#39;, &#39;autoshakemap&#39;, &#39;clean&#39;, &#39;compute_station_metrics&#39;, &#39;sm&#39;, &#39;compute_waveform_metrics&#39;, &#39;wm&#39;, &#39;config&#39;, &#39;download&#39;, &#39;export_failure_tables&#39;, &#39;ftables&#39;, &#39;export_metric_tables&#39;, &#39;mtables&#39;, &#39;export_provenance_tables&#39;, &#39;ptables&#39;, &#39;export_shakemap&#39;, &#39;shakemap&#39;, &#39;generate_regression_plot&#39;, &#39;regression&#39;, &#39;generate_report&#39;, &#39;report&#39;, &#39;generate_station_maps&#39;, &#39;maps&#39;, &#39;import&#39;, &#39;init&#39;, &#39;process_waveforms&#39;, &#39;process&#39;, &#39;projects&#39;, &#39;proj&#39;)
 </pre></div>
 </div>
 </section>
@@ -846,29 +766,11 @@ optional arguments:
 <section id="export-failure-tables">
 <h3><code class="docutils literal notranslate"><span class="pre">export_failure_tables</span></code><a class="headerlink" href="#export-failure-tables" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_failure_tables -h
-usage: gmrecords export_failure_tables [-h] [-e EVENTID [EVENTID ...]]
-                                       [-t TEXTFILE] [-l LABEL]
-                                       [--type {short,long,net}] [-f FORMAT]
+usage: gmrecords export_failure_tables [-h] [--type {short,long,net}]
+                                       [-f FORMAT]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
   --type {short,long,net}
                         Output failure information, either in short form
                         (&quot;short&quot;),long form (&quot;long&quot;), or network form (&quot;net&quot;).
@@ -885,60 +787,22 @@ optional arguments:
 <section id="export-metric-tables">
 <h3><code class="docutils literal notranslate"><span class="pre">export_metric_tables</span></code><a class="headerlink" href="#export-metric-tables" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_metric_tables -h
-usage: gmrecords export_metric_tables [-h] [-e EVENTID [EVENTID ...]]
-                                      [-t TEXTFILE] [-l LABEL] [-f FORMAT]
-                                      [-o]
+usage: gmrecords export_metric_tables [-h] [-f FORMAT]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
   -f FORMAT, --output-format FORMAT
                         Output file format.
-  -o, --overwrite       Overwrite results if they exist.
 </pre></div>
 </div>
 </section>
 <section id="export-provenance-tables">
 <h3><code class="docutils literal notranslate"><span class="pre">export_provenance_tables</span></code><a class="headerlink" href="#export-provenance-tables" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_provenance_tables -h
-usage: gmrecords export_provenance_tables [-h] [-e EVENTID [EVENTID ...]]
-                                          [-t TEXTFILE] [-l LABEL] [-f FORMAT]
+usage: gmrecords export_provenance_tables [-h] [-f FORMAT]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
   -f FORMAT, --output-format FORMAT
                         Output file format.
 </pre></div>
@@ -947,32 +811,13 @@ optional arguments:
 <section id="export-shakemap">
 <h3><code class="docutils literal notranslate"><span class="pre">export_shakemap</span></code><a class="headerlink" href="#export-shakemap" title="Permalink to this heading">#</a></h3>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords export_shakemap -h
-usage: gmrecords export_shakemap [-h] [-e EVENTID [EVENTID ...]] [-t TEXTFILE]
-                                 [-l LABEL] [-x]
+usage: gmrecords export_shakemap [-h] [-x]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
-  -x, --expand-imts     Use expanded IMTs. Currently this only means all the
-                        SA that have been computed, plus PGA and PGV (if
-                        computed). Could eventually expand for other IMTs
-                        also.
+  -h, --help         show this help message and exit
+  -x, --expand-imts  Use expanded IMTs. Currently this only means all the SA
+                     that have been computed, plus PGA and PGV (if computed).
+                     Could eventually expand for other IMTs also.
 </pre></div>
 </div>
 </section>
@@ -983,58 +828,20 @@ optional arguments:
 <section id="generate-report">
 <h2><code class="docutils literal notranslate"><span class="pre">generate_report</span></code><a class="headerlink" href="#generate-report" title="Permalink to this heading">#</a></h2>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_report -h
-usage: gmrecords generate_report [-h] [-e EVENTID [EVENTID ...]] [-t TEXTFILE]
-                                 [-l LABEL] [-n n]
+usage: gmrecords generate_report [-h]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
-  -n n, --num-processes n
-                        Number of parallel processes to run over events.
+  -h, --help  show this help message and exit
 </pre></div>
 </div>
 </section>
 <section id="generate-station-maps">
 <h2><code class="docutils literal notranslate"><span class="pre">generate_station_maps</span></code><a class="headerlink" href="#generate-station-maps" title="Permalink to this heading">#</a></h2>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ gmrecords generate_station_maps -h
-usage: gmrecords generate_station_maps [-h] [-e EVENTID [EVENTID ...]]
-                                       [-t TEXTFILE] [-l LABEL]
+usage: gmrecords generate_station_maps [-h]
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EVENTID [EVENTID ...], --eventid EVENTID [EVENTID ...]
-                        Comcat event ID. If None (default) all events in
-                        project data directory will be used.
-  -t TEXTFILE, --textfile TEXTFILE
-                        CSV file containing either: (1) a single column in
-                        which that column contains ComCat event IDs, or (2)
-                        six columns in which those columns are: id (string, no
-                        spaces), time (any ISO standard for date/time),
-                        latitutde (float, decimal degrees), longitude (float,
-                        decimal degrees), depth (float, km), magnitude
-                        (float).
-  -l LABEL, --label LABEL
-                        Processing label. If None (default) then we will
-                        disregard the unprocessed label, and if there is only
-                        one remaining label then we will use it. If there are
-                        multiple remaining labels then we will prmpt you to
-                        select one.
+  -h, --help  show this help message and exit
 </pre></div>
 </div>
 </section>
