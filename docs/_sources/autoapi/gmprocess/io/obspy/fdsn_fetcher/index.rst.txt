@@ -27,6 +27,7 @@ Attributes
    gmprocess.io.obspy.fdsn_fetcher.GEONET_ARCHIVE_URL
    gmprocess.io.obspy.fdsn_fetcher.GEO_NET_ARCHIVE_KEY
    gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL
+   gmprocess.io.obspy.fdsn_fetcher.BAD_PROVIDERS
 
 
 .. py:data:: OBSPY_LOGGER
@@ -51,6 +52,11 @@ Attributes
 
 .. py:data:: GEONET_REALTIME_URL
    :annotation: = http://service-nrt.geonet.org.nz
+
+   
+
+.. py:data:: BAD_PROVIDERS
+   :annotation: = ['IRISPH5', 'UIB-NORSAR']
 
    
 

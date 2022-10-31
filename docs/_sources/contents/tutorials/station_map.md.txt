@@ -24,7 +24,6 @@ import pandas as pd
 import folium
 import altair as alt
 import json
-import os
 
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.constants import DATA_DIR

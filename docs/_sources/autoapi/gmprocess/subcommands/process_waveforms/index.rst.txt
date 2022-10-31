@@ -22,18 +22,12 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.process_waveforms.arg_dicts
    gmprocess.subcommands.process_waveforms.base
    gmprocess.subcommands.process_waveforms.const
    gmprocess.subcommands.process_waveforms.ws
    gmprocess.subcommands.process_waveforms.processing
    gmprocess.subcommands.process_waveforms.confmod
 
-
-.. py:data:: arg_dicts
-   
-
-   
 
 .. py:data:: base
    

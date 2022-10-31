@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" /><link rel="next" title="gmprocess.waveform_processing.detrend" href="../detrend/index.html" /><link rel="prev" title="gmprocess.waveform_processing.baseline_correction" href="../baseline_correction/index.html" />
 
-    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>gmprocess.waveform_processing.corner_frequencies - gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
+      <a href="../../../../index.html"><div class="brand">gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -374,7 +374,8 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../subcommands/auto_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../subcommands/autoprocess/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoprocess</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../subcommands/autoshakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoshakemap</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.base</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
@@ -491,7 +492,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.get_corner_frequencies" title="gmprocess.waveform_processing.corner_frequencies.get_corner_frequencies"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_corner_frequencies</span></code></a>(st, origin[, method, constant, ...])</p></td>
 <td><p>Select corner frequencies.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency" title="gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowpass_max_frequency</span></code></a>(st[, fn_fac, config])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency" title="gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lowpass_max_frequency</span></code></a>(st[, fn_fac, lp_max, config])</p></td>
 <td><p>Cap lowpass corner as a fraction of the Nyquist.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.waveform_processing.corner_frequencies.from_constant" title="gmprocess.waveform_processing.corner_frequencies.from_constant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_constant</span></code></a>(st[, highpass, lowpass])</p></td>
@@ -566,13 +567,14 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency">
-<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">lowpass_max_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_fac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/corner_frequencies.html#lowpass_max_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">gmprocess.waveform_processing.corner_frequencies.</span></span><span class="sig-name descname"><span class="pre">lowpass_max_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">st</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fn_fac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lp_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/gmprocess/waveform_processing/corner_frequencies.html#lowpass_max_frequency"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gmprocess.waveform_processing.corner_frequencies.lowpass_max_frequency" title="Permalink to this definition">#</a></dt>
 <dd><p>Cap lowpass corner as a fraction of the Nyquist.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>st</strong> (<a class="reference internal" href="../../core/stationstream/index.html#gmprocess.core.stationstream.StationStream" title="gmprocess.core.stationstream.StationStream"><em>StationStream</em></a>) – Stream of data.</p></li>
 <li><p><strong>fn_fac</strong> (<em>float</em>) – Factor to be multiplied by the Nyquist to cap the lowpass filter.</p></li>
+<li><p><strong>lp_max</strong> (<em>float</em>) – Maximum lowpass corner frequency (Hz).</p></li>
 <li><p><strong>config</strong> (<em>dict</em>) – Configuration dictionary (or None). See get_config().</p></li>
 </ul>
 </dd>

@@ -21,8 +21,6 @@ should be a useful reference.
 First, some imports
 
 ```{code-cell} ipython3
-import os
-
 from gmprocess.io.asdf.stream_workspace import StreamWorkspace
 from gmprocess.utils.constants import DATA_DIR
 ```

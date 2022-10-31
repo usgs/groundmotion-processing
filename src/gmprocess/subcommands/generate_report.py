@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import shutil
 from concurrent.futures import ProcessPoolExecutor
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
-arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
 ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
 report = LazyLoader("report", globals(), "gmprocess.io.report")
 plot = LazyLoader("plot", globals(), "gmprocess.utils.plot")
@@ -21,12 +21,7 @@ class GenerateReportModule(base.SubcommandModule):
     command_name = "generate_report"
     aliases = ("report",)
 
-    arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["label"],
-        arg_dicts.ARG_DICTS["num_processes"],
-    ]
+    arguments = []
 
     def main(self, gmrecords):
         """Generate summary report.
@@ -106,8 +101,10 @@ class GenerateReportModule(base.SubcommandModule):
 
         logging.info(f"Creating diagnostic plots for event {event.id}...")
         plot_dir = event_dir / "plots"
-        if not plot_dir.is_file():
-            plot_dir.mkdir()
+
+        if plot_dir.exists():
+            shutil.rmtree(plot_dir, ignore_errors=True)
+        plot_dir.mkdir()
 
         results = []
         pstreams = []

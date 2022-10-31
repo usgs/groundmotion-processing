@@ -9,6 +9,9 @@
   - Allow use of projects subcommand from Python scripts.
 - Fixes SAC format units conversion issue. 
 - Add lp_max option for lowpass_max_frequency method.
+- Add the `autoprocess` subcommand, which requires moving some subcommand arguments
+  to gmprocess; this includes `eventid`, `textfile`, `label`, `num-processes`, and `overwrite`.
+- Note that moving the `label` argument to gmrecords from the subcommands means that the short flag `-l` conflicts with `log` so the short flag for log has been removed.
 
 ## 1.2.1 / 2022-10-04
 

@@ -29,6 +29,8 @@ GEONET_ARCHIVE_URL = "http://service.geonet.org.nz"
 GEO_NET_ARCHIVE_KEY = "GEONET"
 GEONET_REALTIME_URL = "http://service-nrt.geonet.org.nz"
 
+BAD_PROVIDERS = ["IRISPH5", "UIB-NORSAR"]
+
 
 class FDSNFetcher(DataFetcher):
     BOUNDS = [-180, 180, -90, 90]
@@ -172,12 +174,16 @@ class FDSNFetcher(DataFetcher):
 
         restrictions = Restrictions(**rconf)
 
+        providers = URL_MAPPINGS
+        for bad in BAD_PROVIDERS:
+            if bad in providers.keys():
+                del providers[bad]
+
+        debug = logging.getLevelName(root.level) == "DEBUG"
+
         # For each of the providers, check if we have a username and password provided
         # in the config. If we do, initialize the client with the username and password.
         # Otherwise, use default initalization.
-        providers = URL_MAPPINGS
-        if "IRISPH5" in providers.keys():
-            del providers["IRISPH5"]
 
         client_list = []
         for provider_str in providers.keys():
@@ -188,25 +194,14 @@ class FDSNFetcher(DataFetcher):
             try:
                 fdsn_config = self.config["fetchers"]["FDSNFetcher"]
                 if provider_str in fdsn_config:
-                    if logging.getLevelName(root.level) == "DEBUG":
-                        client = Client(
-                            provider_str,
-                            user=fdsn_config[provider_str]["user"],
-                            password=fdsn_config[provider_str]["password"],
-                            debug=True,
-                        )
-                    else:
-                        client = Client(
-                            provider_str,
-                            user=fdsn_config[provider_str]["user"],
-                            password=fdsn_config[provider_str]["password"],
-                        )
+                    client = Client(
+                        provider_str,
+                        user=fdsn_config[provider_str]["user"],
+                        password=fdsn_config[provider_str]["password"],
+                        debug=debug,
+                    )
                 else:
-                    if logging.getLevelName(root.level) == "DEBUG":
-                        client = Client(provider_str, debug=True)
-                    else:
-                        client = Client(provider_str)
-
+                    client = Client(provider_str, debug=debug)
                 client_list.append(client)
             # If the FDSN service is down, then an FDSNException is raised
             except FDSNException:
@@ -221,7 +216,7 @@ class FDSNFetcher(DataFetcher):
             if "log_file" in vars() or "log_file" in globals():
                 sys.stdout = open(log_file, "a")
             # Pass off the initalized clients to the Mass Downloader
-            if logging.getLevelName(root.level) == "DEBUG":
+            if debug:
                 mdl = MassDownloader(providers=client_list, debug=True)
             else:
                 try:

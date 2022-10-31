@@ -42,10 +42,9 @@ generate_report = LazyLoader(
 class AutoShakemapModule(base.SubcommandModule):
     """Chain together subcommands to get shakemap ground motion file."""
 
-    command_name = "auto_shakemap"
+    command_name = "autoshakemap"
 
     arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
         {
             "short_flag": "-p",
             "long_flag": "--path",
@@ -77,6 +76,9 @@ class AutoShakemapModule(base.SubcommandModule):
     def main(self, gmrecords):
         """Chain together subcommands to get shakemap ground motion file."""
         logging.info(f"Running subcommand '{self.command_name}'")
+        self.gmrecords = gmrecords
+        self._check_arguments()
+        self._get_events()
 
         # Hard code overwrite to True since this is all meant to run end-to-end
         # without interruption.
@@ -97,5 +99,5 @@ class AutoShakemapModule(base.SubcommandModule):
 
         if gmrecords.args.diagnostics:
             export_metric_tables.ExportMetricTablesModule().main(gmrecords)
-            (generate_regression_plot.GenerateRegressionPlotModule().main(gmrecords))
+            generate_regression_plot.GenerateRegressionPlotModule().main(gmrecords)
             generate_report.GenerateReportModule().main(gmrecords)

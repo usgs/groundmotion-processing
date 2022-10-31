@@ -74,7 +74,7 @@ Attributes
    :rtype: strea
 
 
-.. py:function:: lowpass_max_frequency(st, fn_fac=0.75, config=None)
+.. py:function:: lowpass_max_frequency(st, fn_fac=0.75, lp_max=40.0, config=None)
 
    Cap lowpass corner as a fraction of the Nyquist.
 
@@ -82,6 +82,8 @@ Attributes
    :type st: StationStream
    :param fn_fac: Factor to be multiplied by the Nyquist to cap the lowpass filter.
    :type fn_fac: float
+   :param lp_max: Maximum lowpass corner frequency (Hz).
+   :type lp_max: float
    :param config: Configuration dictionary (or None). See get_config().
    :type config: dict
 

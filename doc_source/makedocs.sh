@@ -36,6 +36,7 @@ target="rebuild"
 if [ $# == 1 ]; then
     target=$1
 fi
+
 case $target in
     "rebuild")
         echo "Performing complete (re)build of documentation..."
@@ -61,3 +62,4 @@ case $target in
 	exit 0
 	;;
 esac
+

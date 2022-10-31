@@ -18,6 +18,19 @@ Functions
 
 
 
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   gmprocess.io.global_fetcher.SKIP_MODS
+
+
+.. py:data:: SKIP_MODS
+   :annotation: = ['fetcher.py', 'global_fetcher.py', 'nga.py', 'read.py', 'read_directory.py', 'report.py',...
+
+   
+
 .. py:function:: fetch_data(time, lat, lon, depth, magnitude, config=None, rawdir=None, drop_non_free=True, stream_collection=True)
 
    Retrieve data using any DataFetcher subclass.

@@ -5,7 +5,6 @@ import logging
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
-arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
@@ -18,11 +17,7 @@ class GenerateHTMLMapModule(base.SubcommandModule):
     command_name = "generate_station_maps"
     aliases = ("maps",)
 
-    arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["label"],
-    ]
+    arguments = []
 
     def main(self, gmrecords):
         """Generate summary report.

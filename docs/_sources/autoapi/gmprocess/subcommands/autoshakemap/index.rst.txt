@@ -1,7 +1,7 @@
-:py:mod:`gmprocess.subcommands.auto_shakemap`
-=============================================
+:py:mod:`gmprocess.subcommands.autoshakemap`
+============================================
 
-.. py:module:: gmprocess.subcommands.auto_shakemap
+.. py:module:: gmprocess.subcommands.autoshakemap
 
 
 Module Contents
@@ -12,7 +12,7 @@ Classes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.auto_shakemap.AutoShakemapModule
+   gmprocess.subcommands.autoshakemap.AutoShakemapModule
 
 
 
@@ -22,18 +22,18 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.auto_shakemap.arg_dicts
-   gmprocess.subcommands.auto_shakemap.base
-   gmprocess.subcommands.auto_shakemap.download
-   gmprocess.subcommands.auto_shakemap.import_data
-   gmprocess.subcommands.auto_shakemap.assemble
-   gmprocess.subcommands.auto_shakemap.process_waveforms
-   gmprocess.subcommands.auto_shakemap.compute_station_metrics
-   gmprocess.subcommands.auto_shakemap.compute_waveform_metrics
-   gmprocess.subcommands.auto_shakemap.export_metric_tables
-   gmprocess.subcommands.auto_shakemap.export_shakemap
-   gmprocess.subcommands.auto_shakemap.generate_regression_plot
-   gmprocess.subcommands.auto_shakemap.generate_report
+   gmprocess.subcommands.autoshakemap.arg_dicts
+   gmprocess.subcommands.autoshakemap.base
+   gmprocess.subcommands.autoshakemap.download
+   gmprocess.subcommands.autoshakemap.import_data
+   gmprocess.subcommands.autoshakemap.assemble
+   gmprocess.subcommands.autoshakemap.process_waveforms
+   gmprocess.subcommands.autoshakemap.compute_station_metrics
+   gmprocess.subcommands.autoshakemap.compute_waveform_metrics
+   gmprocess.subcommands.autoshakemap.export_metric_tables
+   gmprocess.subcommands.autoshakemap.export_shakemap
+   gmprocess.subcommands.autoshakemap.generate_regression_plot
+   gmprocess.subcommands.autoshakemap.generate_report
 
 
 .. py:data:: arg_dicts
@@ -103,7 +103,7 @@ Attributes
    Chain together subcommands to get shakemap ground motion file.
 
    .. py:attribute:: command_name
-      :annotation: = auto_shakemap
+      :annotation: = autoshakemap
 
       
 

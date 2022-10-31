@@ -22,13 +22,7 @@ class ComputeWaveformMetricsModule(base.SubcommandModule):
     command_name = "compute_waveform_metrics"
     aliases = ("wm",)
 
-    arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["label"],
-        arg_dicts.ARG_DICTS["overwrite"],
-        arg_dicts.ARG_DICTS["num_processes"],
-    ]
+    arguments = []
 
     def main(self, gmrecords):
         """Compute waveform metrics.
