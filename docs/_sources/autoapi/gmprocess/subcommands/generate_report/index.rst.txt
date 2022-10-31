@@ -23,7 +23,6 @@ Attributes
 .. autoapisummary::
 
    gmprocess.subcommands.generate_report.base
-   gmprocess.subcommands.generate_report.arg_dicts
    gmprocess.subcommands.generate_report.ws
    gmprocess.subcommands.generate_report.report
    gmprocess.subcommands.generate_report.plot
@@ -31,11 +30,6 @@ Attributes
 
 
 .. py:data:: base
-   
-
-   
-
-.. py:data:: arg_dicts
    
 
    
@@ -77,7 +71,7 @@ Attributes
       
 
    .. py:attribute:: arguments
-      
+      :annotation: = []
 
       
 

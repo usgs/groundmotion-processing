@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 <link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" /><link rel="next" title="gmprocess.io.renadic" href="../../renadic/index.html" /><link rel="prev" title="gmprocess.io.obspy.core" href="../core/index.html" />
 
-    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
-        <title>gmprocess.io.obspy.fdsn_fetcher - gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</title>
+    <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
+        <title>gmprocess.io.obspy.fdsn_fetcher - gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.2.dev43+g1a14b46b.d20221021 documentation</div></a>
+      <a href="../../../../../index.html"><div class="brand">gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -374,7 +374,8 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../../subcommands/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" role="switch" type="checkbox"/><label for="toctree-checkbox-31"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/arg_dicts/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.arg_dicts</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/assemble/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.assemble</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../subcommands/auto_shakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.auto_shakemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../subcommands/autoprocess/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoprocess</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../subcommands/autoshakemap/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.autoshakemap</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/base/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.base</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/clean/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.clean</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../subcommands/compute_station_metrics/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">gmprocess.subcommands.compute_station_metrics</span></code></a></li>
@@ -514,6 +515,9 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL" title="gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GEONET_REALTIME_URL</span></code></a></p></td>
 <td><p></p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.BAD_PROVIDERS" title="gmprocess.io.obspy.fdsn_fetcher.BAD_PROVIDERS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BAD_PROVIDERS</span></code></a></p></td>
+<td><p></p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -540,6 +544,11 @@
 <dl class="py data">
 <dt class="sig sig-object py" id="gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL">
 <span class="sig-prename descclassname"><span class="pre">gmprocess.io.obspy.fdsn_fetcher.</span></span><span class="sig-name descname"><span class="pre">GEONET_REALTIME_URL</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">http://service-nrt.geonet.org.nz</span></em><a class="headerlink" href="#gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="gmprocess.io.obspy.fdsn_fetcher.BAD_PROVIDERS">
+<span class="sig-prename descclassname"><span class="pre">gmprocess.io.obspy.fdsn_fetcher.</span></span><span class="sig-name descname"><span class="pre">BAD_PROVIDERS</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['IRISPH5',</span> <span class="pre">'UIB-NORSAR']</span></em><a class="headerlink" href="#gmprocess.io.obspy.fdsn_fetcher.BAD_PROVIDERS" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py class">
@@ -669,6 +678,7 @@ in return of getMatchingEvents().</p>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.GEONET_ARCHIVE_URL"><code class="docutils literal notranslate"><span class="pre">GEONET_ARCHIVE_URL</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.GEO_NET_ARCHIVE_KEY"><code class="docutils literal notranslate"><span class="pre">GEO_NET_ARCHIVE_KEY</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL"><code class="docutils literal notranslate"><span class="pre">GEONET_REALTIME_URL</span></code></a></li>
+<li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.BAD_PROVIDERS"><code class="docutils literal notranslate"><span class="pre">BAD_PROVIDERS</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.FDSNFetcher"><code class="docutils literal notranslate"><span class="pre">FDSNFetcher</span></code></a><ul>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.FDSNFetcher.BOUNDS"><code class="docutils literal notranslate"><span class="pre">FDSNFetcher.BOUNDS</span></code></a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.FDSNFetcher.getMatchingEvents"><code class="docutils literal notranslate"><span class="pre">FDSNFetcher.getMatchingEvents()</span></code></a></li>
@@ -680,6 +690,7 @@ in return of getMatchingEvents().</p>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.GEONET_ARCHIVE_URL">GEONET_ARCHIVE_URL</a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.GEO_NET_ARCHIVE_KEY">GEO_NET_ARCHIVE_KEY</a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.GEONET_REALTIME_URL">GEONET_REALTIME_URL</a></li>
+<li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.BAD_PROVIDERS">BAD_PROVIDERS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.FDSNFetcher">FDSNFetcher</a><ul>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.FDSNFetcher.BOUNDS">BOUNDS</a></li>
 <li><a class="reference internal" href="#gmprocess.io.obspy.fdsn_fetcher.FDSNFetcher.getMatchingEvents">getMatchingEvents</a></li>

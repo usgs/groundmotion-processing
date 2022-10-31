@@ -24,10 +24,10 @@ def test_assemble(script_runner):
         ret = script_runner.run("gmrecords", "assemble")
         assert ret.success
 
-        ret = script_runner.run("gmrecords", "assemble", "-e", "ci38457511", "-o")
+        ret = script_runner.run("gmrecords", "-e", "ci38457511", "-o", "assemble")
         assert ret.success
 
-        ret = script_runner.run("gmrecords", "assemble", "-n", "2", "-o")
+        ret = script_runner.run("gmrecords", "-n", "2", "-o", "assemble")
         assert ret.success
 
         events = ["ci38457511", "ci38038071"]

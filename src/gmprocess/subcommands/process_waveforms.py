@@ -7,7 +7,6 @@ from concurrent.futures import ProcessPoolExecutor
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
 
-arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
 ws = LazyLoader("ws", globals(), "gmprocess.io.asdf.stream_workspace")
@@ -26,27 +25,13 @@ class ProcessWaveformsModule(base.SubcommandModule):
     # Note: do not use the ARG_DICT entry for label because the explanation is
     # different here.
     arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        {
-            "short_flag": "-l",
-            "long_flag": "--label",
-            "help": (
-                "Processing label (single word, no spaces) to attach to "
-                "processed files. Default label is 'default'."
-            ),
-            "type": str,
-            "default": None,
-        },
         {
             "short_flag": "-r",
             "long_flag": "--reprocess",
-            "help": ("Reprocess data using manually review information."),
+            "help": "Reprocess data using manually review information.",
             "default": False,
             "action": "store_true",
         },
-        arg_dicts.ARG_DICTS["num_processes"],
-        arg_dicts.ARG_DICTS["overwrite"],
     ]
 
     def main(self, gmrecords):

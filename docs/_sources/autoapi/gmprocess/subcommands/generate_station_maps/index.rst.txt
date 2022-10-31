@@ -22,17 +22,11 @@ Attributes
 
 .. autoapisummary::
 
-   gmprocess.subcommands.generate_station_maps.arg_dicts
    gmprocess.subcommands.generate_station_maps.base
    gmprocess.subcommands.generate_station_maps.ws
    gmprocess.subcommands.generate_station_maps.const
    gmprocess.subcommands.generate_station_maps.report_utils
 
-
-.. py:data:: arg_dicts
-   
-
-   
 
 .. py:data:: base
    
@@ -71,7 +65,7 @@ Attributes
       
 
    .. py:attribute:: arguments
-      
+      :annotation: = []
 
       
 

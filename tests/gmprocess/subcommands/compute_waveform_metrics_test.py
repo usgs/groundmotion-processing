@@ -34,7 +34,7 @@ def test_compute_waveform_metrics(script_runner):
         assert "Calculating waveform metrics for CI.TOW2.HN" in ret.stderr
 
         ret = script_runner.run(
-            "gmrecords", "compute_waveform_metrics", "-n", "2", "-o"
+            "gmrecords", "-n", "2", "-o", "compute_waveform_metrics"
         )
         assert ret.success
 

@@ -79,7 +79,6 @@ class GMrecordsApp(object):
         self.args = (
             argparse.Namespace(**kwargs) if kwargs else self._parse_command_line()
         )
-
         if self.args.subcommand is None:
             self.parser.print_help()
             sys.exit()
@@ -201,7 +200,7 @@ class GMrecordsApp(object):
             test_conf_file = (const.DATA_DIR / const.CONFIG_FILE_TEST).resolve()
             shutil.copyfile(test_conf_file, conf_path / const.CONFIG_FILE_TEST)
 
-        subcommands_need_conf = ["download", "assemble", "auto_shakemap"]
+        subcommands_need_conf = ["download", "assemble", "autoshakemap", "autoprocess"]
         if self.args.func.command_name in subcommands_need_conf:
             self.conf = configmod.get_config(config_path=self.conf_path)
 
@@ -243,12 +242,64 @@ class GMrecordsApp(object):
             help="Print program version.",
         )
         parser.add_argument(
-            "-l",
             "--log",
-            action="store",
             type=str,
             default=None,
             help="Path to log file; if provided, loging is directed to this file.",
+        )
+
+        parser.add_argument(
+            "-e",
+            "--eventid",
+            type=str,
+            default=None,
+            help=(
+                "Comcat event ID. If None (default) all events in project data "
+                "directory will be used. To specify multiple eventids, use a comma "
+                "separated list like "
+                '`gmrecords -e "nc73799091, nc73774300" autoprocess`'
+            ),
+        )
+
+        parser.add_argument(
+            "-t",
+            "--textfile",
+            type=str,
+            default=None,
+            help=(
+                "CSV file containing either: (1) a single column in which that column "
+                "contains ComCat event IDs, or (2) six columns in which those columns "
+                "are: id (string, no spaces), time (any ISO standard for date/time), "
+                "latitutde (float, decimal degrees), longitude (float, decimal "
+                "degrees), depth (float, km), magnitude (float)."
+            ),
+        )
+
+        parser.add_argument(
+            "-l",
+            "--label",
+            type=str,
+            default=None,
+            help=(
+                "Processing label (single word, no spaces) to attach to processed "
+                "files. Default label is 'default'."
+            ),
+        )
+
+        parser.add_argument(
+            "-n",
+            "--num-processes",
+            type=int,
+            default=0,
+            help="Number of parallel processes to run over events.",
+        )
+
+        parser.add_argument(
+            "-o",
+            "--overwrite",
+            default=False,
+            help="Overwrite results if they exist.",
+            action="store_true",
         )
 
         # Parsers for subcommands

@@ -20,9 +20,6 @@ class ExportShakeMapModule(base.SubcommandModule):
     aliases = ("shakemap",)
 
     arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["label"],
         {
             "short_flag": "-x",
             "long_flag": "--expand-imts",

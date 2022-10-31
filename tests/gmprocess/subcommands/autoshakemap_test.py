@@ -8,7 +8,7 @@ import shutil
 from gmprocess.utils import constants
 
 
-def test_auto_shakemap(script_runner):
+def test_autoshakemap(script_runner):
     try:
         # Need to create profile first.
         cdir = str(constants.CONFIG_PATH_TEST)
@@ -19,7 +19,7 @@ def test_auto_shakemap(script_runner):
         assert ret.success
 
         ret = script_runner.run(
-            "gmrecords", "auto_shakemap", "-e", "ci38457511", "--skip-download"
+            "gmrecords", "-e", "ci38457511", "autoshakemap", "--skip-download"
         )
         assert ret.success
 
@@ -44,4 +44,4 @@ def test_auto_shakemap(script_runner):
 
 
 if __name__ == "__main__":
-    test_auto_shakemap()
+    test_autoshakemap()

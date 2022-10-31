@@ -100,6 +100,8 @@ args = {
     'eventid': None,
     'textfile': None,
     'overwrite': False,
+    'num_processes': 0,
+    'label': None,
     }
 
 # Loop through the subcommands.

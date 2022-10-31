@@ -9,7 +9,6 @@ import logging
 from gmprocess.io.utils import flatten_directory
 from gmprocess.subcommands.lazy_loader import LazyLoader
 
-arg_dicts = LazyLoader("arg_dicts", globals(), "gmprocess.subcommands.arg_dicts")
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 
 
@@ -19,7 +18,6 @@ class ImportModule(base.SubcommandModule):
     command_name = "import"
 
     arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
         {
             "short_flag": "-p",
             "long_flag": "--path",

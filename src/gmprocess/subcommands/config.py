@@ -5,7 +5,6 @@ import logging
 from pathlib import Path
 
 from gmprocess.subcommands.lazy_loader import LazyLoader
-from gmprocess.subcommands.arg_dicts import ARG_DICTS
 
 base = LazyLoader("base", globals(), "gmprocess.subcommands.base")
 const = LazyLoader("const", globals(), "gmprocess.utils.constants")
@@ -61,7 +60,6 @@ class ConfigModule(base.SubcommandModule):
             "default": None,
             "metavar": "filename",
         },
-        ARG_DICTS["eventid"],
     ]
 
     def main(self, gmrecords):

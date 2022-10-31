@@ -20,11 +20,7 @@ class ExportMetricTablesModule(base.SubcommandModule):
     aliases = ("mtables",)
 
     arguments = [
-        arg_dicts.ARG_DICTS["eventid"],
-        arg_dicts.ARG_DICTS["textfile"],
-        arg_dicts.ARG_DICTS["label"],
         arg_dicts.ARG_DICTS["output_format"],
-        arg_dicts.ARG_DICTS["overwrite"],
     ]
 
     def main(self, gmrecords):
