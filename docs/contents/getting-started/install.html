@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Initial Setup" href="initial_setup.html" /><link rel="prev" title="Getting Started" href="index.html" />
 
     <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Installation - gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</title>
+        <title>Installation - gmprocess 1.2.2.dev41+gcec52751.d20221101 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev41+gcec52751.d20221101 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -483,8 +483,7 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Previously we used <code class="docutils literal notranslate"><span class="pre">conda</span></code> to manage dependencies but that was creating some difficulties, so we are now relying on <code class="docutils literal notranslate"><span class="pre">pip</span></code> as much as possible.
-We hope to be able to provide <code class="docutils literal notranslate"><span class="pre">pip</span></code> installs via pypi wheels soon.</p>
+<p>Previously we used <code class="docutils literal notranslate"><span class="pre">conda</span></code> to manage dependencies but that was creating some difficulties, so we are now relying on <code class="docutils literal notranslate"><span class="pre">pip</span></code> as much as possible.</p>
 <p>Our development team is not proficient with Windows systems, so our ability to support Windows installs is limited.
 We have done our best to provide instructions to support Windows build.</p>
 </div>
@@ -497,6 +496,19 @@ It is very out of date and won’t work.</p>
 <p>We recommend installing gmprocess into a virtual environment to isolate your code from other projects that might create conflicts.
 You can use the Python3 <a class="reference external" href="https://docs.python.org/3/library/venv.html"><code class="docutils literal notranslate"><span class="pre">venv</span></code></a> module or <a class="reference external" href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">conda</a> to create and manage virtual environments.
 Conda generally uses more space on your filesystem, but it can install more dependencies.</p>
+<p>Releases gmprocess can be installed from pypi or you can install from the development
+veresion of the code from source. In either case, it is a good idea to review the
+<a class="reference internal" href="../developer/changelog.html"><span class="doc std std-doc">changelog</span></a> to keep track of any changes that you should be
+aware of.</p>
+<section id="installing-pypi-releases">
+<h2>Installing pypi releases<a class="headerlink" href="#installing-pypi-releases" title="Permalink to this heading">#</a></h2>
+<div class="highlight-term notranslate"><div class="highlight"><pre><span></span>pip install gmprocess
+</pre></div>
+</div>
+<p>Note that pypi wheels for the <code class="docutils literal notranslate"><span class="pre">fiona</span></code> dependency are not yet available for Windows and
+macOS arm64 architecture. For these platforms, we recommend installing <code class="docutils literal notranslate"><span class="pre">fiona</span></code> with
+conda.</p>
+</section>
 <section id="installing-from-source">
 <h2>Installing from source<a class="headerlink" href="#installing-from-source" title="Permalink to this heading">#</a></h2>
 <div class="note admonition">
@@ -505,14 +517,14 @@ Conda generally uses more space on your filesystem, but it can install more depe
 <input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Linux</label><div class="tab-content docutils container">
 <ul class="simple">
 <li><p>A C compiler (typically gcc).</p></li>
-<li><p>Bash shell, curl, and git.</p></li>
+<li><p>Bash shell, git.</p></li>
 </ul>
 <p>Most Linux distributions include these tools in the default installation.</p>
 </div>
 <input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">macOS</label><div class="tab-content docutils container">
 <ul class="simple">
 <li><p>A C compiler.</p></li>
-<li><p>Bash shell, curl, and git.</p></li>
+<li><p>Bash shell, git.</p></li>
 </ul>
 <p>The easiest way to install these tools is to install the XCode Command Line Tools.
 Simply run <code class="docutils literal notranslate"><span class="pre">git</span></code>, and instructions for installing the Command Line Tools will be displayed if it is not installed.</p>
@@ -625,6 +637,7 @@ You can create an issue in <a class="reference external" href="https://github.co
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#installing-pypi-releases">Installing pypi releases</a></li>
 <li><a class="reference internal" href="#installing-from-source">Installing from source</a></li>
 <li><a class="reference internal" href="#tests">Tests</a></li>
 </ul>

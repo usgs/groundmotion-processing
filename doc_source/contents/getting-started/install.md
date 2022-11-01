@@ -2,7 +2,6 @@
 
 :::{important}
 Previously we used `conda` to manage dependencies but that was creating some difficulties, so we are now relying on `pip` as much as possible.
-We hope to be able to provide `pip` installs via pypi wheels soon.
 
 Our development team is not proficient with Windows systems, so our ability to support Windows installs is limited.
 We have done our best to provide instructions to support Windows build.
@@ -18,6 +17,21 @@ We recommend installing gmprocess into a virtual environment to isolate your cod
 You can use the Python3 [`venv`](https://docs.python.org/3/library/venv.html) module or [conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) to create and manage virtual environments.
 Conda generally uses more space on your filesystem, but it can install more dependencies.
 
+Releases gmprocess can be installed from pypi or you can install from the development
+veresion of the code from source. In either case, it is a good idea to review the 
+[changelog](../developer/changelog) to keep track of any changes that you should be
+aware of. 
+
+## Installing pypi releases
+
+```term
+pip install gmprocess
+```
+
+Note that pypi wheels for the `fiona` dependency are not yet available for Windows and
+macOS arm64 architecture. For these platforms, we recommend installing `fiona` with
+conda.
+
 ## Installing from source
 
 :::{admonition} Prerequisites
@@ -25,14 +39,14 @@ Conda generally uses more space on your filesystem, but it can install more depe
 
 ```{tab} Linux
 - A C compiler (typically gcc).
-- Bash shell, curl, and git.
+- Bash shell, git.
 
 Most Linux distributions include these tools in the default installation.
 ```
 
 ```{tab} macOS
 - A C compiler.
-- Bash shell, curl, and git.
+- Bash shell, git.
 
 The easiest way to install these tools is to install the XCode Command Line Tools.
 Simply run `git`, and instructions for installing the Command Line Tools will be displayed if it is not installed.

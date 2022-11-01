@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Response Spectra Calculation and Comparison" href="response_spectra.html" /><link rel="prev" title="Command Line Interface" href="cli.html" />
 
     <meta name="generator" content="sphinx-5.2.3, furo 2022.09.29"/>
-        <title>Scripting - gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</title>
+        <title>Scripting - gmprocess 1.2.2.dev41+gcec52751.d20221101 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
@@ -139,7 +139,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev38+gfdb50b7a.d20221031 documentation</div></a>
+      <a href="../../index.html"><div class="brand">gmprocess 1.2.2.dev41+gcec52751.d20221101 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -497,16 +497,16 @@ The configuration files are in the <code class="docutils literal notranslate"><s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-31 10:25:07 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:25:07 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
-INFO 2022-10-31 10:25:07 | projects.main: Running subcommand &#39;projects&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-11-01 09:15:57 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-11-01 09:15:57 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-11-01 09:15:57 | projects.main: Running subcommand &#39;projects&#39;
 
-Project: cli-tutorial **Current Project**
+Project: cli-tutorial 
 	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/cli
 	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/cli
 
 
-Project: scripting-tutorial 
+Project: scripting-tutorial **Current Project**
 	Conf Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/conf/scripting
 	Data Path: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/data/scripting
 </pre></div>
@@ -522,9 +522,9 @@ Second, we use the <code class="docutils literal notranslate"><span class="pre">
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-10-31 10:25:08 | gmrecords._initialize: Logging level includes INFO.
-INFO 2022-10-31 10:25:08 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
-INFO 2022-10-31 10:25:08 | projects.main: Running subcommand &#39;projects&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>INFO 2022-11-01 09:15:59 | gmrecords._initialize: Logging level includes INFO.
+INFO 2022-11-01 09:15:59 | gmrecords._initialize: PROJECTS_PATH: /Users/username/src/python/groundmotion-processing/doc_source/contents/tutorials/.gmprocess
+INFO 2022-11-01 09:15:59 | projects.main: Running subcommand &#39;projects&#39;
 
 Switched to project: 
 Project: scripting-tutorial **Current Project**
@@ -576,59 +576,61 @@ Consequently, we simply copy the data from <code class="docutils literal notrans
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold -Color-Bold-Blue">data/scripting</span>
 └── <span class=" -Color -Color-Bold -Color-Bold-Blue">nc73291880</span>
     ├── event.json
-    └── <span class=" -Color -Color-Bold -Color-Bold-Blue">raw</span>
-        ├── BK.BRIB.01.BHE__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.BHN__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.BHZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HHE__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HHN__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HHZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── BK.BRIB.xml
-        ├── CE.58360..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58360..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58360..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58360.xml
-        ├── CE.58369..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58369..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58369..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58369.xml
-        ├── CE.58442..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58442..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58442..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── CE.58442.xml
-        ├── NC.C010.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C010.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C010.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C010.xml
-        ├── NC.C018.01.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C018.01.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C018.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.C018.xml
-        ├── NC.CRH..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CRH..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CRH..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CRH.xml
-        ├── NC.CTA..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CTA..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CTA..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NC.CTA.xml
-        ├── NP.1691..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1691..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1691..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1691.xml
-        ├── NP.1844..HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1844..HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1844..HNZ__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1844.xml
-        ├── NP.1847.10.HNE__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1847.10.HNN__20191015T053312Z__20191015T054042Z.mseed
-        ├── NP.1847.10.HNZ__20191015T053312Z__20191015T054042Z.mseed
-        └── NP.1847.xml
+    ├── <span class=" -Color -Color-Bold -Color-Bold-Blue">raw</span>
+    │   ├── BK.BRIB.01.BHE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.BHN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.BHZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.HHE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.HHN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.HHZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── BK.BRIB.xml
+    │   ├── CE.58360..HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58360..HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58360..HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58360.xml
+    │   ├── CE.58369..HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58369..HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58369..HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58369.xml
+    │   ├── CE.58442..HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58442..HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58442..HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── CE.58442.xml
+    │   ├── NC.C010.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.C010.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.C010.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.C010.xml
+    │   ├── NC.C018.01.HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.C018.01.HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.C018.01.HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.C018.xml
+    │   ├── NC.CRH..HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.CRH..HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.CRH..HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.CRH.xml
+    │   ├── NC.CTA..HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.CTA..HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.CTA..HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NC.CTA.xml
+    │   ├── NP.1691..HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1691..HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1691..HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1691.xml
+    │   ├── NP.1844..HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1844..HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1844..HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1844.xml
+    │   ├── NP.1847.10.HNE__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1847.10.HNN__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1847.10.HNZ__20191015T053312Z__20191015T054042Z.mseed
+    │   ├── NP.1847.xml
+    │   └── read_failures.csv
+    └── workspace.h5
 
-2 directories, 51 files
+2 directories, 53 files
 </pre></div>
 </div>
 </div>
