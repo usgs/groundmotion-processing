@@ -1,7 +1,0 @@
-fetchers:
-    FDSNFetcher:
-        domain:
-            circular:
-                maxradius: 0.2
-    CESMDFetcher:
-        enabled: False

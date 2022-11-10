@@ -1,6 +1,0 @@
-:py:mod:`gmprocess.data`
-========================
-
-.. py:module:: gmprocess.data
-
-
