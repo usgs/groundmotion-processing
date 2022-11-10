@@ -1,1 +1,0 @@
-20,15,sigmoid,20,sigmoid,2,sigmoid
